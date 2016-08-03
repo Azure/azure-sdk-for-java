@@ -217,7 +217,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Boolean> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -365,7 +365,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<Void> call = service.exists(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Boolean> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Boolean>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -471,7 +471,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -619,7 +619,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.delete(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -728,7 +728,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<CloudJobSchedule> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -892,7 +892,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.get(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<CloudJobSchedule> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CloudJobSchedule>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1007,7 +1007,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1165,7 +1165,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.patch(jobScheduleId, jobSchedulePatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1280,7 +1280,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1438,7 +1438,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.update(jobScheduleId, jobScheduleUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1543,7 +1543,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1691,7 +1691,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.disable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1796,7 +1796,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1944,7 +1944,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.enable(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2049,7 +2049,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2197,7 +2197,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.terminate(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2280,7 +2280,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2382,7 +2382,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.add(cloudJobSchedule, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2451,7 +2451,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2469,19 +2469,22 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJobSchedule>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
+        final ServiceCall<List<CloudJobSchedule>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2568,7 +2571,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2610,26 +2613,29 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJobSchedule>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
+        final ServiceCall<List<CloudJobSchedule>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobScheduleListNextOptions jobScheduleListNextOptions = null;
-                        if (jobScheduleListOptions != null) {
-                            jobScheduleListNextOptions = new JobScheduleListNextOptions();
-                            jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
-                            jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
-                            jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            JobScheduleListNextOptions jobScheduleListNextOptions = null;
+                            if (jobScheduleListOptions != null) {
+                                jobScheduleListNextOptions = new JobScheduleListNextOptions();
+                                jobScheduleListNextOptions.withClientRequestId(jobScheduleListOptions.clientRequestId());
+                                jobScheduleListNextOptions.withReturnClientRequestId(jobScheduleListOptions.returnClientRequestId());
+                                jobScheduleListNextOptions.withOcpDate(jobScheduleListOptions.ocpDate());
+                            }
+                            listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listNextAsync(result.getBody().getNextPageLink(), jobScheduleListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2681,7 +2687,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2695,7 +2701,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2762,7 +2768,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2785,7 +2791,7 @@ public final class JobSchedulesImpl implements JobSchedules {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJobSchedule>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

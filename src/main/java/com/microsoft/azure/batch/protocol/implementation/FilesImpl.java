@@ -201,7 +201,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -319,7 +319,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -438,7 +438,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -594,7 +594,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -711,7 +711,7 @@ public final class FilesImpl implements Files {
         }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -859,7 +859,7 @@ public final class FilesImpl implements Files {
         }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -958,7 +958,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1076,7 +1076,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1195,7 +1195,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1351,7 +1351,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1468,7 +1468,7 @@ public final class FilesImpl implements Files {
         }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -1616,7 +1616,7 @@ public final class FilesImpl implements Files {
         }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
@@ -1694,7 +1694,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1717,19 +1717,22 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<NodeFile>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -1820,7 +1823,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1860,26 +1863,29 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<NodeFile>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
-                        if (fileListFromTaskOptions != null) {
-                            fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
-                            fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
-                            fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
-                            fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
+                            if (fileListFromTaskOptions != null) {
+                                fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
+                                fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
+                                fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
+                                fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+                            }
+                            listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -1949,7 +1955,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1972,19 +1978,22 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<NodeFile>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2075,7 +2084,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2115,26 +2124,29 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<NodeFile>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
-                        if (fileListFromComputeNodeOptions != null) {
-                            fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
-                            fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
-                            fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
-                            fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
+                            if (fileListFromComputeNodeOptions != null) {
+                                fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
+                                fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
+                                fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
+                                fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+                            }
+                            listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2186,7 +2198,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2200,7 +2212,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2267,7 +2279,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2290,7 +2302,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2353,7 +2365,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2367,7 +2379,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2434,7 +2446,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2457,7 +2469,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

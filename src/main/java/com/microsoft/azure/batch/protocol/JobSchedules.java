@@ -41,6 +41,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -459,7 +460,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the job schedules in the specified account.
      *
@@ -479,7 +480,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists all of the job schedules in the specified account.
@@ -501,7 +502,7 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the job schedules in the specified account.
      *
@@ -524,6 +525,6 @@ public interface JobSchedules {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) throws IllegalArgumentException;
 
 }

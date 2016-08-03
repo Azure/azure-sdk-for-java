@@ -212,7 +212,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<JobStatistics> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -306,7 +306,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.getAllJobsLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<JobStatistics> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<JobStatistics>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -411,7 +411,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -559,7 +559,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -668,7 +668,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<CloudJob> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -832,7 +832,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<CloudJob> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CloudJob>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -947,7 +947,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1105,7 +1105,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1220,7 +1220,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1378,7 +1378,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1495,7 +1495,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1655,7 +1655,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1760,7 +1760,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1908,7 +1908,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2019,7 +2019,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2179,7 +2179,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2262,7 +2262,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2364,7 +2364,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2433,7 +2433,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2451,19 +2451,22 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJob>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        final ServiceCall<List<CloudJob>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2550,7 +2553,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2592,26 +2595,29 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJob>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        final ServiceCall<List<CloudJob>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListNextOptions jobListNextOptions = null;
-                        if (jobListOptions != null) {
-                            jobListNextOptions = new JobListNextOptions();
-                            jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
-                            jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
-                            jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            JobListNextOptions jobListNextOptions = null;
+                            if (jobListOptions != null) {
+                                jobListNextOptions = new JobListNextOptions();
+                                jobListNextOptions.withClientRequestId(jobListOptions.clientRequestId());
+                                jobListNextOptions.withReturnClientRequestId(jobListOptions.returnClientRequestId());
+                                jobListNextOptions.withOcpDate(jobListOptions.ocpDate());
+                            }
+                            listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listNextAsync(result.getBody().getNextPageLink(), jobListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2677,7 +2683,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2698,19 +2704,22 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJob>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        final ServiceCall<List<CloudJob>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2802,7 +2811,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2847,26 +2856,29 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<CloudJob>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        final ServiceCall<List<CloudJob>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
-                        if (jobListFromJobScheduleOptions != null) {
-                            jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
-                            jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
-                            jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
-                            jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
+                            if (jobListFromJobScheduleOptions != null) {
+                                jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
+                                jobListFromJobScheduleNextOptions.withClientRequestId(jobListFromJobScheduleOptions.clientRequestId());
+                                jobListFromJobScheduleNextOptions.withReturnClientRequestId(jobListFromJobScheduleOptions.returnClientRequestId());
+                                jobListFromJobScheduleNextOptions.withOcpDate(jobListFromJobScheduleOptions.ocpDate());
+                            }
+                            listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listFromJobScheduleNextAsync(result.getBody().getNextPageLink(), jobListFromJobScheduleNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -2931,7 +2943,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2951,19 +2963,22 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
+        final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -3051,7 +3066,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -3092,26 +3107,29 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
+        final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
-                        if (jobListPreparationAndReleaseTaskStatusOptions != null) {
-                            jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
-                            jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
+                            if (jobListPreparationAndReleaseTaskStatusOptions != null) {
+                                jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
+                                jobListPreparationAndReleaseTaskStatusNextOptions.withClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.clientRequestId());
+                                jobListPreparationAndReleaseTaskStatusNextOptions.withReturnClientRequestId(jobListPreparationAndReleaseTaskStatusOptions.returnClientRequestId());
+                                jobListPreparationAndReleaseTaskStatusNextOptions.withOcpDate(jobListPreparationAndReleaseTaskStatusOptions.ocpDate());
+                            }
+                            listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listPreparationAndReleaseTaskStatusNextAsync(result.getBody().getNextPageLink(), jobListPreparationAndReleaseTaskStatusNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
                     if (serviceCallback != null) {
                         serviceCallback.failure(exception);
@@ -3163,7 +3181,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3177,7 +3195,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3244,7 +3262,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3267,7 +3285,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3330,7 +3348,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3344,7 +3362,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3411,7 +3429,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3434,7 +3452,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CloudJob>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3497,7 +3515,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3511,7 +3529,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3578,7 +3596,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
-    public ServiceCall<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3601,7 +3619,7 @@ public final class JobsImpl implements Jobs {
         }
         Call<ResponseBody> call = service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<JobPreparationAndReleaseTaskExecutionInformation>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

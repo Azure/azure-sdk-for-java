@@ -50,6 +50,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -474,7 +475,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the jobs in the specified account.
      *
@@ -494,7 +495,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -515,7 +516,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
@@ -537,7 +538,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -558,7 +559,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
@@ -580,7 +581,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists all of the jobs in the specified account.
@@ -602,7 +603,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the jobs in the specified account.
      *
@@ -625,7 +626,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -647,7 +648,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
@@ -670,7 +671,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -692,7 +693,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
@@ -715,6 +716,6 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) throws IllegalArgumentException;
 
 }

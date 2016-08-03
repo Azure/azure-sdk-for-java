@@ -47,6 +47,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -564,7 +565,7 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -586,7 +587,7 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PagedList<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -608,7 +609,7 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -631,6 +632,6 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<PageImpl<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
 
 }
