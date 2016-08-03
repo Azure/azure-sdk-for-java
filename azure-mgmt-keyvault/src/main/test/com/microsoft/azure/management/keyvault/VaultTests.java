@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
@@ -35,6 +36,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
     public void canCRUDVault() throws Exception {
         // CREATE
         ServicePrincipal sp = graphRbacManager.servicePrincipals().getByName(credentials.getClientId());
+        User user = graphRbacManager.users().getByName("azuresdk@outlook.com");
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
@@ -61,10 +63,28 @@ public class VaultTests extends KeyVaultManagementTestBase {
         Assert.assertNotNull(vault);
         // UPDATE
         vault.update()
-                .updateAccessPolicy(sp.objectId())
+                .updateAccessPolicy(vault.accessPolicies().get(0).objectId().toString())
                     .allowKeyAllPermissions()
                     .disallowSecretAllPermissions()
                     .parent()
                 .apply();
+        vault.update()
+                .defineAccessPolicy()
+                    .forUser(user)
+                    .allowKeyAllPermissions()
+                    .allowSecretGetting()
+                    .allowSecretListing()
+                    .attach()
+                .apply();
+        vault.update()
+                .withoutAccessPolicy(sp.objectId())
+                .apply();
+        // AUTHORIZE
+        vault.defineAppAuthorization("app-id")
+                .allowKeyListing()
+                .allowKeyGetting()
+                .allowSecretListing()
+                .allowSecretGetting()
+                .authorize();
     }
 }

@@ -66,6 +66,8 @@ public interface Vault extends
      */
     Boolean enabledForTemplateDeployment();
 
+    AccessPolicy.AppAuthorizationStages.WithPermissions defineAppAuthorization(String applicationId);
+
     /**************************************************************
      * Fluent interfaces to provision a Vault
      **************************************************************/

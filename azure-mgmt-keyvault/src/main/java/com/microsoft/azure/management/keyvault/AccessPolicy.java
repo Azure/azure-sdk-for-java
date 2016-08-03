@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -151,6 +153,18 @@ public interface AccessPolicy extends
     interface Update extends
             UpdateStages.WithPermissions,
             Settable<Vault.Update>{
+    }
+
+    interface AppAuthorizationStages {
+        /**
+         * The access policy definition stage allowing permissions to be added.
+         */
+        interface WithPermissions extends WithPermissionsBase<Authorize> {
+        }
+    }
+
+    interface Authorize extends AppAuthorizationStages.WithPermissions {
+        void authorize() throws CloudException, IOException;
     }
 
     interface WithPermissionsBase<T> {

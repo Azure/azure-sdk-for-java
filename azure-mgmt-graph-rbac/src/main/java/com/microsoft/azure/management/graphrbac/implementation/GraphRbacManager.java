@@ -92,7 +92,7 @@ public final class GraphRbacManager {
     /**
      * @return the storage account management API entry point
      */
-    public Users storageAccounts() {
+    public Users users() {
         if (users == null) {
             users = new UsersImpl(graphRbacManagementClient.users(), this);
         }
