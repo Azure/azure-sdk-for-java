@@ -150,7 +150,7 @@ public final class StorageAccountsInner {
         accountName.withName(name);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), accountName, this.client.userAgent());
         final ServiceCall<CheckNameAvailabilityResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CheckNameAvailabilityResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -220,7 +220,7 @@ public final class StorageAccountsInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<StorageAccountInner> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -315,7 +315,7 @@ public final class StorageAccountsInner {
         Validator.validate(parameters);
         Call<ResponseBody> call = service.beginCreate(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StorageAccountInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -393,7 +393,7 @@ public final class StorageAccountsInner {
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -470,7 +470,7 @@ public final class StorageAccountsInner {
         }
         Call<ResponseBody> call = service.getProperties(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StorageAccountInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -557,7 +557,7 @@ public final class StorageAccountsInner {
         Validator.validate(parameters);
         Call<ResponseBody> call = service.update(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StorageAccountInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -620,7 +620,7 @@ public final class StorageAccountsInner {
         }
         Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<StorageAccountInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -688,7 +688,7 @@ public final class StorageAccountsInner {
         }
         Call<ResponseBody> call = service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<StorageAccountInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<StorageAccountInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -762,7 +762,7 @@ public final class StorageAccountsInner {
         }
         Call<ResponseBody> call = service.listKeys(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StorageAccountListKeysResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountListKeysResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountListKeysResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -851,7 +851,7 @@ public final class StorageAccountsInner {
         regenerateKey.withKeyName(keyName);
         Call<ResponseBody> call = service.regenerateKey(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), regenerateKey, this.client.userAgent());
         final ServiceCall<StorageAccountListKeysResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StorageAccountListKeysResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StorageAccountListKeysResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

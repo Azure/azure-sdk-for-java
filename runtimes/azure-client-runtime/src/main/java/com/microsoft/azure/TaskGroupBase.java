@@ -68,7 +68,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     }
 
     @Override
-    public ServiceCall executeAsync(final ServiceCallback<T> callback) {
+    public ServiceCall<T> executeAsync(final ServiceCallback<T> callback) {
         executeReadyTasksAsync(callback);
         return parallelServiceCall;
     }
@@ -113,7 +113,10 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
             public void success(ServiceResponse<T> result) {
                 self.dag().reportedCompleted(taskNode);
                 if (self.dag().isRootNode(taskNode)) {
-                    callback.success(result);
+                    if (callback != null) {
+                        callback.success(result);
+                    }
+                    parallelServiceCall.success(result);
                 } else {
                     self.executeReadyTasksAsync(callback);
                 }
@@ -124,8 +127,8 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     /**
      * Type represents a set of REST calls running possibly in parallel.
      */
-    private class ParallelServiceCall extends ServiceCall {
-        private ConcurrentLinkedQueue<ServiceCall> serviceCalls;
+    private class ParallelServiceCall extends ServiceCall<T> {
+        private ConcurrentLinkedQueue<ServiceCall<?>> serviceCalls;
 
         /**
          * Creates a ParallelServiceCall.
@@ -139,7 +142,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
          * Cancels all the service calls currently executing.
          */
         public void cancel() {
-            for (ServiceCall call : this.serviceCalls) {
+            for (ServiceCall<?> call : this.serviceCalls) {
                 call.cancel();
             }
         }
@@ -148,7 +151,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
          * @return true if the call has been canceled; false otherwise.
          */
         public boolean isCancelled() {
-            for (ServiceCall call : this.serviceCalls) {
+            for (ServiceCall<?> call : this.serviceCalls) {
                 if (!call.isCanceled()) {
                     return false;
                 }
@@ -161,7 +164,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
          *
          * @param call the call
          */
-        private void addCall(ServiceCall call) {
+        private void addCall(ServiceCall<?> call) {
             this.serviceCalls.add(call);
         }
     }

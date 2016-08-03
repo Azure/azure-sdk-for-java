@@ -528,7 +528,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         final String domainNameLabel = null;
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         final ServiceCall<DnsNameAvailabilityResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -592,7 +592,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         }
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
         final ServiceCall<DnsNameAvailabilityResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

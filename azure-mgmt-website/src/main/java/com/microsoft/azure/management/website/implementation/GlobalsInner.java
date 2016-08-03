@@ -144,7 +144,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -215,7 +215,7 @@ public final class GlobalsInner {
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -278,7 +278,7 @@ public final class GlobalsInner {
         final String sku = null;
         Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<GeoRegionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -334,7 +334,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<GeoRegionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -395,7 +395,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -458,7 +458,7 @@ public final class GlobalsInner {
         final Boolean detailed = null;
         Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -516,7 +516,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -577,7 +577,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -638,7 +638,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostingEnvironmentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -699,7 +699,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ManagedHostingEnvironmentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironmentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironmentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -760,7 +760,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ClassicMobileServiceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -821,7 +821,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -890,7 +890,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -959,7 +959,7 @@ public final class GlobalsInner {
         }
         Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1030,7 +1030,7 @@ public final class GlobalsInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ResourceNameAvailabilityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceNameAvailabilityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceNameAvailabilityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

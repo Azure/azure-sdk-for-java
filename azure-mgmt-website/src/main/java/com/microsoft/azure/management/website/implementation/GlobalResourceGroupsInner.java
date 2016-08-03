@@ -110,7 +110,7 @@ public final class GlobalResourceGroupsInner {
         Validator.validate(moveResourceEnvelope);
         Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

@@ -109,7 +109,7 @@ public final class RecommendationsInner {
         final String filter = null;
         Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -167,7 +167,7 @@ public final class RecommendationsInner {
         }
         Call<ResponseBody> call = service.getRecommendationBySubscription(this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -252,7 +252,7 @@ public final class RecommendationsInner {
         }
         Call<ResponseBody> call = service.getRuleDetailsBySiteName(resourceGroupName, siteName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RecommendationRuleInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RecommendationRuleInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RecommendationRuleInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -335,7 +335,7 @@ public final class RecommendationsInner {
         final Integer numSlots = null;
         Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -411,7 +411,7 @@ public final class RecommendationsInner {
         }
         Call<ResponseBody> call = service.getRecommendedRulesForSite(resourceGroupName, siteName, this.client.subscriptionId(), featured, siteSku, numSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -492,7 +492,7 @@ public final class RecommendationsInner {
         final String endTime = null;
         Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -566,7 +566,7 @@ public final class RecommendationsInner {
         }
         Call<ResponseBody> call = service.getRecommendationHistoryForSite(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<RecommendationInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<RecommendationInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

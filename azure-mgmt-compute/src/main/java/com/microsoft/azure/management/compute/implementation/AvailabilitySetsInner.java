@@ -139,7 +139,7 @@ public final class AvailabilitySetsInner {
         Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<AvailabilitySetInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<AvailabilitySetInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<AvailabilitySetInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -216,7 +216,7 @@ public final class AvailabilitySetsInner {
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -293,7 +293,7 @@ public final class AvailabilitySetsInner {
         }
         Call<ResponseBody> call = service.get(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<AvailabilitySetInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<AvailabilitySetInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<AvailabilitySetInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -364,7 +364,7 @@ public final class AvailabilitySetsInner {
         }
         Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<AvailabilitySetInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<AvailabilitySetInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<AvailabilitySetInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -440,7 +440,7 @@ public final class AvailabilitySetsInner {
         }
         Call<ResponseBody> call = service.listAvailableSizes(resourceGroupName, availabilitySetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineSizeInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

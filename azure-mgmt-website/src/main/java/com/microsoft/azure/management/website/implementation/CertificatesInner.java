@@ -142,7 +142,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.getCertificates(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -219,7 +219,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.getCertificate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -306,7 +306,7 @@ public final class CertificatesInner {
         Validator.validate(certificateEnvelope);
         Call<ResponseBody> call = service.createOrUpdateCertificate(resourceGroupName, name, this.client.subscriptionId(), certificateEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -383,7 +383,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.deleteCertificate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -470,7 +470,7 @@ public final class CertificatesInner {
         Validator.validate(certificateEnvelope);
         Call<ResponseBody> call = service.updateCertificate(resourceGroupName, name, this.client.subscriptionId(), certificateEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -539,7 +539,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.getCsrs(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<CsrInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CsrInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<CsrInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -616,7 +616,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.getCsr(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsrInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -703,7 +703,7 @@ public final class CertificatesInner {
         Validator.validate(csrEnvelope);
         Call<ResponseBody> call = service.createOrUpdateCsr(resourceGroupName, name, this.client.subscriptionId(), csrEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsrInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -780,7 +780,7 @@ public final class CertificatesInner {
         }
         Call<ResponseBody> call = service.deleteCsr(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -867,7 +867,7 @@ public final class CertificatesInner {
         Validator.validate(csrEnvelope);
         Call<ResponseBody> call = service.updateCsr(resourceGroupName, name, this.client.subscriptionId(), csrEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsrInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsrInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

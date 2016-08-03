@@ -149,7 +149,7 @@ public final class VirtualMachineImagesInner {
         }
         Call<ResponseBody> call = service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VirtualMachineImageInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VirtualMachineImageInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VirtualMachineImageInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -248,7 +248,7 @@ public final class VirtualMachineImagesInner {
         final String orderby = null;
         Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -340,7 +340,7 @@ public final class VirtualMachineImagesInner {
         }
         Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -417,7 +417,7 @@ public final class VirtualMachineImagesInner {
         }
         Call<ResponseBody> call = service.listOffers(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -486,7 +486,7 @@ public final class VirtualMachineImagesInner {
         }
         Call<ResponseBody> call = service.listPublishers(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -571,7 +571,7 @@ public final class VirtualMachineImagesInner {
         }
         Call<ResponseBody> call = service.listSkus(location, publisherName, offer, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

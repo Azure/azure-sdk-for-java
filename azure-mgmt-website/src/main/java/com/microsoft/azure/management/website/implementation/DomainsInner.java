@@ -125,7 +125,7 @@ public final class DomainsInner {
         }
         Call<ResponseBody> call = service.getDomains(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -202,7 +202,7 @@ public final class DomainsInner {
         }
         Call<ResponseBody> call = service.getDomain(resourceGroupName, domainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -289,7 +289,7 @@ public final class DomainsInner {
         Validator.validate(domain);
         Call<ResponseBody> call = service.createOrUpdateDomain(resourceGroupName, domainName, this.client.subscriptionId(), domain, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -369,7 +369,7 @@ public final class DomainsInner {
         final Boolean forceHardDeleteDomain = null;
         Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.subscriptionId(), forceHardDeleteDomain, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -441,7 +441,7 @@ public final class DomainsInner {
         }
         Call<ResponseBody> call = service.deleteDomain(resourceGroupName, domainName, this.client.subscriptionId(), forceHardDeleteDomain, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -528,7 +528,7 @@ public final class DomainsInner {
         Validator.validate(domain);
         Call<ResponseBody> call = service.updateDomain(resourceGroupName, domainName, this.client.subscriptionId(), domain, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -614,7 +614,7 @@ public final class DomainsInner {
         }
         Call<ResponseBody> call = service.getDomainOperation(resourceGroupName, domainName, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

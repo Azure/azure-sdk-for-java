@@ -109,7 +109,7 @@ public final class ClassicMobileServicesInner {
         }
         Call<ResponseBody> call = service.getClassicMobileServices(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ClassicMobileServiceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -186,7 +186,7 @@ public final class ClassicMobileServicesInner {
         }
         Call<ResponseBody> call = service.getClassicMobileService(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ClassicMobileServiceInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -263,7 +263,7 @@ public final class ClassicMobileServicesInner {
         }
         Call<ResponseBody> call = service.deleteClassicMobileService(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

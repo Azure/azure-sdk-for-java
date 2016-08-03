@@ -118,7 +118,7 @@ public final class UsagesInner {
         }
         Call<ResponseBody> call = service.getUsage(resourceGroupName, environmentName, this.client.subscriptionId(), lastId, batchSize, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

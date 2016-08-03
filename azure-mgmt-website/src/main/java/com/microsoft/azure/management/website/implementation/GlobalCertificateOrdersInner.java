@@ -99,7 +99,7 @@ public final class GlobalCertificateOrdersInner {
         }
         Call<ResponseBody> call = service.getAllCertificateOrders(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CertificateOrderCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOrderCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CertificateOrderCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -170,7 +170,7 @@ public final class GlobalCertificateOrdersInner {
         Validator.validate(certificateOrder);
         Call<ResponseBody> call = service.validateCertificatePurchaseInformation(this.client.subscriptionId(), certificateOrder, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

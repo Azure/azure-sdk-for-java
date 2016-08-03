@@ -817,7 +817,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -920,7 +920,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1013,7 +1013,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1116,7 +1116,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1201,7 +1201,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1296,7 +1296,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1381,7 +1381,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1476,7 +1476,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1569,7 +1569,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<NetworkFeaturesInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1655,7 +1655,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<NetworkFeaturesInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1749,7 +1749,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1834,7 +1834,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -1904,7 +1904,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<Object> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1999,7 +1999,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2075,7 +2075,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<Object> swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -2181,7 +2181,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2269,7 +2269,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SlotDifferenceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2364,7 +2364,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SlotDifferenceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2451,7 +2451,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2546,7 +2546,7 @@ public final class SitesInner {
         Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2623,7 +2623,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2708,7 +2708,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2785,7 +2785,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SlotConfigNamesResourceInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2872,7 +2872,7 @@ public final class SitesInner {
         Validator.validate(slotConfigNames);
         Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SlotConfigNamesResourceInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2951,7 +2951,7 @@ public final class SitesInner {
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3023,7 +3023,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3098,7 +3098,7 @@ public final class SitesInner {
         final Boolean includeSlots = null;
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3166,7 +3166,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3245,7 +3245,7 @@ public final class SitesInner {
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3317,7 +3317,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3391,7 +3391,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -3482,7 +3482,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -3585,7 +3585,7 @@ public final class SitesInner {
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3675,7 +3675,7 @@ public final class SitesInner {
         Validator.validate(siteEnvelope);
         Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3761,7 +3761,7 @@ public final class SitesInner {
         final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3839,7 +3839,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -3926,7 +3926,7 @@ public final class SitesInner {
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4006,7 +4006,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4085,7 +4085,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4184,7 +4184,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4298,7 +4298,7 @@ public final class SitesInner {
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4396,7 +4396,7 @@ public final class SitesInner {
         Validator.validate(siteEnvelope);
         Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4490,7 +4490,7 @@ public final class SitesInner {
         final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4576,7 +4576,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4653,7 +4653,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCloneabilityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4738,7 +4738,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteCloneabilityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4808,7 +4808,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4903,7 +4903,7 @@ public final class SitesInner {
         Validator.validate(recoveryEntity);
         Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -4979,7 +4979,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -5085,7 +5085,7 @@ public final class SitesInner {
         Validator.validate(recoveryEntity);
         Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5163,7 +5163,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5248,7 +5248,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5321,7 +5321,7 @@ public final class SitesInner {
         final String includeSiteTypes = null;
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeletedSiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5387,7 +5387,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeletedSiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5464,7 +5464,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5549,7 +5549,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5634,7 +5634,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5727,7 +5727,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5820,7 +5820,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -5923,7 +5923,7 @@ public final class SitesInner {
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6016,7 +6016,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6101,7 +6101,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6196,7 +6196,7 @@ public final class SitesInner {
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6281,7 +6281,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6374,7 +6374,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6477,7 +6477,7 @@ public final class SitesInner {
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6570,7 +6570,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6671,7 +6671,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6782,7 +6782,7 @@ public final class SitesInner {
         Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6883,7 +6883,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -6960,7 +6960,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInstanceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7045,7 +7045,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteInstanceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7122,7 +7122,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7207,7 +7207,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7292,7 +7292,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7387,7 +7387,7 @@ public final class SitesInner {
         Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7472,7 +7472,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7565,7 +7565,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7668,7 +7668,7 @@ public final class SitesInner {
         Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7761,7 +7761,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7838,7 +7838,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -7925,7 +7925,7 @@ public final class SitesInner {
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8012,7 +8012,7 @@ public final class SitesInner {
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8097,7 +8097,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8192,7 +8192,7 @@ public final class SitesInner {
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8287,7 +8287,7 @@ public final class SitesInner {
         Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8364,7 +8364,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8451,7 +8451,7 @@ public final class SitesInner {
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8528,7 +8528,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8615,7 +8615,7 @@ public final class SitesInner {
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8700,7 +8700,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8795,7 +8795,7 @@ public final class SitesInner {
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8880,7 +8880,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -8975,7 +8975,7 @@ public final class SitesInner {
         Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9060,7 +9060,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9137,7 +9137,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9224,7 +9224,7 @@ public final class SitesInner {
         Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9319,7 +9319,7 @@ public final class SitesInner {
         Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9396,7 +9396,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9481,7 +9481,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9568,7 +9568,7 @@ public final class SitesInner {
         Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9663,7 +9663,7 @@ public final class SitesInner {
         Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9740,7 +9740,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9825,7 +9825,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -9912,7 +9912,7 @@ public final class SitesInner {
         Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10007,7 +10007,7 @@ public final class SitesInner {
         Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10071,7 +10071,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall listSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<UserInner> listSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -10152,7 +10152,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10221,7 +10221,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<UserInner> listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -10313,7 +10313,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10390,7 +10390,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10475,7 +10475,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10562,7 +10562,7 @@ public final class SitesInner {
         Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10657,7 +10657,7 @@ public final class SitesInner {
         Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10734,7 +10734,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10821,7 +10821,7 @@ public final class SitesInner {
         Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -10906,7 +10906,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11001,7 +11001,7 @@ public final class SitesInner {
         Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11076,7 +11076,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11159,7 +11159,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11242,7 +11242,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11335,7 +11335,7 @@ public final class SitesInner {
         Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11418,7 +11418,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11509,7 +11509,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11610,7 +11610,7 @@ public final class SitesInner {
         Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11701,7 +11701,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11778,7 +11778,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11863,7 +11863,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -11950,7 +11950,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12045,7 +12045,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12132,7 +12132,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12227,7 +12227,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12314,7 +12314,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RestoreRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12409,7 +12409,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RestoreRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12486,7 +12486,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12571,7 +12571,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12656,7 +12656,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12741,7 +12741,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12834,7 +12834,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -12927,7 +12927,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13030,7 +13030,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13125,7 +13125,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13200,7 +13200,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<RestoreResponseInner> restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13306,7 +13306,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13386,7 +13386,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<RestoreResponseInner> restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13503,7 +13503,7 @@ public final class SitesInner {
         Validator.validate(request);
         Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13582,7 +13582,7 @@ public final class SitesInner {
         final String filter = null;
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13654,7 +13654,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13741,7 +13741,7 @@ public final class SitesInner {
         final String filter = null;
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13821,7 +13821,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13902,7 +13902,7 @@ public final class SitesInner {
         final String filter = null;
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -13976,7 +13976,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14065,7 +14065,7 @@ public final class SitesInner {
         final String filter = null;
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14147,7 +14147,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14232,7 +14232,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14309,7 +14309,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14392,7 +14392,7 @@ public final class SitesInner {
         options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14474,7 +14474,7 @@ public final class SitesInner {
         options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14565,7 +14565,7 @@ public final class SitesInner {
         options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14655,7 +14655,7 @@ public final class SitesInner {
         options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
         final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14744,7 +14744,7 @@ public final class SitesInner {
         final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14826,7 +14826,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14907,7 +14907,7 @@ public final class SitesInner {
         final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -14981,7 +14981,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15058,7 +15058,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15143,7 +15143,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15220,7 +15220,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15305,7 +15305,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15380,7 +15380,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15463,7 +15463,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15548,7 +15548,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15625,7 +15625,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15710,7 +15710,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15805,7 +15805,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15890,7 +15890,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -15985,7 +15985,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16078,7 +16078,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16181,7 +16181,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16274,7 +16274,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16377,7 +16377,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16462,7 +16462,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16539,7 +16539,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16640,7 +16640,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16752,7 +16752,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16863,7 +16863,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -16956,7 +16956,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -17060,7 +17060,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -17163,7 +17163,7 @@ public final class SitesInner {
         Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -17240,7 +17240,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VnetInfoInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -17325,7 +17325,7 @@ public final class SitesInner {
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VnetInfoInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

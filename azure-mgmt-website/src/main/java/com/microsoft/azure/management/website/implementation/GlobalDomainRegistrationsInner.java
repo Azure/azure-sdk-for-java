@@ -112,7 +112,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -173,7 +173,7 @@ public final class GlobalDomainRegistrationsInner {
         }
         Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<DomainControlCenterSsoRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainControlCenterSsoRequestInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainControlCenterSsoRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -244,7 +244,7 @@ public final class GlobalDomainRegistrationsInner {
         Validator.validate(domainRegistrationInput);
         Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -311,7 +311,7 @@ public final class GlobalDomainRegistrationsInner {
         identifier.withName(null);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall<DomainAvailablilityCheckResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -371,7 +371,7 @@ public final class GlobalDomainRegistrationsInner {
         identifier.withName(name);
         Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
         final ServiceCall<DomainAvailablilityCheckResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -442,7 +442,7 @@ public final class GlobalDomainRegistrationsInner {
         Validator.validate(parameters);
         Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<NameIdentifierCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<NameIdentifierCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<NameIdentifierCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

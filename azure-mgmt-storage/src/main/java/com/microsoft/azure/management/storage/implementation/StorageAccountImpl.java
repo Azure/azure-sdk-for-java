@@ -132,7 +132,7 @@ class StorageAccountImpl
     @Override
     public List<StorageAccountKey> refreshKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
-                this.client.listKeys(this.resourceGroupName(), this.key);
+                this.client.listKeys(this.resourceGroupName(), this.name());
         StorageAccountListKeysResultInner resultInner = response.getBody();
         cachedAccountKeys = resultInner.keys();
         return cachedAccountKeys;
@@ -141,7 +141,7 @@ class StorageAccountImpl
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
-                this.client.regenerateKey(this.resourceGroupName(), this.key, keyName);
+                this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
         StorageAccountListKeysResultInner resultInner = response.getBody();
         cachedAccountKeys = resultInner.keys();
         return cachedAccountKeys;
@@ -150,7 +150,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.client.getProperties(this.resourceGroupName(), this.key);
+            this.client.getProperties(this.resourceGroupName(), this.name());
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();

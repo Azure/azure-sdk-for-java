@@ -133,7 +133,7 @@ public final class VirtualMachineExtensionImagesInner {
         }
         Call<ResponseBody> call = service.get(location, publisherName, type, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VirtualMachineExtensionImageInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VirtualMachineExtensionImageInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<VirtualMachineExtensionImageInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -210,7 +210,7 @@ public final class VirtualMachineExtensionImagesInner {
         }
         Call<ResponseBody> call = service.listTypes(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineExtensionImageInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -301,7 +301,7 @@ public final class VirtualMachineExtensionImagesInner {
         final String orderby = null;
         Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineExtensionImageInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -385,7 +385,7 @@ public final class VirtualMachineExtensionImagesInner {
         }
         Call<ResponseBody> call = service.listVersions(location, publisherName, type, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<List<VirtualMachineExtensionImageInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineExtensionImageInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

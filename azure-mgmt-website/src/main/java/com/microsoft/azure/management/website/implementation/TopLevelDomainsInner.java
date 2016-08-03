@@ -103,7 +103,7 @@ public final class TopLevelDomainsInner {
         }
         Call<ResponseBody> call = service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<TopLevelDomainCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<TopLevelDomainCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<TopLevelDomainCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -172,7 +172,7 @@ public final class TopLevelDomainsInner {
         }
         Call<ResponseBody> call = service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<TopLevelDomainInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<TopLevelDomainInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<TopLevelDomainInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -247,7 +247,7 @@ public final class TopLevelDomainsInner {
         agreementOption.withIncludePrivacy(null);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall<TldLegalAgreementCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -315,7 +315,7 @@ public final class TopLevelDomainsInner {
         agreementOption.withIncludePrivacy(includePrivacy);
         Call<ResponseBody> call = service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent());
         final ServiceCall<TldLegalAgreementCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<TldLegalAgreementCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {

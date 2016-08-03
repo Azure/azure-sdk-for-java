@@ -105,7 +105,7 @@ public final class ProvidersInner {
         }
         Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SourceControlCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlCollectionInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SourceControlCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -168,7 +168,7 @@ public final class ProvidersInner {
         }
         Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -241,7 +241,7 @@ public final class ProvidersInner {
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<SourceControlInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -296,7 +296,7 @@ public final class ProvidersInner {
         }
         Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -361,7 +361,7 @@ public final class ProvidersInner {
         Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
