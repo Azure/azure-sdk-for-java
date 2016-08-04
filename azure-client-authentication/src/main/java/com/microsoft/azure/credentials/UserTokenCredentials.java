@@ -61,7 +61,7 @@ public class UserTokenCredentials extends TokenCredentials {
         } else {
             this.environment = environment;
         }
-        this.resourceEndpoint = this.environment.getTokenAudience();
+        this.resourceEndpoint = this.environment.getManagementEndpoint();
     }
 
     /**
