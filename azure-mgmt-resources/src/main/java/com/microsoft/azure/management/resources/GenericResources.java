@@ -20,7 +20,7 @@ import java.util.List;
 public interface GenericResources extends
         SupportsListingByGroup<GenericResource>,
         SupportsGettingById<GenericResource>,
-        SupportsCreating<GenericResource.DefinitionBlank> {
+        SupportsCreating<GenericResource.DefinitionStages.Blank> {
     /**
      * Checks if a resource exists in a resource group.
      *
