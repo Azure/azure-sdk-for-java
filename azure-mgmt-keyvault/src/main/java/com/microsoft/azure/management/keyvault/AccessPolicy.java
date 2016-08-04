@@ -69,7 +69,7 @@ public interface AccessPolicy extends
         interface WithIdentity<ParentT> {
             WithAttach<ParentT> forObjectId(UUID objectId);
             WithAttach<ParentT> forUser(User user);
-            WithAttach<ParentT> forGroup(Group user);
+            WithAttach<ParentT> forGroup(Group group);
             WithAttach<ParentT> forServicePrincipal(ServicePrincipal servicePrincipal);
         }
 
@@ -77,7 +77,14 @@ public interface AccessPolicy extends
          * The access policy definition stage allowing permissions to be added.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPermissions<ParentT> extends WithPermissionsBase<WithAttach<ParentT>> {
+        interface WithPermissions<ParentT> {
+            WithAttach<ParentT> allowKeyAllPermissions();
+            WithAttach<ParentT> allowKeyPermissions(KeyPermissions... permissions);
+            WithAttach<ParentT> allowKeyPermissions(List<KeyPermissions> permissions);
+            WithAttach<ParentT> allowSecretAllPermissions();
+            WithAttach<ParentT> allowSecretPermissions(SecretPermissions... permissions);
+            WithAttach<ParentT> allowSecretPermissions(List<SecretPermissions> permissions);
+
         }
 
         /** The final stage of the access policy definition.
@@ -88,7 +95,7 @@ public interface AccessPolicy extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
+                Attachable.InUpdate<ParentT>,
                 WithPermissions<ParentT> {
         }
     }
@@ -120,7 +127,13 @@ public interface AccessPolicy extends
          * The access policy definition stage allowing permissions to be added.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPermissions<ParentT> extends WithPermissionsBase<WithAttach<ParentT>> {
+        interface WithPermissions<ParentT> {
+            WithAttach<ParentT> allowKeyAllPermissions();
+            WithAttach<ParentT> allowKeyPermissions(KeyPermissions... permissions);
+            WithAttach<ParentT> allowKeyPermissions(List<KeyPermissions> permissions);
+            WithAttach<ParentT> allowSecretAllPermissions();
+            WithAttach<ParentT> allowSecretPermissions(SecretPermissions... permissions);
+            WithAttach<ParentT> allowSecretPermissions(List<SecretPermissions> permissions);
         }
 
         /** The final stage of the access policy definition.
@@ -143,7 +156,20 @@ public interface AccessPolicy extends
         /**
          * The access policy definition stage allowing permissions to be added.
          */
-        interface WithPermissions extends WithPermissionsBase<Update> {
+        interface WithPermissions {
+            Update allowKeyAllPermissions();
+            Update allowKeyPermissions(KeyPermissions... permissions);
+            Update allowKeyPermissions(List<KeyPermissions> permissions);
+            Update disallowKeyAllPermissions();
+            Update disallowKeyPermissions(KeyPermissions... permissions);
+            Update disallowKeyPermissions(List<KeyPermissions> permissions);
+            Update allowSecretAllPermissions();
+            Update allowSecretPermissions(SecretPermissions... permissions);
+            Update allowSecretPermissions(List<SecretPermissions> permissions);
+            Update disallowSecretAllPermissions();
+            Update disallowSecretPermissions(SecretPermissions... permissions);
+            Update disallowSecretPermissions(List<SecretPermissions> permissions);
+
         }
     }
 
@@ -153,57 +179,6 @@ public interface AccessPolicy extends
     interface Update extends
             UpdateStages.WithPermissions,
             Settable<Vault.Update>{
-    }
-
-    interface WithPermissionsBase<T> {
-        T allowKeyDecrypting();
-        T allowKeyEncrypting();
-        T allowKeyUnwrapping();
-        T allowKeyWrapping();
-        T allowKeyVerifying();
-        T allowKeySigning();
-        T allowKeyGetting();
-        T allowKeyListing();
-        T allowKeyUpdating();
-        T allowKeyCreating();
-        T allowKeyImporting();
-        T allowKeyDeleting();
-        T allowKeyBackingUp();
-        T allowKeyRestoring();
-        T allowKeyAllPermissions();
-        T allowKeyPermission(String permission);
-        T allowKeyPermissions(List<String> permissions);
-        T disallowKeyDecrypting();
-        T disallowKeyEncrypting();
-        T disallowKeyUnwrapping();
-        T disallowKeyWrapping();
-        T disallowKeyVerifying();
-        T disallowKeySigning();
-        T disallowKeyGetting();
-        T disallowKeyListing();
-        T disallowKeyUpdating();
-        T disallowKeyCreating();
-        T disallowKeyImporting();
-        T disallowKeyDeleting();
-        T disallowKeyBackingUp();
-        T disallowKeyRestoring();
-        T disallowKeyAllPermissions();
-        T disallowKeyPermission(String permission);
-        T disallowKeyPermissions(List<String> permissions);
-        T allowSecretGetting();
-        T allowSecretListing();
-        T allowSecretSetting();
-        T allowSecretDeleting();
-        T allowSecretAllPermissions();
-        T allowSecretPermission(String permission);
-        T allowSecretPermissions(List<String> permissions);
-        T disallowSecretGetting();
-        T disallowSecretListing();
-        T disallowSecretSetting();
-        T disallowSecretDeleting();
-        T disallowSecretAllPermissions();
-        T disallowSecretPermission(String permission);
-        T disallowSecretPermissions(List<String> permissions);
     }
 }
 

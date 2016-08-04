@@ -17,9 +17,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 /**
@@ -67,11 +69,18 @@ class VaultImpl
     }
 
     @Override
-    public List<AccessPolicyEntry> accessPolicies() {
+    public List<AccessPolicy> accessPolicies() {
         if (inner().properties() == null) {
             return null;
         }
-        return inner().properties().accessPolicies();
+        if (inner().properties().accessPolicies() == null) {
+            return null;
+        }
+        List<AccessPolicy> accessPolicies = new ArrayList<>();
+        for (AccessPolicyEntry entry : inner().properties().accessPolicies()) {
+            accessPolicies.add(new AccessPolicyImpl(entry, this));
+        }
+        return accessPolicies;
     }
 
     @Override
@@ -108,6 +117,11 @@ class VaultImpl
     }
 
     @Override
+    public Update withoutAccessPolicy(String objectId) {
+        return null;
+    }
+
+    @Override
     public VaultImpl withAccessPolicy(AccessPolicy accessPolicy) {
         if (inner().properties() == null) {
             inner().withProperties(new VaultProperties());
@@ -122,6 +136,22 @@ class VaultImpl
     @Override
     public AccessPolicyImpl defineAccessPolicy() {
         return new AccessPolicyImpl(new AccessPolicyEntry(), this);
+    }
+
+    @Override
+    public AccessPolicyImpl updateAccessPolicy(String objectId) {
+        if (inner().properties() == null) {
+            return null;
+        }
+        if (inner().properties().accessPolicies() == null) {
+            return null;
+        }
+        for (AccessPolicyEntry entry : inner().properties().accessPolicies()) {
+            if (entry.objectId().toString().equals(objectId)) {
+                return new AccessPolicyImpl(entry, this);
+            }
+        }
+        throw new NoSuchElementException(String.format("Identity %s not found in the access policies.", objectId));
     }
 
     @Override
@@ -143,6 +173,24 @@ class VaultImpl
     }
 
     @Override
+    public VaultImpl disableDeployment() {
+        inner().properties().withEnabledForDeployment(false);
+        return this;
+    }
+
+    @Override
+    public VaultImpl disableDiskEncryption() {
+        inner().properties().withEnabledForDiskEncryption(false);
+        return this;
+    }
+
+    @Override
+    public VaultImpl disableTemplateDeployment() {
+        inner().properties().withEnabledForTemplateDeployment(false);
+        return this;
+    }
+
+    @Override
     public VaultImpl withSku(SkuName skuName) {
         if (inner().properties() == null) {
             inner().withProperties(new VaultProperties());
@@ -152,27 +200,34 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl withTenantId(UUID tenantId) {
-        if (inner().properties() == null) {
-            inner().withProperties(new VaultProperties());
-        }
-        inner().properties().withTenantId(tenantId);
-        return this;
-    }
-
-    @Override
     public VaultImpl apply() throws Exception {
-        return createResource();
+        return create();
     }
 
     @Override
     public ServiceCall applyAsync(ServiceCallback<Vault> callback) {
-        return null;
+        return createAsync(callback);
     }
 
     @Override
-    public ServiceCall createResourceAsync(ServiceCallback<Resource> serviceCallback) {
-        return null;
+    public ServiceCall createResourceAsync(final ServiceCallback<Resource> serviceCallback) {
+        VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
+        parameters.withLocation(regionName());
+        parameters.withProperties(inner().properties());
+        parameters.withTags(inner().getTags());
+        final VaultImpl self = this;
+        return client.createOrUpdateAsync(resourceGroupName(), name(), parameters, new ServiceCallback<VaultInner>() {
+            @Override
+            public void failure(Throwable t) {
+                serviceCallback.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<VaultInner> result) {
+                setInner(result.getBody());
+                serviceCallback.success(new ServiceResponse<Resource>(self, result.getResponse()));
+            }
+        });
     }
 
     @Override
@@ -187,6 +242,7 @@ class VaultImpl
 
     @Override
     public VaultImpl refresh() throws Exception {
-        return null;
+        setInner(client.get(resourceGroupName(), name()).getBody());
+        return this;
     }
 }

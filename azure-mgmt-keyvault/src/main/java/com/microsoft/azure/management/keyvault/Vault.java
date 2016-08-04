@@ -46,7 +46,7 @@ public interface Vault extends
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID.
      */
-    List<AccessPolicyEntry> accessPolicies();
+    List<AccessPolicy> accessPolicies();
 
     /**
      * @return Property to specify whether Azure Virtual Machines are permitted to
@@ -76,6 +76,7 @@ public interface Vault extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
+        DefinitionStages.WithAccessPolicy,
         DefinitionStages.WithCreate {
     }
 

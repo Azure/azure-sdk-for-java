@@ -70,19 +70,10 @@ public class VaultTests extends KeyVaultManagementTestBase {
                 .defineAccessPolicy()
                     .forUser(user)
                     .allowKeyAllPermissions()
-                    .allowSecretGetting()
-                    .allowSecretListing()
                     .attach()
                 .apply();
         vault.update()
                 .withoutAccessPolicy(sp.objectId())
                 .apply();
-        // AUTHORIZE
-        vault.defineAppAuthorization("app-id")
-                .allowKeyListing()
-                .allowKeyGetting()
-                .allowSecretListing()
-                .allowSecretGetting()
-                .authorize();
     }
 }
