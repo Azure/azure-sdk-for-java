@@ -66,8 +66,6 @@ public interface Vault extends
      */
     Boolean enabledForTemplateDeployment();
 
-    AccessPolicy.AppAuthorizationStages.WithPermissions defineAppAuthorization(String applicationId);
-
     /**************************************************************
      * Fluent interfaces to provision a Vault
      **************************************************************/
@@ -78,7 +76,6 @@ public interface Vault extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithTenantIdOrAccessPolicy,
         DefinitionStages.WithCreate {
     }
 
@@ -95,14 +92,7 @@ public interface Vault extends
         /**
          * A key vault definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithTenantIdOrAccessPolicy> {
-        }
-
-        interface WithTenantIdOrAccessPolicy extends WithTenantId, WithAccessPolicy {
-        }
-
-        interface WithTenantId {
-            WithAccessPolicy withTenantId(UUID tenantId);
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAccessPolicy> {
         }
 
         /**
@@ -125,9 +115,12 @@ public interface Vault extends
         }
 
         interface WithConfigurations {
-            WithCreate enabledForDeployment(boolean enabled);
-            WithCreate enabledForDiskEncryption(boolean enabled);
-            WithCreate enabledForTemplateDeployment(boolean enabled);
+            WithCreate enableDeployment();
+            WithCreate enableDiskEncryption();
+            WithCreate enableTemplateDeployment();
+            WithCreate disableDeployment();
+            WithCreate disableDiskEncryption();
+            WithCreate disableTemplateDeployment();
         }
 
         /**
@@ -155,9 +148,12 @@ public interface Vault extends
         }
 
         interface WithConfigurations {
-            Update enabledForDeployment(boolean enabled);
-            Update enabledForDiskEncryption(boolean enabled);
-            Update enabledForTemplateDeployment(boolean enabled);
+            Update enableDeployment();
+            Update enableDiskEncryption();
+            Update enableTemplateDeployment();
+            Update disableDeployment();
+            Update disableDiskEncryption();
+            Update disableTemplateDeployment();
         }
     }
 

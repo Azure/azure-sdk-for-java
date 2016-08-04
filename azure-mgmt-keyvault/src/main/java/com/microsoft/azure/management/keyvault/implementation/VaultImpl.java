@@ -125,20 +125,20 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl enabledForDeployment(boolean enabled) {
-        inner().properties().withEnabledForDeployment(enabled);
+    public VaultImpl enableDeployment() {
+        inner().properties().withEnabledForDeployment(true);
         return this;
     }
 
     @Override
-    public VaultImpl enabledForDiskEncryption(boolean enabled) {
-        inner().properties().withEnabledForDiskEncryption(enabled);
+    public VaultImpl enableDiskEncryption() {
+        inner().properties().withEnabledForDiskEncryption(true);
         return this;
     }
 
     @Override
-    public VaultImpl enabledForTemplateDeployment(boolean enabled) {
-        inner().properties().withEnabledForTemplateDeployment(enabled);
+    public VaultImpl enableTemplateDeployment() {
+        inner().properties().withEnabledForTemplateDeployment(true);
         return this;
     }
 
