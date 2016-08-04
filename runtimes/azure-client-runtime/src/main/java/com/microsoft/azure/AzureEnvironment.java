@@ -14,17 +14,22 @@ public final class AzureEnvironment {
     /**
      * Base URL for calls to Azure management API.
      */
-    private final String baseURL;
+    private final String resourceManagerEndpoint;
 
     /**
-     * ActiveDirectory Endpoint for the Azure Environment.
+     * ActiveDirectory Endpoint for the authentications.
      */
     private String authenticationEndpoint;
 
     /**
-     * Token audience for an endpoint.
+     * Base URL for calls to service management and authentications to Active Directory.
      */
-    private String tokenAudience;
+    private String managementEndpoint;
+
+    /**
+     * Base URL for calls to graph API.
+     */
+    private String graphEndpoint;
 
     /**
      * Determines whether the authentication endpoint should
@@ -36,20 +41,20 @@ public final class AzureEnvironment {
      * Initializes an instance of AzureEnvironment class.
      *
      * @param authenticationEndpoint ActiveDirectory Endpoint for the Azure Environment.
-     * @param tokenAudience token audience for an endpoint.
-     * @param validateAuthority whether the authentication endpoint should
-     *                          be validated with Azure AD.
-     * @param baseUrl the base URL for the current environment.
+     * @param managementEndpoint token audience for an endpoint.
+     * @param resourceManagerEndpoint the base URL for the current environment.
+     * @param graphEndpoint the base URL for graph API.
      */
     public AzureEnvironment(
             String authenticationEndpoint,
-            String tokenAudience,
-            boolean validateAuthority,
-            String baseUrl) {
+            String managementEndpoint,
+            String resourceManagerEndpoint,
+            String graphEndpoint) {
         this.authenticationEndpoint = authenticationEndpoint;
-        this.tokenAudience = tokenAudience;
-        this.validateAuthority = validateAuthority;
-        this.baseURL = baseUrl;
+        this.managementEndpoint = managementEndpoint;
+        this.resourceManagerEndpoint = resourceManagerEndpoint;
+        this.graphEndpoint = graphEndpoint;
+        this.validateAuthority = true;
     }
 
     /**
@@ -58,8 +63,8 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE = new AzureEnvironment(
             "https://login.microsoftonline.com/",
             "https://management.core.windows.net/",
-            true,
-            "https://management.azure.com/");
+            "https://management.azure.com/",
+            "https://graph.windows.net/");
 
     /**
      * Provides the settings for authentication with Azure China.
@@ -67,8 +72,8 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(
             "https://login.chinacloudapi.cn/",
             "https://management.core.chinacloudapi.cn/",
-            true,
-            "https://management.chinacloudapi.cn/");
+            "https://management.chinacloudapi.cn/",
+            "https://graph.chinacloudapi.cn/");
 
     /**
      * Provides the settings for authentication with Azure US Government.
@@ -76,8 +81,8 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(
             "https://login.microsoftonline.com/",
             "https://management.core.usgovcloudapi.net/",
-            true,
-            "https://management.usgovcloudapi.net/");
+            "https://management.usgovcloudapi.net/",
+            "https://graph.windows.net/");
 
     /**
      * Provides the settings for authentication with Azure Germany.
@@ -85,8 +90,8 @@ public final class AzureEnvironment {
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(
             "https://login.microsoftonline.de/",
             "https://management.core.cloudapi.de/",
-            true,
-            "https://management.microsoftazure.de/");
+            "https://management.microsoftazure.de/",
+            "https://graph.cloudapi.de/");
 
     /**
      * Gets the base URL of the management service.
@@ -94,7 +99,7 @@ public final class AzureEnvironment {
      * @return the Base URL for the management service.
      */
     public String getBaseUrl() {
-        return this.baseURL;
+        return this.resourceManagerEndpoint;
     }
 
     /**
@@ -122,8 +127,8 @@ public final class AzureEnvironment {
      *
      * @return the token audience for an endpoint.
      */
-    public String getTokenAudience() {
-        return tokenAudience;
+    public String getManagementEndpoint() {
+        return managementEndpoint;
     }
 
     /**
@@ -135,5 +140,16 @@ public final class AzureEnvironment {
      */
     public boolean isValidateAuthority() {
         return validateAuthority;
+    }
+
+    /**
+     * Sets whether the authentication endpoint should
+     * be validated with Azure AD.
+     *
+     * @param validateAuthority true if the authentication endpoint should
+     * be validated with Azure AD, false otherwise.
+     */
+    public void setValidateAuthority(boolean validateAuthority) {
+        this.validateAuthority = validateAuthority;
     }
 }

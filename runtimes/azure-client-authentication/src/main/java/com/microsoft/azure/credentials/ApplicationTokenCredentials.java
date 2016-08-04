@@ -58,7 +58,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         } else {
             this.environment = environment;
         }
-        this.resourceEndpoint = this.environment.getTokenAudience();
+        this.resourceEndpoint = this.environment.getManagementEndpoint();
     }
 
     /**
@@ -155,7 +155,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         Properties authSettings = new Properties();
         authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.getAuthenticationEndpoint());
         authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.getBaseUrl());
-        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getTokenAudience());
+        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getManagementEndpoint());
 
         // Load the credentials from the file
         FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);

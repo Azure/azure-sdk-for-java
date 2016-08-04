@@ -44,8 +44,8 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl define(String userPrincipalName) {
-        return wrapModel(userPrincipalName);
+    public UserImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
@@ -59,7 +59,12 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl getByObjectId(String upnOrId) throws CloudException, IOException {
-        return new UserImpl(innerCollection.get(upnOrId).getBody(), innerCollection);
+    public UserImpl getByObjectId(String objectId) throws CloudException, IOException {
+        return new UserImpl(innerCollection.get(objectId).getBody(), innerCollection);
+    }
+
+    @Override
+    public UserImpl getByUserPrincipalName(String upn) throws CloudException, IOException {
+        return new UserImpl(innerCollection.get(upn).getBody(), innerCollection);
     }
 }
