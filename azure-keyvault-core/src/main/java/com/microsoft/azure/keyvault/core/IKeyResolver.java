@@ -19,7 +19,7 @@
 package com.microsoft.azure.keyvault.core;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import com.google.common.util.concurrent.ListenableFuture;
 
 public interface IKeyResolver {
 
@@ -35,5 +35,5 @@ public interface IKeyResolver {
      * @throws InterruptedException
      * @throws ExecutionException
      */
-    Future<IKey> resolveKeyAsync(String kid);
+	ListenableFuture<IKey> resolveKeyAsync(String kid);
 }

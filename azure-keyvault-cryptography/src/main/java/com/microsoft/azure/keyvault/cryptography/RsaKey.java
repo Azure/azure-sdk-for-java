@@ -24,22 +24,23 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.google.common.util.concurrent.AbstractFuture;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
-import com.microsoft.azure.keyvault.cryptography.FutureBase;
-import com.microsoft.azure.keyvault.cryptography.FutureExecutionException;
 import com.microsoft.azure.keyvault.cryptography.Strings;
 
 public class RsaKey implements IKey {
 
-    class FutureDecrypt extends FutureBase<byte[]> {
+    class FutureDecrypt extends AbstractFuture<byte[]> {
 
         private final byte[]           _data;
         private final ICryptoTransform _transform;
@@ -68,7 +69,7 @@ public class RsaKey implements IKey {
         }
     }
 
-    class FutureEncrypt extends FutureBase<Triple<byte[], byte[], String>> {
+    class FutureEncrypt extends AbstractFuture<Triple<byte[], byte[], String>> {
 
         private final String           _algorithm;
         private final byte[]           _data;
@@ -99,7 +100,7 @@ public class RsaKey implements IKey {
         }
     }
 
-    class FutureWrap extends FutureBase<Pair<byte[], String>> {
+    class FutureWrap extends AbstractFuture<Pair<byte[], String>> {
 
         private final String           _algorithm;
         private final byte[]           _data;
@@ -198,7 +199,7 @@ public class RsaKey implements IKey {
     }
 
     @Override
-    public Future<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
 
         if (ciphertext == null) {
             throw new IllegalArgumentException("ciphertext");
@@ -217,21 +218,21 @@ public class RsaKey implements IKey {
         
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
-        ICryptoTransform transform;
-        Future<byte[]> result;
+        ICryptoTransform         transform;
+        ListenableFuture<byte[]> result;
 
         try {
             transform = algo.CreateDecryptor(_keyPair);
             result = new FutureDecrypt(transform, ciphertext);
         } catch (Exception e) {
-            result = new FutureExecutionException<byte[]>(e);
+            result = Futures.immediateFailedFuture(e);
         }
 
         return result;
     }
 
     @Override
-    public Future<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException {
 
         if (plaintext == null) {
             throw new IllegalArgumentException("plaintext");
@@ -247,21 +248,21 @@ public class RsaKey implements IKey {
         
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
-        ICryptoTransform transform;
-        Future<Triple<byte[], byte[], String>> result;
+        ICryptoTransform                                 transform;
+        ListenableFuture<Triple<byte[], byte[], String>> result;
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
             result = new FutureEncrypt(algorithmName, plaintext, transform);
         } catch (Exception e) {
-            result = new FutureExecutionException<Triple<byte[], byte[], String>>(e);
+            result = Futures.immediateFailedFuture(e);
         }
 
         return result;
     }
 
     @Override
-    public Future<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException {
 
         if (key == null) {
             throw new IllegalArgumentException("key");
@@ -277,21 +278,21 @@ public class RsaKey implements IKey {
         
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
-        ICryptoTransform transform;
-        Future<Pair<byte[], String>> result;
+        ICryptoTransform                       transform;
+        ListenableFuture<Pair<byte[], String>> result;
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
             result = new FutureWrap(algorithmName, key, transform);
         } catch (Exception e) {
-            result = new FutureExecutionException<Pair<byte[], String>>(e);
+            result = Futures.immediateFailedFuture(e);
         }
 
         return result;
     }
 
     @Override
-    public Future<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException {
 
         if (encryptedKey == null) {
             throw new IllegalArgumentException("encryptedKey ");
@@ -311,27 +312,27 @@ public class RsaKey implements IKey {
         
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
 
-        ICryptoTransform transform;
-        Future<byte[]> result;
+        ICryptoTransform         transform;
+        ListenableFuture<byte[]> result;
 
         try {
             transform = algo.CreateDecryptor(_keyPair);
             result = new FutureDecrypt(transform, encryptedKey);
         } catch (Exception e) {
-            result = new FutureExecutionException<byte[]>(e);
+            result = Futures.immediateFailedFuture(e);
         }
 
         return result;
     }
 
     @Override
-    public Future<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) {
-        return null;
+    public ListenableFuture<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) {
+        return Futures.immediateFailedFuture(new NotImplementedException("signAsync is not currently supported"));
     }
 
     @Override
-    public Future<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) {
-        return null;
+    public ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) {
+        return Futures.immediateFailedFuture(new NotImplementedException("verifyAsync is not currently supported"));
     }
 
     @Override

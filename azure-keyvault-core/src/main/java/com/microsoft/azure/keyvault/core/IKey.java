@@ -20,10 +20,11 @@ package com.microsoft.azure.keyvault.core;
 
 import java.io.Closeable;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+
+import com.google.common.util.concurrent.ListenableFuture;
+
 
 /**
  * Interface for representing cryptographic keys with the Microsoft Azure Key
@@ -80,7 +81,7 @@ public interface IKey extends Closeable {
      * @return A {@link:Future} containing the plain text
      * @throws NoSuchAlgorithmException
      */
-    Future<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException;
+    ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Encrypts the specified plain text. Note that not all algorithms require,
@@ -99,7 +100,7 @@ public interface IKey extends Closeable {
      *         tag and the algorithm that was used
      * @throws NoSuchAlgorithmException
      */
-    Future<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException;
+    ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Wraps (encrypts) the specified symmetric key material using the specified
@@ -114,7 +115,7 @@ public interface IKey extends Closeable {
      *         that was used
      * @throws NoSuchAlgorithmException
      */
-    Future<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException;
+    ListenableFuture<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Unwraps (decrypts) the specified encryped key material.
@@ -126,7 +127,7 @@ public interface IKey extends Closeable {
      * @return A {@link:Future} containing the unwrapped key
      * @throws NoSuchAlgorithmException
      */
-    Future<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException;
+    ListenableFuture<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Signs the specified digest using the specified algorithm, or the keys
@@ -138,7 +139,7 @@ public interface IKey extends Closeable {
      *            The signature algorithm to use
      * @return A {@link:Future} containing the signature and the algorithm used.
      */
-    Future<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm);
+    ListenableFuture<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm);
 
     /**
      * Verifies the supplied signature value using the supplied digest and
@@ -152,5 +153,5 @@ public interface IKey extends Closeable {
      *            The algorithm to use, must be provided
      * @return A {@link:Future} containing a boolean result
      */
-    Future<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm);
+    ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm);
 }
