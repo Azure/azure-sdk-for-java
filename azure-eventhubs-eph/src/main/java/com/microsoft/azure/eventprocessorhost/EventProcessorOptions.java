@@ -9,6 +9,8 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+
 public final class EventProcessorOptions
 {
 	private Consumer<ExceptionReceivedEventArgs> exceptionNotificationHandler = null;
@@ -16,7 +18,7 @@ public final class EventProcessorOptions
     private int maxBatchSize = 10;
     private int prefetchCount = 300;
     private Duration receiveTimeOut = Duration.ofMinutes(1);
-    private Function<String, String> initialOffsetProvider = null;
+    private Function<String, Object> initialOffsetProvider = (partitionId) -> { return PartitionReceiver.START_OF_STREAM; };
 
     /***
      * Returns an EventProcessorOptions instance with all options set to the default values.
@@ -119,29 +121,26 @@ public final class EventProcessorOptions
     }
 
     /***
-     * Returns the current function used to determine the initial offset at which to start receiving
-     * events for a partition.
-     * 
-     * A null return indicates that it is using the internal provider, which uses the last checkpointed
-     * offset value (if present) or START_OF_STREAM (if not).
+     * If there is no checkpoint for a partition, the initialOffsetProvider function is used to determine
+     * the offset at which to start receiving events for that partition.
      * 
      * @return the current offset provider function
      */
-    public Function<String, String> getInitialOffsetProvider()
+    public Function<String, Object> getInitialOffsetProvider()
     {
     	return this.initialOffsetProvider;
     }
     
     /***
-     * Sets the function used to determine the initial offset at which to start receiving events for a
-     * partition when the EventProcessorHost obtains a new partition.
+     * Sets the function used to determine the offset at which to start receiving events for a
+     * partition if there is no checkpoint for that partition.
      * 
-     * The provider function takes one argument, the partition id (a string), and returns the desired
-     * starting offset (also a string).
+     * The provider function takes one argument, the partition id (a String), and returns either the desired
+     * starting offset (also a String) or the desired starting timestamp (an Instant).
      * 
      * @param initialOffsetProvider
      */
-    public void setInitialOffsetProvider(Function<String, String> initialOffsetProvider)
+    public void setInitialOffsetProvider(Function<String, Object> initialOffsetProvider)
     {
     	this.initialOffsetProvider = initialOffsetProvider;
     }

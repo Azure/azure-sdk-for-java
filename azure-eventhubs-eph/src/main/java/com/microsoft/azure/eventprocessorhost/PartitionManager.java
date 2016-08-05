@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -59,6 +60,8 @@ class PartitionManager
     {
         if (this.partitionIds == null)
         {
+        	this.partitionIds = new ArrayList<String>();
+        	
         	try
         	{
 	        	String contentEncoding = StandardCharsets.UTF_8.name();
@@ -392,7 +395,11 @@ class PartitionManager
             	}
             	else
             	{
-            		this.pump.removePump(partitionId, CloseReason.LeaseLost);
+            		Future<?> removing = this.pump.removePump(partitionId, CloseReason.LeaseLost);
+            		if (removing != null)
+            		{
+            			removing.get();
+            		}
             	}
             }
             
