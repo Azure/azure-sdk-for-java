@@ -20,10 +20,9 @@ package com.microsoft.azure.keyvault.extensions.test;
 
 import static org.junit.Assert.*;
 
-import java.util.concurrent.Future;
-
 import org.junit.Test;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
@@ -33,7 +32,7 @@ import static org.mockito.Mockito.*;
 public class CachingKeyResolverTest {
 	
 	@SuppressWarnings("unchecked")
-	final Future<IKey> ikeyAsync = mock(Future.class);
+	final ListenableFuture<IKey> ikeyAsync = mock(ListenableFuture.class);
 	final static String keyId = "keyID";
 	final static String keyId2 = "keyID2";
 	final static String keyId3 = "keyID3";

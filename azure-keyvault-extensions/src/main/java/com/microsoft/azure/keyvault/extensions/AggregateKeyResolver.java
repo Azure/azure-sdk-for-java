@@ -26,12 +26,14 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.google.common.util.concurrent.AbstractFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 
 public class AggregateKeyResolver implements IKeyResolver {
 
-    class FutureKey implements Future<IKey> {
+    class FutureKey extends AbstractFuture<IKey> {
 
         private final String _kid;
 
@@ -132,7 +134,7 @@ public class AggregateKeyResolver implements IKeyResolver {
     }
 
     @Override
-    public Future<IKey> resolveKeyAsync(String kid) {
+    public ListenableFuture<IKey> resolveKeyAsync(String kid) {
         return new FutureKey(kid);
     }
 

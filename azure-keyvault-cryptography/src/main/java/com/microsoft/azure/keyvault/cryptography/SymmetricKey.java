@@ -21,11 +21,12 @@ package com.microsoft.azure.keyvault.cryptography;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
-import java.util.concurrent.Future;
-
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128CbcHmacSha256;
@@ -35,8 +36,6 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
-import com.microsoft.azure.keyvault.cryptography.FutureExecutionException;
-import com.microsoft.azure.keyvault.cryptography.FutureImmediate;
 import com.microsoft.azure.keyvault.cryptography.Strings;
 
 public class SymmetricKey implements IKey {
@@ -135,7 +134,7 @@ public class SymmetricKey implements IKey {
     }
 
     @Override
-    public Future<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
 
         if (Strings.isNullOrWhiteSpace(algorithm)) {
             throw new IllegalArgumentException("algorithm");
@@ -163,7 +162,7 @@ public class SymmetricKey implements IKey {
         try {
             transform = algo.CreateDecryptor(_key, iv, authenticationData, _provider );
         } catch (Exception e) {
-            return new FutureExecutionException<byte[]>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         byte[] result = null;
@@ -171,7 +170,7 @@ public class SymmetricKey implements IKey {
         try {
             result = transform.doFinal(ciphertext);
         } catch (Exception e) {
-            return new FutureExecutionException<byte[]>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         if (transform instanceof IAuthenticatedCryptoTransform) {
@@ -187,11 +186,11 @@ public class SymmetricKey implements IKey {
             }
         }
 
-        return new FutureImmediate<byte[]>(result);
+        return Futures.immediateFuture(result);
     }
 
     @Override
-    public Future<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(final byte[] plaintext, final byte[] iv, final byte[] authenticationData, final String algorithm) throws NoSuchAlgorithmException {
 
         if (plaintext == null) {
             throw new IllegalArgumentException("plaintext");
@@ -216,7 +215,7 @@ public class SymmetricKey implements IKey {
         try {
             transform = algo.CreateEncryptor(_key, iv, authenticationData, _provider);
         } catch (Exception e) {
-            return new FutureExecutionException<Triple<byte[], byte[], String>>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         byte[] cipherText = null;
@@ -224,7 +223,7 @@ public class SymmetricKey implements IKey {
         try {
             cipherText = transform.doFinal(plaintext);
         } catch (Exception e) {
-            return new FutureExecutionException<Triple<byte[], byte[], String>>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         byte[] authenticationTag = null;
@@ -236,11 +235,11 @@ public class SymmetricKey implements IKey {
             authenticationTag = authenticatedTransform.getTag().clone();
         }
 
-        return new FutureImmediate<Triple<byte[], byte[], String>>(Triple.of(cipherText, authenticationTag, algorithm));
+        return Futures.immediateFuture(Triple.of(cipherText, authenticationTag, algorithm));
     }
 
     @Override
-    public Future<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException {
 
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException("key");
@@ -261,7 +260,7 @@ public class SymmetricKey implements IKey {
         try {
             transform = algo.CreateEncryptor(_key, null, _provider);
         } catch (Exception e) {
-            return new FutureExecutionException<Pair<byte[], String>>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         byte[] encrypted = null;
@@ -269,14 +268,14 @@ public class SymmetricKey implements IKey {
         try {
             encrypted = transform.doFinal(key);
         } catch (Exception e) {
-            return new FutureExecutionException<Pair<byte[], String>>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
-        return new FutureImmediate<Pair<byte[], String>>(Pair.of(encrypted, algorithmName));
+        return Futures.immediateFuture(Pair.of(encrypted, algorithmName));
     }
 
     @Override
-    public Future<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException {
 
         if (Strings.isNullOrWhiteSpace(algorithm)) {
             throw new IllegalArgumentException("algorithm");
@@ -299,7 +298,7 @@ public class SymmetricKey implements IKey {
         try {
             transform = algo.CreateDecryptor(_key, null, _provider);
         } catch (Exception e) {
-            return new FutureExecutionException<byte[]>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
         byte[] decrypted = null;
@@ -307,20 +306,20 @@ public class SymmetricKey implements IKey {
         try {
             decrypted = transform.doFinal(encryptedKey);
         } catch (Exception e) {
-            return new FutureExecutionException<byte[]>(e);
+            return Futures.immediateFailedFuture(e);
         }
 
-        return new FutureImmediate<byte[]>(decrypted);
+        return Futures.immediateFuture(decrypted);
     }
 
     @Override
-    public Future<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) {
-        return null;
+    public ListenableFuture<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) {
+        return Futures.immediateFailedFuture(new NotImplementedException("signAsync is not currently supported"));
     }
 
     @Override
-    public Future<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) {
-        return null;
+    public ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) {
+        return Futures.immediateFailedFuture(new NotImplementedException("verifyAsync is not currently supported"));
     }
 
     @Override

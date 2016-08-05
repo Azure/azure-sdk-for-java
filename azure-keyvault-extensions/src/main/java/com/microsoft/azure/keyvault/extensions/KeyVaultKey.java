@@ -20,11 +20,12 @@ package com.microsoft.azure.keyvault.extensions;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.Future;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.RsaKey;
@@ -33,37 +34,35 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 
 public class KeyVaultKey implements IKey {
+	
+    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
 
-    class FutureDecryptResult extends FutureAdapter<KeyOperationResult, byte[]> {
-
-        FutureDecryptResult() {
+        DecryptResultTransform() {
             super();
         }
 
         @Override
-        protected byte[] translate(KeyOperationResult result) throws IOException {
+        public byte[] apply(KeyOperationResult result) {
             return result.result();
         }
     }
 
-    class FutureSignResult extends FutureAdapter<KeyOperationResult, Pair<byte[], String>> {
+    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
 
-        private final String _algorithm;
+    	private final String _algorithm;
 
-        FutureSignResult(String algorithm) {
+        SignResultTransform(String algorithm) {
             super();
             _algorithm = algorithm;
         }
+    	
+		@Override
+		public Pair<byte[], String> apply(KeyOperationResult input) {
 
-        @Override
-        protected Pair<byte[], String> translate(KeyOperationResult result) throws IOException {
-            return Pair.of(result.result(), _algorithm);
-        }
+			return Pair.of(input.result(), _algorithm);
+		}
     }
 
     private final KeyVaultClient _client;
@@ -147,7 +146,7 @@ public class KeyVaultKey implements IKey {
     }
 
     @Override
-    public Future<byte[]> decryptAsync(byte[] ciphertext, byte[] iv, byte[] authenticationData, byte[] authenticationTag, String algorithm) {
+    public ListenableFuture<byte[]> decryptAsync(byte[] ciphertext, byte[] iv, byte[] authenticationData, byte[] authenticationTag, String algorithm) {
 
     	if (_implementation == null) {
             return null;
@@ -158,20 +157,21 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        FutureDecryptResult result = new FutureDecryptResult();
+        FutureServiceCall<KeyOperationResult> futureCall = new FutureServiceCall<KeyOperationResult>();
+        ListenableFuture<byte[]>              result     = Futures.transform(futureCall, new DecryptResultTransform() );
         
-        result.setServiceCall(
+        futureCall.setServiceCall(
         	_client.decrypt(
         		_implementation.getKid(),
         		algorithm,
         		ciphertext,
-        		result ) );
+        		futureCall.getServiceCallback() ) );
         
         return result;
     }
 
     @Override
-    public Future<Triple<byte[], byte[], String>> encryptAsync(byte[] plaintext, byte[] iv, byte[] authenticationData, String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(byte[] plaintext, byte[] iv, byte[] authenticationData, String algorithm) throws NoSuchAlgorithmException {
         if (_implementation == null) {
             return null;
         }
@@ -180,7 +180,7 @@ public class KeyVaultKey implements IKey {
     }
 
     @Override
-    public Future<Pair<byte[], String>> wrapKeyAsync(byte[] plaintext, String algorithm) throws NoSuchAlgorithmException {
+    public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(byte[] plaintext, String algorithm) throws NoSuchAlgorithmException {
         if (_implementation == null) {
             return null;
         }
@@ -189,7 +189,7 @@ public class KeyVaultKey implements IKey {
     }
 
     @Override
-    public Future<byte[]> unwrapKeyAsync(byte[] ciphertext, String algorithm) {
+    public ListenableFuture<byte[]> unwrapKeyAsync(byte[] ciphertext, String algorithm) {
         if (_implementation == null) {
             return null;
         }
@@ -199,21 +199,21 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        FutureDecryptResult result = new FutureDecryptResult();
+        FutureServiceCall<KeyOperationResult> futureCall = new FutureServiceCall<KeyOperationResult>();
+        ListenableFuture<byte[]>              result     = Futures.transform(futureCall, new DecryptResultTransform() );
         
-        result.setServiceCall(
+        futureCall.setServiceCall(
         	_client.unwrapKey(
         		_implementation.getKid(),
         		algorithm,
         		ciphertext,
-        		result ) );
+        		futureCall.getServiceCallback() ) );
         
         return result;
-
     }
 
     @Override
-    public Future<Pair<byte[], String>> signAsync(byte[] digest, String algorithm) {
+    public ListenableFuture<Pair<byte[], String>> signAsync(byte[] digest, String algorithm) {
         if (_implementation == null) {
             return null;
         }
@@ -223,21 +223,21 @@ public class KeyVaultKey implements IKey {
         }
         
         // Never local
-        FutureSignResult result = new FutureSignResult(algorithm);
+        FutureServiceCall<KeyOperationResult>  futureCall = new FutureServiceCall<KeyOperationResult>();
+        ListenableFuture<Pair<byte[], String>> result     = Futures.transform(futureCall, new SignResultTransform(algorithm) );
         
-        result.setServiceCall(
+        futureCall.setServiceCall(
         	_client.sign(
         		_implementation.getKid(),
         		algorithm,
         		digest,
-        		result ) );
+        		futureCall.getServiceCallback() ) );
         
         return result;
-
     }
 
     @Override
-    public Future<Boolean> verifyAsync(byte[] digest, byte[] signature, String algorithm) {
+    public ListenableFuture<Boolean> verifyAsync(byte[] digest, byte[] signature, String algorithm) {
         if (_implementation == null) {
             return null;
         }
