@@ -43,7 +43,6 @@ class StorageAccountImpl
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
-    private String name;
     private List<StorageAccountKey> cachedAccountKeys;
     private StorageAccountCreateParametersInner createParameters;
     private StorageAccountUpdateParametersInner updateParameters;
@@ -55,7 +54,6 @@ class StorageAccountImpl
                               final StorageAccountsInner client,
                               final StorageManager storageManager) {
         super(name, innerModel, storageManager);
-        this.name = name;
         this.createParameters = new StorageAccountCreateParametersInner();
         this.client = client;
     }
@@ -66,11 +64,6 @@ class StorageAccountImpl
             accountStatuses = new AccountStatuses(this.inner().statusOfPrimary(), this.inner().statusOfSecondary());
         }
         return accountStatuses;
-    }
-
-    @Override
-    public String name() {
-        return this.name;
     }
 
     @Override
@@ -132,7 +125,7 @@ class StorageAccountImpl
     @Override
     public List<StorageAccountKey> refreshKeys() throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
-                this.client.listKeys(this.resourceGroupName(), this.key);
+                this.client.listKeys(this.resourceGroupName(), this.name());
         StorageAccountListKeysResultInner resultInner = response.getBody();
         cachedAccountKeys = resultInner.keys();
         return cachedAccountKeys;
@@ -141,7 +134,7 @@ class StorageAccountImpl
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException {
         ServiceResponse<StorageAccountListKeysResultInner> response =
-                this.client.regenerateKey(this.resourceGroupName(), this.key, keyName);
+                this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
         StorageAccountListKeysResultInner resultInner = response.getBody();
         cachedAccountKeys = resultInner.keys();
         return cachedAccountKeys;
@@ -150,7 +143,7 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl refresh() throws Exception {
         ServiceResponse<StorageAccountInner> response =
-            this.client.getProperties(this.resourceGroupName(), this.key);
+            this.client.getProperties(this.resourceGroupName(), this.name());
         StorageAccountInner storageAccountInner = response.getBody();
         this.setInner(storageAccountInner);
         clearWrapperProperties();
