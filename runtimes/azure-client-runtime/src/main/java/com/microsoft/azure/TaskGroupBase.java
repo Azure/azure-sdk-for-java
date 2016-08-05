@@ -107,6 +107,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
+                parallelServiceCall.failure(t);
             }
 
             @Override
