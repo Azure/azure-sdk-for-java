@@ -70,6 +70,11 @@ class ServicePrincipalImpl
     }
 
     @Override
+    public String name() {
+        return inner().appId();
+    }
+
+    @Override
     public ServicePrincipalImpl create() throws Exception {
         this.setInner(client.create(createParameters).getBody());
         return this;

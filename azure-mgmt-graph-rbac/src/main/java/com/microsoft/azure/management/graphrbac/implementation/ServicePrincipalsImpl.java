@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
@@ -34,7 +34,7 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public PagedList<ServicePrincipal> list() throws CloudException, IOException {
+    public PagedList<ServicePrincipal> list() throws GraphErrorException, IOException {
         return wrapList(this.innerCollection.list().getBody());
     }
 
@@ -59,17 +59,17 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServicePrincipalImpl getByObjectId(String objectId) throws CloudException, IOException {
+    public ServicePrincipalImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
         return new ServicePrincipalImpl(innerCollection.get(objectId).getBody(), innerCollection);
     }
 
     @Override
-    public ServicePrincipal getByAppId(String appId) throws CloudException, IOException {
+    public ServicePrincipal getByAppId(String appId) throws GraphErrorException, IOException {
         return null;
     }
 
     @Override
-    public ServicePrincipal getByServicePrincipalName(String spn) throws CloudException, IOException {
+    public ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException {
         return null;
     }
 }

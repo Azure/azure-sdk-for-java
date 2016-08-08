@@ -35,7 +35,11 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<VirtualMachinePublisher, VirtualMachineOffer>() {
                     @Override
                     public PagedList<VirtualMachineOffer> loadList(VirtualMachinePublisher publisher) throws CloudException, IOException  {
-                        return publisher.offers().list();
+                        try {
+                            return publisher.offers().list();
+                        } catch (com.microsoft.rest.RestException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).flatten();
 
@@ -43,7 +47,11 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(offers, new ChildListFlattener.ChildListLoader<VirtualMachineOffer, VirtualMachineSku>() {
                     @Override
                     public PagedList<VirtualMachineSku> loadList(VirtualMachineOffer offer) throws CloudException, IOException  {
-                        return offer.skus().list();
+                        try {
+                            return offer.skus().list();
+                        } catch (com.microsoft.rest.RestException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).flatten();
 
@@ -51,7 +59,11 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(skus, new ChildListFlattener.ChildListLoader<VirtualMachineSku, VirtualMachineImage>() {
                     @Override
                     public PagedList<VirtualMachineImage> loadList(VirtualMachineSku sku) throws CloudException, IOException  {
-                        return sku.images().list();
+                        try {
+                            return sku.images().list();
+                        } catch (com.microsoft.rest.RestException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).flatten();
 

@@ -17,7 +17,10 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
 import com.microsoft.rest.RestException;
+=======
+>>>>>>> Regen graph and a bunch of refactors
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -25,6 +28,10 @@ import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
+=======
+import retrofit2.Call;
+>>>>>>> Regen graph and a bunch of refactors
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -35,8 +42,11 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
 import rx.functions.Func1;
 import rx.Observable;
+=======
+>>>>>>> Regen graph and a bunch of refactors
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -103,8 +113,24 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public UserInner create(UserCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+=======
+    public ServiceResponse<UserInner> create(UserCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return createDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -112,6 +138,7 @@ public final class UsersInner {
      *
      * @param parameters Parameters to create a user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
@@ -140,6 +167,11 @@ public final class UsersInner {
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> createWithServiceResponseAsync(UserCreateParametersInner parameters) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -150,6 +182,7 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
                 @Override
@@ -160,6 +193,24 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<UserInner> clientResponse = createDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -179,12 +230,29 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public PagedList<UserInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
             @Override
             public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+=======
+    public ServiceResponse<PagedList<UserInner>> list() throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
+        PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
+            @Override
+            public Page<UserInner> nextPage(String nextLink) throws GraphErrorException, IOException {
+                return listNext(nextLink).getBody();
+>>>>>>> Regen graph and a bunch of refactors
             }
         };
     }
@@ -193,6 +261,7 @@ public final class UsersInner {
      * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
@@ -247,6 +316,11 @@ public final class UsersInner {
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync() {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -254,6 +328,7 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -264,6 +339,30 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<UserInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                        }
+                    }
+                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -277,12 +376,28 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public PagedList<UserInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync(filter).toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
             @Override
             public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+=======
+    public ServiceResponse<PagedList<UserInner>> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
+        PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
+            @Override
+            public Page<UserInner> nextPage(String nextLink) throws GraphErrorException, IOException {
+                return listNext(nextLink).getBody();
+>>>>>>> Regen graph and a bunch of refactors
             }
         };
     }
@@ -292,6 +407,7 @@ public final class UsersInner {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
@@ -349,12 +465,18 @@ public final class UsersInner {
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync(final String filter) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -365,6 +487,30 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<UserInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                        }
+                    }
+                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -385,8 +531,23 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public UserInner get(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
         return getWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+=======
+    public ServiceResponse<UserInner> get(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (upnOrObjectId == null) {
+            throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return getDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -394,6 +555,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId User object Id or user principal name to get user information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
@@ -422,6 +584,11 @@ public final class UsersInner {
      * @return the observable to the UserInner object
      */
     public Observable<ServiceResponse<UserInner>> getWithServiceResponseAsync(String upnOrObjectId) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -431,6 +598,7 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
                 @Override
@@ -441,6 +609,24 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<UserInner> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -461,8 +647,27 @@ public final class UsersInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public void update(String upnOrObjectId, UserUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
         updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().getBody();
+=======
+    public ServiceResponse<Void> update(String upnOrObjectId, UserUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (upnOrObjectId == null) {
+            throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Call<ResponseBody> call = service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return updateDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -471,6 +676,7 @@ public final class UsersInner {
      * @param upnOrObjectId User object Id or user principal name to get user information.
      * @param parameters Parameters to update an exisitng user.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
@@ -501,6 +707,11 @@ public final class UsersInner {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -514,6 +725,7 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -524,6 +736,24 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = updateDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -543,8 +773,23 @@ public final class UsersInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public void delete(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
         deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+=======
+    public ServiceResponse<Void> delete(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (upnOrObjectId == null) {
+            throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return deleteDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -552,6 +797,7 @@ public final class UsersInner {
      *
      * @param upnOrObjectId user object id or user principal name (upn)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
@@ -580,6 +826,11 @@ public final class UsersInner {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String upnOrObjectId) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -589,6 +840,7 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -599,6 +851,24 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -620,8 +890,27 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;String&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) throws GraphErrorException, IOException, IllegalArgumentException {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
+=======
+    public ServiceResponse<List<String>> getMemberGroups(String objectId, boolean securityEnabledOnly) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
+        parameters.withSecurityEnabledOnly(securityEnabledOnly);
+        Call<ResponseBody> call = service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        ServiceResponse<PageImpl<String>> response = getMemberGroupsDelegate(call.execute());
+        List<String> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -630,6 +919,7 @@ public final class UsersInner {
      * @param objectId User filtering parameters.
      * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
@@ -660,6 +950,11 @@ public final class UsersInner {
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -671,6 +966,7 @@ public final class UsersInner {
         }
         UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
         parameters.withSecurityEnabledOnly(securityEnabledOnly);
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
                 @Override
@@ -682,6 +978,21 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        final ServiceCall<List<String>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<String>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<String>> result = getMemberGroupsDelegate(response);
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -702,6 +1013,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public PagedList<UserInner> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UserInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
@@ -710,6 +1022,20 @@ public final class UsersInner {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
+=======
+    public ServiceResponse<PageImpl1<UserInner>> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (nextLink == null) {
+            throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return listNextDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -718,6 +1044,7 @@ public final class UsersInner {
      * @param nextLink Next link for list operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<UserInner>> listNextAsync(final String nextLink, final ServiceCall<List<UserInner>> serviceCall, final ListOperationCallback<UserInner> serviceCallback) {
@@ -775,6 +1102,11 @@ public final class UsersInner {
      * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UserInner>>> listNextSinglePageAsync(final String nextLink) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<UserInner>> listNextAsync(final String nextLink, final ServiceCall<List<UserInner>> serviceCall, final ListOperationCallback<UserInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
@@ -784,6 +1116,7 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
                 @Override
@@ -794,6 +1127,27 @@ public final class UsersInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<UserInner>> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }

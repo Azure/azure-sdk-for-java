@@ -41,16 +41,28 @@ public class AzureTests {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
 
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         final File authFileNoSubscription = new File("nosub.azureauth");
         azure = Azure.authenticate(authFileNoSubscription).withDefaultSubscription();
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
     }
 
     @Before
@@ -125,11 +137,19 @@ public class AzureTests {
         Assert.assertTrue(publishers.size() > 0);
         for (VirtualMachinePublisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
-            for (VirtualMachineOffer o : p.offers().list()) {
-                System.out.println(String.format("\tOffer name: %s", o.name()));
-                for (VirtualMachineSku s : o.skus().list()) {
-                    System.out.println(String.format("\t\tSku name: %s", s.name()));
+            try {
+                for (VirtualMachineOffer o : p.offers().list()) {
+                    System.out.println(String.format("\tOffer name: %s", o.name()));
+                    try {
+                        for (VirtualMachineSku s : o.skus().list()) {
+                            System.out.println(String.format("\t\tSku name: %s", s.name()));
+                        }
+                    } catch (com.microsoft.rest.RestException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (com.microsoft.rest.RestException e) {
+                e.printStackTrace();
             }
         }
         List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);

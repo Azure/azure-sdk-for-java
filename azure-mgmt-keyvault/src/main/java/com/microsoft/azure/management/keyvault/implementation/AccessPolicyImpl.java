@@ -36,7 +36,7 @@ class AccessPolicyImpl
             AccessPolicy.Update {
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
-        super(null, innerObject, parent);
+        super(innerObject, parent);
     }
 
     @Override

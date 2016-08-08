@@ -6,11 +6,12 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 
@@ -34,7 +35,7 @@ class UsersImpl
     }
 
     @Override
-    public PagedList<User> list() throws CloudException, IOException {
+    public PagedList<User> list() throws RestException, IOException {
         return wrapList(this.innerCollection.list().getBody());
     }
 
@@ -59,12 +60,12 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl getByObjectId(String objectId) throws CloudException, IOException {
+    public UserImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
         return new UserImpl(innerCollection.get(objectId).getBody(), innerCollection);
     }
 
     @Override
-    public UserImpl getByUserPrincipalName(String upn) throws CloudException, IOException {
+    public UserImpl getByUserPrincipalName(String upn) throws GraphErrorException, IOException {
         return new UserImpl(innerCollection.get(upn).getBody(), innerCollection);
     }
 }

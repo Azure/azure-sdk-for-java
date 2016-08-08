@@ -66,14 +66,27 @@ public final class ObjectsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AADObjectInner object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public AADObjectInner getCurrentUser() throws GraphErrorException, IOException, IllegalArgumentException {
         return getCurrentUserWithServiceResponseAsync().toBlocking().single().getBody();
+=======
+    public ServiceResponse<AADObjectInner> getCurrentUser() throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return getCurrentUserDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
      * Gets the details for current logged in user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
@@ -100,12 +113,18 @@ public final class ObjectsInner {
      * @return the observable to the AADObjectInner object
      */
     public Observable<ServiceResponse<AADObjectInner>> getCurrentUserWithServiceResponseAsync() {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AADObjectInner>>>() {
                 @Override
@@ -116,6 +135,24 @@ public final class ObjectsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<AADObjectInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<AADObjectInner>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<AADObjectInner> clientResponse = getCurrentUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }

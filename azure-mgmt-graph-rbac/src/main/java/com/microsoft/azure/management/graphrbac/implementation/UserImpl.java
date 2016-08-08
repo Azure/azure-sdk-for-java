@@ -73,6 +73,11 @@ class UserImpl
     }
 
     @Override
+    public String name() {
+        return userPrincipalName();
+    }
+
+    @Override
     public UserImpl create() throws Exception {
         setInner(client.create(createParameters).getBody());
         return this;

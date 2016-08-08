@@ -50,6 +50,6 @@ public abstract class KeyVaultManagementTestBase {
                 .authenticate(graphCredentials, System.getenv("domain"));
 
         keyVaultManager = KeyVaultManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, System.getenv("subscription-id"), graphCredentials.getDomain());
     }
 }

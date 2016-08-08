@@ -98,6 +98,22 @@ public final class ServicePrincipalsInner {
         Observable<Response<ResponseBody>> updatePasswordCredentials(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PasswordCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{tenantID}/servicePrincipals/{objectId}/keyCredentials")
+        Call<ResponseBody> listKeyCredentials(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("{tenantID}/servicePrincipals/{objectId}/keyCredentials")
+        Call<ResponseBody> updateKeyCredentials(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
+        Call<ResponseBody> listPasswordCredentials(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
+        Call<ResponseBody> updatePasswordCredentials(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PasswordCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/{nextLink}")
         Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -112,8 +128,24 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServicePrincipalInner object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public ServicePrincipalInner create(ServicePrincipalCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+=======
+    public ServiceResponse<ServicePrincipalInner> create(ServicePrincipalCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return createDelegate(call.execute());
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     /**
@@ -121,6 +153,7 @@ public final class ServicePrincipalsInner {
      *
      * @param parameters Parameters to create a service principal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServicePrincipalInner> createAsync(ServicePrincipalCreateParametersInner parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
@@ -149,6 +182,11 @@ public final class ServicePrincipalsInner {
      * @return the observable to the ServicePrincipalInner object
      */
     public Observable<ServiceResponse<ServicePrincipalInner>> createWithServiceResponseAsync(ServicePrincipalCreateParametersInner parameters) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<ServicePrincipalInner> createAsync(ServicePrincipalCreateParametersInner parameters, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -159,6 +197,7 @@ public final class ServicePrincipalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
                 @Override
@@ -169,6 +208,24 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<ServicePrincipalInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ServicePrincipalInner>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<ServicePrincipalInner> clientResponse = createDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -188,12 +245,29 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServicePrincipalInner&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public PagedList<ServicePrincipalInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
             public Page<ServicePrincipalInner> nextPage(String nextLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+=======
+    public ServiceResponse<PagedList<ServicePrincipalInner>> list() throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String filter = null;
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl1<ServicePrincipalInner>> response = listDelegate(call.execute());
+        PagedList<ServicePrincipalInner> result = new PagedList<ServicePrincipalInner>(response.getBody()) {
+            @Override
+            public Page<ServicePrincipalInner> nextPage(String nextLink) throws GraphErrorException, IOException {
+                return listNext(nextLink).getBody();
+>>>>>>> Regen graph and a bunch of refactors
             }
         };
     }
@@ -202,6 +276,7 @@ public final class ServicePrincipalsInner {
      * Gets list of service principals from the current tenant.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServicePrincipalInner>> listAsync(final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
@@ -256,6 +331,11 @@ public final class ServicePrincipalsInner {
      * @return the PagedList&lt;ServicePrincipalInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServicePrincipalInner>>> listSinglePageAsync() {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<ServicePrincipalInner>> listAsync(final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -263,6 +343,7 @@ public final class ServicePrincipalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
@@ -273,6 +354,30 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<ServicePrincipalInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<ServicePrincipalInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<ServicePrincipalInner>> result = listDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                        }
+                    }
+                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -286,12 +391,28 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServicePrincipalInner&gt; object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public PagedList<ServicePrincipalInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync(filter).toBlocking().single();
         return new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
             public Page<ServicePrincipalInner> nextPage(String nextLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+=======
+    public ServiceResponse<PagedList<ServicePrincipalInner>> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl1<ServicePrincipalInner>> response = listDelegate(call.execute());
+        PagedList<ServicePrincipalInner> result = new PagedList<ServicePrincipalInner>(response.getBody()) {
+            @Override
+            public Page<ServicePrincipalInner> nextPage(String nextLink) throws GraphErrorException, IOException {
+                return listNext(nextLink).getBody();
+>>>>>>> Regen graph and a bunch of refactors
             }
         };
     }
@@ -301,6 +422,7 @@ public final class ServicePrincipalsInner {
      *
      * @param filter The filter to apply on the operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServicePrincipalInner>> listAsync(final String filter, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
@@ -358,12 +480,18 @@ public final class ServicePrincipalsInner {
      * @return the PagedList&lt;ServicePrincipalInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServicePrincipalInner>>> listSinglePageAsync(final String filter) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<ServicePrincipalInner>> listAsync(final String filter, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
@@ -374,6 +502,30 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<ServicePrincipalInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<ServicePrincipalInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<ServicePrincipalInner>> result = listDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                        }
+                    }
+                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -429,7 +581,11 @@ public final class ServicePrincipalsInner {
      * @param objectId Object id to delete service principal information.
      * @return the {@link ServiceResponse} object if successful.
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String objectId) {
+=======
+    public ServiceResponse<Void> delete(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+>>>>>>> Regen graph and a bunch of refactors
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -478,6 +634,7 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId Object id to get service principal information.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ServicePrincipalInner> getAsync(String objectId, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
@@ -506,6 +663,11 @@ public final class ServicePrincipalsInner {
      * @return the observable to the ServicePrincipalInner object
      */
     public Observable<ServiceResponse<ServicePrincipalInner>> getWithServiceResponseAsync(String objectId) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> deleteAsync(String objectId, final ServiceCallback<Void> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -515,6 +677,7 @@ public final class ServicePrincipalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.get(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalInner>>>() {
                 @Override
@@ -525,6 +688,24 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.delete(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -575,6 +756,7 @@ public final class ServicePrincipalsInner {
         });
     }
 
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     /**
      * Get keyCredentials associated with the service principal by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
@@ -609,6 +791,11 @@ public final class ServicePrincipalsInner {
     private ServiceResponse<PageImpl<KeyCredentialInner>> listKeyCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<KeyCredentialInner>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<KeyCredentialInner>>() { }.getType())
+=======
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+>>>>>>> Regen graph and a bunch of refactors
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
@@ -621,6 +808,7 @@ public final class ServicePrincipalsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public void updateKeyCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
         updateKeyCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
@@ -658,6 +846,9 @@ public final class ServicePrincipalsInner {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateKeyCredentialsWithServiceResponseAsync(String objectId) {
+=======
+    public ServiceResponse<ServicePrincipalInner> get(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+>>>>>>> Regen graph and a bunch of refactors
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -703,6 +894,7 @@ public final class ServicePrincipalsInner {
      * @param objectId Object id to get service principal information.
      * @param value KeyCredential list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
@@ -733,6 +925,11 @@ public final class ServicePrincipalsInner {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateKeyCredentialsWithServiceResponseAsync(String objectId, List<KeyCredentialInner> value) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<ServicePrincipalInner> getAsync(String objectId, final ServiceCallback<ServicePrincipalInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -742,6 +939,7 @@ public final class ServicePrincipalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         Validator.validate(value);
         KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
         parameters.withValue(value);
@@ -755,6 +953,24 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.get(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<ServicePrincipalInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ServicePrincipalInner>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<ServicePrincipalInner> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }
@@ -805,13 +1021,25 @@ public final class ServicePrincipalsInner {
         });
     }
 
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
+=======
+    private ServiceResponse<ServicePrincipalInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServicePrincipalInner, GraphErrorException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ServicePrincipalInner>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
     /**
-     * Gets passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     * Get keyCredentials associated with the service principal by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param objectId Object id to get service principal information.
-     * @return the observable to the List&lt;PasswordCredentialInner&gt; object
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;KeyCredentialInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<List<PasswordCredentialInner>>> listPasswordCredentialsWithServiceResponseAsync(String objectId) {
+    public ServiceResponse<List<KeyCredentialInner>> listKeyCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -821,6 +1049,250 @@ public final class ServicePrincipalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        Call<ResponseBody> call = service.listKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<KeyCredentialInner>> response = listKeyCredentialsDelegate(call.execute());
+        List<KeyCredentialInner> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+    /**
+     * Get keyCredentials associated with the service principal by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<KeyCredentialInner>> listKeyCredentialsAsync(String objectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<KeyCredentialInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<KeyCredentialInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<KeyCredentialInner>> result = listKeyCredentialsDelegate(response);
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<PageImpl<KeyCredentialInner>> listKeyCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<KeyCredentialInner>, GraphErrorException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<KeyCredentialInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Update keyCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> updateKeyCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<KeyCredentialInner> value = null;
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(null);
+        Call<ResponseBody> call = service.updateKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return updateKeyCredentialsDelegate(call.execute());
+    }
+
+    /**
+     * Update keyCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> updateKeyCredentialsAsync(String objectId, final ServiceCallback<Void> serviceCallback) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<KeyCredentialInner> value = null;
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(null);
+        Call<ResponseBody> call = service.updateKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = updateKeyCredentialsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Update keyCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param value KeyCredential list.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> updateKeyCredentials(String objectId, List<KeyCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(value);
+        Call<ResponseBody> call = service.updateKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return updateKeyCredentialsDelegate(call.execute());
+    }
+
+    /**
+     * Update keyCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param value KeyCredential list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(value);
+        Call<ResponseBody> call = service.updateKeyCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = updateKeyCredentialsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Void> updateKeyCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PasswordCredentialInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<List<PasswordCredentialInner>> listPasswordCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Call<ResponseBody> call = service.listPasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        ServiceResponse<PageImpl<PasswordCredentialInner>> response = listPasswordCredentialsDelegate(call.execute());
+        List<PasswordCredentialInner> result = response.getBody().getItems();
+        return new ServiceResponse<>(result, response.getResponse());
+    }
+
+>>>>>>> Regen graph and a bunch of refactors
+    /**
+     * Gets passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
+     * @return the observable to the List&lt;PasswordCredentialInner&gt; object
+     */
+    public Observable<ServiceResponse<List<PasswordCredentialInner>>> listPasswordCredentialsWithServiceResponseAsync(String objectId) {
+=======
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String objectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.listPasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PasswordCredentialInner>>>>() {
                 @Override
@@ -834,12 +1306,33 @@ public final class ServicePrincipalsInner {
                     }
                 }
             });
+=======
+        Call<ResponseBody> call = service.listPasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final ServiceCall<List<PasswordCredentialInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<PasswordCredentialInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl<PasswordCredentialInner>> result = listPasswordCredentialsDelegate(response);
+                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+>>>>>>> Regen graph and a bunch of refactors
     }
 
     private ServiceResponse<PageImpl<PasswordCredentialInner>> listPasswordCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<PasswordCredentialInner>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<PasswordCredentialInner>>() { }.getType())
                 .registerError(GraphErrorException.class)
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
+=======
                 .build(response);
     }
 
@@ -850,7 +1343,158 @@ public final class ServicePrincipalsInner {
      * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
      */
+    public ServiceResponse<Void> updatePasswordCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<PasswordCredentialInner> value = null;
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(null);
+        Call<ResponseBody> call = service.updatePasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return updatePasswordCredentialsDelegate(call.execute());
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> updatePasswordCredentialsAsync(String objectId, final ServiceCallback<Void> serviceCallback) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<PasswordCredentialInner> value = null;
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(null);
+        Call<ResponseBody> call = service.updatePasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = updatePasswordCredentialsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param value PasswordCredential list.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(value);
+        Call<ResponseBody> call = service.updatePasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return updatePasswordCredentialsDelegate(call.execute());
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param objectId Object id to get service principal information.
+     * @param value PasswordCredential list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link Call} object
+     */
+    public ServiceCall<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        if (objectId == null) {
+            throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(value);
+        Call<ResponseBody> call = service.updatePasswordCredentials(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<Void> clientResponse = updatePasswordCredentialsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponse<Void> updatePasswordCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+>>>>>>> Regen graph and a bunch of refactors
+                .build(response);
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
+     * @param objectId Object id to get service principal information.
+=======
+     * @param nextLink Next link for list operation.
+>>>>>>> Regen graph and a bunch of refactors
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
     public void updatePasswordCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
         updatePasswordCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
@@ -890,6 +1534,11 @@ public final class ServicePrincipalsInner {
     public Observable<ServiceResponse<Void>> updatePasswordCredentialsWithServiceResponseAsync(String objectId) {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
+=======
+    public ServiceResponse<PageImpl1<ServicePrincipalInner>> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+        if (nextLink == null) {
+            throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
+>>>>>>> Regen graph and a bunch of refactors
         }
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
@@ -1021,6 +1670,7 @@ public final class ServicePrincipalsInner {
      * @param nextLink Next link for list operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ServicePrincipalInner>> listNextAsync(final String nextLink, final ServiceCall<List<ServicePrincipalInner>> serviceCall, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
@@ -1078,6 +1728,11 @@ public final class ServicePrincipalsInner {
      * @return the PagedList&lt;ServicePrincipalInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServicePrincipalInner>>> listNextSinglePageAsync(final String nextLink) {
+=======
+     * @return the {@link Call} object
+     */
+    public ServiceCall<List<ServicePrincipalInner>> listNextAsync(final String nextLink, final ServiceCall<List<ServicePrincipalInner>> serviceCall, final ListOperationCallback<ServicePrincipalInner> serviceCallback) {
+>>>>>>> Regen graph and a bunch of refactors
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
@@ -1087,6 +1742,7 @@ public final class ServicePrincipalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+<<<<<<< e9aca426972ece888d34f20053ebf678b32d7a01
         return service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServicePrincipalInner>>>>() {
                 @Override
@@ -1097,6 +1753,27 @@ public final class ServicePrincipalsInner {
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
+=======
+        Call<ResponseBody> call = service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ServicePrincipalInner>>(serviceCall, serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponse<PageImpl1<ServicePrincipalInner>> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+                    }
+                } catch (GraphErrorException | IOException exception) {
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
+>>>>>>> Regen graph and a bunch of refactors
                 }
             });
     }

@@ -225,7 +225,10 @@ public final class Azure {
             if (this.defaultSubscription != null) {
                 return withSubscription(this.defaultSubscription);
             } else {
-                PagedList<Subscription> subs = this.subscriptions().list();
+                try {PagedList<Subscription> subs = this.subscriptions().list();
+                } catch (com.microsoft.rest.RestException e) {
+                    e.printStackTrace();
+                }
                 if (!subs.isEmpty()) {
                     return withSubscription(subs.get(0).subscriptionId());
                 } else {

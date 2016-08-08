@@ -177,8 +177,8 @@ public class ApplicationTokenCredentials extends TokenCredentials {
                 new AzureEnvironment(
                     authUrl,
                     mgmtUri,
-                    true,
-                    baseUrl)
+                    baseUrl,
+                    "https://graph.windows.net/") // TODO: cred file should contain GRAPH endpoint
                 ).withDefaultSubscriptionId(defaultSubscriptionId);
     }
 

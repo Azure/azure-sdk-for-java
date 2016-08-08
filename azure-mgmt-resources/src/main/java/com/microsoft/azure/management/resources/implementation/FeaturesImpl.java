@@ -8,9 +8,10 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.microsoft.azure.management.resources.Feature;
+
 import java.io.IOException;
 
 /**

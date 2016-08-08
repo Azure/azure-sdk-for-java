@@ -15,6 +15,7 @@ import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -44,7 +45,7 @@ class VaultsImpl
     }
 
     @Override
-    public PagedList<Vault> list() throws CloudException, IOException {
+    public PagedList<Vault> list() throws RestException, IOException {
         return wrapList(this.innerCollection.list().getBody());
     }
 
