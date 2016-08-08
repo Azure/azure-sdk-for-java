@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
