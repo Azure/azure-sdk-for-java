@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.DeploymentProperties;
  */
 public class DeploymentInner {
     /**
-     * Gets or sets the deployment properties.
+     * The deployment properties.
      */
     private DeploymentProperties properties;
 

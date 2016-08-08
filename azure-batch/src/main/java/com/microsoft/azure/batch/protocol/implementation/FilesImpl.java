@@ -57,7 +57,6 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 import retrofit2.Response;
 
 /**
@@ -121,12 +120,12 @@ public final class FilesImpl implements Files {
         Call<ResponseBody> listFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listFromTaskNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Call<ResponseBody> listFromTaskNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listFromComputeNodeNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Call<ResponseBody> listFromComputeNodeNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -175,28 +174,20 @@ public final class FilesImpl implements Files {
      * @param taskId The id of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean recursive = null;
         final FileDeleteFromTaskOptions fileDeleteFromTaskOptions = null;
@@ -209,14 +200,21 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> clientResponse = deleteFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -283,30 +281,22 @@ public final class FilesImpl implements Files {
      * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileDeleteFromTaskOptions, serviceCallback);
+        Validator.validate(fileDeleteFromTaskOptions);
         Integer timeout = null;
         if (fileDeleteFromTaskOptions != null) {
             timeout = fileDeleteFromTaskOptions.timeout();
@@ -328,14 +318,21 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> clientResponse = deleteFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -404,28 +401,20 @@ public final class FilesImpl implements Files {
      * @param taskId The id of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<InputStream> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final FileGetFromTaskOptions fileGetFromTaskOptions = null;
         Integer timeout = null;
@@ -448,14 +437,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> clientResponse = getFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -540,30 +536,22 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFromTaskAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileGetFromTaskOptions, serviceCallback);
+        Validator.validate(fileGetFromTaskOptions);
         Integer timeout = null;
         if (fileGetFromTaskOptions != null) {
             timeout = fileGetFromTaskOptions.timeout();
@@ -605,14 +593,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> clientResponse = getFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -680,28 +675,20 @@ public final class FilesImpl implements Files {
      * @param taskId The id of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions = null;
         Integer timeout = null;
@@ -723,14 +710,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(getNodeFilePropertiesFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> clientResponse = getNodeFilePropertiesFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -811,30 +805,22 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the task file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileGetNodeFilePropertiesFromTaskOptions, serviceCallback);
+        Validator.validate(fileGetNodeFilePropertiesFromTaskOptions);
         Integer timeout = null;
         if (fileGetNodeFilePropertiesFromTaskOptions != null) {
             timeout = fileGetNodeFilePropertiesFromTaskOptions.timeout();
@@ -872,14 +858,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(getNodeFilePropertiesFromTaskDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> clientResponse = getNodeFilePropertiesFromTaskDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -938,28 +931,20 @@ public final class FilesImpl implements Files {
      * @param nodeId The id of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean recursive = null;
         final FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions = null;
@@ -972,14 +957,21 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> clientResponse = deleteFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1046,30 +1038,22 @@ public final class FilesImpl implements Files {
      * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileDeleteFromComputeNodeOptions, serviceCallback);
+        Validator.validate(fileDeleteFromComputeNodeOptions);
         Integer timeout = null;
         if (fileDeleteFromComputeNodeOptions != null) {
             timeout = fileDeleteFromComputeNodeOptions.timeout();
@@ -1091,14 +1075,21 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> clientResponse = deleteFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1167,28 +1158,20 @@ public final class FilesImpl implements Files {
      * @param nodeId The id of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<InputStream> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions = null;
         Integer timeout = null;
@@ -1211,14 +1194,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> clientResponse = getFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1303,30 +1293,22 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileGetFromComputeNodeOptions, serviceCallback);
+        Validator.validate(fileGetFromComputeNodeOptions);
         Integer timeout = null;
         if (fileGetFromComputeNodeOptions != null) {
             timeout = fileGetFromComputeNodeOptions.timeout();
@@ -1368,14 +1350,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> clientResponse = getFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1443,28 +1432,20 @@ public final class FilesImpl implements Files {
      * @param nodeId The id of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions = null;
         Integer timeout = null;
@@ -1486,14 +1467,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(getNodeFilePropertiesFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> clientResponse = getNodeFilePropertiesFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1574,30 +1562,22 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (fileName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileGetNodeFilePropertiesFromComputeNodeOptions, serviceCallback);
+        Validator.validate(fileGetNodeFilePropertiesFromComputeNodeOptions);
         Integer timeout = null;
         if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
             timeout = fileGetNodeFilePropertiesFromComputeNodeOptions.timeout();
@@ -1635,14 +1615,21 @@ public final class FilesImpl implements Files {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
         Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 try {
-                    serviceCallback.success(getNodeFilePropertiesFromComputeNodeDelegate(response));
+                    ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> clientResponse = getNodeFilePropertiesFromComputeNodeDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1705,24 +1692,17 @@ public final class FilesImpl implements Files {
      * @param jobId The id of the job that contains the task.
      * @param taskId The id of the task whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean recursive = null;
         final FileListFromTaskOptions fileListFromTaskOptions = null;
@@ -1737,21 +1717,27 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1835,26 +1821,19 @@ public final class FilesImpl implements Files {
      * @param recursive Whether to list children of a directory.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         if (jobId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
         if (taskId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileListFromTaskOptions, serviceCallback);
+        Validator.validate(fileListFromTaskOptions);
         String filter = null;
         if (fileListFromTaskOptions != null) {
             filter = fileListFromTaskOptions.filter();
@@ -1884,28 +1863,34 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
-                        if (fileListFromTaskOptions != null) {
-                            fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
-                            fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
-                            fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
-                            fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
+                            if (fileListFromTaskOptions != null) {
+                                fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
+                                fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
+                                fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
+                                fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+                            }
+                            listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1968,24 +1953,17 @@ public final class FilesImpl implements Files {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean recursive = null;
         final FileListFromComputeNodeOptions fileListFromComputeNodeOptions = null;
@@ -2000,21 +1978,27 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2098,26 +2082,19 @@ public final class FilesImpl implements Files {
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
         if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nodeId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(fileListFromComputeNodeOptions, serviceCallback);
+        Validator.validate(fileListFromComputeNodeOptions);
         String filter = null;
         if (fileListFromComputeNodeOptions != null) {
             filter = fileListFromComputeNodeOptions.filter();
@@ -2147,28 +2124,34 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        final ServiceCall<List<NodeFile>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
-                        if (fileListFromComputeNodeOptions != null) {
-                            fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
-                            fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
-                            fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
-                            fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
+                            if (fileListFromComputeNodeOptions != null) {
+                                fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
+                                fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
+                                fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
+                                fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+                            }
+                            listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2213,16 +2196,11 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromTaskNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
         String clientRequestId = null;
@@ -2234,7 +2212,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2247,7 +2225,10 @@ public final class FilesImpl implements Files {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2296,18 +2277,13 @@ public final class FilesImpl implements Files {
      * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(fileListFromTaskNextOptions, serviceCallback);
+        Validator.validate(fileListFromTaskNextOptions);
         String clientRequestId = null;
         if (fileListFromTaskNextOptions != null) {
             clientRequestId = fileListFromTaskNextOptions.clientRequestId();
@@ -2326,7 +2302,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2339,7 +2315,10 @@ public final class FilesImpl implements Files {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2384,16 +2363,11 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
         String clientRequestId = null;
@@ -2405,7 +2379,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2418,7 +2392,10 @@ public final class FilesImpl implements Files {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2467,18 +2444,13 @@ public final class FilesImpl implements Files {
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(fileListFromComputeNodeNextOptions, serviceCallback);
+        Validator.validate(fileListFromComputeNodeNextOptions);
         String clientRequestId = null;
         if (fileListFromComputeNodeNextOptions != null) {
             clientRequestId = fileListFromComputeNodeNextOptions.clientRequestId();
@@ -2497,7 +2469,7 @@ public final class FilesImpl implements Files {
         }
         Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -2510,7 +2482,10 @@ public final class FilesImpl implements Files {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

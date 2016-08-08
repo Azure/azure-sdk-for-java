@@ -17,44 +17,43 @@ import com.microsoft.azure.management.resources.implementation.ProviderInner;
  */
 public class DeploymentPropertiesExtended {
     /**
-     * Gets or sets the state of the provisioning.
+     * The state of the provisioning.
      */
     private String provisioningState;
 
     /**
-     * Gets or sets the correlation ID of the deployment.
+     * The correlation ID of the deployment.
      */
     private String correlationId;
 
     /**
-     * Gets or sets the timestamp of the template deployment.
+     * The timestamp of the template deployment.
      */
     private DateTime timestamp;
 
     /**
-     * Gets or sets key/value pairs that represent deploymentoutput.
+     * Key/value pairs that represent deploymentoutput.
      */
     private Object outputs;
 
     /**
-     * Gets the list of resource providers needed for the deployment.
+     * The list of resource providers needed for the deployment.
      */
     private List<ProviderInner> providers;
 
     /**
-     * Gets the list of deployment dependencies.
+     * The list of deployment dependencies.
      */
     private List<Dependency> dependencies;
 
     /**
-     * Gets or sets the template content. Use only one of Template or
-     * TemplateLink.
+     * The template content. Use only one of Template or TemplateLink.
      */
     private Object template;
 
     /**
-     * Gets or sets the URI referencing the template. Use only one of Template
-     * or TemplateLink.
+     * The URI referencing the template. Use only one of Template or
+     * TemplateLink.
      */
     private TemplateLink templateLink;
 
@@ -64,19 +63,18 @@ public class DeploymentPropertiesExtended {
     private Object parameters;
 
     /**
-     * Gets or sets the URI referencing the parameters. Use only one of
-     * Parameters or ParametersLink.
+     * The URI referencing the parameters. Use only one of Parameters or
+     * ParametersLink.
      */
     private ParametersLink parametersLink;
 
     /**
-     * Gets or sets the deployment mode. Possible values include:
-     * 'Incremental', 'Complete'.
+     * The deployment mode. Possible values include: 'Incremental', 'Complete'.
      */
     private DeploymentMode mode;
 
     /**
-     * Gets or sets the debug setting of the deployment.
+     * The debug setting of the deployment.
      */
     private DebugSetting debugSetting;
 

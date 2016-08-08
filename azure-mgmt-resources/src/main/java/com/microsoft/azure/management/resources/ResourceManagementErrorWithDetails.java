@@ -16,24 +16,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ResourceManagementErrorWithDetails {
     /**
-     * Gets or sets the error code returned from the server.
+     * The error code returned from the server.
      */
     @JsonProperty(required = true)
     private String code;
 
     /**
-     * Gets or sets the error message returned from the server.
+     * The error message returned from the server.
      */
     @JsonProperty(required = true)
     private String message;
 
     /**
-     * Gets or sets the target of the error.
+     * The target of the error.
      */
     private String target;
 
     /**
-     * Gets or sets validation error.
+     * Validation error.
      */
     private List<ResourceManagementErrorWithDetails> details;
 

@@ -794,46 +794,43 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> getSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionSlotDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = getSiteVNETConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -896,51 +893,47 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> createOrUpdateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionSlotDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = createOrUpdateSiteVNETConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -997,46 +990,43 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteVNETConnectionSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteVNETConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1099,51 +1089,47 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> updateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionSlot(resourceGroupName, name, vnetName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionSlotDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = updateSiteVNETConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1195,42 +1181,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = getSiteVNETConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1288,47 +1272,44 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = createOrUpdateSiteVNETConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1380,42 +1361,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteVNETConnectionDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteVNETConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1473,47 +1452,44 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetInfoInner> updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnection(resourceGroupName, name, vnetName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
+        final ServiceCall<VnetInfoInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionDelegate(response));
+                    ServiceResponse<VnetInfoInner> clientResponse = updateSiteVNETConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1570,46 +1546,43 @@ public final class SitesInner {
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<NetworkFeaturesInner> getSiteNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (view == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter view is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter view is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteNetworkFeaturesSlot(resourceGroupName, name, view, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
+        final ServiceCall<NetworkFeaturesInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteNetworkFeaturesSlotDelegate(response));
+                    ServiceResponse<NetworkFeaturesInner> clientResponse = getSiteNetworkFeaturesSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1662,42 +1635,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<NetworkFeaturesInner> getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (view == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter view is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter view is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteNetworkFeatures(resourceGroupName, name, view, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCallback) {
+        final ServiceCall<NetworkFeaturesInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<NetworkFeaturesInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteNetworkFeaturesDelegate(response));
+                    ServiceResponse<NetworkFeaturesInner> clientResponse = getSiteNetworkFeaturesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1755,46 +1726,43 @@ public final class SitesInner {
      * @param operationId Id of an operation
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (operationId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteOperationSlot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteOperationSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteOperationSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1846,42 +1814,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param operationId Id of an operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (operationId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteOperationDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteOperationDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -1938,7 +1904,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<Object> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -1959,7 +1925,7 @@ public final class SitesInner {
         }
         Validator.validate(slotSwapEntity, serviceCallback);
         Call<ResponseBody> call = service.swapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -2012,43 +1978,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.beginSwapSlotWithProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginSwapSlotWithProductionDelegate(response));
+                    ServiceResponse<Object> clientResponse = beginSwapSlotWithProductionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2111,7 +2075,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<Object> swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -2135,7 +2099,7 @@ public final class SitesInner {
         }
         Validator.validate(slotSwapEntity, serviceCallback);
         Call<ResponseBody> call = service.swapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -2193,47 +2157,44 @@ public final class SitesInner {
      * @param slot Name of source slot for the swap
      * @param slotSwapEntity Request body that contains the target slot name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.beginSwapSlotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginSwapSlotsSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = beginSwapSlotsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2287,43 +2248,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSlotsDifferencesFromProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<SlotDifferenceCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SlotDifferenceCollectionInner> getSlotsDifferencesFromProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<SlotDifferenceCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesFromProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
+        final ServiceCall<SlotDifferenceCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotsDifferencesFromProductionDelegate(response));
+                    ServiceResponse<SlotDifferenceCollectionInner> clientResponse = getSlotsDifferencesFromProductionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2381,47 +2340,44 @@ public final class SitesInner {
      * @param slot Name of the source slot
      * @param slotSwapEntity Request body that contains the target slot name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSlotsDifferencesSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<SlotDifferenceCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SlotDifferenceCollectionInner> getSlotsDifferencesSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<SlotDifferenceCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.getSlotsDifferencesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCallback) {
+        final ServiceCall<SlotDifferenceCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SlotDifferenceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotsDifferencesSlotDelegate(response));
+                    ServiceResponse<SlotDifferenceCollectionInner> clientResponse = getSlotsDifferencesSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2474,43 +2430,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigToProduction(resourceGroupName, name, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(applySlotConfigToProductionDelegate(response));
+                    ServiceResponse<Object> clientResponse = applySlotConfigToProductionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2568,47 +2522,44 @@ public final class SitesInner {
      * @param slot Name of the source slot. Settings from the target slot will be applied onto this slot
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall applySlotConfigSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> applySlotConfigSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotSwapEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotSwapEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotSwapEntity, serviceCallback);
+        Validator.validate(slotSwapEntity);
         Call<ResponseBody> call = service.applySlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), slotSwapEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(applySlotConfigSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = applySlotConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2655,38 +2606,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.resetProductionSlotConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(resetProductionSlotConfigDelegate(response));
+                    ServiceResponse<Object> clientResponse = resetProductionSlotConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2738,42 +2688,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall resetSlotConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> resetSlotConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.resetSlotConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(resetSlotConfigSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = resetSlotConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2820,38 +2768,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSlotConfigNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SlotConfigNamesResourceInner> getSlotConfigNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
+        final ServiceCall<SlotConfigNamesResourceInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSlotConfigNamesDelegate(response));
+                    ServiceResponse<SlotConfigNamesResourceInner> clientResponse = getSlotConfigNamesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2904,43 +2851,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slotConfigNames Request body containing the names of application settings and connection strings
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSlotConfigNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SlotConfigNamesResourceInner> updateSlotConfigNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (slotConfigNames == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slotConfigNames is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slotConfigNames is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(slotConfigNames, serviceCallback);
+        Validator.validate(slotConfigNames);
         Call<ResponseBody> call = service.updateSlotConfigNames(resourceGroupName, name, this.client.subscriptionId(), slotConfigNames, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCallback) {
+        final ServiceCall<SlotConfigNamesResourceInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SlotConfigNamesResourceInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSlotConfigNamesDelegate(response));
+                    ServiceResponse<SlotConfigNamesResourceInner> clientResponse = updateSlotConfigNamesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -2988,39 +2933,38 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSlotsAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCollectionInner> getSiteSlotsAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotsDelegate(response));
+                    ServiceResponse<SiteCollectionInner> clientResponse = getSiteSlotsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3062,38 +3006,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param propertiesToInclude List of app properties to include in the response
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSlotsAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCollectionInner> getSiteSlotsAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSlots(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotsDelegate(response));
+                    ServiceResponse<SiteCollectionInner> clientResponse = getSiteSlotsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3138,37 +3081,37 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSitesAsync(String resourceGroupName, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCollectionInner> getSitesAsync(String resourceGroupName, final ServiceCallback<SiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
         final Boolean includeSlots = null;
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitesDelegate(response));
+                    ServiceResponse<SiteCollectionInner> clientResponse = getSitesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3209,34 +3152,34 @@ public final class SitesInner {
      * @param includeSiteTypes Types of apps included in the response
      * @param includeSlots Whether or not to include deployments slots in results
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSitesAsync(String resourceGroupName, String propertiesToInclude, String includeSiteTypes, Boolean includeSlots, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCollectionInner> getSitesAsync(String resourceGroupName, String propertiesToInclude, String includeSiteTypes, Boolean includeSlots, final ServiceCallback<SiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, includeSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitesDelegate(response));
+                    ServiceResponse<SiteCollectionInner> clientResponse = getSitesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3284,39 +3227,38 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> getSiteAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = getSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3358,38 +3300,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param propertiesToInclude Additional web app properties included in the response
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> getSiteAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSite(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = getSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3450,7 +3391,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -3475,7 +3416,7 @@ public final class SitesInner {
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -3541,7 +3482,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -3562,7 +3503,7 @@ public final class SitesInner {
         }
         Validator.validate(siteEnvelope, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -3619,47 +3560,45 @@ public final class SitesInner {
      * @param name Name of the web app
      * @param siteEnvelope Details of web app if it exists already
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteEnvelope, serviceCallback);
+        Validator.validate(siteEnvelope);
         final String skipDnsRegistration = null;
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginCreateOrUpdateSiteDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginCreateOrUpdateSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3715,43 +3654,41 @@ public final class SitesInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteEnvelope, serviceCallback);
+        Validator.validate(siteEnvelope);
         Call<ResponseBody> call = service.beginCreateOrUpdateSite(resourceGroupName, name, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginCreateOrUpdateSiteDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginCreateOrUpdateSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3803,42 +3740,41 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String deleteMetrics = null;
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3886,38 +3822,37 @@ public final class SitesInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSite(resourceGroupName, name, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -3970,43 +3905,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = getSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4053,42 +3986,40 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param propertiesToInclude Additional web app properties included in the response
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSlotDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = getSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4154,7 +4085,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4182,7 +4113,7 @@ public final class SitesInner {
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -4253,7 +4184,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4277,7 +4208,7 @@ public final class SitesInner {
         }
         Validator.validate(siteEnvelope, serviceCallback);
         Call<ResponseBody> call = service.createOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -4339,51 +4270,48 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteEnvelope Details of web app if it exists already
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteEnvelope, serviceCallback);
+        Validator.validate(siteEnvelope);
         final String skipDnsRegistration = null;
         final String skipCustomDomainVerification = null;
         final String forceDnsRegistration = null;
         final String ttlInSeconds = null;
         Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginCreateOrUpdateSiteSlotDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginCreateOrUpdateSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4444,47 +4372,44 @@ public final class SitesInner {
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteEnvelope, serviceCallback);
+        Validator.validate(siteEnvelope);
         Call<ResponseBody> call = service.beginCreateOrUpdateSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginCreateOrUpdateSiteSlotDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginCreateOrUpdateSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4541,46 +4466,44 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String deleteMetrics = null;
         final String deleteEmptyServerFarm = null;
         final String skipDnsRegistration = null;
         final String deleteAllSlots = null;
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4633,42 +4556,40 @@ public final class SitesInner {
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteSlotAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4715,38 +4636,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall isSiteCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCloneabilityInner> isSiteCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.isSiteCloneable(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
+        final ServiceCall<SiteCloneabilityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(isSiteCloneableDelegate(response));
+                    ServiceResponse<SiteCloneabilityInner> clientResponse = isSiteCloneableDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4798,42 +4718,40 @@ public final class SitesInner {
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall isSiteCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteCloneabilityInner> isSiteCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.isSiteCloneableSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCallback) {
+        final ServiceCall<SiteCloneabilityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteCloneabilityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(isSiteCloneableSlotDelegate(response));
+                    ServiceResponse<SiteCloneabilityInner> clientResponse = isSiteCloneableSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -4890,7 +4808,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -4911,7 +4829,7 @@ public final class SitesInner {
         }
         Validator.validate(recoveryEntity, serviceCallback);
         Call<ResponseBody> call = service.recoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -4964,43 +4882,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginRecoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginRecoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (recoveryEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter recoveryEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter recoveryEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(recoveryEntity, serviceCallback);
+        Validator.validate(recoveryEntity);
         Call<ResponseBody> call = service.beginRecoverSite(resourceGroupName, name, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginRecoverSiteDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginRecoverSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5063,7 +4979,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<SiteInner> recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -5087,7 +5003,7 @@ public final class SitesInner {
         }
         Validator.validate(recoveryEntity, serviceCallback);
         Call<ResponseBody> call = service.recoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -5145,47 +5061,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginRecoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInner> beginRecoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (recoveryEntity == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter recoveryEntity is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter recoveryEntity is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(recoveryEntity, serviceCallback);
+        Validator.validate(recoveryEntity);
         Call<ResponseBody> call = service.beginRecoverSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), recoveryEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCallback) {
+        final ServiceCall<SiteInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginRecoverSiteSlotDelegate(response));
+                    ServiceResponse<SiteInner> clientResponse = beginRecoverSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5233,38 +5146,37 @@ public final class SitesInner {
      * @param resourceGroupName Webspace
      * @param name Website Name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSnapshotsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteSnapshotsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshots(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteSnapshotsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5316,42 +5228,40 @@ public final class SitesInner {
      * @param name Website Name
      * @param slot Website Slot
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSnapshotsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteSnapshotsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSnapshotsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSnapshotsSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteSnapshotsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5395,36 +5305,36 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeletedSitesAsync(String resourceGroupName, final ServiceCallback<DeletedSiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeletedSiteCollectionInner> getDeletedSitesAsync(String resourceGroupName, final ServiceCallback<DeletedSiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
         final String includeSiteTypes = null;
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
+        final ServiceCall<DeletedSiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeletedSitesDelegate(response));
+                    ServiceResponse<DeletedSiteCollectionInner> clientResponse = getDeletedSitesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5463,34 +5373,34 @@ public final class SitesInner {
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeletedSitesAsync(String resourceGroupName, String propertiesToInclude, String includeSiteTypes, final ServiceCallback<DeletedSiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeletedSiteCollectionInner> getDeletedSitesAsync(String resourceGroupName, String propertiesToInclude, String includeSiteTypes, final ServiceCallback<DeletedSiteCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeletedSites(resourceGroupName, this.client.subscriptionId(), propertiesToInclude, includeSiteTypes, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCallback) {
+        final ServiceCall<DeletedSiteCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeletedSiteCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeletedSitesDelegate(response));
+                    ServiceResponse<DeletedSiteCollectionInner> clientResponse = getDeletedSitesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5537,38 +5447,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeploymentsAsync(String resourceGroupName, String name, final ServiceCallback<DeploymentCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentCollectionInner> getDeploymentsAsync(String resourceGroupName, String name, final ServiceCallback<DeploymentCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeployments(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentsDelegate(response));
+                    ServiceResponse<DeploymentCollectionInner> clientResponse = getDeploymentsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5620,42 +5529,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeploymentsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<DeploymentCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentCollectionInner> getDeploymentsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<DeploymentCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeploymentsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentsSlotDelegate(response));
+                    ServiceResponse<DeploymentCollectionInner> clientResponse = getDeploymentsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5707,42 +5614,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getInstanceDeploymentsAsync(String resourceGroupName, String name, String instanceId, final ServiceCallback<DeploymentCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentCollectionInner> getInstanceDeploymentsAsync(String resourceGroupName, String name, String instanceId, final ServiceCallback<DeploymentCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeployments(resourceGroupName, name, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentsDelegate(response));
+                    ServiceResponse<DeploymentCollectionInner> clientResponse = getInstanceDeploymentsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5799,46 +5704,43 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getInstanceDeploymentsSlotAsync(String resourceGroupName, String name, String slot, String instanceId, final ServiceCallback<DeploymentCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentCollectionInner> getInstanceDeploymentsSlotAsync(String resourceGroupName, String name, String slot, String instanceId, final ServiceCallback<DeploymentCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeploymentsSlot(resourceGroupName, name, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCallback) {
+        final ServiceCall<DeploymentCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentsSlotDelegate(response));
+                    ServiceResponse<DeploymentCollectionInner> clientResponse = getInstanceDeploymentsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5895,46 +5797,43 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = getInstanceDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -5997,51 +5896,47 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @param deployment Details of deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(deployment, serviceCallback);
+        Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createInstanceDeploymentDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = createInstanceDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6098,46 +5993,43 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteInstanceDeployment(resourceGroupName, name, id, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteInstanceDeploymentDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteInstanceDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6189,42 +6081,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = getDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6282,47 +6172,44 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param deployment Details of deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(deployment, serviceCallback);
+        Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeployment(resourceGroupName, name, id, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDeploymentDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = createDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6374,42 +6261,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteDeployment(resourceGroupName, name, id, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDeploymentDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteDeploymentDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6466,46 +6351,43 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDeploymentSlotDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = getDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6568,51 +6450,47 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param deployment Details of deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(deployment, serviceCallback);
+        Validator.validate(deployment);
         Call<ResponseBody> call = service.createDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createDeploymentSlotDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = createDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6669,46 +6547,43 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteDeploymentSlot(resourceGroupName, name, id, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteDeploymentSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6770,50 +6645,46 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getInstanceDeploymentSlotDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = getInstanceDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6881,55 +6752,50 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @param deployment Details of deployment
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (deployment == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter deployment is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(deployment, serviceCallback);
+        Validator.validate(deployment);
         Call<ResponseBody> call = service.createInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), deployment, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCallback) {
+        final ServiceCall<DeploymentInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DeploymentInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createInstanceDeploymentSlotDelegate(response));
+                    ServiceResponse<DeploymentInner> clientResponse = createInstanceDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -6991,50 +6857,46 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (id == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter id is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter id is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (instanceId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter instanceId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteInstanceDeploymentSlot(resourceGroupName, name, id, slot, instanceId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteInstanceDeploymentSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteInstanceDeploymentSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7081,38 +6943,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteInstanceIdentifiersAsync(String resourceGroupName, String name, final ServiceCallback<SiteInstanceCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInstanceCollectionInner> getSiteInstanceIdentifiersAsync(String resourceGroupName, String name, final ServiceCallback<SiteInstanceCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteInstanceCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteInstanceIdentifiersDelegate(response));
+                    ServiceResponse<SiteInstanceCollectionInner> clientResponse = getSiteInstanceIdentifiersDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7164,42 +7025,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteInstanceIdentifiersSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInstanceCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteInstanceCollectionInner> getSiteInstanceIdentifiersSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInstanceCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteInstanceIdentifiersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCallback) {
+        final ServiceCall<SiteInstanceCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteInstanceCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteInstanceIdentifiersSlotDelegate(response));
+                    ServiceResponse<SiteInstanceCollectionInner> clientResponse = getSiteInstanceIdentifiersSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7246,38 +7105,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteHostNameBindingsAsync(String resourceGroupName, String name, final ServiceCallback<HostNameBindingCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingCollectionInner> getSiteHostNameBindingsAsync(String resourceGroupName, String name, final ServiceCallback<HostNameBindingCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingsDelegate(response));
+                    ServiceResponse<HostNameBindingCollectionInner> clientResponse = getSiteHostNameBindingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7329,42 +7187,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteHostNameBindingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HostNameBindingCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingCollectionInner> getSiteHostNameBindingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HostNameBindingCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingsSlotDelegate(response));
+                    ServiceResponse<HostNameBindingCollectionInner> clientResponse = getSiteHostNameBindingsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7416,42 +7272,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param hostName Name of host
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingInner> getSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingDelegate(response));
+                    ServiceResponse<HostNameBindingInner> clientResponse = getSiteHostNameBindingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7509,47 +7363,44 @@ public final class SitesInner {
      * @param hostName Name of host
      * @param hostNameBinding Host name binding information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingInner> createOrUpdateSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (hostNameBinding == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostNameBinding is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostNameBinding is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(hostNameBinding, serviceCallback);
+        Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteHostNameBindingDelegate(response));
+                    ServiceResponse<HostNameBindingInner> clientResponse = createOrUpdateSiteHostNameBindingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7601,42 +7452,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param hostName Name of host
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBinding(resourceGroupName, name, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteHostNameBindingDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteHostNameBindingDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7693,46 +7542,43 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Name of host
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingInner> getSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteHostNameBindingSlotDelegate(response));
+                    ServiceResponse<HostNameBindingInner> clientResponse = getSiteHostNameBindingSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7795,51 +7641,47 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostNameBinding Host name binding information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<HostNameBindingInner> createOrUpdateSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (hostNameBinding == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostNameBinding is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostNameBinding is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(hostNameBinding, serviceCallback);
+        Validator.validate(hostNameBinding);
         Call<ResponseBody> call = service.createOrUpdateSiteHostNameBindingSlot(resourceGroupName, name, hostName, slot, this.client.subscriptionId(), hostNameBinding, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCallback) {
+        final ServiceCall<HostNameBindingInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<HostNameBindingInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteHostNameBindingSlotDelegate(response));
+                    ServiceResponse<HostNameBindingInner> clientResponse = createOrUpdateSiteHostNameBindingSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7896,46 +7738,43 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Name of host
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (hostName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter hostName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteHostNameBindingSlot(resourceGroupName, name, slot, hostName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteHostNameBindingSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteHostNameBindingSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -7982,38 +7821,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> getSiteConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteConfigDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = getSiteConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8066,43 +7904,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> createOrUpdateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteConfig, serviceCallback);
+        Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteConfigDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = createOrUpdateSiteConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8155,43 +7991,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> updateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteConfig, serviceCallback);
+        Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfig(resourceGroupName, name, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConfigDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = updateSiteConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8243,42 +8077,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> getSiteConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteConfigSlotDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = getSiteConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8336,47 +8168,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> createOrUpdateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteConfig, serviceCallback);
+        Validator.validate(siteConfig);
         Call<ResponseBody> call = service.createOrUpdateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteConfigSlotDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = createOrUpdateSiteConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8434,47 +8263,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteConfigInner> updateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteConfig, serviceCallback);
+        Validator.validate(siteConfig);
         Call<ResponseBody> call = service.updateSiteConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCallback) {
+        final ServiceCall<SiteConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConfigSlotDelegate(response));
+                    ServiceResponse<SiteConfigInner> clientResponse = updateSiteConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8521,38 +8347,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> getSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSourceControlDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = getSiteSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8605,43 +8430,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteSourceControl Request body that contains the source control parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteSourceControl, serviceCallback);
+        Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteSourceControlDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = createOrUpdateSiteSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8688,38 +8511,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSourceControlDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8772,43 +8594,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteSourceControl Request body that contains the source control parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteSourceControl, serviceCallback);
+        Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControl(resourceGroupName, name, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteSourceControlDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = updateSiteSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8860,42 +8680,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> getSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteSourceControlSlotDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = getSiteSourceControlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -8953,47 +8771,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteSourceControl Request body that contains the source control parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> createOrUpdateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteSourceControl, serviceCallback);
+        Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.createOrUpdateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteSourceControlSlotDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = createOrUpdateSiteSourceControlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9045,42 +8860,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteSourceControlSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteSourceControlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9138,47 +8951,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteSourceControl Request body that contains the source control parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteSourceControlInner> updateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteSourceControl == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteSourceControl is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteSourceControl, serviceCallback);
+        Validator.validate(siteSourceControl);
         Call<ResponseBody> call = service.updateSiteSourceControlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteSourceControl, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCallback) {
+        final ServiceCall<SiteSourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteSourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteSourceControlSlotDelegate(response));
+                    ServiceResponse<SiteSourceControlInner> clientResponse = updateSiteSourceControlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9230,42 +9040,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> listSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAppSettingsSlotDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = listSiteAppSettingsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9312,38 +9120,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteAppSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> listSiteAppSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAppSettingsDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = listSiteAppSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9396,43 +9203,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param appSettings Application settings of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteAppSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> updateSiteAppSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (appSettings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter appSettings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(appSettings, serviceCallback);
+        Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettings(resourceGroupName, name, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAppSettingsDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = updateSiteAppSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9490,47 +9295,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param appSettings Application settings of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> updateSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (appSettings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter appSettings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(appSettings, serviceCallback);
+        Validator.validate(appSettings);
         Call<ResponseBody> call = service.updateSiteAppSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), appSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAppSettingsSlotDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = updateSiteAppSettingsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9577,38 +9379,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ConnectionStringDictionaryInner> listSiteConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteConnectionStringsDelegate(response));
+                    ServiceResponse<ConnectionStringDictionaryInner> clientResponse = listSiteConnectionStringsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9660,42 +9461,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ConnectionStringDictionaryInner> listSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteConnectionStringsSlotDelegate(response));
+                    ServiceResponse<ConnectionStringDictionaryInner> clientResponse = listSiteConnectionStringsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9748,43 +9547,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param connectionStrings Connection strings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ConnectionStringDictionaryInner> updateSiteConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionStrings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionStrings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionStrings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionStrings, serviceCallback);
+        Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStrings(resourceGroupName, name, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConnectionStringsDelegate(response));
+                    ServiceResponse<ConnectionStringDictionaryInner> clientResponse = updateSiteConnectionStringsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9842,47 +9639,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param connectionStrings Connection strings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ConnectionStringDictionaryInner> updateSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionStrings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionStrings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionStrings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionStrings, serviceCallback);
+        Validator.validate(connectionStrings);
         Call<ResponseBody> call = service.updateSiteConnectionStringsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), connectionStrings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCallback) {
+        final ServiceCall<ConnectionStringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ConnectionStringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteConnectionStringsSlotDelegate(response));
+                    ServiceResponse<ConnectionStringDictionaryInner> clientResponse = updateSiteConnectionStringsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -9929,38 +9723,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteAuthSettingsInner> listSiteAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAuthSettingsDelegate(response));
+                    ServiceResponse<SiteAuthSettingsInner> clientResponse = listSiteAuthSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10012,42 +9805,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteAuthSettingsInner> listSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteAuthSettingsSlotDelegate(response));
+                    ServiceResponse<SiteAuthSettingsInner> clientResponse = listSiteAuthSettingsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10100,43 +9891,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteAuthSettingsInner> updateSiteAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteAuthSettings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteAuthSettings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteAuthSettings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteAuthSettings, serviceCallback);
+        Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettings(resourceGroupName, name, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAuthSettingsDelegate(response));
+                    ServiceResponse<SiteAuthSettingsInner> clientResponse = updateSiteAuthSettingsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10194,47 +9983,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteAuthSettingsInner> updateSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteAuthSettings == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteAuthSettings is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteAuthSettings is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteAuthSettings, serviceCallback);
+        Validator.validate(siteAuthSettings);
         Call<ResponseBody> call = service.updateSiteAuthSettingsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteAuthSettings, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCallback) {
+        final ServiceCall<SiteAuthSettingsInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteAuthSettingsInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteAuthSettingsSlotDelegate(response));
+                    ServiceResponse<SiteAuthSettingsInner> clientResponse = updateSiteAuthSettingsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10285,7 +10071,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall listSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<UserInner> listSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -10302,7 +10088,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.listSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -10349,38 +10135,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginListSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<UserInner> beginListSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.beginListSitePublishingCredentials(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginListSitePublishingCredentialsDelegate(response));
+                    ServiceResponse<UserInner> clientResponse = beginListSitePublishingCredentialsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10436,7 +10221,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<UserInner> listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -10456,7 +10241,7 @@ public final class SitesInner {
             serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
         }
         Call<ResponseBody> call = service.listSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -10508,42 +10293,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginListSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<UserInner> beginListSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.beginListSitePublishingCredentialsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginListSitePublishingCredentialsSlotDelegate(response));
+                    ServiceResponse<UserInner> clientResponse = beginListSitePublishingCredentialsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10590,38 +10373,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> listSiteMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteMetadataDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = listSiteMetadataDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10673,42 +10455,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> listSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteMetadataSlotDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = listSiteMetadataSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10761,43 +10541,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param metadata Meta data of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> updateSiteMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (metadata == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter metadata is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter metadata is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata, serviceCallback);
+        Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadata(resourceGroupName, name, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteMetadataDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = updateSiteMetadataDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10855,47 +10633,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param metadata Meta data of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<StringDictionaryInner> updateSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (metadata == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter metadata is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter metadata is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata, serviceCallback);
+        Validator.validate(metadata);
         Call<ResponseBody> call = service.updateSiteMetadataSlot(resourceGroupName, name, slot, this.client.subscriptionId(), metadata, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCallback) {
+        final ServiceCall<StringDictionaryInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<StringDictionaryInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteMetadataSlotDelegate(response));
+                    ServiceResponse<StringDictionaryInner> clientResponse = updateSiteMetadataSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -10942,38 +10717,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteLogsConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteLogsConfigInner> getSiteLogsConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteLogsConfigDelegate(response));
+                    ServiceResponse<SiteLogsConfigInner> clientResponse = getSiteLogsConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11026,43 +10800,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param siteLogsConfig Site logs configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteLogsConfigInner> updateSiteLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteLogsConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteLogsConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteLogsConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteLogsConfig, serviceCallback);
+        Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfig(resourceGroupName, name, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteLogsConfigDelegate(response));
+                    ServiceResponse<SiteLogsConfigInner> clientResponse = updateSiteLogsConfigDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11114,42 +10886,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteLogsConfigInner> getSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteLogsConfigSlotDelegate(response));
+                    ServiceResponse<SiteLogsConfigInner> clientResponse = getSiteLogsConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11207,47 +10977,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteLogsConfig Site logs configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SiteLogsConfigInner> updateSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (siteLogsConfig == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter siteLogsConfig is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter siteLogsConfig is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(siteLogsConfig, serviceCallback);
+        Validator.validate(siteLogsConfig);
         Call<ResponseBody> call = service.updateSiteLogsConfigSlot(resourceGroupName, name, slot, this.client.subscriptionId(), siteLogsConfig, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCallback) {
+        final ServiceCall<SiteLogsConfigInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SiteLogsConfigInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteLogsConfigSlotDelegate(response));
+                    ServiceResponse<SiteLogsConfigInner> clientResponse = updateSiteLogsConfigSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11292,38 +11059,37 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> listSitePremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSitePremierAddOns(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePremierAddOnsDelegate(response));
+                    ServiceResponse<Object> clientResponse = listSitePremierAddOnsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11373,42 +11139,40 @@ public final class SitesInner {
      * @param name the String value
      * @param slot the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> listSitePremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSitePremierAddOnsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePremierAddOnsSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = listSitePremierAddOnsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11458,42 +11222,40 @@ public final class SitesInner {
      * @param name the String value
      * @param premierAddOnName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitePremierAddOnDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSitePremierAddOnDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11549,47 +11311,44 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @param premierAddOn the PremierAddOnRequestInner value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> addSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (premierAddOn == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOn is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOn is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(premierAddOn, serviceCallback);
+        Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addSitePremierAddOnDelegate(response));
+                    ServiceResponse<Object> clientResponse = addSitePremierAddOnDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11639,42 +11398,40 @@ public final class SitesInner {
      * @param name the String value
      * @param premierAddOnName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOn(resourceGroupName, name, premierAddOnName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSitePremierAddOnDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSitePremierAddOnDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11729,46 +11486,43 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @param slot the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSitePremierAddOnSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSitePremierAddOnSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11829,51 +11583,47 @@ public final class SitesInner {
      * @param slot the String value
      * @param premierAddOn the PremierAddOnRequestInner value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall addSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> addSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (premierAddOn == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOn is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOn is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(premierAddOn, serviceCallback);
+        Validator.validate(premierAddOn);
         Call<ResponseBody> call = service.addSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), premierAddOn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(addSitePremierAddOnSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = addSitePremierAddOnSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -11928,46 +11678,43 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @param slot the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (premierAddOnName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter premierAddOnName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSitePremierAddOnSlot(resourceGroupName, name, premierAddOnName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSitePremierAddOnSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSitePremierAddOnSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12014,38 +11761,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupRequestInner> getSiteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationDelegate(response));
+                    ServiceResponse<BackupRequestInner> clientResponse = getSiteBackupConfigurationDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12097,42 +11843,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupRequestInner> getSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupConfigurationSlotDelegate(response));
+                    ServiceResponse<BackupRequestInner> clientResponse = getSiteBackupConfigurationSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12185,43 +11929,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupRequestInner> updateSiteBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfiguration(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationDelegate(response));
+                    ServiceResponse<BackupRequestInner> clientResponse = updateSiteBackupConfigurationDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12279,47 +12021,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupRequestInner> updateSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.updateSiteBackupConfigurationSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCallback) {
+        final ServiceCall<BackupRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteBackupConfigurationSlotDelegate(response));
+                    ServiceResponse<BackupRequestInner> clientResponse = updateSiteBackupConfigurationSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12372,43 +12111,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall backupSiteAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> backupSiteAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.backupSite(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = backupSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12466,47 +12203,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall backupSiteSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> backupSiteSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.backupSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(backupSiteSlotDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = backupSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12559,43 +12293,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall discoverSiteRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RestoreRequestInner> discoverSiteRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestore(resourceGroupName, name, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
+        final ServiceCall<RestoreRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreDelegate(response));
+                    ServiceResponse<RestoreRequestInner> clientResponse = discoverSiteRestoreDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12653,47 +12385,44 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall discoverSiteRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RestoreRequestInner> discoverSiteRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.discoverSiteRestoreSlot(resourceGroupName, name, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCallback) {
+        final ServiceCall<RestoreRequestInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RestoreRequestInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(discoverSiteRestoreSlotDelegate(response));
+                    ServiceResponse<RestoreRequestInner> clientResponse = discoverSiteRestoreSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12740,38 +12469,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteBackupsAsync(String resourceGroupName, String name, final ServiceCallback<BackupItemCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemCollectionInner> listSiteBackupsAsync(String resourceGroupName, String name, final ServiceCallback<BackupItemCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
+        final ServiceCall<BackupItemCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsDelegate(response));
+                    ServiceResponse<BackupItemCollectionInner> clientResponse = listSiteBackupsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12823,42 +12551,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteBackupsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupItemCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemCollectionInner> listSiteBackupsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupItemCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCallback) {
+        final ServiceCall<BackupItemCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteBackupsSlotDelegate(response));
+                    ServiceResponse<BackupItemCollectionInner> clientResponse = listSiteBackupsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12910,42 +12636,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> getSiteBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupStatus(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = getSiteBackupStatusDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -12997,42 +12721,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteBackup(resourceGroupName, name, backupId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteBackupDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = deleteBackupDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13089,46 +12811,43 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> getSiteBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteBackupStatusSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSlotDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = getSiteBackupStatusSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13185,46 +12904,43 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteBackupSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteBackupSlotDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = deleteBackupSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13287,51 +13003,47 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> getSiteBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecretsSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSecretsSlotDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = getSiteBackupStatusSecretsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13389,47 +13101,44 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @param request Information on backup request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<BackupItemInner> getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.getSiteBackupStatusSecrets(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCallback) {
+        final ServiceCall<BackupItemInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<BackupItemInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteBackupStatusSecretsDelegate(response));
+                    ServiceResponse<BackupItemInner> clientResponse = getSiteBackupStatusSecretsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13491,7 +13200,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<RestoreResponseInner> restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13515,7 +13224,7 @@ public final class SitesInner {
         }
         Validator.validate(request, serviceCallback);
         Call<ResponseBody> call = service.restoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -13573,47 +13282,44 @@ public final class SitesInner {
      * @param backupId Id of backup to restore
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginRestoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RestoreResponseInner> beginRestoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.beginRestoreSite(resourceGroupName, name, backupId, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
+        final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginRestoreSiteDelegate(response));
+                    ServiceResponse<RestoreResponseInner> clientResponse = beginRestoreSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13680,7 +13386,7 @@ public final class SitesInner {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
+    public ServiceCall<RestoreResponseInner> restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
         if (serviceCallback == null) {
             throw new IllegalArgumentException("ServiceCallback is required for async calls.");
         }
@@ -13707,7 +13413,7 @@ public final class SitesInner {
         }
         Validator.validate(request, serviceCallback);
         Call<ResponseBody> call = service.restoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
+        final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -13770,51 +13476,47 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on restore request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall beginRestoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RestoreResponseInner> beginRestoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (backupId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter backupId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter backupId is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (request == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter request is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(request, serviceCallback);
+        Validator.validate(request);
         Call<ResponseBody> call = service.beginRestoreSiteSlot(resourceGroupName, name, backupId, slot, this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCallback) {
+        final ServiceCall<RestoreResponseInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RestoreResponseInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(beginRestoreSiteSlotDelegate(response));
+                    ServiceResponse<RestoreResponseInner> clientResponse = beginRestoreSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13862,39 +13564,38 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CsmUsageQuotaCollectionInner> getSiteUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesDelegate(response));
+                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getSiteUsagesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -13936,38 +13637,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CsmUsageQuotaCollectionInner> getSiteUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesDelegate(response));
+                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getSiteUsagesDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14020,43 +13720,41 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CsmUsageQuotaCollectionInner> getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesSlotDelegate(response));
+                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getSiteUsagesSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14103,42 +13801,40 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, String filter, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<CsmUsageQuotaCollectionInner> getSiteUsagesSlotAsync(String resourceGroupName, String name, String slot, String filter, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteUsagesSlot(resourceGroupName, name, slot, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCallback) {
+        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteUsagesSlotDelegate(response));
+                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getSiteUsagesSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14187,40 +13883,39 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ResourceMetricCollectionInner> getSiteMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean details = null;
         final String filter = null;
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsDelegate(response));
+                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getSiteMetricsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14264,38 +13959,37 @@ public final class SitesInner {
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ResourceMetricCollectionInner> getSiteMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsDelegate(response));
+                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getSiteMetricsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14349,44 +14043,42 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ResourceMetricCollectionInner> getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean details = null;
         final String filter = null;
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsSlotDelegate(response));
+                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getSiteMetricsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14435,42 +14127,40 @@ public final class SitesInner {
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ResourceMetricCollectionInner> getSiteMetricsSlotAsync(String resourceGroupName, String name, String slot, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
+        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricsSlotDelegate(response));
+                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getSiteMetricsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14522,42 +14212,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricDefinitionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<MetricDefinitionCollectionInner> getSiteMetricDefinitionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
+        final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricDefinitionsSlotDelegate(response));
+                    ServiceResponse<MetricDefinitionCollectionInner> clientResponse = getSiteMetricDefinitionsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14604,38 +14292,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<MetricDefinitionCollectionInner> getSiteMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
+        final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteMetricDefinitionsDelegate(response));
+                    ServiceResponse<MetricDefinitionCollectionInner> clientResponse = getSiteMetricDefinitionsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14685,41 +14372,40 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePublishingProfileXmlAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = listSitePublishingProfileXmlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14769,40 +14455,39 @@ public final class SitesInner {
                  WebDeploy -- default
                  Ftp
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format, final ServiceCallback<InputStream> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXml(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = listSitePublishingProfileXmlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14857,45 +14542,43 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String format = null;
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.withFormat(null);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlSlotDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = listSitePublishingProfileXmlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -14950,44 +14633,42 @@ public final class SitesInner {
                  WebDeploy -- default
                  Ftp
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, String format, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, String format, final ServiceCallback<InputStream> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         CsmPublishingProfileOptions options = new CsmPublishingProfileOptions();
         options.withFormat(format);
         Call<ResponseBody> call = service.listSitePublishingProfileXmlSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), options, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+        final ServiceCall<InputStream> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSitePublishingProfileXmlSlotDelegate(response));
+                    ServiceResponse<InputStream> clientResponse = listSitePublishingProfileXmlSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15041,44 +14722,42 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall restartSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = restartSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15127,42 +14806,40 @@ public final class SitesInner {
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall restartSiteSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.restartSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = restartSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15211,40 +14888,39 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall restartSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> restartSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean softRestart = null;
         final Boolean synchronous = null;
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = restartSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15288,38 +14964,37 @@ public final class SitesInner {
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.restartSite(resourceGroupName, name, this.client.subscriptionId(), softRestart, synchronous, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(restartSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = restartSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15366,38 +15041,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall startSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> startSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.startSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(startSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = startSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15449,42 +15123,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall startSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> startSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.startSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(startSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = startSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15531,38 +15203,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall stopSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> stopSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.stopSite(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(stopSiteDelegate(response));
+                    ServiceResponse<Object> clientResponse = stopSiteDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15614,42 +15285,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall stopSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> stopSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.stopSiteSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(stopSiteSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = stopSiteSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15694,38 +15363,37 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall syncSiteRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> syncSiteRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.syncSiteRepository(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(syncSiteRepositoryDelegate(response));
+                    ServiceResponse<Object> clientResponse = syncSiteRepositoryDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15775,42 +15443,40 @@ public final class SitesInner {
      * @param name the String value
      * @param slot the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall syncSiteRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> syncSiteRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.syncSiteRepositorySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(syncSiteRepositorySlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = syncSiteRepositorySlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15862,42 +15528,40 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPasswordSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(generateNewSitePublishingPasswordSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = generateNewSitePublishingPasswordSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -15944,38 +15608,37 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.generateNewSitePublishingPassword(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(generateNewSitePublishingPasswordDelegate(response));
+                    ServiceResponse<Object> clientResponse = generateNewSitePublishingPasswordDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16027,42 +15690,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteRelayServiceConnectionDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = getSiteRelayServiceConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16120,47 +15781,44 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param connectionEnvelope The details of the Hybrid Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = createOrUpdateSiteRelayServiceConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16212,42 +15870,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteRelayServiceConnectionDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteRelayServiceConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16305,47 +15961,44 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param connectionEnvelope The details of the Hybrid Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnection(resourceGroupName, name, entityName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteRelayServiceConnectionDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = updateSiteRelayServiceConnectionDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16402,46 +16055,43 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteRelayServiceConnectionSlotDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = getSiteRelayServiceConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16504,51 +16154,47 @@ public final class SitesInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the Hybrid Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteRelayServiceConnectionSlotDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = createOrUpdateSiteRelayServiceConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16605,46 +16251,43 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall deleteSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> deleteSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.deleteSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(deleteSiteRelayServiceConnectionSlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = deleteSiteRelayServiceConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16707,51 +16350,47 @@ public final class SitesInner {
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the Hybrid Connection
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (entityName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter entityName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter entityName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteRelayServiceConnectionSlot(resourceGroupName, name, entityName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteRelayServiceConnectionSlotDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = updateSiteRelayServiceConnectionSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16803,42 +16442,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteRelayServiceConnectionsSlotDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = listSiteRelayServiceConnectionsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16885,38 +16522,37 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listSiteRelayServiceConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCallback) {
+        final ServiceCall<RelayServiceConnectionEntityInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<RelayServiceConnectionEntityInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(listSiteRelayServiceConnectionsDelegate(response));
+                    ServiceResponse<RelayServiceConnectionEntityInner> clientResponse = listSiteRelayServiceConnectionsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -16978,50 +16614,46 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVnetGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteVnetGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVnetGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVnetGatewaySlotDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteVnetGatewaySlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17090,55 +16722,50 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewaySlotDelegate(response));
+                    ServiceResponse<VnetGatewayInner> clientResponse = createOrUpdateSiteVNETConnectionGatewaySlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17206,55 +16833,50 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetGatewayInner> updateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGatewaySlot(resourceGroupName, name, vnetName, gatewayName, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionGatewaySlotDelegate(response));
+                    ServiceResponse<VnetGatewayInner> clientResponse = updateSiteVNETConnectionGatewaySlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17311,46 +16933,43 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Object> getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<Object> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
+        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVnetGatewayDelegate(response));
+                    ServiceResponse<Object> clientResponse = getSiteVnetGatewayDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17414,51 +17033,47 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.createOrUpdateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(createOrUpdateSiteVNETConnectionGatewayDelegate(response));
+                    ServiceResponse<VnetGatewayInner> clientResponse = createOrUpdateSiteVNETConnectionGatewayDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17521,51 +17136,47 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param connectionEnvelope The properties to update this gateway with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VnetGatewayInner> updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter vnetName is required and cannot be null.");
         }
         if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter gatewayName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(connectionEnvelope, serviceCallback);
+        Validator.validate(connectionEnvelope);
         Call<ResponseBody> call = service.updateSiteVNETConnectionGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
+        final ServiceCall<VnetGatewayInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSiteVNETConnectionGatewayDelegate(response));
+                    ServiceResponse<VnetGatewayInner> clientResponse = updateSiteVNETConnectionGatewayDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17612,38 +17223,37 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVNETConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<VnetInfoInner>> getSiteVNETConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnections(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
+        final ServiceCall<List<VnetInfoInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionsDelegate(response));
+                    ServiceResponse<List<VnetInfoInner>> clientResponse = getSiteVNETConnectionsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -17695,42 +17305,40 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<VnetInfoInner>> getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (slot == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSiteVNETConnectionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
+        final ServiceCall<List<VnetInfoInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSiteVNETConnectionsSlotDelegate(response));
+                    ServiceResponse<List<VnetInfoInner>> clientResponse = getSiteVNETConnectionsSlotDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

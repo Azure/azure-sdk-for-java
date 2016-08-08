@@ -19,33 +19,32 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayPathRuleInner extends SubResource {
     /**
-     * Gets or sets the path rules of URL path map.
+     * Path rules of URL path map.
      */
     @JsonProperty(value = "properties.paths")
     private List<String> paths;
 
     /**
-     * Gets or sets backend address pool resource of URL path map.
+     * Backend address pool resource of URL path map.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Gets or sets backend http settings resource of URL path map.
+     * Backend http settings resource of URL path map.
      */
     @JsonProperty(value = "properties.backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /**
-     * Gets or sets path rule of URL path map resource
-     * Updating/Deleting/Failed.
+     * Path rule of URL path map resource Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

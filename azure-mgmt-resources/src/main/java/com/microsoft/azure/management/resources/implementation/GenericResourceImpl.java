@@ -125,18 +125,23 @@ final class GenericResourceImpl
     }
 
     @Override
-    public ServiceCall createAsync(final ServiceCallback<GenericResource> callback) {
-        return createResourceAsync(new ServiceCallback<Resource>() {
+    public ServiceCall<GenericResource> createAsync(final ServiceCallback<GenericResource> callback) {
+        final ServiceCall<GenericResource> serviceCall = new ServiceCall<>(null);
+        serviceCall.newCall(createResourceAsync(new ServiceCallback<Resource>() {
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
+                serviceCall.failure(t);
             }
 
             @Override
             public void success(ServiceResponse<Resource> result) {
-                callback.success(new ServiceResponse<>((GenericResource) result.getBody(), result.getResponse()));
+                ServiceResponse<GenericResource> serviceResponse = new ServiceResponse<>((GenericResource) result.getBody(), result.getResponse());
+                callback.success(serviceResponse);
+                serviceCall.success(serviceResponse);
             }
-        });
+        }).getCall());
+        return serviceCall;
     }
 
     @Override

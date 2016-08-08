@@ -16,22 +16,22 @@ import com.microsoft.azure.management.resources.ProviderResourceType;
  */
 public class ProviderInner {
     /**
-     * Gets or sets the provider id.
+     * The provider id.
      */
     private String id;
 
     /**
-     * Gets or sets the namespace of the provider.
+     * The namespace of the provider.
      */
     private String namespace;
 
     /**
-     * Gets or sets the registration state of the provider.
+     * The registration state of the provider.
      */
     private String registrationState;
 
     /**
-     * Gets or sets the collection of provider resource types.
+     * The collection of provider resource types.
      */
     private List<ProviderResourceType> resourceTypes;
 

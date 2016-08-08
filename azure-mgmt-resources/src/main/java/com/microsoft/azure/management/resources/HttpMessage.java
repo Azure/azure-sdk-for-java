@@ -14,7 +14,7 @@ package com.microsoft.azure.management.resources;
  */
 public class HttpMessage {
     /**
-     * Gets or sets HTTP message content.
+     * HTTP message content.
      */
     private Object content;
 

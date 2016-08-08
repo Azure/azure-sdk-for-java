@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+
+import java.util.List;
 
 /**
  * IPConfiguration in a NetworkInterface.
