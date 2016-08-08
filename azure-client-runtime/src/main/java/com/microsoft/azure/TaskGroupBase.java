@@ -162,7 +162,9 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
          * @param call the call
          */
         private void addCall(ServiceCall call) {
-            this.serviceCalls.add(call);
+            if (call != null) {
+                this.serviceCalls.add(call);
+            }
         }
     }
 }
