@@ -18,33 +18,33 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class ApplicationGatewaySslCertificateInner extends SubResource {
     /**
-     * Gets or sets the certificate data.
+     * SSL Certificate data.
      */
     @JsonProperty(value = "properties.data")
     private String data;
 
     /**
-     * Gets or sets the certificate password.
+     * SSL Certificate password.
      */
     @JsonProperty(value = "properties.password")
     private String password;
 
     /**
-     * Gets or sets the certificate public data.
+     * SSL Certificate public data.
      */
     @JsonProperty(value = "properties.publicCertData")
     private String publicCertData;
 
     /**
-     * Gets or sets Provisioning state of the ssl certificate resource
+     * Provisioning state of the ssl certificate resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

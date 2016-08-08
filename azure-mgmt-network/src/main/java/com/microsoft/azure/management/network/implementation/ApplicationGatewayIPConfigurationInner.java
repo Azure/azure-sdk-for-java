@@ -18,22 +18,22 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayIPConfigurationInner extends SubResource {
     /**
-     * Gets or sets the reference of the subnet resource.A subnet from where
-     * appliation gateway gets its private address.
+     * Reference of the subnet resource. A subnet from where appliation
+     * gateway gets its private address.
      */
     @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /**
-     * Gets provisioning state of the application gateway subnet resource
+     * Provisioning state of the application gateway subnet resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

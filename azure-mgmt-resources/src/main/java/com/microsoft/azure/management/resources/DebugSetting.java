@@ -14,7 +14,7 @@ package com.microsoft.azure.management.resources;
  */
 public class DebugSetting {
     /**
-     * Gets or sets the debug detail level.
+     * The debug detail level.
      */
     private String detailLevel;
 

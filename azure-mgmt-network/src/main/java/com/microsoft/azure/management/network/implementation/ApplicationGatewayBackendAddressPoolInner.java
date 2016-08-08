@@ -20,27 +20,27 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
     /**
-     * Gets collection of references to IPs defined in NICs.
+     * Collection of references to IPs defined in NICs.
      */
     @JsonProperty(value = "properties.backendIPConfigurations")
     private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
 
     /**
-     * Gets or sets the backend addresses.
+     * Backend addresses.
      */
     @JsonProperty(value = "properties.backendAddresses")
     private List<ApplicationGatewayBackendAddress> backendAddresses;
 
     /**
-     * Gets provisioning state of the backend address pool resource
+     * Provisioning state of the backend address pool resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Resource that is unique within a resource group. This name can be used
+     * to access the resource.
      */
     private String name;
 

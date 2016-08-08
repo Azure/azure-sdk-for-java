@@ -16,18 +16,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentExtendedInner {
     /**
-     * Gets or sets the ID of the deployment.
+     * The ID of the deployment.
      */
     private String id;
 
     /**
-     * Gets or sets the name of the deployment.
+     * The name of the deployment.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets deployment properties.
+     * Deployment properties.
      */
     private DeploymentPropertiesExtended properties;
 

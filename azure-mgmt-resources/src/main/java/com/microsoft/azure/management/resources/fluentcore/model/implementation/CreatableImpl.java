@@ -82,10 +82,10 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
      * @return the handle to the create REST call
      */
     @SuppressWarnings("unchecked")
-    public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
+    public ServiceCall<FluentModelT> createAsync(ServiceCallback<FluentModelT> callback) {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
-            return creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
+            return (ServiceCall<FluentModelT>) creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }

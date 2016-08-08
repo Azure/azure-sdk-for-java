@@ -50,7 +50,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
@@ -76,7 +76,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Checks if the specified access is available at the given path.
@@ -99,7 +99,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Checks if the specified access is available at the given path.
      *
@@ -123,7 +123,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a directory.
@@ -146,7 +146,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Concatenates the list of source files into the destination file, removing all source files upon success.
@@ -171,7 +171,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
@@ -196,7 +196,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
@@ -222,7 +222,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
@@ -245,7 +245,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
@@ -273,7 +273,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the file content summary object specified by the file path.
@@ -296,7 +296,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ContentSummaryResult> getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Get the file status object specified by the file path.
@@ -319,7 +319,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusResult> getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
@@ -344,7 +344,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
      *
@@ -370,7 +370,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Creates a file with optionally specified content.
@@ -393,7 +393,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Creates a file with optionally specified content.
      *
@@ -419,7 +419,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Opens and reads from the specified file.
@@ -442,7 +442,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
     /**
      * Opens and reads from the specified file.
      *
@@ -468,7 +468,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Sets the Access Control List (ACL) for a file or folder.
@@ -493,7 +493,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Modifies existing Access Control List (ACL) entries on a file or folder.
@@ -518,7 +518,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Removes existing Access Control List (ACL) entries for a file or folder.
@@ -543,7 +543,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets Access Control List (ACL) entries for the specified file or directory.
@@ -566,7 +566,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<AclStatusResult> getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes the requested file or directory, optionally recursively.
@@ -589,7 +589,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
@@ -613,7 +613,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Rename a file or directory.
@@ -638,7 +638,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Sets the owner of a file or directory.
@@ -661,7 +661,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Sets the owner of a file or directory.
      *
@@ -687,7 +687,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Sets the permission of the file or folder.
@@ -710,7 +710,7 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Sets the permission of the file or folder.
      *
@@ -734,6 +734,6 @@ public interface FileSystems {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
 }

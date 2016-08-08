@@ -35,5 +35,5 @@ public interface Creatable<T> extends Indexable {
      * @param callback the callback to handle success and failure
      * @return a handle to cancel the request
      */
-    ServiceCall createAsync(ServiceCallback<T> callback);
+    ServiceCall<T> createAsync(ServiceCallback<T> callback);
 }

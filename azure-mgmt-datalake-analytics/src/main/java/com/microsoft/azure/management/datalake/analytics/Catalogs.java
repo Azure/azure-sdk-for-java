@@ -32,6 +32,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -63,7 +64,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
@@ -90,7 +91,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets the specified secret in the specified database.
@@ -115,7 +116,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes the specified secret in the specified database.
@@ -140,7 +141,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes all secrets in the specified database.
@@ -163,7 +164,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
@@ -188,7 +189,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -211,7 +212,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
@@ -247,7 +248,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
@@ -272,7 +273,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -295,7 +296,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
@@ -331,7 +332,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
@@ -358,7 +359,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -383,7 +384,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
@@ -421,7 +422,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
@@ -448,7 +449,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -473,7 +474,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
@@ -511,7 +512,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified table type from the Data Lake Analytics catalog.
@@ -538,7 +539,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -563,7 +564,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
@@ -601,7 +602,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
@@ -628,7 +629,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -653,7 +654,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
@@ -691,7 +692,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified table statistics from the Data Lake Analytics catalog.
@@ -720,7 +721,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -747,7 +748,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
@@ -787,7 +788,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified table partition from the Data Lake Analytics catalog.
@@ -816,7 +817,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -843,7 +844,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
@@ -883,7 +884,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -908,7 +909,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
@@ -946,7 +947,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
@@ -973,7 +974,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -998,7 +999,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
@@ -1036,7 +1037,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
@@ -1061,7 +1062,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1084,7 +1085,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
@@ -1120,7 +1121,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
@@ -1145,7 +1146,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1168,7 +1169,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
@@ -1204,7 +1205,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
@@ -1227,7 +1228,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1248,7 +1249,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
@@ -1282,7 +1283,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -1304,7 +1305,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -1326,7 +1327,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -1348,7 +1349,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -1370,7 +1371,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -1392,7 +1393,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -1414,7 +1415,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -1436,7 +1437,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1458,7 +1459,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -1480,7 +1481,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -1502,7 +1503,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1524,7 +1525,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1546,7 +1547,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1568,6 +1569,6 @@ public interface Catalogs {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
 
 }

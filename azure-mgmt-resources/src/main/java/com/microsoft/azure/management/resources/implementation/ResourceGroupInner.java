@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ResourceGroupInner {
     /**
-     * Gets the ID of the resource group.
+     * The ID of the resource group.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the Name of the resource group.
+     * The Name of the resource group.
      */
     private String name;
 
@@ -33,16 +33,15 @@ public class ResourceGroupInner {
     private ResourceGroupProperties properties;
 
     /**
-     * Gets or sets the location of the resource group. It cannot be changed
-     * after the resource group has been created. Has to be one of the
-     * supported Azure Locations, such as West US, East US, West Europe, East
-     * Asia, etc.
+     * The location of the resource group. It cannot be changed after the
+     * resource group has been created. Has to be one of the supported Azure
+     * Locations, such as West US, East US, West Europe, East Asia, etc.
      */
     @JsonProperty(required = true)
     private String location;
 
     /**
-     * Gets or sets the tags attached to the resource group.
+     * The tags attached to the resource group.
      */
     private Map<String, String> tags;
 

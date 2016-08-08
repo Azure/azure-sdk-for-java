@@ -14,7 +14,7 @@ package com.microsoft.azure.management.resources.implementation;
  */
 public class DeploymentExportResultInner {
     /**
-     * Gets or sets the template content.
+     * The template content.
      */
     private Object template;
 

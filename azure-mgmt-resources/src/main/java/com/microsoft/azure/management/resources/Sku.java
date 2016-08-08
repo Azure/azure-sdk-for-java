@@ -14,32 +14,32 @@ package com.microsoft.azure.management.resources;
  */
 public class Sku {
     /**
-     * Gets or sets the sku name.
+     * The sku name.
      */
     private String name;
 
     /**
-     * Gets or sets the sku tier.
+     * The sku tier.
      */
     private String tier;
 
     /**
-     * Gets or sets the sku size.
+     * The sku size.
      */
     private String size;
 
     /**
-     * Gets or sets the sku family.
+     * The sku family.
      */
     private String family;
 
     /**
-     * Gets or sets the sku model.
+     * The sku model.
      */
     private String model;
 
     /**
-     * Gets or sets the sku capacity.
+     * The sku capacity.
      */
     private Integer capacity;
 

@@ -29,6 +29,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -54,7 +55,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Adds a certificate to the specified account.
      *
@@ -76,7 +77,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -95,7 +96,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -115,7 +116,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
@@ -138,7 +139,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Cancels a failed deletion of a certificate from the specified account.
      *
@@ -162,7 +163,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Deletes a certificate from the specified account.
@@ -185,7 +186,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a certificate from the specified account.
      *
@@ -209,7 +210,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Gets information about the specified certificate.
@@ -232,7 +233,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets information about the specified certificate.
      *
@@ -256,7 +257,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -278,7 +279,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -301,6 +302,6 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
 
 }

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.SubResource;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -20,46 +21,51 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     /**
-     * Gets or sets the port.
+     * Port.
      */
     @JsonProperty(value = "properties.port")
     private Integer port;
 
     /**
-     * Gets or sets the protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Gets or sets the cookie affinity. Possible values include: 'Enabled',
-     * 'Disabled'.
+     * Cookie affinity. Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.cookieBasedAffinity")
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /**
-     * Gets or sets request timeout.
+     * Request timeout.
      */
     @JsonProperty(value = "properties.requestTimeout")
     private Integer requestTimeout;
 
     /**
-     * Gets or sets probe resource of application gateway.
+     * Probe resource of application gateway.
      */
     @JsonProperty(value = "properties.probe")
     private SubResource probe;
 
     /**
-     * Gets or sets Provisioning state of the backend http settings resource
+     * Array of references to Application Gateway Authentication Certificates.
+     */
+    @JsonProperty(value = "properties.authenticationCertificates")
+    private List<SubResource> authenticationCertificates;
+
+    /**
+     * Provisioning state of the backend http settings resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 
@@ -165,6 +171,26 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettingsInner withProbe(SubResource probe) {
         this.probe = probe;
+        return this;
+    }
+
+    /**
+     * Get the authenticationCertificates value.
+     *
+     * @return the authenticationCertificates value
+     */
+    public List<SubResource> authenticationCertificates() {
+        return this.authenticationCertificates;
+    }
+
+    /**
+     * Set the authenticationCertificates value.
+     *
+     * @param authenticationCertificates the authenticationCertificates value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withAuthenticationCertificates(List<SubResource> authenticationCertificates) {
+        this.authenticationCertificates = authenticationCertificates;
         return this;
     }
 
