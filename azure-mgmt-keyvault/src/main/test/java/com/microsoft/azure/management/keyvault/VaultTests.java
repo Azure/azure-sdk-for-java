@@ -40,9 +40,6 @@ public class VaultTests extends KeyVaultManagementTestBase {
                 .withNewResourceGroup(RG_NAME)
                 .defineAccessPolicy()
                     .forServicePrincipal(sp)
-                    .allowKeyGetting()
-                    .allowKeyListing()
-                    .allowKeyCreating()
                     .allowSecretAllPermissions()
                     .attach()
                 .create();

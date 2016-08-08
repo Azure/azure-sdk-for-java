@@ -8,13 +8,16 @@ package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.SkuName;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -27,11 +30,17 @@ class VaultsImpl
             VaultsInner,
             KeyVaultManager>
         implements Vaults {
+    private final GraphRbacManager graphRbacManager;
+    private final String tenantId;
 
     VaultsImpl(
             final VaultsInner client,
-            final KeyVaultManager keyVaultManager) {
+            final KeyVaultManager keyVaultManager,
+            final GraphRbacManager graphRbacManager,
+            final String tenantId) {
         super(client, keyVaultManager);
+        this.graphRbacManager = graphRbacManager;
+        this.tenantId = tenantId;
     }
 
     @Override
@@ -68,18 +77,20 @@ class VaultsImpl
 
     @Override
     protected VaultImpl wrapModel(String name) {
+        VaultInner inner = new VaultInner().withProperties(new VaultProperties());
+        inner.properties().withTenantId(UUID.fromString(tenantId));
         return new VaultImpl(
                 name,
-                new VaultInner(),
+                inner,
                 this.innerCollection,
                 super.myManager);
     }
 
     @Override
-    protected VaultImpl wrapModel(VaultInner storageAccountInner) {
+    protected VaultImpl wrapModel(VaultInner vaultInner) {
         return new VaultImpl(
-                storageAccountInner.name(),
-                storageAccountInner,
+                vaultInner.name(),
+                vaultInner,
                 this.innerCollection,
                 super.myManager);
     }
