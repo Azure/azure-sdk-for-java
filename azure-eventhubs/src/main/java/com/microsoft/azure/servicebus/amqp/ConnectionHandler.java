@@ -52,7 +52,7 @@ public final class ConnectionHandler extends BaseHandler
 		Transport transport = event.getTransport();
 
 		SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-		Ssl ssl = transport.ssl(domain);
+		transport.ssl(domain);
 
 		Sasl sasl = transport.sasl();
 		sasl.plain(this.username, this.password);
@@ -94,7 +94,7 @@ public final class ConnectionHandler extends BaseHandler
 	{
 		if (TRACE_LOGGER.isLoggable(Level.FINE))
 		{
-			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + "]");
+			TRACE_LOGGER.log(Level.FINE, "Connection.onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() +"]");
 		}
 
 		this.messagingFactory.onOpenComplete(null);
@@ -103,8 +103,8 @@ public final class ConnectionHandler extends BaseHandler
 	@Override
 	public void onConnectionRemoteClose(Event event)
 	{
-		Connection connection = event.getConnection();
-		ErrorCondition error = connection.getRemoteCondition();
+		final Connection connection = event.getConnection();
+		final ErrorCondition error = connection.getRemoteCondition();
 
 		if (TRACE_LOGGER.isLoggable(Level.FINE))
 		{
@@ -112,6 +112,11 @@ public final class ConnectionHandler extends BaseHandler
 					(error != null
 					? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
 							: "]"));
+		}
+		
+		if (connection.getRemoteState() != EndpointState.CLOSED)
+		{
+			connection.close();
 		}
 
 		this.messagingFactory.onConnectionError(error);

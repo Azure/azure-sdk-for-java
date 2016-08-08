@@ -98,26 +98,12 @@ public class SendLinkHandler extends BaseLinkHandler
 			}
 		}
 
-		this.msgSender.onFlow();
+		Sender sender = event.getSender();
+		this.msgSender.onFlow(sender.getRemoteCredit());
 
 		if(TRACE_LOGGER.isLoggable(Level.FINEST))
 		{
-			Sender sender = event.getSender();
 			TRACE_LOGGER.log(Level.FINEST, "linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit()+ "]");
 		}
-	}
-
-	@Override
-	public void onLinkRemoteClose(Event event)
-	{
-		Link link = event.getLink();
-		ErrorCondition condition = link.getRemoteCondition();
-		this.processOnClose(link, condition);
-	}
-
-	@Override
-	public void onLinkRemoteDetach(Event event)
-	{
-		this.onLinkRemoteClose(event);
 	}
 }

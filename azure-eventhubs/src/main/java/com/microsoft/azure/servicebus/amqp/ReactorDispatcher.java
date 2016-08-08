@@ -56,13 +56,13 @@ public final class ReactorDispatcher
 		this.reactor.update(schedulerSelectable);
 	}
 
-	public void invoke(final BaseHandler timerCallback) throws IOException
+	public void invoke(final DispatchHandler timerCallback) throws IOException
 	{
 		this.workQueue.offer(timerCallback);
 		this.signalWorkQueue();
 	}
 	
-	public void invoke(final int delay, final BaseHandler timerCallback) throws IOException
+	public void invoke(final int delay, final DispatchHandler timerCallback) throws IOException
 	{
 		this.workQueue.offer(new DelayHandler(this.reactor, delay, timerCallback));
 		this.signalWorkQueue();
@@ -70,7 +70,13 @@ public final class ReactorDispatcher
 	
 	private void signalWorkQueue() throws IOException
 	{
-		this.ioSignal.sink().write(ByteBuffer.allocate(1));
+		try
+		{
+			this.ioSignal.sink().write(ByteBuffer.allocate(1));
+		}
+		catch(ClosedChannelException ignorePipeClosedDuringReactorShutdown)
+		{
+        }
 	}
 	
 	private final class DelayHandler extends BaseHandler
@@ -79,7 +85,7 @@ public final class ReactorDispatcher
 		final BaseHandler timerCallback;
 		final Reactor reactor;
 		
-		public DelayHandler(final Reactor reactor, final int delay, final BaseHandler timerCallback)
+		public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback)
 		{
 			this.delay = delay;
 			this.timerCallback = timerCallback;
@@ -102,7 +108,7 @@ public final class ReactorDispatcher
 			{
 				ioSignal.source().read(ByteBuffer.allocate(1024));
 			}
-			catch(ClosedChannelException ignore)
+			catch(ClosedChannelException ignorePipeClosedDuringReactorShutdown)
 			{
 			}
 			catch(IOException ioException)

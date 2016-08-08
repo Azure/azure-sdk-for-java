@@ -7,12 +7,10 @@ package com.microsoft.azure.servicebus.amqp;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
-
 
 // ServiceBus <-> ProtonReactor interaction 
 // handles all recvLink - reactor events
@@ -75,27 +73,6 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 							String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", receiver.getName()));
 				}
 			}
-		}
-	}
-
-	@Override
-	public void onLinkRemoteClose(Event event)
-	{
-		Link link = event.getLink();
-		if (link != null)
-		{
-			ErrorCondition condition = link.getRemoteCondition();
-			this.processOnClose(link, condition);	
-		}
-	}
-
-	@Override
-	public void onLinkRemoteDetach(Event event)
-	{
-		Link link = event.getLink();
-		if (link != null)
-		{
-			this.processOnClose(link, link.getRemoteCondition());
 		}
 	}
 

@@ -4,10 +4,9 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.util.concurrent.CompletableFuture;
 import org.apache.qpid.proton.engine.Connection;
 
 interface IConnectionFactory
 {
-	CompletableFuture<Connection> getConnection();
+	Connection getConnection();
 }

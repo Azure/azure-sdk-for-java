@@ -31,9 +31,41 @@ public class BaseLinkHandler extends BaseHandler
 		{
 			if(TRACE_LOGGER.isLoggable(Level.FINE))
 			{
-				TRACE_LOGGER.log(Level.FINE,
-						String.format("linkName[%s]", link.getName()));
+				TRACE_LOGGER.log(Level.FINE, String.format("linkName[%s]", link.getName()));
 			}
+		}
+	}
+
+	@Override
+	public void onLinkRemoteClose(Event event)
+	{
+		final Link link = event.getLink();
+
+		if (link.getLocalState() != EndpointState.CLOSED)
+		{
+			link.close();
+		}
+		
+		if (link != null)
+		{
+			ErrorCondition condition = link.getRemoteCondition();
+			this.processOnClose(link, condition);	
+		}
+	}
+
+	@Override
+	public void onLinkRemoteDetach(Event event)
+	{
+		final Link link = event.getLink();
+
+		if (link.getLocalState() != EndpointState.CLOSED)
+		{
+			link.close();
+		}
+		
+		if (link != null)
+		{
+			this.processOnClose(link, link.getRemoteCondition());
 		}
 	}
 
@@ -48,21 +80,11 @@ public class BaseLinkHandler extends BaseHandler
 			}
 		}
 
-		if (link.getLocalState() != EndpointState.CLOSED)
-		{
-			link.close();
-		}
-
 		this.underlyingEntity.onClose(condition);
 	}
 
 	public void processOnClose(Link link, Exception exception)
 	{
-		if (link.getLocalState() != EndpointState.CLOSED)
-		{
-			link.close();
-		}
-
 		this.underlyingEntity.onError(exception);
 	}
 }
