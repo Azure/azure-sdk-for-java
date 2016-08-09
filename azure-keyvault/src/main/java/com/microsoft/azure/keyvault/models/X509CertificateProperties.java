@@ -33,7 +33,7 @@ public class X509CertificateProperties {
      * List of key usages.
      */
     @JsonProperty(value = "key_usage")
-    private List<String> keyUsage;
+    private List<KeyUsageType> keyUsage;
 
     /**
      * The subject alternate names.
@@ -106,7 +106,7 @@ public class X509CertificateProperties {
      *
      * @return the keyUsage value
      */
-    public List<String> keyUsage() {
+    public List<KeyUsageType> keyUsage() {
         return this.keyUsage;
     }
 
@@ -116,7 +116,7 @@ public class X509CertificateProperties {
      * @param keyUsage the keyUsage value to set
      * @return the X509CertificateProperties object itself.
      */
-    public X509CertificateProperties withKeyUsage(List<String> keyUsage) {
+    public X509CertificateProperties withKeyUsage(List<KeyUsageType> keyUsage) {
         this.keyUsage = keyUsage;
         return this;
     }
