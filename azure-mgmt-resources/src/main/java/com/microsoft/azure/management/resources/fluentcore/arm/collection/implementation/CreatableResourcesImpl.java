@@ -251,7 +251,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // Below overrides returns null as this is not a real resource in Azure
         // but a dummy resource representing parent of a batch of creatable Azure
         // resources.
-        
+
         @Override
         public CreatableResourcesRoot refresh() throws Exception {
             return null;
