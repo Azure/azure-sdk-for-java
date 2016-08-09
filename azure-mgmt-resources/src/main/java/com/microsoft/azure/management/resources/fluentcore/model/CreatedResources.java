@@ -11,9 +11,12 @@ import java.util.List;
  * (Note: this interface is not intended to be implemented by user code)
  * @param <ResourceT> the type of the resource in this batch.
  */
-public interface BatchCreateOperationResult<ResourceT extends Resource> {
+public interface CreatedResources<ResourceT extends Resource> extends List<ResourceT> {
     /**
-     * @return the collection of created resources in this batch.
+     * Gets a created resource with the given key.
+     *
+     * @param key the key of the resource
+     * @return the created resource
      */
-    List<ResourceT> resources();
+    Resource createdRelatedResource(String key);
 }
