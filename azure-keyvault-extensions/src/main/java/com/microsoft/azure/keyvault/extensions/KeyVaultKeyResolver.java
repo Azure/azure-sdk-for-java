@@ -32,20 +32,22 @@ import com.microsoft.azure.keyvault.core.IKeyResolver;
 import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.SecretBundle;
+import com.microsoft.rest.ServiceResponse;
 
 public class KeyVaultKeyResolver implements IKeyResolver {
 
     static final Base64 _base64 = new Base64(-1, null, true);
     
-    class FutureKeyFromKey implements Function<KeyBundle, IKey> {
+    class FutureKeyFromKey implements Function<ServiceResponse<KeyBundle>, IKey> {
 
         protected FutureKeyFromKey() {
             super();
         }
 
         @Override
-        public IKey apply(KeyBundle keyBundle) {
+        public IKey apply(ServiceResponse<KeyBundle> keyBundleResponse) {
 
+        	KeyBundle keyBundle = keyBundleResponse.getBody();
             if (keyBundle != null) {
                 return new KeyVaultKey(_client, keyBundle);
             }
@@ -54,15 +56,16 @@ public class KeyVaultKeyResolver implements IKeyResolver {
         }
     }
 
-    class FutureKeyFromSecret implements Function<SecretBundle, IKey> {
+    class FutureKeyFromSecret implements Function<ServiceResponse<SecretBundle>, IKey> {
 
         protected FutureKeyFromSecret() {
             super();
         }
 
         @Override
-        public IKey apply(SecretBundle secretBundle) {
+        public IKey apply(ServiceResponse<SecretBundle> secretBundleResponse) {
 
+        	SecretBundle secretBundle = secretBundleResponse.getBody();
             if (secretBundle != null && secretBundle.contentType().equalsIgnoreCase("application/octet-stream")) {
                 byte[] keyBytes = _base64.decode(secretBundle.value());
 
@@ -90,22 +93,14 @@ public class KeyVaultKeyResolver implements IKeyResolver {
 
     private ListenableFuture<IKey> resolveKeyFromSecretAsync(String kid) {
     	
-    	FutureServiceCall<SecretBundle> futureCall = new FutureServiceCall<SecretBundle>();
-    	ListenableFuture<IKey>          result     = Futures.transform(futureCall, new FutureKeyFromSecret());
-    	
-    	futureCall.setServiceCall( _client.getSecret(kid, futureCall.getServiceCallback()) );
-    	
-    	return result;
+    	ListenableFuture<ServiceResponse<SecretBundle>> futureCall = _client.getSecretAsync(kid, null);
+    	return Futures.transform(futureCall, new FutureKeyFromSecret());
     }
 
     private ListenableFuture<IKey> resolveKeyFromKeyAsync(String kid) {
     	
-    	FutureServiceCall<KeyBundle> futureCall = new FutureServiceCall<KeyBundle>();
-    	ListenableFuture<IKey>       result     = Futures.transform(futureCall, new FutureKeyFromKey());
-    	
-    	futureCall.setServiceCall( _client.getKey(kid, futureCall.getServiceCallback()) );
-    	
-    	return result;
+    	ListenableFuture<ServiceResponse<KeyBundle>> futureCall = _client.getKeyAsync(kid, null);
+    	return Futures.transform(futureCall, new FutureKeyFromKey());
     }
 
     @Override

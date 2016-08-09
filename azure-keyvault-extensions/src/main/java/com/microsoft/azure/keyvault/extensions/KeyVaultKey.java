@@ -34,22 +34,23 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
+import com.microsoft.rest.ServiceResponse;
 
 public class KeyVaultKey implements IKey {
 	
-    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
+    class DecryptResultTransform implements Function<ServiceResponse<KeyOperationResult>, byte[]> {
 
         DecryptResultTransform() {
             super();
         }
 
         @Override
-        public byte[] apply(KeyOperationResult result) {
-            return result.result();
+        public byte[] apply(ServiceResponse<KeyOperationResult> result) {
+            return result.getBody().result();
         }
     }
 
-    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
+    class SignResultTransform implements Function<ServiceResponse<KeyOperationResult>, Pair<byte[], String>> {
 
     	private final String _algorithm;
 
@@ -59,9 +60,9 @@ public class KeyVaultKey implements IKey {
         }
     	
 		@Override
-		public Pair<byte[], String> apply(KeyOperationResult input) {
+		public Pair<byte[], String> apply(ServiceResponse<KeyOperationResult> input) {
 
-			return Pair.of(input.result(), _algorithm);
+			return Pair.of(input.getBody().result(), _algorithm);
 		}
     }
 
@@ -157,17 +158,13 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        FutureServiceCall<KeyOperationResult> futureCall = new FutureServiceCall<KeyOperationResult>();
-        ListenableFuture<byte[]>              result     = Futures.transform(futureCall, new DecryptResultTransform() );
-        
-        futureCall.setServiceCall(
-        	_client.decrypt(
-        		_implementation.getKid(),
-        		algorithm,
-        		ciphertext,
-        		futureCall.getServiceCallback() ) );
-        
-        return result;
+        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall =
+            	_client.decryptAsync(
+                		_implementation.getKid(),
+                		algorithm,
+                		ciphertext,
+                		null );
+        return Futures.transform(futureCall, new DecryptResultTransform() );
     }
 
     @Override
@@ -199,17 +196,13 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        FutureServiceCall<KeyOperationResult> futureCall = new FutureServiceCall<KeyOperationResult>();
-        ListenableFuture<byte[]>              result     = Futures.transform(futureCall, new DecryptResultTransform() );
-        
-        futureCall.setServiceCall(
-        	_client.unwrapKey(
-        		_implementation.getKid(),
-        		algorithm,
-        		ciphertext,
-        		futureCall.getServiceCallback() ) );
-        
-        return result;
+        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall = 
+            	_client.unwrapKeyAsync(
+                		_implementation.getKid(),
+                		algorithm,
+                		ciphertext,
+                		null );
+        return Futures.transform(futureCall, new DecryptResultTransform() );
     }
 
     @Override
@@ -223,17 +216,13 @@ public class KeyVaultKey implements IKey {
         }
         
         // Never local
-        FutureServiceCall<KeyOperationResult>  futureCall = new FutureServiceCall<KeyOperationResult>();
-        ListenableFuture<Pair<byte[], String>> result     = Futures.transform(futureCall, new SignResultTransform(algorithm) );
-        
-        futureCall.setServiceCall(
-        	_client.sign(
-        		_implementation.getKid(),
-        		algorithm,
-        		digest,
-        		futureCall.getServiceCallback() ) );
-        
-        return result;
+        ListenableFuture<ServiceResponse<KeyOperationResult>>  futureCall = 
+            	_client.signAsync(
+                		_implementation.getKid(),
+                		algorithm,
+                		digest,
+                		null );
+        return Futures.transform(futureCall, new SignResultTransform(algorithm) );
     }
 
     @Override
