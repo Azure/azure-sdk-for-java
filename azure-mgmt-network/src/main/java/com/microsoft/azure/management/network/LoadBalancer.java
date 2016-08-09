@@ -133,11 +133,11 @@ public interface LoadBalancer extends
          */
         interface WithBackend extends WithVirtualMachine<WithBackendOrProbe> {
             /**
-             * Adds a new empty backend to the load balancer.
+             * Starts the definition of a backend.
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            WithBackendOrProbe withBackend(String name);
+            Backend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
         }
 
         /**

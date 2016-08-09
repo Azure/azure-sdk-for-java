@@ -91,7 +91,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<LoadBalancer> callback) {
+    public ServiceCall<LoadBalancer> applyAsync(ServiceCallback<LoadBalancer> callback) {
         return createAsync(callback);
     }
 
@@ -110,7 +110,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
+    public ServiceCall<LoadBalancerInner> createResourceAsync(final ServiceCallback<Resource> callback)  {
         final LoadBalancerImpl self = this;
         beforeCreating();
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
@@ -217,7 +217,7 @@ class LoadBalancerImpl
         List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
         if (backendsInner != null) {
             for (BackendAddressPoolInner backendInner : backendsInner) {
-                BackendImpl backend = new BackendImpl(backendInner.name(), backendInner, this);
+                BackendImpl backend = new BackendImpl(backendInner, this);
                 this.backends.put(backendInner.name(), backend);
             }
         }
@@ -467,6 +467,18 @@ class LoadBalancerImpl
     }
 
     @Override
+    public BackendImpl defineBackend(String name) {
+        Backend backend = this.backends.get(name);
+        if (backend == null) {
+            BackendAddressPoolInner inner = new BackendAddressPoolInner()
+                    .withName(name);
+            return new BackendImpl(inner, this);
+        } else {
+            return (BackendImpl) backend;
+        }
+    }
+
+    @Override
     public LoadBalancerImpl withoutFrontend(String name) {
         Frontend frontend = this.frontends.get(name);
         this.frontends.remove(name);
@@ -599,12 +611,13 @@ class LoadBalancerImpl
         return this.withoutLoadBalancingRule(rule.name());
     }
 
+
     @Override
     public LoadBalancerImpl withBackend(String name) {
         if (!this.backends.containsKey(name)) {
             BackendAddressPoolInner inner = new BackendAddressPoolInner()
                     .withName(name);
-            BackendImpl backend = new BackendImpl(inner.name(), inner, this);
+            BackendImpl backend = new BackendImpl(inner, this);
             ensureInnerBackends().add(inner);
             this.backends.put(inner.name(), backend);
         }

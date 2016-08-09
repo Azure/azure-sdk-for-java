@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -13,9 +14,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  */
 class BackendImpl
     extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl>
-    implements Backend {
+    implements
+        Backend,
+        Backend.Definition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
+        Backend.UpdateDefinition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
+        Backend.Update {
 
-    protected BackendImpl(String name, BackendAddressPoolInner inner, LoadBalancerImpl parent) {
+    protected BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -24,5 +29,11 @@ class BackendImpl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public LoadBalancerImpl attach() {
+        this.parent().withBackend(this);
+        return this.parent();
     }
 }

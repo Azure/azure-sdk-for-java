@@ -143,7 +143,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
 
                 // Backends
                 .withExistingVirtualMachines(existingVMs)
-                .withBackend("backend1")
+                .defineBackend("backend1")
+                    .attach()
 
                 // Probes
                 .defineTcpProbe("tcpProbe1")
@@ -179,50 +180,10 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
     @Override
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
         resource =  resource.update()
-                .withoutProbe("tcpProbe1")
-                .withoutFrontend("frontend1")
-                .defineHttpProbe("httpProbe1")
-                    .withRequestPath("/foo")
-                    .withNumberOfProbes(3)
-                    .withPort(443)
-                    .attach()
-                .defineTcpProbe("tcpProbe3")
-                    .withPort(33)
-                    .withIntervalInSeconds(33)
-                    .attach()
-                .updateTcpProbe("tcpProbe1")
-                    .withPort(81)
-                    .parent()
-                .updateHttpProbe("httpProbe1")
-                    .withIntervalInSeconds(14)
-                    .withNumberOfProbes(5)
-                    .parent()
-                .withoutLoadBalancingRule("rule2")
-                .updateLoadBalancingRule("rule1")
-                    .withBackendPort(8080)
-                    .withFrontendPort(8080)
-                    .withFloatingIp(true)
-                    .withIdleTimeoutInMinutes(11)
-                    .withLoadDistribution(LoadDistribution.SOURCE_IPPROTOCOL)
-                    .parent()
-                .defineLoadBalancingRule("rule3")
-                    .withProtocol(TransportProtocol.UDP)
-                    .withFrontendPort(22)
-                    .attach()
-                .withBackend("backend3")
-                .withoutBackend("backend2")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
-        Assert.assertTrue(resource.httpProbes().containsKey("httpProbe1"));
-        Assert.assertTrue(resource.tcpProbes().containsKey("tcp3"));
-        Assert.assertTrue(!resource.tcpProbes().containsKey("tcp2"));
-        Assert.assertTrue(resource.backends().containsKey("backend3"));
-        Assert.assertTrue(!resource.backends().containsKey("backend2"));
-        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule1"));
-        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule3"));
-        Assert.assertTrue(!resource.loadBalancingRules().containsKey("rule2"));
 
         return resource;
     }
