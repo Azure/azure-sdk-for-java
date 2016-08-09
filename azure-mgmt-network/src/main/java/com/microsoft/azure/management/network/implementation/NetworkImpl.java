@@ -72,7 +72,7 @@ class NetworkImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<Network> callback) {
+    public ServiceCall<Network> applyAsync(ServiceCallback<Network> callback) {
         return createAsync(callback);
     }
 
@@ -194,7 +194,7 @@ class NetworkImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public ServiceCall<VirtualNetworkInner> createResourceAsync(final ServiceCallback<Resource> callback) {
         final  NetworkImpl self = this;
         ensureCreationPrerequisites();
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),

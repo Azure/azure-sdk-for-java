@@ -96,7 +96,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
+    public ServiceCall<NetworkSecurityGroup> applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
         return createAsync(callback);
     }
 
@@ -161,7 +161,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public ServiceCall<NetworkSecurityGroupInner> createResourceAsync(final ServiceCallback<Resource> callback) {
         final NetworkSecurityGroupImpl self = this;
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
                 new ServiceCallback<NetworkSecurityGroupInner>() {

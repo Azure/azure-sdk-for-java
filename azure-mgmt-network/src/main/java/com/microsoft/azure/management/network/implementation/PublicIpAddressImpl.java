@@ -46,7 +46,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<PublicIpAddress> callback) {
+    public ServiceCall<PublicIpAddress> applyAsync(ServiceCallback<PublicIpAddress> callback) {
         return this.createAsync(callback);
     }
 
@@ -159,7 +159,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public ServiceCall<PublicIPAddressInner> createResourceAsync(final ServiceCallback<Resource> callback) {
         final PublicIpAddressImpl self = this;
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();

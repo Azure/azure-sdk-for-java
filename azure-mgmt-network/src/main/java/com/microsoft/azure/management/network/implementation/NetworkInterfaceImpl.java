@@ -91,7 +91,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<NetworkInterface> callback) {
+    public ServiceCall<NetworkInterface> applyAsync(ServiceCallback<NetworkInterface> callback) {
         return createAsync(callback);
     }
 
@@ -383,7 +383,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public ServiceCall<NetworkInterfaceInner> createResourceAsync(final ServiceCallback<Resource> callback) {
         final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
