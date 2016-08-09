@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
+import com.microsoft.azure.management.network.Probe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -92,6 +93,24 @@ class LoadBalancingRuleImpl
             return this.parent().backends().get(backendName);
         }
     }
+
+    @Override
+    public Probe probe() {
+        SubResource probeRef = this.inner().probe();
+        if (probeRef == null) {
+            return null;
+        } else {
+            String probeName = ResourceUtils.nameFromResourceId(probeRef.id());
+            if (this.parent().httpProbes().containsKey(probeName)) {
+                return this.parent().httpProbes().get(probeName);
+            } else if (this.parent().tcpProbes().containsKey(probeName)) {
+                return this.parent().tcpProbes().get(probeName);
+            } else {
+                return null;
+            }
+        }
+    }
+
 
     // Fluent setters
 

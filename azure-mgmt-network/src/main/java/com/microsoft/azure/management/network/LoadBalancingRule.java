@@ -61,6 +61,11 @@ public interface LoadBalancingRule extends
     Backend backend();
 
     /**
+     * @return the probe associated with the load balancing rule
+     */
+    Probe probe();
+
+    /**
      * Grouping of load balancing rule definition stages.
      */
     interface DefinitionStages {

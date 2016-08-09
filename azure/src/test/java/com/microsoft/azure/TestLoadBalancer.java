@@ -24,6 +24,7 @@ import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.Probe;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.TcpProbe;
@@ -232,8 +233,6 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         info.append("\n\tLoad balancing rules:");
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
-                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
                 .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
@@ -247,12 +246,24 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 info.append("(None)");
             }
 
+            info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
+
             Backend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
             } else {
                 info.append("(None)");
+            }
+
+            info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
+
+            Probe probe = rule.probe();
+            info.append("\n\t\t\tProbe: ");
+            if (probe == null) {
+                info.append("(None)");
+            } else {
+                info.append(probe.name()).append(" [").append(probe.protocol().toString()).append("]");
             }
         }
 
