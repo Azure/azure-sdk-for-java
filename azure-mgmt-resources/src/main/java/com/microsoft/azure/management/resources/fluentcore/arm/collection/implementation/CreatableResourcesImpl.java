@@ -31,11 +31,6 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         extends CreatableWrappersImpl<T, ImplT, InnerT>
         implements SupportsBatchCreation<T> {
 
-    /**
-     * the root resource that groups batch of creatable resources in the collection.
-     */
-    private BatchRootResourceImpl<T> rootResource;
-
     protected CreatableResourcesImpl() {
     }
 
@@ -47,14 +42,15 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     @Override
-    public ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T> ... creatables) {
-        rootResource = new BatchRootResourceImpl<>(); // Imp: Creates a new BatchRootResourceImpl for each batch
+    public ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback,
+                                                        Creatable<T> ... creatables) {
+        CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
 
-        final BatchServiceCall batchServiceCall = new BatchServiceCall();
-        ServiceCall<BatchRootResource<T>> serviceCall = rootResource.createAsync(batchServiceCall.wrapCallback(callback));
-        batchServiceCall.setInnerServiceCall(serviceCall);
-        return batchServiceCall;
+        final CreateResourcesServiceCall createResourcesServiceCall = new CreateResourcesServiceCall();
+        ServiceCall<CreatableResourcesRoot<T>> serviceCall = rootResource.createAsync(createResourcesServiceCall.wrapCallback(callback));
+        createResourcesServiceCall.setInnerServiceCall(serviceCall);
+        return createResourcesServiceCall;
     }
 
     /**
@@ -62,18 +58,17 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatedResourcesImpl<ResourceT extends Resource> implements CreatedResources<ResourceT> {
-        private BatchRootResource<ResourceT> batchRootResource;
-
+        private CreatableResourcesRoot<ResourceT> creatableResourcesRoot;
         private final List<ResourceT> list;
 
-        CreatedResourcesImpl(BatchRootResource<ResourceT> batchRootResource) {
-            this.batchRootResource = batchRootResource;
-            this.list = this.batchRootResource.createdTopLevelResources();
+        CreatedResourcesImpl(CreatableResourcesRoot<ResourceT> creatableResourcesRoot) {
+            this.creatableResourcesRoot = creatableResourcesRoot;
+            this.list = this.creatableResourcesRoot.createdTopLevelResources();
         }
 
         @Override
         public Resource createdRelatedResource(String key) {
-            return this.batchRootResource.createdRelatedResource(key);
+            return this.creatableResourcesRoot.createdRelatedResource(key);
         }
 
         @Override
@@ -192,31 +187,32 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
     }
 
-    /**
-     *  The local dummy root resource for the batch of creatable resources in a batch.
+     /**
+     * The local root resource that is used as dummy parent resource for the batch creatable resources
+     * added via {@link CreatableResourcesImpl#create} or {@link CreatableResourcesImpl#createAsync}.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    interface BatchRootResource<ResourceT extends Resource> extends Resource {
+    interface CreatableResourcesRoot<ResourceT extends Resource> extends Resource {
         List<ResourceT> createdTopLevelResources();
         Resource createdRelatedResource(String key);
     }
 
     /**
-     * Implementation of {@link BatchRootResource}.
+     * Implementation of {@link CreatableResourcesRoot}.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class BatchRootResourceImpl<ResourceT extends Resource>
-            extends CreatableImpl<BatchRootResource<ResourceT>, Object, BatchRootResourceImpl, Resource>
-            implements BatchRootResource<ResourceT> {
+    private class CreatableResourcesRootImpl<ResourceT extends Resource>
+            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl, Resource>
+            implements CreatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.
          */
         private List<String> keys;
 
-        BatchRootResourceImpl() {
-            super("BatchRootResource", null);
+        CreatableResourcesRootImpl() {
+            super("CreatableResourcesRoot", null);
             this.keys = new ArrayList<>();
         }
 
@@ -252,8 +248,12 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
             return this;
         }
 
+        // Below overrides returns null as this is not a real resource in Azure
+        // but a dummy resource representing parent of a batch of creatable Azure
+        // resources.
+        
         @Override
-        public BatchRootResource refresh() throws Exception {
+        public CreatableResourcesRoot refresh() throws Exception {
             return null;
         }
 
@@ -284,15 +284,15 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     /**
-     * Represents a collection of in-progress service calls in a batch.
+     * Represents a collection of in-progress Create service calls in the batch.
      */
-    private class BatchServiceCall extends ServiceCall<CreatedResources<T>> {
-        private ServiceCall<BatchRootResource<T>> innerServiceCall;
+    private class CreateResourcesServiceCall extends ServiceCall<CreatedResources<T>> {
+        private ServiceCall<CreatableResourcesRoot<T>> innerServiceCall;
 
         /**
-         * Creates BatchServiceCall.
+         * Creates CreateResourcesServiceCall.
          */
-        BatchServiceCall() {
+        CreateResourcesServiceCall() {
             super(null);
         }
 
@@ -301,7 +301,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
          *
          * @param inner the service call to wrap
          */
-        public void setInnerServiceCall(ServiceCall<BatchRootResource<T>> inner) {
+        public void setInnerServiceCall(ServiceCall<CreatableResourcesRoot<T>> inner) {
             this.innerServiceCall = inner;
         }
 
@@ -319,9 +319,9 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
             return this.innerServiceCall.isCancelled();
         }
 
-        ServiceCallback<BatchRootResource<T>> wrapCallback(final ServiceCallback<CreatedResources<T>> innerCallback) {
-            final BatchServiceCall self = this;
-            return new ServiceCallback<BatchRootResource<T>>() {
+        ServiceCallback<CreatableResourcesRoot<T>> wrapCallback(final ServiceCallback<CreatedResources<T>> innerCallback) {
+            final CreateResourcesServiceCall self = this;
+            return new ServiceCallback<CreatableResourcesRoot<T>>() {
                 @Override
                 public void failure(Throwable t) {
                     self.failure(t);
@@ -331,7 +331,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
                 }
 
                 @Override
-                public void success(ServiceResponse<BatchRootResource<T>> result) {
+                public void success(ServiceResponse<CreatableResourcesRoot<T>> result) {
                     self.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null));
                     if (innerCallback != null) {
                         innerCallback.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null));
