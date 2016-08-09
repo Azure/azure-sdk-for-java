@@ -135,6 +135,8 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
 
         LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
         Assert.assertTrue(lbrule.frontend().name().equalsIgnoreCase("default"));
+        Assert.assertTrue(lbrule.backend().name().equalsIgnoreCase("default"));
+        Assert.assertTrue(lbrule.probe().name().equalsIgnoreCase("default"));
 
         return lb;
     }
@@ -167,16 +169,29 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
                     .withProtocol(TransportProtocol.UDP)
                     .withFrontendPort(22)
                     .attach()
-                .withBackend("backend2")
+                .defineBackend("backend2")
+                    .attach()
+                .withoutBackend("default")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         Assert.assertTrue(resource.tcpProbes().get("default").port() == 22);
         Assert.assertTrue(resource.httpProbes().get("httpprobe").numberOfProbes() == 3);
-        Assert.assertTrue(resource.loadBalancingRules().get("default").backendPort() == 8080);
-        Assert.assertTrue(resource.loadBalancingRules().get("lbrule2").frontendPort() == 22);
         Assert.assertTrue(resource.backends().containsKey("backend2"));
+        Assert.assertTrue(!resource.backends().containsKey("default"));
+
+        LoadBalancingRule lbRule = resource.loadBalancingRules().get("default");
+        Assert.assertTrue(lbRule != null);
+        Assert.assertTrue(lbRule.backend() == null);
+        Assert.assertTrue(lbRule.backendPort() == 8080);
+        Assert.assertTrue(lbRule.frontend().name().equalsIgnoreCase("default"));
+        Assert.assertTrue(lbRule.frontendPort() == 22);
+        Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
+
+        lbRule = resource.loadBalancingRules().get("lbrule2");
+        Assert.assertTrue(lbRule != null);
+        Assert.assertTrue(lbRule.frontendPort() == 22);
 
         return resource;
     }

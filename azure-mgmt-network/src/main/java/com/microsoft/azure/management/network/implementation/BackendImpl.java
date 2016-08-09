@@ -17,7 +17,7 @@ class BackendImpl
     implements
         Backend,
         Backend.Definition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
-        Backend.UpdateDefinition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
+        Backend.UpdateDefinition<LoadBalancer.Update>,
         Backend.Update {
 
     protected BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {

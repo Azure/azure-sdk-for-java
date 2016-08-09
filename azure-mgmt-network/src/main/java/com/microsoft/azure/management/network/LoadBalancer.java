@@ -317,18 +317,25 @@ public interface LoadBalancer extends
          */
         interface WithBackend {
             /**
-             * Adds a new empty backend to the load balancer.
-             * @param name the name to assign to the backend
-             * @return the next stage of the update
-             */
-            Update withBackend(String name);
-
-            /**
              * Removes the specified backend from the load balancer.
              * @param name the name of the backend to remove
              * @return the next stage of the update
              */
             Update withoutBackend(String name);
+
+            /**
+             * Begins the definition of a new backend as part of this load balancer update.
+             * @param name the name for the new backend
+             * @return the first stage of the backend definition
+             */
+            Backend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
+
+            /**
+             * Begins the description of an update to an existing backend of this load balancer.
+             * @param name the name of the backend to update
+             * @return the first stage of the update
+             */
+            Backend.Update updateBackend(String name);
         }
 
         /**

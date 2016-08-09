@@ -144,6 +144,16 @@ class LoadBalancerImpl
         }
         this.creatablePIPKeys.clear();
 
+        // Reset and update backends
+        Backend defaultBackend = this.backends.get(DEFAULT);
+        if (this.backends.size() > 0) {
+            this.inner().withBackendAddressPools(null);
+            List<BackendAddressPoolInner> backendsInner = ensureInnerBackends();
+            for (Backend backend : this.backends.values()) {
+                backendsInner.add(backend.inner());
+            }
+        }
+
         // Connect the load balancing rules to the defaults
         if (this.inner().loadBalancingRules() != null) {
             for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
@@ -153,10 +163,10 @@ class LoadBalancerImpl
                             .withId(this.futureResourceId() + "/frontendIPConfigurations/" + DEFAULT));
                 }
 
-                if (lbRule.backendAddressPool() == null) {
-                    // If no reference to a back end pool, then add reference to the "default"
+                if (lbRule.backendAddressPool() == null && defaultBackend != null) {
+                    // If no reference to a back end pool, then add reference to the "default" backend if exists
                     lbRule.withBackendAddressPool(new SubResource()
-                            .withId(this.futureResourceId() + "/backendAddressPools/" + DEFAULT));
+                            .withId(this.futureResourceId() + "/backendAddressPools/" + defaultBackend.name()));
                 }
 
                 if (lbRule.probe() == null) {
@@ -308,7 +318,6 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withBackend(BackendImpl backend) {
-        ensureInnerBackends().add(backend.inner());
         this.backends.put(backend.name(), backend);
         return this;
     }
@@ -367,7 +376,7 @@ class LoadBalancerImpl
             backendName = DEFAULT;
         }
 
-        this.withBackend(backendName);
+        this.defineBackend(backendName).attach();
         if (vm.primaryNetworkInterfaceId() != null) {
             this.nicsInBackends.put(vm.primaryNetworkInterfaceId(), backendName.toLowerCase());
         }
@@ -578,6 +587,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public BackendImpl updateBackend(String name) {
+        return (BackendImpl) this.backends.get(name);
+    }
+
+    @Override
     public ProbeImpl updateHttpProbe(String name) {
         return (ProbeImpl) this.httpProbes.get(name);
     }
@@ -611,19 +625,6 @@ class LoadBalancerImpl
         return this.withoutLoadBalancingRule(rule.name());
     }
 
-
-    @Override
-    public LoadBalancerImpl withBackend(String name) {
-        if (!this.backends.containsKey(name)) {
-            BackendAddressPoolInner inner = new BackendAddressPoolInner()
-                    .withName(name);
-            BackendImpl backend = new BackendImpl(inner, this);
-            ensureInnerBackends().add(inner);
-            this.backends.put(inner.name(), backend);
-        }
-        return this;
-    }
-
     @Override
     public LoadBalancerImpl withoutBackend(String name) {
         // Remove from cache
@@ -634,17 +635,6 @@ class LoadBalancerImpl
             backendId = backend.inner().id();
         } else {
             backendId = null;
-        }
-
-        // Remove from inner
-        List<BackendAddressPoolInner> inners = this.inner().backendAddressPools();
-        if (inners != null) {
-            for (int i = 0; i < inners.size(); i++) {
-                if (inners.get(i).name().equalsIgnoreCase(name)) {
-                    inners.remove(i);
-                    break;
-                }
-            }
         }
 
         // Remove any LB rule references to it
