@@ -43,7 +43,6 @@ class StorageAccountImpl
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
-    private String name;
     private List<StorageAccountKey> cachedAccountKeys;
     private StorageAccountCreateParametersInner createParameters;
     private StorageAccountUpdateParametersInner updateParameters;
@@ -55,7 +54,6 @@ class StorageAccountImpl
                               final StorageAccountsInner client,
                               final StorageManager storageManager) {
         super(name, innerModel, storageManager);
-        this.name = name;
         this.createParameters = new StorageAccountCreateParametersInner();
         this.client = client;
     }
@@ -66,11 +64,6 @@ class StorageAccountImpl
             accountStatuses = new AccountStatuses(this.inner().statusOfPrimary(), this.inner().statusOfSecondary());
         }
         return accountStatuses;
-    }
-
-    @Override
-    public String name() {
-        return this.name;
     }
 
     @Override

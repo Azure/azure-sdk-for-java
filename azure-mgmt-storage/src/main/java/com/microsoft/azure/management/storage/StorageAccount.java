@@ -249,7 +249,8 @@ public interface StorageAccount extends
             DefinitionStages.WithBlobStorageAccountKind,
             DefinitionStages.WithGeneralPurposeAccountKind,
             DefinitionStages.WithEncryption,
-            DefinitionStages.WithCustomDomain {
+            DefinitionStages.WithCustomDomain,
+            Resource.DefinitionWithTags<WithCreate> {
         }
 
         /**
