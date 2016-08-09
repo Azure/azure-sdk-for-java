@@ -51,9 +51,14 @@ public interface LoadBalancingRule extends
     int backendPort();
 
     /**
-     * @return the frontend the load balancing rule is associated with
+     * @return the frontend associated with the load balancing rule
      */
     Frontend frontend();
+
+    /**
+     * @return the backend associated with the load balancing rule
+     */
+    Backend backend();
 
     /**
      * Grouping of load balancing rule definition stages.

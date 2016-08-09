@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -78,6 +79,17 @@ class LoadBalancingRuleImpl
         } else {
             String frontendName = ResourceUtils.nameFromResourceId(frontendRef.id());
             return this.parent().frontends().get(frontendName);
+        }
+    }
+
+    @Override
+    public Backend backend() {
+        SubResource backendRef = this.inner().backendAddressPool();
+        if (backendRef == null) {
+            return null;
+        } else {
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+            return this.parent().backends().get(backendName);
         }
     }
 

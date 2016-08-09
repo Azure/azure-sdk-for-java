@@ -6,8 +6,6 @@
 package com.microsoft.azure;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import org.junit.Assert;
 
@@ -15,9 +13,6 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.Frontend;
-import com.microsoft.azure.management.network.HttpProbe;
-import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -25,7 +20,6 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -189,87 +183,7 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
 
     @Override
     public void print(LoadBalancer resource) {
-        StringBuilder info = new StringBuilder();
-        info.append("Load balancer: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tBackends: ").append(resource.backends().keySet().toString());
-
-        // Show public IP addresses
-        info.append("\n\tPublic IP address IDs:");
-        List<String> pipIds = resource.publicIpAddressIds();
-        if (pipIds == null || pipIds.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (String pipId : resource.publicIpAddressIds()) {
-                info.append("\n\t\tPIP id: ").append(pipId);
-            }
-        }
-
-        // Show TCP probes
-        info.append("\n\tTCP probes:");
-        Collection<TcpProbe> tcpProbes = resource.tcpProbes().values();
-        if (tcpProbes.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (TcpProbe probe : tcpProbes) {
-                info.append("\n\t\tProbe name: ").append(probe.name())
-                    .append("\n\t\t\tPort: ").append(probe.port())
-                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
-            }
-        }
-
-        // Show HTTP probes
-        info.append("\n\tHTTP probes:");
-        Collection<HttpProbe> httpProbes = resource.httpProbes().values();
-        if (httpProbes.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (HttpProbe probe : httpProbes) {
-                info.append("\n\t\tProbe name: ").append(probe.name())
-                    .append("\n\t\t\tPort: ").append(probe.port())
-                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
-                    .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
-            }
-        }
-
-        // Show load balancing rules
-        info.append("\n\tLoad balancing rules:");
-        Collection<LoadBalancingRule> lbRules = resource.loadBalancingRules().values();
-        if (lbRules.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (LoadBalancingRule rule : lbRules) {
-                info.append("\n\t\tLB rule name: ").append(rule.name())
-                    .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                    .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                    .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
-                    .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
-                    .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString())
-                    .append("\n\t\t\tFrontend: ").append(rule.frontend().name());
-            }
-        }
-
-        // Show frontends
-        info.append("\n\tFrontends:");
-        Collection<Frontend> frontends = resource.frontends().values();
-        if (frontends.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (Frontend frontend : resource.frontends().values()) {
-                info.append("\n\t\tFrontend name: ").append(frontend.name())
-                    .append("\n\t\t\tInternet facing: ").append(frontend.isInternetFacing());
-                if (frontend.isInternetFacing()) {
-                    info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
-                }
-            }
-        }
-
-        System.out.println(info.toString());
+        TestLoadBalancer.printLB(resource);
     }
+
 }

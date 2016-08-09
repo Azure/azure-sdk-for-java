@@ -14,6 +14,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.InternetFrontend;
@@ -188,8 +189,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         return resource;
     }
 
-    @Override
-    public void print(LoadBalancer resource) {
+    public static void printLB(LoadBalancer resource) {
         StringBuilder info = new StringBuilder();
         info.append("Load balancer: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -237,8 +237,23 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
                 .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
-                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString())
-                .append("\n\t\t\tFrontend: ").append(rule.frontend().name());
+                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
+
+            Frontend frontend = rule.frontend();
+            info.append("\n\t\t\tFrontend: ");
+            if (frontend != null) {
+                info.append(frontend.name());
+            } else {
+                info.append("(None)");
+            }
+
+            Backend backend = rule.backend();
+            info.append("\n\t\t\tBackend: ");
+            if (backend != null) {
+                info.append(backend.name());
+            } else {
+                info.append("(None)");
+            }
         }
 
         // Show frontends
@@ -252,5 +267,10 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         }
 
         System.out.println(info.toString());
+    }
+
+    @Override
+    public void print(LoadBalancer resource) {
+        TestLoadBalancer.printLB(resource);
     }
 }
