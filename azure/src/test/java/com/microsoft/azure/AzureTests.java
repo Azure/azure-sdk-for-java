@@ -140,16 +140,27 @@ public class AzureTests {
      * Tests the network security group implementation
      * @throws Exception
      */
-    @Test public void testNetworkSecurityGroups() throws Exception {
+    @Test
+    public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
-    @Test public void testLoadBalancers() throws Exception {
+    @Test
+    public void testLoadBalancers() throws Exception {
         new TestLoadBalancer(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadbalancersInternetMinimum() throws Exception {
+        new TestLoadBalancerInternetMinimum(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
     /**

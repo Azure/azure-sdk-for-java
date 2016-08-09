@@ -63,13 +63,15 @@ public interface LoadBalancer extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithVirtualMachine,
+        DefinitionStages.WithFrontend,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithCreateAndRule,
-        DefinitionStages.WithFrontends,
         DefinitionStages.WithInternetFrontendOrBackend,
         DefinitionStages.WithBackend,
-        DefinitionStages.WithBackendOrCreate {
+        DefinitionStages.WithBackendOrProbe,
+        DefinitionStages.WithProbe,
+        DefinitionStages.WithProbeOrLoadBalancingRule,
+        DefinitionStages.WithLoadBalancingRule,
+        DefinitionStages.WithLoadBalancingRuleOrCreate {
     }
 
     /**
@@ -84,25 +86,32 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of the definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
+         * The stage of the load balancer definition allowing to specify the resource group.
          */
-        interface WithFrontends extends
-            WithPublicIpAddresses<WithInternetFrontendOrBackend>,
-            WithInternetFrontends,
-            WithInternalFrontends {
+        interface WithGroup
+            extends GroupableResource.DefinitionStages.WithGroup<WithFrontend> {
         }
 
         /**
-         * The stage of the definition allowing to define one or more internal frontends.
+         * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
-        interface WithInternalFrontends {
+        interface WithFrontend extends
+            WithPublicIpAddress<WithInternetFrontendOrBackend>,
+            WithInternetFrontend,
+            WithInternalFrontend {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to define one or more internal frontends.
+         */
+        interface WithInternalFrontend {
             // TODO
         }
 
         /**
-         * The stage of the definition allowing to define one or more Internet-facing frontends.
+         * The stage of a load balancer definition allowing to define one or more Internet-facing frontends.
          */
-        interface WithInternetFrontends extends WithPublicIpAddresses<WithInternetFrontendOrBackend> {
+        interface WithInternetFrontend extends WithPublicIpAddress<WithInternetFrontendOrBackend> {
             /**
              * Begins the definition of a new load balancer frontend.
              * <p>
@@ -114,41 +123,82 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of the definition allowing to add additional Internet-facing frontends or add the first back end pool.
+         * The stage of a load balancer definition allowing to add additional Internet-facing frontends or add the first back end pool.
          */
-        interface WithInternetFrontendOrBackend extends WithInternetFrontends, WithBackend {
+        interface WithInternetFrontendOrBackend extends WithInternetFrontend, WithBackend {
         }
 
         /**
-         * The stage of the definition allowing to add a backend.
+         * The stage of a load balancer definition allowing to add a backend.
          */
-        interface WithBackend extends WithVirtualMachine {
+        interface WithBackend extends WithVirtualMachine<WithBackendOrProbe> {
             /**
              * Adds a new empty backend to the load balancer.
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            WithBackendOrCreate withBackend(String name);
+            WithBackendOrProbe withBackend(String name);
         }
 
         /**
-         * The stage of the definition allowing to add another backend pool or the first load balancing rule.
+         * The stage of a load balancer definition allowing to add a backend or start adding probes.
          */
-        interface WithBackendOrCreate extends WithBackend, WithCreate {
+        interface WithBackendOrProbe extends WithBackend, WithProbe {
         }
 
         /**
-         * The stage of the load balancer definition allowing to specify the resource group.
+         * The stage of the load balancer definition allowing to add a load balancing probe.
          */
-        interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithFrontends> {
+        interface WithProbe {
+            /**
+             * Adds a TCP probe checking the specified port.
+             * <p>
+             * The probe will be named using an automatically generated name.
+             * @param port the port number for the probe to monitor
+             * @return the next stage of the definition
+             */
+            WithProbeOrLoadBalancingRule withTcpProbe(int port);
+
+            /**
+             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
+             * <p>
+             * An automatically generated name is assigned to the probe.
+             * @param requestPath the path for the probe to invoke
+             * @return the next stage of the definition
+             */
+            WithProbeOrLoadBalancingRule withHttpProbe(String requestPath);
+
+            /**
+             * Begins the definition of a new TCP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the probe
+             * @return the first stage of the new probe definition
+             */
+            TcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
+
+            /**
+             * Begins the definition of a new HTTP probe to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the probe
+             * @return the first stage of the new probe definition
+             */
+            HttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
         }
 
         /**
-         * The stage of the load balancer definition allowing to add a virtual machine to
+         * The stage of a load balancer definition allowing to add another probe or start adding load balancing rules.
+         */
+        interface WithProbeOrLoadBalancingRule extends WithProbe, WithLoadBalancingRule {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to add a virtual machine to
          * the load balancer's backend pool.
+         * @param <ReturnT> the next stage of the definition
          */
-        interface WithVirtualMachine {
+        interface WithVirtualMachine<ReturnT> {
             /**
              * Adds the specified set of virtual machines, assuming they are from the same
              * availability set, to this load balancer's back end address pool.
@@ -165,92 +215,51 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            WithBackendOrCreate withExistingVirtualMachinesAsBackend(SupportsNetworkInterfaces...vms);
-
-            /**
-             * Adds the specified set of virtual machines, assuming they are from the same
-             * availability set, to the specified backend of this load balancer.
-             * <p>
-             * If an existing backend with the provided name does not exist on this load balancer, it will be created.
-             * If the name is null, a new name for the backend will be generated automatically.
-             * <p>
-             * Reference to the primary IP configurations of the primary network interfaces of each of the provided set of
-             * virtual machines will be added to the backend.
-             * <p>
-             * If the virtual machines are not in the same availability set, the load balancer will still
-             * be created, but the virtual machines will not be associated it.
-             * <p>
-             * Only those virtual machines will be associated with the load balancer that already have an existing
-             * network interface. Virtual machines without a network interface will be skipped.
-             * @param backendName the name of the backend to associate the virtual machines with
-             * @param vms existing virtual machines
-             * @return the next stage of the update
-             */
-            WithBackendOrCreate withExistingVirtualMachinesAsBackend(String backendName, SupportsNetworkInterfaces...vms);
+            ReturnT withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
         }
 
         /**
-         * The stage of the load balancer definition allowing to add a public ip address to the load
+         * The stage of a load balancer definition allowing to add a public ip address to the load
          * balancer's front end.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddresses<ReturnT> {
+        interface WithPublicIpAddress<ReturnT> {
             /**
              * Assigns the provided set of public IP addresses front end to the load balancer, making it an Internet-facing load balancer.
              * <p>
-             * This will create a new default frontend for the load balancer with an auto-generated name.
+             * This will create a new default frontend for the load balancer under the name "default".
              * @param publicIpAddresses existing public IP addresses
              * @return the next stage of the resource definition
              */
-            ReturnT withExistingPublicIpAddressesAsFrontend(PublicIpAddress...publicIpAddresses);
-
-            /**
-             * Assigns the provided set of public IP addresses to the specified frontend of the load balancer, making it an Internet-facing load balancer.
-             * <p>
-             * If the specified frontend does not exist, a new one will be created.
-             * @param frontendName
-             * @param publicIpAddresses existing public IP addresses
-             * @return the next stage of the resource definition
-             */
-            ReturnT withExistingPublicIpAddressesAsFrontend(String frontendName, PublicIpAddress...publicIpAddresses);
+            ReturnT withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
 
             /**
              * Adds a new public IP address to the default front end of the load balancer, using an automatically generated name and leaf DNS label
              * derived from the load balancer's name, in the same resource group and region.
              * @return the next stage of the definition
              */
-            ReturnT withNewFrontendPublicIpAddressAsFrontend();
+            ReturnT withNewPublicIpAddress();
 
             /**
              * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaf label,
              * an automatically generated name derived from the DNS label, in the same resource group and region.
              * @return the next stage of the definition
              */
-            ReturnT withNewFrontendPublicIpAddressAsFrontend(String dnsLeafLabel);
+            ReturnT withNewPublicIpAddress(String dnsLeafLabel);
 
             /**
              * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
              * stage of a public IP endpoint's definition.
-             *
+             * @param creatablePublicIpAddress the creatable stage of a public IP address definition
              * @return the next stage of the definition
              */
-            ReturnT withNewFrontendPublicIpAddressAsFrontend(Creatable<PublicIpAddress> creatablePublicIpAddress);
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
         /**
-         * The stage of the load balancer definition allowing to create a load balancing rule.
+         * The stage of a load balancer definition allowing to create a load balancing rule.
          */
         interface WithLoadBalancingRule {
-            /**
-             * Creates a load balancing rule between the specified front end and back end ports and protocol.
-             * @param frontendPort the port number on the front end to accept incoming traffic on
-             * @param protocol the protocol to load balance
-             * @param backendPort the port number on the back end to send load balanced traffic to
-             * @param name the name for the load balancing rule
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort, String name);
-
             /**
              * Creates a load balancing rule between the specified front end and back end ports and protocol.
              * <p>
@@ -260,24 +269,17 @@ public interface LoadBalancer extends
              * @param backendPort the port number on the back end to send load balanced traffic to
              * @return the next stage of the definition
              */
-            WithCreateAndRule withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
+            WithLoadBalancingRuleOrCreate withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort);
 
             /**
-             * Creates a load balancing rule for the specified port and protocol.
+             * Creates a load balancing rule for the specified port and protocol and default frontend and backend associations.
+             * <p>
+             * The load balancing rule will created under the name "default". It will reference a backend, a frontend, and a load balancing probe all named "default".
              * @param port the port number on the front and back end for the network traffic to be load balanced on
              * @param protocol the protocol to load balance
              * @return the next stage of the definition
              */
-            WithCreateAndRule withLoadBalancingRule(int port, TransportProtocol protocol);
-
-            /**
-             * Creates a load balancing rule for the specified port and protocol.
-             * @param port the port number on the front and back ends for the network traffic to be load balanced on
-             * @param protocol the protocol to load balance
-             * @param name a unique name for the load balancing rule
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withLoadBalancingRule(int port, TransportProtocol protocol, String name);
+            WithLoadBalancingRuleOrCreate withLoadBalancingRule(int port, TransportProtocol protocol);
 
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
@@ -286,66 +288,14 @@ public interface LoadBalancer extends
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */
-            LoadBalancingRule.DefinitionStages.Blank<WithCreateAndRule> defineLoadBalancingRule(String name);
+            LoadBalancingRule.DefinitionStages.Blank<WithLoadBalancingRuleOrCreate> defineLoadBalancingRule(String name);
         }
 
         /**
-         * The stage of the load balancer definition allowing to add a load balancing probe.
+         * The stage of a load balancer definition allowing to create a load balancing rule or create the load balancer.
          */
-        interface WithProbe {
-            /**
-             * Adds a TCP probe checking the specified port.
-             * <p>
-             * The probe will be named using an automatically generated name.
-             * @param port the port number for the probe to monitor
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withTcpProbe(int port);
-
-            /**
-             * Adds a TCP probe checking the specified port.
-             * @param port the port number for the probe to monitor
-             * @param name the name for the probe, so that the probe can be referenced from load balancing rules
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withTcpProbe(int port, String name);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
-             * <p>
-             * An automatically generated name is assigned to the probe.
-             * @param requestPath the path for the probe to invoke
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withHttpProbe(String requestPath);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
-             * @param requestPath the path for the probe to invoke
-             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
-             * @return the next stage of the definition
-             */
-            WithCreateAndRule withHttpProbe(String requestPath, String name);
-
-            /**
-             * Begins the definition of a new TCP probe to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
-             * @param name the name of the probe
-             * @return the first stage of the new probe definition
-             */
-            TcpProbe.DefinitionStages.Blank<WithCreate> defineTcpProbe(String name);
-
-            /**
-             * Begins the definition of a new HTTP probe to add to the load balancer.
-             * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
-             * @param name the name of the probe
-             * @return the first stage of the new probe definition
-             */
-            HttpProbe.DefinitionStages.Blank<WithCreate> defineHttpProbe(String name);
+        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreate {
         }
-
 
         /**
          * The stage of the load balancer definition containing all the required inputs for
@@ -354,18 +304,7 @@ public interface LoadBalancer extends
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate>,
-            WithProbe {
-        }
-
-        /**
-         * The stage of the load balancer definition containing all the required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allowing
-         * for any other optional settings to be specified, including load balancing rules.
-         */
-        interface WithCreateAndRule extends
-            WithCreate,
-            WithLoadBalancingRule {
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -406,16 +345,6 @@ public interface LoadBalancer extends
             Update withTcpProbe(int port);
 
             /**
-             * Adds a TCP probe checking the specified port.
-             * <p>
-             * An automatically generated name is assigned to the probe.
-             * @param port the port number for the probe to monitor
-             * @param name the name for the probe, so that the probe can be referenced from load balancing rules
-             * @return the next stage of the definition
-             */
-            Update withTcpProbe(int port, String name);
-
-            /**
              * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
              * <p>
              * An automatically generated name is assigned to the probe.
@@ -423,14 +352,6 @@ public interface LoadBalancer extends
              * @return the next stage of the definition
              */
             Update withHttpProbe(String requestPath);
-
-            /**
-             * Adds an HTTP probe checking for an HTTP 200 response from the specified path at regular intervals, using port 80.
-             * @param requestPath the path for the probe to invoke
-             * @param name the name to assign to the probe so that references to the probe can be made from load balancing rules
-             * @return the next stage of the definition
-             */
-            Update withHttpProbe(String requestPath, String name);
 
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
@@ -485,18 +406,8 @@ public interface LoadBalancer extends
         interface WithLoadBalancingRule {
             /**
              * Adds a load balancing rule between the specified front end and back end ports and protocol.
-             * @param frontendPort the port number on the front end to accept incoming traffic on
-             * @param protocol the protocol to load balance
-             * @param backendPort the port number on the back end to send load balanced traffic to
-             * @param name the name for the load balancing rule
-             * @return the next stage of the definition
-             */
-            Update withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort, String name);
-
-            /**
-             * Adds a load balancing rule between the specified front end and back end ports and protocol.
              * <p>
-             * The new rule will be assigned an automatically generated name.
+             * The new rule will be created under the name "default".
              * @param frontendPort the port number on the front end to accept incoming traffic on
              * @param protocol the protocol to load balance
              * @param backendPort the port number on the back end to send load balanced traffic to
@@ -506,6 +417,8 @@ public interface LoadBalancer extends
 
             /**
              * Adds a load balancing rule for the specified port and protocol.
+             * <p>
+             * The new rule will be created under the name "default".
              * @param port the port number on the front and back end for the network traffic to be load balanced on
              * @param protocol the protocol to load balance
              * @return the next stage of the definition
@@ -546,7 +459,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer update allowing to define, remove or edit Internet-facing frontends.
          */
-        interface WithInternetFrontends {
+        interface WithInternetFrontend {
             /**
              * Begins the update of a new load balancer frontend.
              * <p>
@@ -577,6 +490,6 @@ public interface LoadBalancer extends
         UpdateStages.WithProbe,
         UpdateStages.WithBackend,
         UpdateStages.WithLoadBalancingRule,
-        UpdateStages.WithInternetFrontends {
+        UpdateStages.WithInternetFrontend {
     }
 }

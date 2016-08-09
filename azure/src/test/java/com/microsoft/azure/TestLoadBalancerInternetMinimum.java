@@ -6,6 +6,7 @@
 package com.microsoft.azure;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
@@ -20,7 +21,6 @@ import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -33,13 +33,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 /**
  * Test of virtual network management.
  */
-public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> {
+public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, LoadBalancers> {
 
     private final PublicIpAddresses pips;
     private final VirtualMachines vms;
     private final Networks networks;
 
-    public TestLoadBalancer(
+    public TestLoadBalancerInternetMinimum(
             PublicIpAddresses pips,
             VirtualMachines vms,
             Networks networks) {
@@ -124,105 +124,65 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withLeafDomainLabel(pipName1)
                 .create();
 
-        PublicIpAddress pip2 = this.pips.define(pipName1 + "b")
-                .withRegion(region)
-                .withExistingResourceGroup(groupName)
-                .withLeafDomainLabel(pipName1 + "b")
-                .create();
-
         // Create a load balancer
         LoadBalancer lb = resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-
-                // Frontends
-                .withExistingPublicIpAddresses(pip1)
-                .defineInternetFrontend("frontend1")
-                    .withExistingPublicIpAddress(pip2)
-                    .attach()
-
-                // Backends
-                .withExistingVirtualMachines(existingVMs)
-                .withBackend("backend1")
-
-                // Probes
-                .defineTcpProbe("tcpProbe1")
-                    .withPort(25)               // Required
-                    .withIntervalInSeconds(15)  // Optionals
-                    .withNumberOfProbes(5)
-                    .attach()
-                .defineHttpProbe("httpProbe1")
-                    .withRequestPath("/")       // Required
-                    .withIntervalInSeconds(13)  // Optionals
-                    .withNumberOfProbes(4)
-                    .attach()
-
-                // Load balancing rules
-                .defineLoadBalancingRule("rule1")
-                    .withProtocol(TransportProtocol.TCP)    // Required
-                    .withFrontend("frontend1")
-                    .withFrontendPort(81)
-                    .withProbe("tcpProbe1")
-                    .withBackend("backend1")
-                    .withBackendPort(82)                    // Optionals
-                    .withIdleTimeoutInMinutes(10)
-                    .withLoadDistribution(LoadDistribution.SOURCE_IP)
-                    .attach()
-
+                .withExistingPublicIpAddresses(pip1)                // Frontend
+                .withExistingVirtualMachines(existingVMs)           // Backend
+                .withTcpProbe(22)                                   // Probe
+                .withLoadBalancingRule(80, TransportProtocol.TCP)   // LB rule
                 .create();
 
-        Assert.assertTrue(lb.backends().size() == 2);
-        Assert.assertTrue(lb.backends().containsKey("backend1"));
+        Assert.assertTrue(lb.backends().containsKey("default"));
+        Assert.assertTrue(lb.frontends().containsKey("default"));
+        Assert.assertTrue(lb.tcpProbes().containsKey("default"));
+        Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
+
+        LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
+        Assert.assertTrue(lbrule.frontend().name().equalsIgnoreCase("default"));
+
         return lb;
     }
 
     @Override
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+        String pipName = "pip" + this.testId + "b";
+        PublicIpAddress pip = this.pips.define(pipName)
+                .withRegion(resource.region())
+                .withExistingResourceGroup(resource.resourceGroupName())
+                .withLeafDomainLabel(pipName)
+                .create();
+
         resource =  resource.update()
-                .withoutProbe("tcpProbe1")
-                .withoutFrontend("frontend1")
-                .defineHttpProbe("httpProbe1")
+                //TODO .withoutFrontend("default")
+                //TODO .withExistingPublicIpAddress(pip)
+                .updateTcpProbe("default")
+                    .withPort(22)
+                    .parent()
+                .defineHttpProbe("httpprobe")
                     .withRequestPath("/foo")
                     .withNumberOfProbes(3)
                     .withPort(443)
                     .attach()
-                .defineTcpProbe("tcpProbe3")
-                    .withPort(33)
-                    .withIntervalInSeconds(33)
-                    .attach()
-                .updateTcpProbe("tcpProbe1")
-                    .withPort(81)
-                    .parent()
-                .updateHttpProbe("httpProbe1")
-                    .withIntervalInSeconds(14)
-                    .withNumberOfProbes(5)
-                    .parent()
-                .withoutLoadBalancingRule("rule2")
-                .updateLoadBalancingRule("rule1")
+                .updateLoadBalancingRule("default")
                     .withBackendPort(8080)
-                    .withFrontendPort(8080)
-                    .withFloatingIp(true)
                     .withIdleTimeoutInMinutes(11)
-                    .withLoadDistribution(LoadDistribution.SOURCE_IPPROTOCOL)
                     .parent()
-                .defineLoadBalancingRule("rule3")
+                .defineLoadBalancingRule("lbrule2")
                     .withProtocol(TransportProtocol.UDP)
                     .withFrontendPort(22)
                     .attach()
-                .withBackend("backend3")
-                .withoutBackend("backend2")
+                .withBackend("backend2")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
         Assert.assertTrue(resource.tags().containsKey("tag1"));
-        Assert.assertTrue(resource.httpProbes().containsKey("httpProbe1"));
-        Assert.assertTrue(resource.tcpProbes().containsKey("tcp3"));
-        Assert.assertTrue(!resource.tcpProbes().containsKey("tcp2"));
-        Assert.assertTrue(resource.backends().containsKey("backend3"));
-        Assert.assertTrue(!resource.backends().containsKey("backend2"));
-        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule1"));
-        Assert.assertTrue(resource.loadBalancingRules().containsKey("rule3"));
-        Assert.assertTrue(!resource.loadBalancingRules().containsKey("rule2"));
+        Assert.assertTrue(resource.tcpProbes().get("default").port() == 22);
+        Assert.assertTrue(resource.httpProbes().get("httpprobe").numberOfProbes() == 3);
+        Assert.assertTrue(resource.loadBalancingRules().get("default").backendPort() == 8080);
+        Assert.assertTrue(resource.loadBalancingRules().get("lbrule2").frontendPort() == 22);
+        Assert.assertTrue(resource.backends().containsKey("backend2"));
 
         return resource;
     }
@@ -250,43 +210,63 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
 
         // Show TCP probes
         info.append("\n\tTCP probes:");
-        for (TcpProbe probe : resource.tcpProbes().values()) {
-            info.append("\n\t\tProbe name: ").append(probe.name())
-                .append("\n\t\t\tPort: ").append(probe.port())
-                .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+        Collection<TcpProbe> tcpProbes = resource.tcpProbes().values();
+        if (tcpProbes.size() == 0) {
+            info.append(" (None)");
+        } else {
+            for (TcpProbe probe : tcpProbes) {
+                info.append("\n\t\tProbe name: ").append(probe.name())
+                    .append("\n\t\t\tPort: ").append(probe.port())
+                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+            }
         }
 
         // Show HTTP probes
         info.append("\n\tHTTP probes:");
-        for (HttpProbe probe : resource.httpProbes().values()) {
-            info.append("\n\t\tProbe name: ").append(probe.name())
-                .append("\n\t\t\tPort: ").append(probe.port())
-                .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
-                .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+        Collection<HttpProbe> httpProbes = resource.httpProbes().values();
+        if (httpProbes.size() == 0) {
+            info.append(" (None)");
+        } else {
+            for (HttpProbe probe : httpProbes) {
+                info.append("\n\t\tProbe name: ").append(probe.name())
+                    .append("\n\t\t\tPort: ").append(probe.port())
+                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
+                    .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+            }
         }
 
         // Show load balancing rules
         info.append("\n\tLoad balancing rules:");
-        for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
-            info.append("\n\t\tLB rule name: ").append(rule.name())
-                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
-                .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
-                .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString())
-                .append("\n\t\t\tFrontend: ").append(rule.frontend().name());
+        Collection<LoadBalancingRule> lbRules = resource.loadBalancingRules().values();
+        if (lbRules.size() == 0) {
+            info.append(" (None)");
+        } else {
+            for (LoadBalancingRule rule : lbRules) {
+                info.append("\n\t\tLB rule name: ").append(rule.name())
+                    .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                    .append("\n\t\t\tBackend port: ").append(rule.backendPort())
+                    .append("\n\t\t\tProtocol: ").append(rule.protocol())
+                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
+                    .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
+                    .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString())
+                    .append("\n\t\t\tFrontend: ").append(rule.frontend().name());
+            }
         }
 
         // Show frontends
         info.append("\n\tFrontends:");
-        for (Frontend frontend : resource.frontends().values()) {
-            info.append("\n\t\tFrontend name: ").append(frontend.name())
-                .append("\n\t\t\tInternet facing: ").append(frontend.isInternetFacing());
-            if (frontend.isInternetFacing()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
+        Collection<Frontend> frontends = resource.frontends().values();
+        if (frontends.size() == 0) {
+            info.append(" (None)");
+        } else {
+            for (Frontend frontend : resource.frontends().values()) {
+                info.append("\n\t\tFrontend name: ").append(frontend.name())
+                    .append("\n\t\t\tInternet facing: ").append(frontend.isInternetFacing());
+                if (frontend.isInternetFacing()) {
+                    info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
+                }
             }
         }
 

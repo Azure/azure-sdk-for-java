@@ -18,11 +18,11 @@ class ProbeImpl
     extends ChildResourceImpl<ProbeInner, LoadBalancerImpl>
     implements
         TcpProbe,
-        TcpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        TcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
         TcpProbe.UpdateDefinition<LoadBalancer.Update>,
         TcpProbe.Update,
         HttpProbe,
-        HttpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        HttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
         HttpProbe.UpdateDefinition<LoadBalancer.Update>,
         HttpProbe.Update {
 

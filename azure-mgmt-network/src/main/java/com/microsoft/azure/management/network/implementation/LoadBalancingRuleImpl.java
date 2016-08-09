@@ -21,7 +21,7 @@ class LoadBalancingRuleImpl
     extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl>
     implements
         LoadBalancingRule,
-        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndRule>,
+        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLoadBalancingRuleOrCreate>,
         LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancingRule.Update {
 
@@ -122,6 +122,30 @@ class LoadBalancingRuleImpl
     @Override
     public LoadBalancingRuleImpl withLoadDistribution(LoadDistribution loadDistribution) {
         this.inner().withLoadDistribution(loadDistribution);
+        return this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withFrontend(String frontendName) {
+        SubResource frontendRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
+        this.inner().withFrontendIPConfiguration(frontendRef);
+        return this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withBackend(String backendName) {
+        SubResource backendRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
+        this.inner().withBackendAddressPool(backendRef);
+        return this;
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withProbe(String name) {
+        SubResource probeRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/probes/" + name);
+        this.inner().withProbe(probeRef);
         return this;
     }
 
