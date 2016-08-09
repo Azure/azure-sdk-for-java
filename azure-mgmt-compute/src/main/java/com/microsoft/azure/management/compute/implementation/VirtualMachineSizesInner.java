@@ -89,35 +89,31 @@ public final class VirtualMachineSizesInner {
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(String location, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<VirtualMachineSizeInner>> listAsync(String location, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCallback) {
+        final ServiceCall<List<VirtualMachineSizeInner>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<VirtualMachineSizeInner>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listDelegate(response);
                     serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

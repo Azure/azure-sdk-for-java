@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class ExportTemplateRequestInner {
     /**
-     * Gets or sets the ids of the resources. The only supported string
-     * currently is '*' (all resources). Future api updates will support
-     * exporting specific resources.
+     * The ids of the resources. The only supported string currently is '*'
+     * (all resources). Future api updates will support exporting specific
+     * resources.
      */
     private List<String> resources;
 

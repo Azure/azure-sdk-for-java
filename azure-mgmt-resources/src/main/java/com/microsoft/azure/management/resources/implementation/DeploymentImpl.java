@@ -290,30 +290,36 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall createAsync(final ServiceCallback<Deployment> callback) {
+    public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
         final Deployment self = this;
         if (this.creatableResourceGroup != null) {
-            return this.creatableResourceGroup.createAsync(new ServiceCallback<ResourceGroup>() {
+            final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
+            serviceCall.newCall(this.creatableResourceGroup.createAsync(new ServiceCallback<ResourceGroup>() {
                 @Override
                 public void failure(Throwable t) {
                     callback.failure(t);
+                    serviceCall.failure(t);
                 }
 
                 @Override
                 public void success(ServiceResponse<ResourceGroup> result) {
-                    createResourceAsync(new ServiceCallback<Deployment>() {
+                    serviceCall.newCall(createResourceAsync(new ServiceCallback<Deployment>() {
                         @Override
                         public void failure(Throwable t) {
                             callback.failure(t);
+                            serviceCall.failure(t);
                         }
 
                         @Override
                         public void success(ServiceResponse<Deployment> result) {
-                            callback.success(new ServiceResponse<>(self, result.getResponse()));
+                            ServiceResponse<Deployment> serviceResponse = new ServiceResponse<>(self, result.getResponse());
+                            callback.success(serviceResponse);
+                            serviceCall.success(serviceResponse);
                         }
-                    });
+                    }).getCall());
                 }
-            });
+            }).getCall());
+            return serviceCall;
         } else {
             return createResourceAsync(new ServiceCallback<Deployment>() {
                 @Override
@@ -348,7 +354,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Deployment> callback) {
+    public ServiceCall<Deployment> createResourceAsync(final ServiceCallback<Deployment> callback) {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -356,17 +362,22 @@ final class DeploymentImpl extends
         inner.properties().withTemplateLink(templateLink());
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner, new ServiceCallback<DeploymentExtendedInner>() {
+        final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
+        serviceCall.newCall(client.createOrUpdateAsync(resourceGroupName(), name(), inner, new ServiceCallback<DeploymentExtendedInner>() {
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
+                serviceCall.failure(t);
             }
 
             @Override
             public void success(ServiceResponse<DeploymentExtendedInner> response) {
-                callback.success(new ServiceResponse<Deployment>(response.getHeadResponse()));
+                ServiceResponse<Deployment> serviceResponse = new ServiceResponse<>(response.getHeadResponse());
+                callback.success(serviceResponse);
+                serviceCall.success(serviceResponse);
             }
-        });
+        }).getCall());
+        return serviceCall;
     }
 
     @Override

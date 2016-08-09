@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Effective NetworkSecurityRules.
  */
-public class EffectiveNetworkSecurityRules {
+public class EffectiveNetworkSecurityRule {
     /**
      * Gets the name of the security rule specified by the user (if created by
      * the user).
@@ -86,9 +86,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withName(String name) {
+    public EffectiveNetworkSecurityRule withName(String name) {
         this.name = name;
         return this;
     }
@@ -106,9 +106,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the protocol value.
      *
      * @param protocol the protocol value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withProtocol(SecurityRuleProtocol protocol) {
+    public EffectiveNetworkSecurityRule withProtocol(SecurityRuleProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -126,9 +126,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the sourcePortRange value.
      *
      * @param sourcePortRange the sourcePortRange value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withSourcePortRange(String sourcePortRange) {
+    public EffectiveNetworkSecurityRule withSourcePortRange(String sourcePortRange) {
         this.sourcePortRange = sourcePortRange;
         return this;
     }
@@ -146,9 +146,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the destinationPortRange value.
      *
      * @param destinationPortRange the destinationPortRange value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withDestinationPortRange(String destinationPortRange) {
+    public EffectiveNetworkSecurityRule withDestinationPortRange(String destinationPortRange) {
         this.destinationPortRange = destinationPortRange;
         return this;
     }
@@ -166,9 +166,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the sourceAddressPrefix value.
      *
      * @param sourceAddressPrefix the sourceAddressPrefix value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withSourceAddressPrefix(String sourceAddressPrefix) {
+    public EffectiveNetworkSecurityRule withSourceAddressPrefix(String sourceAddressPrefix) {
         this.sourceAddressPrefix = sourceAddressPrefix;
         return this;
     }
@@ -186,9 +186,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the destinationAddressPrefix value.
      *
      * @param destinationAddressPrefix the destinationAddressPrefix value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withDestinationAddressPrefix(String destinationAddressPrefix) {
+    public EffectiveNetworkSecurityRule withDestinationAddressPrefix(String destinationAddressPrefix) {
         this.destinationAddressPrefix = destinationAddressPrefix;
         return this;
     }
@@ -206,9 +206,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the expandedSourceAddressPrefix value.
      *
      * @param expandedSourceAddressPrefix the expandedSourceAddressPrefix value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withExpandedSourceAddressPrefix(List<String> expandedSourceAddressPrefix) {
+    public EffectiveNetworkSecurityRule withExpandedSourceAddressPrefix(List<String> expandedSourceAddressPrefix) {
         this.expandedSourceAddressPrefix = expandedSourceAddressPrefix;
         return this;
     }
@@ -226,9 +226,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the expandedDestinationAddressPrefix value.
      *
      * @param expandedDestinationAddressPrefix the expandedDestinationAddressPrefix value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withExpandedDestinationAddressPrefix(List<String> expandedDestinationAddressPrefix) {
+    public EffectiveNetworkSecurityRule withExpandedDestinationAddressPrefix(List<String> expandedDestinationAddressPrefix) {
         this.expandedDestinationAddressPrefix = expandedDestinationAddressPrefix;
         return this;
     }
@@ -246,9 +246,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the access value.
      *
      * @param access the access value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withAccess(SecurityRuleAccess access) {
+    public EffectiveNetworkSecurityRule withAccess(SecurityRuleAccess access) {
         this.access = access;
         return this;
     }
@@ -266,9 +266,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the priority value.
      *
      * @param priority the priority value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withPriority(Integer priority) {
+    public EffectiveNetworkSecurityRule withPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -286,9 +286,9 @@ public class EffectiveNetworkSecurityRules {
      * Set the direction value.
      *
      * @param direction the direction value to set
-     * @return the EffectiveNetworkSecurityRules object itself.
+     * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRules withDirection(SecurityRuleDirection direction) {
+    public EffectiveNetworkSecurityRule withDirection(SecurityRuleDirection direction) {
         this.direction = direction;
         return this;
     }

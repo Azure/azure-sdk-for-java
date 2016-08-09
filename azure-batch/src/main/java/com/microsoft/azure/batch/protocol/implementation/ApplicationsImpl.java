@@ -39,7 +39,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
 
 /**
@@ -77,8 +76,8 @@ public final class ApplicationsImpl implements Applications {
         Call<ResponseBody> get(@Path("applicationId") String applicationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -119,16 +118,11 @@ public final class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ApplicationListOptions applicationListOptions = null;
         Integer maxResults = null;
@@ -141,21 +135,27 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+        final ServiceCall<List<ApplicationSummary>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                        }
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -223,18 +223,13 @@ public final class ApplicationsImpl implements Applications {
      *
      * @param applicationListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(applicationListOptions, serviceCallback);
+        Validator.validate(applicationListOptions);
         Integer maxResults = null;
         if (applicationListOptions != null) {
             maxResults = applicationListOptions.maxResults();
@@ -260,28 +255,34 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+        final ServiceCall<List<ApplicationSummary>> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        ApplicationListNextOptions applicationListNextOptions = null;
-                        if (applicationListOptions != null) {
-                            applicationListNextOptions = new ApplicationListNextOptions();
-                            applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
-                            applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                            applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
+                    if (serviceCallback != null) {
+                        serviceCallback.load(result.getBody().getItems());
+                        if (result.getBody().getNextPageLink() != null
+                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                            ApplicationListNextOptions applicationListNextOptions = null;
+                            if (applicationListOptions != null) {
+                                applicationListNextOptions = new ApplicationListNextOptions();
+                                applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
+                                applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
+                                applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
+                            }
+                            listNextAsync(result.getBody().getNextPageLink(), applicationListNextOptions, serviceCall, serviceCallback);
+                        } else {
+                            serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                         }
-                        listNextAsync(result.getBody().getNextPageLink(), applicationListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                    serviceCall.success(new ServiceResponseWithHeaders<>(result.getBody().getItems(), result.getHeaders(), result.getResponse()));
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -329,20 +330,14 @@ public final class ApplicationsImpl implements Applications {
      *
      * @param applicationId The id of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ApplicationSummary> getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) {
         if (applicationId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final ApplicationGetOptions applicationGetOptions = null;
         Integer timeout = null;
@@ -354,14 +349,21 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
+        final ServiceCall<ApplicationSummary> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -416,22 +418,16 @@ public final class ApplicationsImpl implements Applications {
      * @param applicationId The id of the application.
      * @param applicationGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) {
         if (applicationId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(applicationGetOptions, serviceCallback);
+        Validator.validate(applicationGetOptions);
         Integer timeout = null;
         if (applicationGetOptions != null) {
             timeout = applicationGetOptions.timeout();
@@ -453,14 +449,21 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
+        final ServiceCall<ApplicationSummary> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getDelegate(response));
+                    ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> clientResponse = getDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -505,16 +508,11 @@ public final class ApplicationsImpl implements Applications {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         final ApplicationListNextOptions applicationListNextOptions = null;
         String clientRequestId = null;
@@ -526,7 +524,7 @@ public final class ApplicationsImpl implements Applications {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -539,7 +537,10 @@ public final class ApplicationsImpl implements Applications {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -588,18 +589,13 @@ public final class ApplicationsImpl implements Applications {
      * @param applicationListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Validator.validate(applicationListNextOptions, serviceCallback);
+        Validator.validate(applicationListNextOptions);
         String clientRequestId = null;
         if (applicationListNextOptions != null) {
             clientRequestId = applicationListNextOptions.clientRequestId();
@@ -618,7 +614,7 @@ public final class ApplicationsImpl implements Applications {
         }
         Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
         serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -631,7 +627,10 @@ public final class ApplicationsImpl implements Applications {
                         serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
                 } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

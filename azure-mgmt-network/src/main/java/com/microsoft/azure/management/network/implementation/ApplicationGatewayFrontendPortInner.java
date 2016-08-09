@@ -18,21 +18,21 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class ApplicationGatewayFrontendPortInner extends SubResource {
     /**
-     * Gets or sets the frontend port.
+     * Frontend port.
      */
     @JsonProperty(value = "properties.port")
     private Integer port;
 
     /**
-     * Gets or sets Provisioning state of the frontend port resource
+     * Provisioning state of the frontend port resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

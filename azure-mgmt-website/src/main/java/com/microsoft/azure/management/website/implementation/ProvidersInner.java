@@ -97,26 +97,28 @@ public final class ProvidersInner {
      * Gets the source controls available for Azure websites.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSourceControlsAsync(final ServiceCallback<SourceControlCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SourceControlCollectionInner> getSourceControlsAsync(final ServiceCallback<SourceControlCollectionInner> serviceCallback) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSourceControls(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlCollectionInner>(serviceCallback) {
+        final ServiceCall<SourceControlCollectionInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SourceControlCollectionInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSourceControlsDelegate(response));
+                    ServiceResponse<SourceControlCollectionInner> clientResponse = getSourceControlsDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -155,30 +157,31 @@ public final class ProvidersInner {
      *
      * @param sourceControlType Type of source control
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getSourceControlAsync(String sourceControlType, final ServiceCallback<SourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SourceControlInner> getSourceControlAsync(String sourceControlType, final ServiceCallback<SourceControlInner> serviceCallback) {
         if (sourceControlType == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter sourceControlType is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getSourceControl(sourceControlType, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
+        final ServiceCall<SourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getSourceControlDelegate(response));
+                    ServiceResponse<SourceControlInner> clientResponse = getSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -223,35 +226,35 @@ public final class ProvidersInner {
      * @param sourceControlType Type of source control
      * @param requestMessage Source control token information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
         if (sourceControlType == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter sourceControlType is required and cannot be null.");
         }
         if (requestMessage == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter requestMessage is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter requestMessage is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(requestMessage, serviceCallback);
+        Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updateSourceControl(sourceControlType, requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCallback) {
+        final ServiceCall<SourceControlInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<SourceControlInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updateSourceControlDelegate(response));
+                    ServiceResponse<SourceControlInner> clientResponse = updateSourceControlDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -285,26 +288,28 @@ public final class ProvidersInner {
      * Gets publishing user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall getPublishingUserAsync(final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<UserInner> getPublishingUserAsync(final ServiceCallback<UserInner> serviceCallback) {
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.getPublishingUser(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(getPublishingUserDelegate(response));
+                    ServiceResponse<UserInner> clientResponse = getPublishingUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -344,31 +349,32 @@ public final class ProvidersInner {
      *
      * @param requestMessage Details of publishing user
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall updatePublishingUserAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<UserInner> updatePublishingUserAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
         if (requestMessage == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter requestMessage is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter requestMessage is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(requestMessage, serviceCallback);
+        Validator.validate(requestMessage);
         Call<ResponseBody> call = service.updatePublishingUser(requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
+        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(updatePublishingUserDelegate(response));
+                    ServiceResponse<UserInner> clientResponse = updatePublishingUserDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

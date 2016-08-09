@@ -19,51 +19,51 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class ApplicationGatewayProbeInner extends SubResource {
     /**
-     * Gets or sets the protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Gets or sets the host to send probe to.
+     * Host to send probe to.
      */
     @JsonProperty(value = "properties.host")
     private String host;
 
     /**
-     * Gets or sets the relative path of probe.
+     * Relative path of probe.
      */
     @JsonProperty(value = "properties.path")
     private String path;
 
     /**
-     * Gets or sets probing interval in seconds.
+     * Probing interval in seconds.
      */
     @JsonProperty(value = "properties.interval")
     private Integer interval;
 
     /**
-     * Gets or sets probing timeout in seconds.
+     * Probing timeout in seconds.
      */
     @JsonProperty(value = "properties.timeout")
     private Integer timeout;
 
     /**
-     * Gets or sets probing unhealthy threshold.
+     * Probing unhealthy threshold.
      */
     @JsonProperty(value = "properties.unhealthyThreshold")
     private Integer unhealthyThreshold;
 
     /**
-     * Gets or sets Provisioning state of the backend http settings resource
+     * Provisioning state of the backend http settings resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

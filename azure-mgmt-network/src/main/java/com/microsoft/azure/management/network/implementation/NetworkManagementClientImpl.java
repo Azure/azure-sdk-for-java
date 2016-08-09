@@ -513,35 +513,35 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         final String domainNameLabel = null;
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
+        final ServiceCall<DnsNameAvailabilityResultInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkDnsNameAvailabilityDelegate(response));
+                    ServiceResponse<DnsNameAvailabilityResultInner> clientResponse = checkDnsNameAvailabilityDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });
@@ -578,34 +578,34 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
      */
-    public ServiceCall checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
         if (location == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter location is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
         if (this.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, this.apiVersion(), this.acceptLanguage(), this.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCallback) {
+        final ServiceCall<DnsNameAvailabilityResultInner> serviceCall = new ServiceCall<>(call);
+        call.enqueue(new ServiceResponseCallback<DnsNameAvailabilityResultInner>(serviceCall, serviceCallback) {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    serviceCallback.success(checkDnsNameAvailabilityDelegate(response));
+                    ServiceResponse<DnsNameAvailabilityResultInner> clientResponse = checkDnsNameAvailabilityDelegate(response);
+                    if (serviceCallback != null) {
+                        serviceCallback.success(clientResponse);
+                    }
+                    serviceCall.success(clientResponse);
                 } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+                    if (serviceCallback != null) {
+                        serviceCallback.failure(exception);
+                    }
+                    serviceCall.failure(exception);
                 }
             }
         });

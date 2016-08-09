@@ -19,41 +19,39 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource {
     /**
-     * Gets or sets the privateIPAddress of the Network Interface IP
-     * Configuration.
+     * PrivateIPAddress of the Network Interface IP Configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * PrivateIP allocation method (Static/Dynamic). Possible values include:
+     * 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
 
     /**
-     * Gets or sets the reference of the subnet resource.
+     * Reference of the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /**
-     * Gets or sets the reference of the PublicIP resource.
+     * Reference of the PublicIP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private SubResource publicIPAddress;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the PublicIP resource Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name
+     * can be used to access the resource.
      */
     private String name;
 

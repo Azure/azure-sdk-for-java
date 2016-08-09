@@ -15,22 +15,22 @@ import java.util.List;
  */
 public class Dependency {
     /**
-     * Gets the list of dependencies.
+     * The list of dependencies.
      */
     private List<BasicDependency> dependsOn;
 
     /**
-     * Gets or sets the ID of the dependency.
+     * The ID of the dependency.
      */
     private String id;
 
     /**
-     * Gets or sets the dependency resource type.
+     * The dependency resource type.
      */
     private String resourceType;
 
     /**
-     * Gets or sets the dependency resource name.
+     * The dependency resource name.
      */
     private String resourceName;
 

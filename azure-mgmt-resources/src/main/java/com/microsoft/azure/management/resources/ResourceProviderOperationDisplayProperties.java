@@ -14,27 +14,27 @@ package com.microsoft.azure.management.resources;
  */
 public class ResourceProviderOperationDisplayProperties {
     /**
-     * Gets or sets operation description.
+     * Operation description.
      */
     private String publisher;
 
     /**
-     * Gets or sets operation provider.
+     * Operation provider.
      */
     private String provider;
 
     /**
-     * Gets or sets operation resource.
+     * Operation resource.
      */
     private String resource;
 
     /**
-     * Gets or sets operation.
+     * Operation.
      */
     private String operation;
 
     /**
-     * Gets or sets operation description.
+     * Operation description.
      */
     private String description;
 
