@@ -47,7 +47,7 @@ public class FileGetFromTaskOptions {
 
     /**
      * The byte range to be retrieved. The default is to retrieve the entire
-     * file. The format is startRange-endRange.
+     * file. The format is bytes=startRange-endRange.
      */
     @JsonProperty(value = "")
     private String ocpRange;
