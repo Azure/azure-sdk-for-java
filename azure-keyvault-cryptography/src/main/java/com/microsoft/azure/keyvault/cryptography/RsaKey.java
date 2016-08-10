@@ -19,6 +19,7 @@
 package com.microsoft.azure.keyvault.cryptography;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -26,6 +27,9 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
@@ -39,97 +43,6 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
 import com.microsoft.azure.keyvault.cryptography.Strings;
 
 public class RsaKey implements IKey {
-
-    class FutureDecrypt extends AbstractFuture<byte[]> {
-
-        private final byte[]           _data;
-        private final ICryptoTransform _transform;
-
-        FutureDecrypt(ICryptoTransform transform, byte[] data) {
-            _data = data;
-            _transform = transform;
-        }
-
-        @Override
-        public byte[] get() throws InterruptedException, ExecutionException {
-            try {
-                return _transform.doFinal(_data);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-
-        @Override
-        public byte[] get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-            try {
-                return _transform.doFinal(_data);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-    }
-
-    class FutureEncrypt extends AbstractFuture<Triple<byte[], byte[], String>> {
-
-        private final String           _algorithm;
-        private final byte[]           _data;
-        private final ICryptoTransform _transform;
-
-        FutureEncrypt(String algorithm, byte[] data, ICryptoTransform transform) {
-            _algorithm = algorithm;
-            _data = data;
-            _transform = transform;
-        }
-
-        @Override
-        public Triple<byte[], byte[], String> get() throws InterruptedException, ExecutionException {
-            try {
-                return Triple.of(_transform.doFinal(_data), (byte[]) null, _algorithm);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-
-        @Override
-        public Triple<byte[], byte[], String> get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-            try {
-                return Triple.of(_transform.doFinal(_data), (byte[]) null, _algorithm);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-    }
-
-    class FutureWrap extends AbstractFuture<Pair<byte[], String>> {
-
-        private final String           _algorithm;
-        private final byte[]           _data;
-        private final ICryptoTransform _transform;
-
-        FutureWrap(String algorithm, byte[] data, ICryptoTransform transform) {
-            _algorithm = algorithm;
-            _data = data;
-            _transform = transform;
-        }
-
-        @Override
-        public Pair<byte[], String> get() throws InterruptedException, ExecutionException {
-            try {
-                return Pair.of(_transform.doFinal(_data), _algorithm);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-
-        @Override
-        public Pair<byte[], String> get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-            try {
-                return Pair.of(_transform.doFinal(_data), _algorithm);
-            } catch (Exception e) {
-                throw new ExecutionException(e);
-            }
-        }
-    }
 
     public static int KeySize1024 = 1024;
     public static int KeySize2048 = 2048;
@@ -223,9 +136,9 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateDecryptor(_keyPair);
-            result = new FutureDecrypt(transform, ciphertext);
+            result    = Futures.immediateFuture(transform.doFinal(ciphertext));
         } catch (Exception e) {
-            result = Futures.immediateFailedFuture(e);
+            result    = Futures.immediateFailedFuture(e);
         }
 
         return result;
@@ -253,9 +166,9 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
-            result = new FutureEncrypt(algorithmName, plaintext, transform);
+            result    = Futures.immediateFuture(Triple.of(transform.doFinal(plaintext), (byte[]) null, algorithmName));
         } catch (Exception e) {
-            result = Futures.immediateFailedFuture(e);
+            result    = Futures.immediateFailedFuture(e);
         }
 
         return result;
@@ -283,9 +196,9 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateEncryptor(_keyPair);
-            result = new FutureWrap(algorithmName, key, transform);
+            result    = Futures.immediateFuture(Pair.of(transform.doFinal(key), algorithmName));
         } catch (Exception e) {
-            result = Futures.immediateFailedFuture(e);
+            result    = Futures.immediateFailedFuture(e);
         }
 
         return result;
@@ -317,9 +230,9 @@ public class RsaKey implements IKey {
 
         try {
             transform = algo.CreateDecryptor(_keyPair);
-            result = new FutureDecrypt(transform, encryptedKey);
+            result    = Futures.immediateFuture(transform.doFinal(encryptedKey));
         } catch (Exception e) {
-            result = Futures.immediateFailedFuture(e);
+            result    = Futures.immediateFailedFuture(e);
         }
 
         return result;
