@@ -174,14 +174,32 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
 
                 .create();
 
-        Assert.assertTrue(lb.backends().size() == 2);
+        // Verify frontends
+        Assert.assertTrue(lb.frontends().containsKey("frontend1"));
+        Assert.assertTrue(lb.frontends().containsKey("default"));
+        Assert.assertTrue(lb.frontends().size() == 2);
+
+        // Verify backends
+        Assert.assertTrue(lb.backends().containsKey("default"));
         Assert.assertTrue(lb.backends().containsKey("backend1"));
+        Assert.assertTrue(lb.backends().size() == 2);
+
+        // Verify probes
+        Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
+        Assert.assertTrue(lb.tcpProbes().containsKey("tcpProbe1"));
+        Assert.assertTrue(!lb.httpProbes().containsKey("default"));
+        Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
+
         return lb;
     }
 
     @Override
     public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
         resource =  resource.update()
+                //TODO .withExistingPublicIpAddress(pip)
+                .withoutFrontend("default")
+                .withoutBackend("default")
+                .withoutLoadBalancingRule("rule1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();

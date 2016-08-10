@@ -151,8 +151,6 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
                 .create();
 
         resource =  resource.update()
-                //TODO .withoutFrontend("default")
-                //TODO .withExistingPublicIpAddress(pip)
                 .updateTcpProbe("default")
                     .withPort(22)
                     .parent()
@@ -186,7 +184,6 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
         Assert.assertTrue(lbRule.backend() == null);
         Assert.assertTrue(lbRule.backendPort() == 8080);
         Assert.assertTrue(lbRule.frontend().name().equalsIgnoreCase("default"));
-        Assert.assertTrue(lbRule.frontendPort() == 22);
         Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
 
         lbRule = resource.loadBalancingRules().get("lbrule2");

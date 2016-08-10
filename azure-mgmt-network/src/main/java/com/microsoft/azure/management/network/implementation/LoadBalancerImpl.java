@@ -154,13 +154,23 @@ class LoadBalancerImpl
             }
         }
 
+        // Reset and update frontends
+        Frontend defaultFrontend = this.frontends.get(DEFAULT);
+        if (this.frontends.size() > 0) {
+            this.inner().withFrontendIPConfigurations(null);
+            List<FrontendIPConfigurationInner> frontendsInner = ensureInnerFrontends();
+            for (Frontend frontend : this.frontends.values()) {
+                frontendsInner.add(frontend.inner());
+            }
+        }
+
         // Connect the load balancing rules to the defaults
         if (this.inner().loadBalancingRules() != null) {
             for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
-                if (lbRule.frontendIPConfiguration() == null) {
-                    // If no reference to frontend IP config yet, add refer5ence to "default"
+                if (lbRule.frontendIPConfiguration() == null && defaultFrontend != null) {
+                    // If no reference to frontend IP config yet, add reference to "default"
                     lbRule.withFrontendIPConfiguration(new SubResource()
-                            .withId(this.futureResourceId() + "/frontendIPConfigurations/" + DEFAULT));
+                            .withId(this.futureResourceId() + "/frontendIPConfigurations/" + defaultFrontend.name()));
                 }
 
                 if (lbRule.backendAddressPool() == null && defaultBackend != null) {
@@ -199,10 +209,22 @@ class LoadBalancerImpl
 
     private void initializeFrontendsFromInner() {
         this.frontends.clear();
-        if (this.inner().frontendIPConfigurations() != null) {
-            for (FrontendIPConfigurationInner frontendInner : this.inner().frontendIPConfigurations()) {
+        List<FrontendIPConfigurationInner> frontendsInner = this.inner().frontendIPConfigurations();
+        if (frontendsInner != null) {
+            for (FrontendIPConfigurationInner frontendInner : frontendsInner) {
                 FrontendImpl frontend = new FrontendImpl(frontendInner, this);
                 this.frontends.put(frontendInner.name(), frontend);
+            }
+        }
+    }
+
+    private void initializeBackendsFromInner() {
+        this.backends.clear();
+        List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
+        if (backendsInner != null) {
+            for (BackendAddressPoolInner backendInner : backendsInner) {
+                BackendImpl backend = new BackendImpl(backendInner, this);
+                this.backends.put(backendInner.name(), backend);
             }
         }
     }
@@ -222,17 +244,6 @@ class LoadBalancerImpl
         }
     }
 
-    private void initializeBackendsFromInner() {
-        this.backends.clear();
-        List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
-        if (backendsInner != null) {
-            for (BackendAddressPoolInner backendInner : backendsInner) {
-                BackendImpl backend = new BackendImpl(backendInner, this);
-                this.backends.put(backendInner.name(), backend);
-            }
-        }
-    }
-
     private void initializeLoadBalancingRulesFromInner() {
         this.loadBalancingRules.clear();
         List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
@@ -248,7 +259,7 @@ class LoadBalancerImpl
         return this.myManager;
     }
 
-    private List<FrontendIPConfigurationInner> ensureFrontends() {
+    private List<FrontendIPConfigurationInner> ensureInnerFrontends() {
         List<FrontendIPConfigurationInner> frontendsInner = this.inner().frontendIPConfigurations();
         if (frontendsInner == null) {
             frontendsInner = new ArrayList<>();
@@ -296,7 +307,6 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withFrontend(FrontendImpl frontend) {
-        ensureFrontends().add(frontend.inner());
         this.frontends.put(frontend.name(), frontend);
         return this;
     }
@@ -497,16 +507,6 @@ class LoadBalancerImpl
             frontendId = frontend.inner().id();
         } else {
             frontendId = null;
-        }
-
-        List<FrontendIPConfigurationInner> inners = this.inner().frontendIPConfigurations();
-        if (inners != null) {
-            for (int i = 0; i < inners.size(); i++) {
-                if (inners.get(i).name().equalsIgnoreCase(name)) {
-                    inners.remove(i);
-                    break;
-                }
-            }
         }
 
         // Remove references from LB rules
