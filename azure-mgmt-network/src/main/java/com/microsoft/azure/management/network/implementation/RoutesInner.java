@@ -130,34 +130,33 @@ public final class RoutesInner {
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeTableName is required and cannot be null.");
         }
         if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -383,38 +382,37 @@ public final class RoutesInner {
      * @param routeName The name of the route.
      * @param routeParameters Parameters supplied to the create/update routeoperation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, final ServiceCallback<RouteInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (routeTableName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeTableName is required and cannot be null.");
         }
         if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (routeParameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeParameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter routeParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(routeParameters, serviceCallback);
+        Validator.validate(routeParameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, routeTableName, routeName, this.client.subscriptionId(), routeParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<RouteInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -521,7 +519,7 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule opertion retrieves all the routes in a route table.
+     * The List network security rule operation retrieves all the routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -555,7 +553,7 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule opertion retrieves all the routes in a route table.
+     * The List network security rule operation retrieves all the routes in a route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -611,7 +609,7 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule opertion retrieves all the routes in a route table.
+     * The List network security rule operation retrieves all the routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -628,7 +626,7 @@ public final class RoutesInner {
     }
 
     /**
-     * The List network security rule opertion retrieves all the routes in a route table.
+     * The List network security rule operation retrieves all the routes in a route table.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls

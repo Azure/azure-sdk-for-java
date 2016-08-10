@@ -133,31 +133,30 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (loadBalancerName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, loadBalancerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -436,35 +435,34 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the loadBalancer.
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (loadBalancerName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters, serviceCallback);
+        Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, loadBalancerName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<LoadBalancerInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -563,7 +561,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
+     * The List loadBalancer operation retrieves all the loadbalancers in a subscription.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -589,7 +587,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
+     * The List loadBalancer operation retrieves all the loadbalancers in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
@@ -637,7 +635,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
+     * The List loadBalancer operation retrieves all the loadbalancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws CloudException exception thrown from REST call
@@ -667,7 +665,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
+     * The List loadBalancer operation retrieves all the loadbalancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -719,7 +717,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
+     * The List loadBalancer operation retrieves all the loadbalancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -736,7 +734,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a subscription.
+     * The List loadBalancer operation retrieves all the loadbalancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -780,7 +778,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
+     * The List loadBalancer operation retrieves all the loadbalancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -797,7 +795,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer opertion retrieves all the loadbalancers in a resource group.
+     * The List loadBalancer operation retrieves all the loadbalancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
