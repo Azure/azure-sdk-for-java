@@ -244,8 +244,10 @@ class VaultImpl
 
     private ParallelServiceCall populateAccessPolicies(final ServiceCallback<?> callback) {
         final ParallelServiceCall<?> parallelServiceCall = new ParallelServiceCall();
+        boolean any = false;
         for (final AccessPolicyImpl accessPolicy : accessPolicies) {
             if (accessPolicy.objectId() == null) {
+                any = true;
                 if (accessPolicy.userPrincipalName != null) {
                     parallelServiceCall.addCall(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName, new ServiceCallback<User>() {
                         @Override
@@ -279,6 +281,9 @@ class VaultImpl
                 }
             }
         }
+        if (!any) {
+            parallelServiceCall.success(null);
+        }
         return parallelServiceCall;
     }
 
@@ -289,6 +294,10 @@ class VaultImpl
         parameters.withLocation(regionName());
         parameters.withProperties(inner().properties());
         parameters.withTags(inner().getTags());
+        parameters.properties().accessPolicies().clear();
+        for (AccessPolicy accessPolicy : accessPolicies) {
+            parameters.properties().accessPolicies().add(accessPolicy.inner());
+        }
         this.setInner(client.createOrUpdate(resourceGroupName(), name(), parameters).getBody());
         return this;
     }

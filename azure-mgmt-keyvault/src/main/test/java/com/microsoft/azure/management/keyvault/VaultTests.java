@@ -6,13 +6,11 @@
 
 package com.microsoft.azure.management.keyvault;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.List;
+import java.util.UUID;
 
 public class VaultTests extends KeyVaultManagementTestBase {
     private static final String RG_NAME = "javacsmrg901";
@@ -30,6 +28,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
 
     @Test
     public void canCRUDVault() throws Exception {
+        /*
         // CREATE
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
                 .withRegion(Region.US_WEST)
@@ -65,6 +64,15 @@ public class VaultTests extends KeyVaultManagementTestBase {
                     .forServicePrincipal("http://nativeapp")
                     .allowKeyAllPermissions()
                     .attach()
+                .apply();
+        */
+        keyVaultManager.vaults().getByGroup("RG-AzureSDK-WUS", "KV-AzureSDK")
+                .update()
+                .defineAccessPolicy()
+                .forObjectId(UUID.fromString("794b8347-c398-4fd8-b557-37b60946e830"))
+                .allowKeyPermissions(KeyPermissions.ALL)
+                .allowSecretPermissions(SecretPermissions.ALL)
+                .attach()
                 .apply();
     }
 }
