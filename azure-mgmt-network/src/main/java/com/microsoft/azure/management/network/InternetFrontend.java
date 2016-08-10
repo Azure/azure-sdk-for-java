@@ -74,13 +74,32 @@ public interface InternetFrontend extends Frontend {
      * Grouping of internet-facing frontend update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an internet-facing frontend update allowing to specify an existing public IP address.
+         */
+        interface WithPublicIpAddress {
+            /**
+             * Associates the specified existing public IP address with this frontend of the load balancer.
+             * @param pip a public IP address
+             * @return the next stage of the update
+             */
+            Update withExistingPublicIpAddress(PublicIpAddress pip);
+
+            /**
+             * Associates the specified existing public IP address with this frontend of the load balancer.
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the update
+             */
+            Update withExistingPublicIpAddress(String resourceId);
+        }
     }
 
     /**
      * The entirety of an internet-facing frontend update as part of a load balancer update.
      */
     interface Update extends
-        Settable<LoadBalancer.Update> {
+        Settable<LoadBalancer.Update>,
+        UpdateStages.WithPublicIpAddress {
     }
 
     /**
@@ -95,7 +114,7 @@ public interface InternetFrontend extends Frontend {
         }
 
         /**
-         * The stage of an internet-facing frontend update allowing to specify an existing public IP address.
+         * The stage of an internet-facing frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithPublicIpAddress<ParentT> {

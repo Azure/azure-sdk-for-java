@@ -587,6 +587,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public FrontendImpl updateInternetFrontend(String name) {
+        return (FrontendImpl) this.frontends.get(name);
+    }
+
+    @Override
     public ProbeImpl updateHttpProbe(String name) {
         return (ProbeImpl) this.httpProbes.get(name);
     }

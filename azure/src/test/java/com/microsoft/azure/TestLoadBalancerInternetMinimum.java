@@ -13,6 +13,8 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
+import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -151,6 +153,9 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
                 .create();
 
         resource =  resource.update()
+                .updateInternetFrontend("default")
+                    .withExistingPublicIpAddress(pip)
+                    .parent()
                 .updateTcpProbe("default")
                     .withPort(22)
                     .parent()
@@ -184,6 +189,10 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
         Assert.assertTrue(lbRule.backend() == null);
         Assert.assertTrue(lbRule.backendPort() == 8080);
         Assert.assertTrue(lbRule.frontend().name().equalsIgnoreCase("default"));
+
+        Frontend frontend = resource.frontends().get("default");
+        Assert.assertTrue(frontend.isInternetFacing());
+        Assert.assertTrue(((InternetFrontend) frontend).publicIpAddressId().equalsIgnoreCase(pip.id()));
         Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
 
         lbRule = resource.loadBalancingRules().get("lbrule2");

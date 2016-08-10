@@ -468,6 +468,13 @@ public interface LoadBalancer extends
              * @return the next stage of the update
              */
             Update withoutFrontend(String name);
+
+            /**
+             * Begins the description of an update to an existing Internet-facing frontend.
+             * @param name the name of the frontend to update
+             * @return the first stage of the frontend update
+             */
+            InternetFrontend.Update updateInternetFrontend(String name);
         }
     }
 
