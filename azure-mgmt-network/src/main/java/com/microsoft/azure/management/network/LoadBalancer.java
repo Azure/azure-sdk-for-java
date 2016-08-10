@@ -386,13 +386,6 @@ public interface LoadBalancer extends
             Update withoutProbe(String name);
 
             /**
-             * Removes the specified probe from the load balancer, if present.
-             * @param probe the probe to remove
-             * @return the next stage of the update
-             */
-            Update withoutProbe(Probe probe);
-
-            /**
              * Begins the description of an update to an existing TCP probe on this load balancer.
              * @param name the name of the probe to update
              * @return the first stage of the probe update
@@ -447,13 +440,6 @@ public interface LoadBalancer extends
              * @return the next stage of the update
              */
             Update withoutLoadBalancingRule(String name);
-
-            /**
-             * Removes the specified load balancing rule from the load balancer, if present.
-             * @param rule the load balancing rule to remove
-             * @return the next stage of the update
-             */
-            Update withoutLoadBalancingRule(LoadBalancingRule rule);
 
             /**
              * Begins the description of an update to an existing load balancing rule on this load balancer.

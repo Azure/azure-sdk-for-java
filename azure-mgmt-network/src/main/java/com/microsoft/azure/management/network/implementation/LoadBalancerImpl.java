@@ -577,11 +577,6 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withoutProbe(Probe probe) {
-        return this.withoutProbe(probe.name());
-    }
-
-    @Override
     public ProbeImpl updateTcpProbe(String name) {
         return (ProbeImpl) this.tcpProbes.get(name);
     }
@@ -618,11 +613,6 @@ class LoadBalancerImpl
         }
 
         return this;
-    }
-
-    @Override
-    public LoadBalancerImpl withoutLoadBalancingRule(LoadBalancingRule rule) {
-        return this.withoutLoadBalancingRule(rule.name());
     }
 
     @Override
