@@ -30,7 +30,7 @@ public abstract class GroupableResourcesImpl<
         InnerT extends Resource,
         InnerCollectionT,
         ManagerT extends ManagerBase>
-    extends CreatableWrappersImpl<T, ImplT, InnerT>
+    extends CreatableResourcesImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
