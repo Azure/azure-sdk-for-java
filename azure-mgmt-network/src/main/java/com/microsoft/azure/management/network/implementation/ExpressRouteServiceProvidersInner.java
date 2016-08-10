@@ -66,7 +66,7 @@ public final class ExpressRouteServiceProvidersInner {
     }
 
     /**
-     * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -92,7 +92,7 @@ public final class ExpressRouteServiceProvidersInner {
     }
 
     /**
-     * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
@@ -140,7 +140,7 @@ public final class ExpressRouteServiceProvidersInner {
     }
 
     /**
-     * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -157,7 +157,7 @@ public final class ExpressRouteServiceProvidersInner {
     }
 
     /**
-     * The List ExpressRouteServiceProvider opertion retrieves all the available ExpressRouteServiceProviders.
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls

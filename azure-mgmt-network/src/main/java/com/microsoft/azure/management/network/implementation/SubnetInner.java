@@ -8,11 +8,10 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.SubResource;
-import com.microsoft.rest.serializer.JsonFlatten;
-
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 
 /**
  * Subnet in a VirtualNework resource.
@@ -43,6 +42,12 @@ public class SubnetInner extends SubResource {
      */
     @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IPConfigurationInner> ipConfigurations;
+
+    /**
+     * Gets array of references to the external resources using subnet.
+     */
+    @JsonProperty(value = "properties.resourceNavigationLinks")
+    private List<ResourceNavigationLinkInner> resourceNavigationLinks;
 
     /**
      * Gets provisioning state of the resource.
@@ -128,6 +133,26 @@ public class SubnetInner extends SubResource {
      */
     public List<IPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
+    }
+
+    /**
+     * Get the resourceNavigationLinks value.
+     *
+     * @return the resourceNavigationLinks value
+     */
+    public List<ResourceNavigationLinkInner> resourceNavigationLinks() {
+        return this.resourceNavigationLinks;
+    }
+
+    /**
+     * Set the resourceNavigationLinks value.
+     *
+     * @param resourceNavigationLinks the resourceNavigationLinks value to set
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withResourceNavigationLinks(List<ResourceNavigationLinkInner> resourceNavigationLinks) {
+        this.resourceNavigationLinks = resourceNavigationLinks;
+        return this;
     }
 
     /**

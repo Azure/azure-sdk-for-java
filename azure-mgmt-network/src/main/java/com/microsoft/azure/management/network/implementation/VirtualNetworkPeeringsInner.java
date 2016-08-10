@@ -130,34 +130,33 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
         if (virtualNetworkPeeringName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -383,38 +382,37 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (virtualNetworkName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
         }
         if (virtualNetworkPeeringName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (virtualNetworkPeeringParameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter virtualNetworkPeeringParameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(virtualNetworkPeeringParameters, serviceCallback);
+        Validator.validate(virtualNetworkPeeringParameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, this.client.subscriptionId(), virtualNetworkPeeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<VirtualNetworkPeeringInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -521,7 +519,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -555,7 +553,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -611,7 +609,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -628,7 +626,7 @@ public final class VirtualNetworkPeeringsInner {
     }
 
     /**
-     * The List virtual network peerings opertion retrieves all the peerings in a virtual network.
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
