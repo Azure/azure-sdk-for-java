@@ -309,7 +309,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
          * Cancels all the service calls currently executing.
          */
         public void cancel() {
-            this.innerServiceCall.cancel();
+            this.innerServiceCall.cancel(true);
         }
 
         /**
