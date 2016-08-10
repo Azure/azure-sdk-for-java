@@ -166,31 +166,30 @@ public final class ExpressRouteCircuitsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route Circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String circuitName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String circuitName, final ServiceCallback<Void> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.delete(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -395,35 +394,34 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, final ServiceCallback<ExpressRouteCircuitInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, final ServiceCallback<ExpressRouteCircuitInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters, serviceCallback);
+        Validator.validate(parameters);
         Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, circuitName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ExpressRouteCircuitInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -522,7 +520,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -558,44 +556,43 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsArpTableListResultInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
         if (peeringName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
         }
         if (devicePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listArpTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ExpressRouteCircuitsArpTableListResultInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -606,7 +603,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -641,7 +638,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListArpTable from ExpressRouteCircuit opertion retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
+     * The ListArpTable from ExpressRouteCircuit operation retrieves the currently advertised arp table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -700,7 +697,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -736,44 +733,43 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableListResultInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
         if (peeringName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
         }
         if (devicePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listRoutesTable(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ExpressRouteCircuitsRoutesTableListResultInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -784,7 +780,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -819,7 +815,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -878,7 +874,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -914,44 +910,43 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath, final ServiceCallback<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCallback) {
         if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         if (circuitName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter circuitName is required and cannot be null.");
         }
         if (peeringName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter peeringName is required and cannot be null.");
         }
         if (devicePath == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter devicePath is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Call<ResponseBody> call = service.listRoutesTableSummary(resourceGroupName, circuitName, peeringName, devicePath, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         final ServiceCall<ExpressRouteCircuitsRoutesTableSummaryListResultInner> serviceCall = new ServiceCall<>(call);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
+                if (serviceCallback != null) {
+                    serviceCallback.failure(t);
+                }
+                serviceCall.failure(t);
             }
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -962,7 +957,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -997,7 +992,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The ListRoutesTable from ExpressRouteCircuit opertion retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
+     * The ListRoutesTable from ExpressRouteCircuit operation retrieves the currently advertised routes table associated with the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -1056,7 +1051,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * The Liststats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -1083,7 +1078,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * The Liststats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -1133,7 +1128,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * The Liststats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -1164,7 +1159,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The Liststats ExpressRouteCircuit opertion retrieves all the stats from a ExpressRouteCircuits in a resource group.
+     * The Liststats ExpressRouteCircuit operation retrieves all the stats from a ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -1218,7 +1213,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws CloudException exception thrown from REST call
@@ -1248,7 +1243,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1300,7 +1295,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1326,7 +1321,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
@@ -1374,7 +1369,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -1391,7 +1386,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a resource group.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1435,7 +1430,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws CloudException exception thrown from REST call
@@ -1452,7 +1447,7 @@ public final class ExpressRouteCircuitsInner {
     }
 
     /**
-     * The List ExpressRouteCircuit opertion retrieves all the ExpressRouteCircuits in a subscription.
+     * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
