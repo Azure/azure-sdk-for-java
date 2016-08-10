@@ -6,6 +6,10 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.ParallelServiceCall;
+import com.microsoft.azure.management.graphrbac.ServicePrincipal;
+import com.microsoft.azure.management.graphrbac.User;
+import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.AccessPolicyEntry;
 import com.microsoft.azure.management.keyvault.Sku;
@@ -20,6 +24,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -38,10 +43,19 @@ class VaultImpl
         Vault.Definition,
         Vault.Update {
     private VaultsInner client;
+    private GraphRbacManager graphRbacManager;
+    private List<AccessPolicyImpl> accessPolicies;
 
-    protected VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager) {
+    protected VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
         super(key, innerObject, manager);
         this.client = client;
+        this.graphRbacManager = graphRbacManager;
+        this.accessPolicies = new ArrayList<>();
+        if (innerObject != null && innerObject.properties() != null && innerObject.properties().accessPolicies() != null) {
+            for (AccessPolicyEntry entry : innerObject.properties().accessPolicies()) {
+                this.accessPolicies.add(new AccessPolicyImpl(entry, this));
+            }
+        }
     }
 
     @Override
@@ -70,17 +84,8 @@ class VaultImpl
 
     @Override
     public List<AccessPolicy> accessPolicies() {
-        if (inner().properties() == null) {
-            return null;
-        }
-        if (inner().properties().accessPolicies() == null) {
-            return null;
-        }
-        List<AccessPolicy> accessPolicies = new ArrayList<>();
-        for (AccessPolicyEntry entry : inner().properties().accessPolicies()) {
-            accessPolicies.add(new AccessPolicyImpl(entry, this));
-        }
-        return accessPolicies;
+        AccessPolicy[] array = new AccessPolicy[accessPolicies.size()];
+        return Arrays.asList(accessPolicies.toArray(array));
     }
 
     @Override
@@ -109,27 +114,24 @@ class VaultImpl
 
     @Override
     public VaultImpl withEmptyAccessPolicy() {
-        if (inner().properties() == null) {
-            inner().withProperties(new VaultProperties());
-        }
-        inner().properties().withAccessPolicies(new ArrayList<AccessPolicyEntry>());
+        this.accessPolicies = new ArrayList<>();
         return this;
     }
 
     @Override
-    public Update withoutAccessPolicy(String objectId) {
-        return null;
+    public VaultImpl withoutAccessPolicy(String objectId) {
+        for (AccessPolicyImpl entry : this.accessPolicies) {
+            if (entry.objectId().toString().equals(objectId)) {
+                accessPolicies.remove(entry);
+                break;
+            }
+        }
+        return this;
     }
 
     @Override
     public VaultImpl withAccessPolicy(AccessPolicy accessPolicy) {
-        if (inner().properties() == null) {
-            inner().withProperties(new VaultProperties());
-        }
-        if (inner().properties().accessPolicies() == null) {
-            inner().properties().withAccessPolicies(new ArrayList<AccessPolicyEntry>());
-        }
-        inner().properties().accessPolicies().add(accessPolicy.inner());
+        accessPolicies.add((AccessPolicyImpl) accessPolicy);
         return this;
     }
 
@@ -140,15 +142,9 @@ class VaultImpl
 
     @Override
     public AccessPolicyImpl updateAccessPolicy(String objectId) {
-        if (inner().properties() == null) {
-            return null;
-        }
-        if (inner().properties().accessPolicies() == null) {
-            return null;
-        }
-        for (AccessPolicyEntry entry : inner().properties().accessPolicies()) {
+        for (AccessPolicyImpl entry : this.accessPolicies) {
             if (entry.objectId().toString().equals(objectId)) {
-                return new AccessPolicyImpl(entry, this);
+                return entry;
             }
         }
         throw new NoSuchElementException(String.format("Identity %s not found in the access policies.", objectId));
@@ -211,27 +207,84 @@ class VaultImpl
 
     @Override
     public ServiceCall createResourceAsync(final ServiceCallback<Resource> serviceCallback) {
-        VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
-        parameters.withLocation(regionName());
-        parameters.withProperties(inner().properties());
-        parameters.withTags(inner().getTags());
+        final ServiceCall serviceCall = new ServiceCall(null);
         final VaultImpl self = this;
-        return client.createOrUpdateAsync(resourceGroupName(), name(), parameters, new ServiceCallback<VaultInner>() {
+        serviceCall.newCall(populateAccessPolicies(new ServiceCallback<Object>() {
             @Override
             public void failure(Throwable t) {
                 serviceCallback.failure(t);
+                serviceCall.failure(t);
             }
 
             @Override
-            public void success(ServiceResponse<VaultInner> result) {
-                setInner(result.getBody());
-                serviceCallback.success(new ServiceResponse<Resource>(self, result.getResponse()));
+            public void success(ServiceResponse<Object> result) {
+                VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
+                parameters.withLocation(regionName());
+                parameters.withProperties(inner().properties());
+                parameters.withTags(inner().getTags());
+                serviceCall.newCall(client.createOrUpdateAsync(resourceGroupName(), name(), parameters, new ServiceCallback<VaultInner>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        serviceCallback.failure(t);
+                        serviceCall.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<VaultInner> result) {
+                        setInner(result.getBody());
+                        ServiceResponse<Resource> clientResponse = new ServiceResponse<Resource>(self, result.getResponse());
+                        serviceCallback.success(clientResponse);
+                        serviceCall.success(clientResponse);
+                    }
+                }).getCall());
             }
-        });
+        }).getCall());
+        return serviceCall;
+    }
+
+    private ParallelServiceCall populateAccessPolicies(final ServiceCallback<?> callback) {
+        final ParallelServiceCall<?> parallelServiceCall = new ParallelServiceCall();
+        for (final AccessPolicyImpl accessPolicy : accessPolicies) {
+            if (accessPolicy.objectId() == null) {
+                if (accessPolicy.userPrincipalName != null) {
+                    parallelServiceCall.addCall(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName, new ServiceCallback<User>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                            parallelServiceCall.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<User> result) {
+                            callback.success(null);
+                            accessPolicy.forUser(result.getBody());
+                        }
+                    }));
+                } else if (accessPolicy.servicePrincipalName != null) {
+                    parallelServiceCall.addCall(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName, new ServiceCallback<ServicePrincipal>() {
+                        @Override
+                        public void failure(Throwable t) {
+                            callback.failure(t);
+                            parallelServiceCall.failure(t);
+                        }
+
+                        @Override
+                        public void success(ServiceResponse<ServicePrincipal> result) {
+                            callback.success(null);
+                            accessPolicy.forServicePrincipal(result.getBody());
+                        }
+                    }));
+                } else {
+                    throw new IllegalArgumentException("Access policy must specify object ID.");
+                }
+            }
+        }
+        return parallelServiceCall;
     }
 
     @Override
     public VaultImpl createResource() throws Exception {
+        populateAccessPolicies(null).get();
         VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
         parameters.withLocation(regionName());
         parameters.withProperties(inner().properties());

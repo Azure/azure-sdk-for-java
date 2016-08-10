@@ -8,10 +8,10 @@ package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.rest.credentials.TokenCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -21,21 +21,20 @@ public abstract class KeyVaultManagementTestBase {
     protected static ResourceManager resourceManager;
     protected static GraphRbacManager graphRbacManager;
     protected static KeyVaultManager keyVaultManager;
-    protected static ApplicationTokenCredentials credentials;
 
     protected static void createClients() {
-        credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                null);
+//        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+//                System.getenv("client-id"),
+//                System.getenv("domain"),
+//                System.getenv("secret"),
+//                null);
 
-        ApplicationTokenCredentials graphCredentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                "https://graph.windows.net/",
-                null);
+//        ApplicationTokenCredentials graphCredentials = new ApplicationTokenCredentials(
+//                System.getenv("client-id"),
+//                System.getenv("domain"),
+//                System.getenv("secret"),
+//                "https://graph.windows.net/",
+//                null);
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
@@ -50,6 +49,6 @@ public abstract class KeyVaultManagementTestBase {
                 .authenticate(graphCredentials, System.getenv("domain"));
 
         keyVaultManager = KeyVaultManager
-                .authenticate(restClient, System.getenv("subscription-id"), graphCredentials.getDomain());
+                .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));
     }
 }

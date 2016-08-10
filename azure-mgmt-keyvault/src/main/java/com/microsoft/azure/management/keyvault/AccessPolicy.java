@@ -69,8 +69,10 @@ public interface AccessPolicy extends
         interface WithIdentity<ParentT> {
             WithAttach<ParentT> forObjectId(UUID objectId);
             WithAttach<ParentT> forUser(User user);
+            WithAttach<ParentT> forUser(String userPrincipalName);
             WithAttach<ParentT> forGroup(Group group);
             WithAttach<ParentT> forServicePrincipal(ServicePrincipal servicePrincipal);
+            WithAttach<ParentT> forServicePrincipal(String servicePrincipalName);
         }
 
         /**
@@ -120,7 +122,10 @@ public interface AccessPolicy extends
         interface WithIdentity<ParentT> {
             WithAttach<ParentT> forObjectId(UUID objectId);
             WithAttach<ParentT> forUser(User user);
+            WithAttach<ParentT> forUser(String userPrincipalName);
+            WithAttach<ParentT> forGroup(Group group);
             WithAttach<ParentT> forServicePrincipal(ServicePrincipal servicePrincipal);
+            WithAttach<ParentT> forServicePrincipal(String servicePrincipalName);
         }
 
         /**

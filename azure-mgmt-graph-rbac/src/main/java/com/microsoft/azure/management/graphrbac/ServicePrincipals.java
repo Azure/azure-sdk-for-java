@@ -9,6 +9,8 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ public interface ServicePrincipals extends
      * @param objectId the unique object id
      * @return an immutable representation of the resource
      * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException exceptions thrown from serialization/deserialization
+     * @throws IOException         exceptions thrown from serialization/deserialization
      */
     ServicePrincipal getByObjectId(String objectId) throws GraphErrorException, IOException;
 
@@ -35,7 +37,7 @@ public interface ServicePrincipals extends
      * @param appId the application id (or the client id)
      * @return an immutable representation of the resource
      * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException exceptions thrown from serialization/deserialization
+     * @throws IOException         exceptions thrown from serialization/deserialization
      */
     ServicePrincipal getByAppId(String appId) throws GraphErrorException, IOException;
 
@@ -45,7 +47,16 @@ public interface ServicePrincipals extends
      * @param spn the service principal name
      * @return an immutable representation of the resource
      * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException exceptions thrown from serialization/deserialization
+     * @throws IOException         exceptions thrown from serialization/deserialization
      */
     ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException;
+
+    /**
+     * Gets the information about a service principal.
+     *
+     * @param spn      the service principal name
+     * @param callback the call back to handle response
+     * @return the Future based service call
+     */
+    ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback);
 }

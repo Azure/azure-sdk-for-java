@@ -11,8 +11,12 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -70,6 +74,32 @@ class ServicePrincipalsImpl
 
     @Override
     public ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException {
-        return null;
+        List<ServicePrincipalInner> spList = innerCollection.list(String.format("servicePrincipalNames/any(c:c eq '%s')", spn)).getBody();
+        if (spList == null || spList.isEmpty()) {
+            return null;
+        } else {
+            return new ServicePrincipalImpl(spList.get(0), innerCollection);
+        }
+    }
+
+    @Override
+    public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback) {
+        final ServiceCall<ServicePrincipal> serviceCall = new ServiceCall<>(null);
+        serviceCall.newCall(innerCollection.getAsync(spn, new ServiceCallback<ServicePrincipalInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+                serviceCall.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<ServicePrincipalInner> result) {
+                ServicePrincipal user = new ServicePrincipalImpl(result.getBody(), innerCollection);
+                ServiceResponse<ServicePrincipal> clientResponse = new ServiceResponse<>(user, result.getResponse());
+                callback.success(clientResponse);
+                serviceCall.success(clientResponse);
+            }
+        }).getCall());
+        return serviceCall;
     }
 }

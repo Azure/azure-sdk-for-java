@@ -84,7 +84,8 @@ class VaultsImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager);
+                super.myManager,
+                graphRbacManager);
     }
 
     @Override
@@ -93,6 +94,7 @@ class VaultsImpl
                 vaultInner.name(),
                 vaultInner,
                 this.innerCollection,
-                super.myManager);
+                super.myManager,
+                graphRbacManager);
     }
 }

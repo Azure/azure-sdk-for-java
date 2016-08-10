@@ -34,6 +34,8 @@ class AccessPolicyImpl
             AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
             AccessPolicy.UpdateDefinition<Vault.Update>,
             AccessPolicy.Update {
+    String userPrincipalName;
+    String servicePrincipalName;
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
         super(innerObject, parent);
@@ -119,32 +121,46 @@ class AccessPolicyImpl
     @Override
     public AccessPolicyImpl forObjectId(UUID objectId) {
         inner().withObjectId(objectId);
+        inner().withTenantId(parent().tenantId());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forUser(User user) {
         inner().withObjectId(UUID.fromString(user.objectId()));
+        inner().withTenantId(parent().tenantId());
+        return this;
+    }
+
+    @Override
+    public AccessPolicyImpl forUser(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
         return this;
     }
 
     @Override
     public AccessPolicyImpl forGroup(Group group) {
         inner().withObjectId(UUID.fromString(group.objectId()));
+        inner().withTenantId(parent().tenantId());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forServicePrincipal(ServicePrincipal servicePrincipal) {
         inner().withObjectId(UUID.fromString(servicePrincipal.objectId()));
+        inner().withTenantId(parent().tenantId());
+        return this;
+    }
+
+    @Override
+    public AccessPolicyImpl forServicePrincipal(String servicePrincipalName) {
+        this.servicePrincipalName = servicePrincipalName;
         return this;
     }
 
     @Override
     public AccessPolicyImpl allowKeyAllPermissions() {
-        initializeKeyPermissions();
-        // TODO: Add all
-        return this;
+        return allowKeyPermissions(KeyPermissions.ALL);
     }
 
     @Override
@@ -170,8 +186,7 @@ class AccessPolicyImpl
 
     @Override
     public AccessPolicyImpl allowSecretAllPermissions() {
-        // TODO: add all
-        return null;
+        return allowSecretPermissions(SecretPermissions.ALL);
     }
 
     @Override

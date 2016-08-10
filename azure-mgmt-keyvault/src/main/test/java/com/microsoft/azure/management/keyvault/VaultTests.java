@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.keyvault;
 
-import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -33,13 +31,12 @@ public class VaultTests extends KeyVaultManagementTestBase {
     @Test
     public void canCRUDVault() throws Exception {
         // CREATE
-        ServicePrincipal sp = graphRbacManager.servicePrincipals().getByServicePrincipalName("app-123");
-        User user = graphRbacManager.users().getByUserPrincipalName("azuresdk@outlook.com");
         Vault vault = keyVaultManager.vaults().define(VAULT_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .defineAccessPolicy()
-                    .forServicePrincipal(sp)
+                    .forServicePrincipal("http://nativeapp")
+                    .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .attach()
                 .create();
@@ -65,12 +62,9 @@ public class VaultTests extends KeyVaultManagementTestBase {
                 .apply();
         vault.update()
                 .defineAccessPolicy()
-                    .forUser(user)
+                    .forServicePrincipal("http://nativeapp")
                     .allowKeyAllPermissions()
                     .attach()
-                .apply();
-        vault.update()
-                .withoutAccessPolicy(sp.objectId())
                 .apply();
     }
 }

@@ -12,6 +12,9 @@ import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.rest.RestException;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 
@@ -67,5 +70,26 @@ class UsersImpl
     @Override
     public UserImpl getByUserPrincipalName(String upn) throws GraphErrorException, IOException {
         return new UserImpl(innerCollection.get(upn).getBody(), innerCollection);
+    }
+
+    @Override
+    public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
+        final ServiceCall<User> serviceCall = new ServiceCall<>(null);
+        serviceCall.newCall(innerCollection.getAsync(upn, new ServiceCallback<UserInner>() {
+            @Override
+            public void failure(Throwable t) {
+                callback.failure(t);
+                serviceCall.failure(t);
+            }
+
+            @Override
+            public void success(ServiceResponse<UserInner> result) {
+                User user = new UserImpl(result.getBody(), innerCollection);
+                ServiceResponse<User> clientResponse = new ServiceResponse<User>(user, result.getResponse());
+                callback.success(clientResponse);
+                serviceCall.success(clientResponse);
+            }
+        }).getCall());
+        return serviceCall;
     }
 }
