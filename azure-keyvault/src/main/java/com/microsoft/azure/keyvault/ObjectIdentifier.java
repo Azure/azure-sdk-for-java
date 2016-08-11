@@ -144,35 +144,35 @@ public class ObjectIdentifier {
     }
 
     /**
-     * The base identifier for an object, does not include the object version.
+     * @return The base identifier for an object, does not include the object version.
      */
     public String baseIdentifier() {
         return baseIdentifier;
     }
 
     /**
-     * The identifier for an object, includes the objects version.
+     * @return The identifier for an object, includes the objects version.
      */
     public String identifier() {
         return identifier;
     }
 
     /**
-     * The name of the object.
+     * @return The name of the object.
      */
     public String name() {
         return name;
     }
 
     /**
-     * The vault containing the object
+     * @return The vault containing the object
      */
     public String vault() {
         return vault;
     }
 
     /**
-     * The version of the object.
+     * @return The version of the object.
      */
     public String version() {
         return version;

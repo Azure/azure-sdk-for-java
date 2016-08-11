@@ -48,8 +48,8 @@ public class ImportKeyRequest {
      * Set the isHsm to true if the key is imported as a hardware key to HSM,
      * false otherwise.
      * 
-     * @param size
-     *          the size of the key
+     * @param isHsm
+     *          True, if the key is hardware key to be stored in HSM. false otherwise
      * @return the Builder object itself.
      */
     public Builder withHsm(boolean isHsm) {
@@ -64,8 +64,8 @@ public class ImportKeyRequest {
      *          the key management attributes value to set
      * @return the Builder object itself.
      */
-    public Builder withAttributes(KeyAttributes value) {
-      this.attributes = value;
+    public Builder withAttributes(KeyAttributes attributes) {
+      this.attributes = attributes;
       return this;
     }
 

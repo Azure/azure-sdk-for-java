@@ -579,7 +579,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be encrypted
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -596,7 +596,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be encrypted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -610,7 +610,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be decrypted
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -627,7 +627,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be decrypted
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses. 
      * @return the {@link ServiceCall} object
      */
@@ -641,7 +641,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be signed
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -658,7 +658,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the content to be signed
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -705,7 +705,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the key to be wrapped
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -722,7 +722,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the key to be wrapped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -736,7 +736,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the key to be unwrapped
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -753,7 +753,7 @@ public final class KeyVaultClient {
      *
      * @param keyIdentifier The full key identifier
      * @param algorithm algorithm identifier
-     * @param value 
+     * @param value the key to be unwrapped
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */

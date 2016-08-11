@@ -31,9 +31,9 @@ public interface IKeyResolver {
      *
      * @param kid
      *            The key identifier to resolve.
-     * @return A {@link:Future} containing the resolved IKey
-     * @throws InterruptedException
-     * @throws ExecutionException
+     * @return A {@link:ListenableFuture} containing the resolved IKey
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      */
 	ListenableFuture<IKey> resolveKeyAsync(String kid);
 }
