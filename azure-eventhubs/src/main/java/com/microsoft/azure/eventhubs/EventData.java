@@ -4,6 +4,9 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -29,11 +32,12 @@ public class EventData implements Serializable
 {
 	private static final long serialVersionUID = -5631628195600014255L;
 
+	transient private Binary bodyData;
+	
 	private String partitionKey;
 	private String offset;
 	private long sequenceNumber;
 	private Instant enqueuedTime;
-	private Binary bodyData;
 	private boolean isReceivedEvent;
 	private Map<String, String> properties;
 
@@ -254,10 +258,28 @@ public class EventData implements Serializable
 		MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null) 
 				? new MessageAnnotations(new HashMap<Symbol, Object>()) 
 						: amqpMessage.getMessageAnnotations();		
-				messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-				amqpMessage.setMessageAnnotations(messageAnnotations);
+		messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
+		amqpMessage.setMessageAnnotations(messageAnnotations);
 
-				return amqpMessage;
+		return amqpMessage;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException
+	{
+		out.defaultWriteObject();
+		
+		out.writeInt(this.bodyData.getLength());
+		out.write(this.bodyData.getArray(), this.bodyData.getArrayOffset(), this.bodyData.getLength());
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		
+		final int length = in.readInt();
+		final byte[] data = new byte[length];
+		in.read(data, 0, length);
+		this.bodyData = new Binary(data, 0, length);
 	}
 
 	public static class SystemProperties implements Serializable

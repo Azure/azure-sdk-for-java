@@ -44,4 +44,20 @@ public final class IteratorUtil
 
 		return last;
 	}
+	
+	public static <T> T getFirst(final Iterable<T> iterable)
+	{
+		if (iterable == null)
+		{
+			return null;
+		}
+		
+		final Iterator<T> iterator = iterable.iterator();
+		if (iterator == null)
+		{
+			return null;
+		}
+		
+		return iterator.hasNext() ? iterator.next() : null;
+	}
 }

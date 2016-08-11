@@ -116,4 +116,37 @@ final class ExceptionUtil
 	{
 		return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now()); 
 	}
+	
+	static String toStackTraceString(final Throwable exception, final String customErrorMessage)
+	{
+		final StringBuilder builder = new StringBuilder();
+		
+		if (!StringUtil.isNullOrEmpty(customErrorMessage))
+		{
+			builder.append(customErrorMessage);
+			builder.append(System.lineSeparator());
+		}
+		
+		builder.append(exception.getMessage());
+		if (exception.getStackTrace() != null)
+			for (StackTraceElement ste: exception.getStackTrace())
+			{
+				builder.append(System.lineSeparator());
+				builder.append(ste.toString());
+			}
+
+		Throwable innerException = exception.getCause();
+		if (innerException != null)
+		{
+			builder.append("Cause: " + innerException.getMessage());
+			if (innerException.getStackTrace() != null)
+				for (StackTraceElement ste: innerException.getStackTrace())
+				{
+					builder.append(System.lineSeparator());
+					builder.append(ste.toString());
+				}
+		}
+		
+		return builder.toString();
+	}
 }

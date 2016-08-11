@@ -13,7 +13,8 @@ public class ReplayableWorkItem<T> extends WorkItem<T>
 	private byte[] amqpMessage;
 	private int messageFormat;
 	private int encodedMessageSize;
-
+	private boolean waitingForAck;
+	
 	private Exception lastKnownException;
 	private ScheduledFuture<?> timeoutTask;
 	
@@ -69,5 +70,15 @@ public class ReplayableWorkItem<T> extends WorkItem<T>
 	public void setTimeoutTask(final ScheduledFuture<?> timeoutTask)
 	{
 		this.timeoutTask = timeoutTask;
+	}
+	
+	public void setWaitingForAck()
+	{
+		this.waitingForAck = true;
+	}
+	
+	public boolean isWaitingForAck()
+	{
+		return this.waitingForAck;
 	}
 }
