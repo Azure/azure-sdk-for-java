@@ -21,7 +21,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     implements TaskGroup<T, U> {
+    /**
+     * Stores the tasks in this group and their dependency information.
+     */
     private DAGraph<U, DAGNode<U>> dag;
+    /**
+     * ServiceCall instance that aggregate a set of ServiceCalls each associated with
+     * the task in this group.
+     */
     private ParallelServiceCall parallelServiceCall;
 
     /**
@@ -87,7 +94,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     private void executeReadyTasksAsync(final ServiceCallback<T> callback) {
         DAGNode<U> nextNode = dag.getNext();
         while (nextNode != null) {
-            ServiceCall serviceCall = nextNode.data().executeAsync(taskCallback(nextNode, callback));
+            ServiceCall<T> serviceCall = nextNode.data().executeAsync(taskCallback(nextNode, callback));
             this.parallelServiceCall.addCall(serviceCall);
             nextNode = dag.getNext();
         }

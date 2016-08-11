@@ -38,5 +38,5 @@ public interface TaskItem<U> {
      * @param callback callback to call on success or failure
      * @return the handle of the REST call
      */
-    ServiceCall executeAsync(ServiceCallback<U> callback);
+    ServiceCall<U> executeAsync(ServiceCallback<U> callback);
 }
