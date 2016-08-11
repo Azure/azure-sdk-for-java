@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
