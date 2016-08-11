@@ -24,8 +24,8 @@
   <artifactId>azure-keyvault-core</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Key Vault</name>
-  <description>This package contains Microsoft Azure Key Vault SDK.</description>
+  <name>Microsoft Azure SDK for Key Vault Core</name>
+  <description>This package contains Microsoft Azure Key Vault Core SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
