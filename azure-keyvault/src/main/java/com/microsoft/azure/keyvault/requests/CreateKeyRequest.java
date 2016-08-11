@@ -38,8 +38,7 @@ public class CreateKeyRequest {
      * @param keyName
      *          The name of the key in the given vault
      * @param keyType
-     *          The type of key to create. For valid key types, see
-     *          {@link WebKeyTypes}.
+     *          The type of key to create. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      */
     public Builder(String vaultBaseUrl, String keyName, String keyType) {
       this.vaultBaseUrl = vaultBaseUrl;
@@ -62,12 +61,12 @@ public class CreateKeyRequest {
     /**
      * Set the key operations value.
      * 
-     * @param size
-     *          the size of the key
+     * @param keyOperations
+     *          the key operation list
      * @return the Builder object itself.
      */
-    public Builder withKeyOperations(List<String> keyOps) {
-      this.keyOperations = keyOps;
+    public Builder withKeyOperations(List<String> keyOperations) {
+      this.keyOperations = keyOperations;
       return this;
     }
 

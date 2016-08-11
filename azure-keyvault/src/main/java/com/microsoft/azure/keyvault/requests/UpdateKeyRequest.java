@@ -72,8 +72,8 @@ public class UpdateKeyRequest {
     /**
      * Set the key operations value.
      * 
-     * @param size
-     *          the size of the key
+     * @param keyOperations
+     *          the key operation list
      * @return the Builder object itself.
      */
     public Builder withKeyOperations(List<String> keyOperations) {
