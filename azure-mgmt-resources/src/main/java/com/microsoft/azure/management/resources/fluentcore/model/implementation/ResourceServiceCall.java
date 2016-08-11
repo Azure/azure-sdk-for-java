@@ -55,8 +55,8 @@ public class ResourceServiceCall<FluentModelT extends Resource,
                 if (self.failureHandler != null) {
                     self.failureHandler.failure(t);
                 }
-                self.failure(t);
                 callback.failure(t);
+                self.failure(t); // Signal Future
             }
 
             @Override
@@ -66,8 +66,8 @@ public class ResourceServiceCall<FluentModelT extends Resource,
                     self.successHandler.success(response);
                 }
                 if (reportSuccess) {
-                    self.success(new ServiceResponse<Resource>(self.fluentModelImpl, response.getResponse()));
                     callback.success(new ServiceResponse<Resource>(self.fluentModelImpl, response.getResponse()));
+                    self.success(new ServiceResponse<Resource>(self.fluentModelImpl, response.getResponse())); // Signal Future
                 }
             }
         };
