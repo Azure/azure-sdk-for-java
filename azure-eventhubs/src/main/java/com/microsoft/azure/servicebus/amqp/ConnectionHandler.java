@@ -4,16 +4,22 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
-import java.util.*;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.transport.*;
-import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.reactor.*;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Sasl;
+import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.Transport;
+import org.apache.qpid.proton.reactor.Handshaker;
 
-import com.microsoft.azure.servicebus.*;
-
+import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.StringUtil;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor
@@ -22,27 +28,26 @@ public final class ConnectionHandler extends BaseHandler
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 
-	private final String hostname;
 	private final String username;
 	private final String password;
 	private final IAmqpConnection messagingFactory;
 
-	public ConnectionHandler(final IAmqpConnection messagingFactory, final String hostname, final String username, final String password)
+	public ConnectionHandler(final IAmqpConnection messagingFactory, final String username, final String password)
 	{
 		add(new Handshaker());
 
-		this.hostname = hostname;
 		this.username = username;
 		this.password = password;
 		this.messagingFactory = messagingFactory;
 	}
-
+	
 	@Override
 	public void onConnectionInit(Event event)
 	{
-		Connection connection = event.getConnection();
-		connection.setHostname(this.hostname + ":" + ClientConstants.AMQPS_PORT);
-		connection.setContainer(UUID.randomUUID().toString());
+		final Connection connection = event.getConnection();
+		final String hostName = event.getReactor().getConnectionAddress(connection);
+		connection.setHostname(hostName);
+		connection.setContainer(StringUtil.getRandomString());
 		connection.open();
 	}
 
