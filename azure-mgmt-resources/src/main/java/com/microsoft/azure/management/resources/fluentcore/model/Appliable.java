@@ -29,5 +29,5 @@ public interface Appliable<T> extends Indexable {
      * @param callback the callback for success and failure
      * @return the handle to the REST call
      */
-    ServiceCall applyAsync(ServiceCallback<T> callback);
+    ServiceCall<T> applyAsync(ServiceCallback<T> callback);
 }
