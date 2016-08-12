@@ -448,16 +448,32 @@ public class JsonWebKey {
         }
     }
 
+    /**
+     * Get the RSA public key spec value.
+     *
+     * @return the RSA public key spec value
+     */
     private RSAPublicKeySpec getRSAPublicKeySpec() {
 
         return new RSAPublicKeySpec(toBigInteger(n()), toBigInteger(e()));
     }
 
+    /**
+     * Get the RSA private key spec value.
+     *
+     * @return the RSA private key spec value
+     */
     private RSAPrivateKeySpec getRSAPrivateKeySpec() {
 
-        return new RSAPrivateCrtKeySpec(toBigInteger(n()), toBigInteger(e()), toBigInteger(d()), toBigInteger(p()), toBigInteger(q()), toBigInteger(dp()), toBigInteger(dq()), toBigInteger(qi()));
+        return new RSAPrivateCrtKeySpec(toBigInteger(n()), toBigInteger(e()), toBigInteger(d()), toBigInteger(p()),
+                toBigInteger(q()), toBigInteger(dp()), toBigInteger(dq()), toBigInteger(qi()));
     }
 
+    /**
+     * Get the RSA public key value.
+     *
+     * @return the RSA public key value
+     */
     private PublicKey getRSAPublicKey() {
 
         try {
@@ -470,7 +486,12 @@ public class JsonWebKey {
         }
     }
 
-    private PrivateKey RSAPrivateKey() {
+    /**
+     * Get the RSA private key value.
+     *
+     * @return the RSA private key value
+     */
+    private PrivateKey getRSAPrivateKey() {
 
         try {
             RSAPrivateKeySpec privateKeySpec = getRSAPrivateKeySpec();
@@ -482,6 +503,9 @@ public class JsonWebKey {
         }
     }
 
+    /**
+     * Verifies if the key is an RSA key.
+     */
     private void checkRSACompatible() {
         if (!JsonWebKeyType.RSA.equals(kty()) && !JsonWebKeyType.RSAHSM.equals(kty())) {
             throw new UnsupportedOperationException("Not an RSA key");
@@ -510,6 +534,11 @@ public class JsonWebKey {
         return new BigInteger(b);
     }
 
+    /**
+     * Converts RSA key pair to JSON web key.
+     * @param keyPair RSA key pair
+     * @return the JSON web key, converted from RSA key pair.
+     */
     public static JsonWebKey fromRSA(KeyPair keyPair) {
 
         RSAPrivateCrtKey privateKey = (RSAPrivateCrtKey) keyPair.getPrivate();
@@ -518,45 +547,54 @@ public class JsonWebKey {
         if (privateKey != null) {
 
             key = new JsonWebKey()
-            		.withKty(JsonWebKeyType.RSA)
-            		.withN(toByteArray(privateKey.getModulus()))
-            		.withE(toByteArray(privateKey.getPublicExponent()))
-            		.withD(toByteArray(privateKey.getPrivateExponent()))
-            		.withP(toByteArray(privateKey.getPrimeP()))
-            		.withQ(toByteArray(privateKey.getPrimeQ()))
-            		.withDp(toByteArray(privateKey.getPrimeExponentP()))
-            		.withDq(toByteArray(privateKey.getPrimeExponentQ()))
-            		.withQi(toByteArray(privateKey.getCrtCoefficient()));
+                    .withKty(JsonWebKeyType.RSA)
+                    .withN(toByteArray(privateKey.getModulus()))
+                    .withE(toByteArray(privateKey.getPublicExponent()))
+                    .withD(toByteArray(privateKey.getPrivateExponent()))
+                    .withP(toByteArray(privateKey.getPrimeP()))
+                    .withQ(toByteArray(privateKey.getPrimeQ()))
+                    .withDp(toByteArray(privateKey.getPrimeExponentP()))
+                    .withDq(toByteArray(privateKey.getPrimeExponentQ()))
+                    .withQi(toByteArray(privateKey.getCrtCoefficient()));
         } else {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
             key = new JsonWebKey()
-            		.withKty(JsonWebKeyType.RSA)
-            		.withN(toByteArray(publicKey.getModulus()))
-            		.withE(toByteArray(publicKey.getPublicExponent()))
-            		.withD(null)
-            		.withP(null)
-            		.withQ(null)
-            		.withDp(null)
-            		.withDq(null)
-            		.withQi(null);
+                    .withKty(JsonWebKeyType.RSA)
+                    .withN(toByteArray(publicKey.getModulus()))
+                    .withE(toByteArray(publicKey.getPublicExponent()))
+                    .withD(null)
+                    .withP(null)
+                    .withQ(null)
+                    .withDp(null)
+                    .withDq(null)
+                    .withQi(null);
         }
 
         return key;
     }
 
+    /**
+     * Converts JSON web key to RSA key pair.
+     * @return RSA key pair
+     */
     public KeyPair toRSA() {
         return this.toRSA(false);
     }
 
+    /**
+     * Converts JSON web key to RSA key pair and include the private key if set to true.
+     * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
+     * @return RSA key pair
+     */
     public KeyPair toRSA(boolean includePrivateParameters) {
 
         // Must be RSA
         checkRSACompatible();
 
         if (includePrivateParameters) {
-            return new KeyPair(getRSAPublicKey(), RSAPrivateKey());
+            return new KeyPair(getRSAPublicKey(), getRSAPrivateKey());
         } else {
             return new KeyPair(getRSAPublicKey(), null);
         }

@@ -31,106 +31,119 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 
+/**
+ * The collection of key resolvers that would iterate on a key id to resolve to {@link IKey}.
+ */
 public class AggregateKeyResolver implements IKeyResolver {
 
+    /**
+     * Future key class that resolves a key id after the async result is available.
+     */
     class FutureKey extends AbstractFuture<IKey> {
 
-        private final String _kid;
+        private final String kid;
 
-        private boolean _cancelled = false;
-        private boolean _done      = false;
-        private IKey    _result    = null;
+        private boolean isCancelled = false;
+        private boolean isDone      = false;
+        private IKey    result    = null;
 
         FutureKey(String kid) {
-            _kid = kid;
+            this.kid = kid;
         }
 
         @Override
         public boolean cancel(boolean mayInterruptIfRunning) {
 
             // mark cancelled
-            _cancelled = true;
+            isCancelled = true;
 
-            return _cancelled;
+            return isCancelled;
         }
 
         @Override
         public boolean isCancelled() {
-            return _cancelled;
+            return isCancelled;
         }
 
         @Override
         public boolean isDone() {
 
             // always true
-            return _done;
+            return isDone;
         }
 
         @Override
         public IKey get() throws InterruptedException, ExecutionException {
 
             // throw if cancelled
-            if (_cancelled) {
+            if (isCancelled) {
                 throw new InterruptedException();
             }
 
-            synchronized( _resolvers ) {
-	            for (IKeyResolver resolver : _resolvers) {
-	                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
-	
-	                _result = futureKey.get();
-	
-	                if (_result != null) {
-	                    break;
-	                }
-	            }
+            synchronized (resolvers) {
+                for (IKeyResolver resolver : resolvers) {
+                    Future<IKey> futureKey = resolver.resolveKeyAsync(kid);
+    
+                    result = futureKey.get();
+    
+                    if (result != null) {
+                        break;
+                    }
+                }
             }
 
             // Mark done
-            _done = true;
+            isDone = true;
 
-            return _result;
+            return result;
         }
 
         @Override
         public IKey get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 
             // throw if cancelled
-            if (_cancelled) {
+            if (isCancelled) {
                 throw new InterruptedException();
             }
 
-            synchronized( _resolvers ) {
-	            for (IKeyResolver resolver : _resolvers) {
-	                Future<IKey> futureKey = resolver.resolveKeyAsync(_kid);
-	
-	                _result = futureKey.get(timeout, unit);
-	
-	                if (_result != null) {
-	                    break;
-	                }
-	            }
+            synchronized (resolvers) {
+                for (IKeyResolver resolver : resolvers) {
+                    Future<IKey> futureKey = resolver.resolveKeyAsync(kid);
+    
+                    result = futureKey.get(timeout, unit);
+    
+                    if (result != null) {
+                        break;
+                    }
+                }
             }
 
             // Mark done
-            _done = true;
+            isDone = true;
 
-            return _result;
+            return result;
         }
     }
 
-    private final List<IKeyResolver> _resolvers;
+    private final List<IKeyResolver> resolvers;
 
+    /**
+     * Constructor.
+     */
     public AggregateKeyResolver() {
 
-        _resolvers = Collections.synchronizedList(new ArrayList<IKeyResolver>());
+        resolvers = Collections.synchronizedList(new ArrayList<IKeyResolver>());
     }
 
-    public void Add(IKeyResolver resolver) {
+    /**
+     * Adds a key resolver to the collection of key resolvers.
+     * @param resolver the key resolver
+     */
+    public void add(IKeyResolver resolver) {
 
-    	synchronized( _resolvers ) {
-	        _resolvers.add(resolver);
-    	}
+        synchronized (resolvers) {
+            resolvers.add(resolver);
+        }
     }
 
     @Override

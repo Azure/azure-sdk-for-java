@@ -18,9 +18,12 @@
 
 package com.microsoft.azure.keyvault.core;
 
-import java.util.concurrent.ExecutionException;
 import com.google.common.util.concurrent.ListenableFuture;
 
+/**
+ * Interface for representing key resolving operations with the Microsoft Azure Key
+ * Vault libraries.
+ */
 public interface IKeyResolver {
 
     /**
@@ -31,9 +34,7 @@ public interface IKeyResolver {
      *
      * @param kid
      *            The key identifier to resolve.
-     * @return A {@link:ListenableFuture} containing the resolved IKey
-     * @throws InterruptedException 
-     * @throws ExecutionException 
+     * @return A ListenableFuture containing the resolved IKey
      */
-	ListenableFuture<IKey> resolveKeyAsync(String kid);
+    ListenableFuture<IKey> resolveKeyAsync(String kid);
 }

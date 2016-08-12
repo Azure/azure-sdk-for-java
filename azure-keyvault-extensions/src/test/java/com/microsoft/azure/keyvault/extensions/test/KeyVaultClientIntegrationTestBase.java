@@ -95,7 +95,7 @@ public class KeyVaultClientIntegrationTestBase {
     private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
         String clientId = System.getenv("arm.clientid");
-    	
+        
         if (clientId == null) {
             throw new Exception("Please inform arm.clientid in the environment settings.");
         }

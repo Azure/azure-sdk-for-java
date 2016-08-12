@@ -34,10 +34,17 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * The key resolver class that handles resolving key id to type {@link IKey} 
+ * to be used for cryptography operations.
+ */
 public class KeyVaultKeyResolver implements IKeyResolver {
 
-    static final Base64 _base64 = new Base64(-1, null, true);
+    static final Base64 BASE64 = new Base64(-1, null, true);
     
+    /**
+     * Transforms {@link KeyBundle} to {@link IKey}.
+     */
     class FutureKeyFromKey implements Function<ServiceResponse<KeyBundle>, IKey> {
 
         protected FutureKeyFromKey() {
@@ -47,15 +54,18 @@ public class KeyVaultKeyResolver implements IKeyResolver {
         @Override
         public IKey apply(ServiceResponse<KeyBundle> keyBundleResponse) {
 
-        	KeyBundle keyBundle = keyBundleResponse.getBody();
+            KeyBundle keyBundle = keyBundleResponse.getBody();
             if (keyBundle != null) {
-                return new KeyVaultKey(_client, keyBundle);
+                return new KeyVaultKey(client, keyBundle);
             }
 
             return null;
         }
     }
 
+    /**
+     * Transforms {@link SecretBundle} to {@link IKey}.
+     */
     class FutureKeyFromSecret implements Function<ServiceResponse<SecretBundle>, IKey> {
 
         protected FutureKeyFromSecret() {
@@ -65,12 +75,12 @@ public class KeyVaultKeyResolver implements IKeyResolver {
         @Override
         public IKey apply(ServiceResponse<SecretBundle> secretBundleResponse) {
 
-        	SecretBundle secretBundle = secretBundleResponse.getBody();
+            SecretBundle secretBundle = secretBundleResponse.getBody();
             if (secretBundle != null && secretBundle.contentType().equalsIgnoreCase("application/octet-stream")) {
-                byte[] keyBytes = _base64.decode(secretBundle.value());
+                byte[] keyBytes = BASE64.decode(secretBundle.value());
 
                 if (keyBytes != null) {
-                    return new SymmetricKey(secretBundle.id(), keyBytes, _provider );
+                    return new SymmetricKey(secretBundle.id(), keyBytes, provider);
                 }
             }
 
@@ -78,29 +88,38 @@ public class KeyVaultKeyResolver implements IKeyResolver {
         }
     }
 
-    private final KeyVaultClient _client;
-    private final Provider       _provider;
+    private final KeyVaultClient client;
+    private final Provider       provider;
 
+    /**
+     * Constructor.
+     * @param client the key vault client
+     */
     public KeyVaultKeyResolver(KeyVaultClient client) {
-        _client   = client;
-        _provider = null;
+        this.client   = client;
+        this.provider = null;
     }
     
+    /**
+     * Constructor.
+     * @param client the key vault client 
+     * @param provider the java security provider
+     */
     public KeyVaultKeyResolver(KeyVaultClient client, Provider provider) {
-    	_client   = client;
-    	_provider = provider;
+        this.client   = client;
+        this.provider = provider;
     }
 
     private ListenableFuture<IKey> resolveKeyFromSecretAsync(String kid) {
-    	
-    	ListenableFuture<ServiceResponse<SecretBundle>> futureCall = _client.getSecretAsync(kid, null);
-    	return Futures.transform(futureCall, new FutureKeyFromSecret());
+        
+        ListenableFuture<ServiceResponse<SecretBundle>> futureCall = client.getSecretAsync(kid, null);
+        return Futures.transform(futureCall, new FutureKeyFromSecret());
     }
 
     private ListenableFuture<IKey> resolveKeyFromKeyAsync(String kid) {
-    	
-    	ListenableFuture<ServiceResponse<KeyBundle>> futureCall = _client.getKeyAsync(kid, null);
-    	return Futures.transform(futureCall, new FutureKeyFromKey());
+        
+        ListenableFuture<ServiceResponse<KeyBundle>> futureCall = client.getKeyAsync(kid, null);
+        return Futures.transform(futureCall, new FutureKeyFromKey());
     }
 
     @Override

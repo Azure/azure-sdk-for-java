@@ -18,9 +18,16 @@
 
 package com.microsoft.azure.keyvault.extensions;
 
-
+/**
+ * String handlers.
+ */
 public class Strings {
 
+    /**
+     * Verifier if the string is empty or null.
+     * @param arg the string to verify
+     * @return true if the string is empty or null and false otherwise
+     */
     public static boolean isNullOrEmpty(String arg) {
 
         if (arg == null || arg.isEmpty()) {
@@ -30,6 +37,11 @@ public class Strings {
         return false;
     }
 
+    /**
+     * Verifier if the string is empty, contains only whitespace or is null.
+     * @param arg the string to verify
+     * @return true if the string is empty, contains only whitespace or is null and false otherwise
+     */
     public static boolean isNullOrWhiteSpace(String arg) {
 
         if (Strings.isNullOrEmpty(arg) || arg.trim().isEmpty()) {

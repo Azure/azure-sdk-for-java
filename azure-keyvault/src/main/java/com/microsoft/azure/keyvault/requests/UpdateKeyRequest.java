@@ -8,176 +8,184 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
-public class UpdateKeyRequest {
+/**
+ * The key update request class.
+ */
+public final class UpdateKeyRequest {
 
-  private final String vaultBaseUrl;
-  private final String keyName;
-  private final String keyVersion;
-  private final List<String> keyOperations;
-  private final KeyAttributes keyAttributes;
-  private final Map<String, String> tags;
-
-  public static class Builder {
-
-    // Required parameters
     private final String vaultBaseUrl;
     private final String keyName;
-
-    // Optional parameters
-    private String keyVersion;
-    private List<String> keyOperations;
-    private KeyAttributes attributes;
-    private Map<String, String> tags;
+    private final String keyVersion;
+    private final List<String> keyOperations;
+    private final KeyAttributes keyAttributes;
+    private final Map<String, String> tags;
 
     /**
-     * The builder for constructing {@link UpdateKeyRequest} object
-     * 
-     * @param vaultBaseUrl
-     *          The vault name, e.g. https://myvault.vault.azure.net
-     * @param keyName
-     *          The name of the key in the given vault
+     * The {@link UpdateKeyRequest} builder.
      */
-    public Builder(String vaultBaseUrl, String keyName) {
-      this.vaultBaseUrl = vaultBaseUrl;
-      this.keyName = keyName;
+    public static class Builder {
+
+        // Required parameters
+        private final String vaultBaseUrl;
+        private final String keyName;
+
+        // Optional parameters
+        private String keyVersion;
+        private List<String> keyOperations;
+        private KeyAttributes attributes;
+        private Map<String, String> tags;
+
+        /**
+         * The builder for constructing {@link UpdateKeyRequest} object.
+         * 
+         * @param vaultBaseUrl
+         *            The vault name, e.g. https://myvault.vault.azure.net.
+         * @param keyName
+         *            The name of the key in the given vault.
+         */
+        public Builder(String vaultBaseUrl, String keyName) {
+            this.vaultBaseUrl = vaultBaseUrl;
+            this.keyName = keyName;
+        }
+
+        /**
+         * The builder for constructing {@link UpdateKeyRequest} object.
+         * 
+         * @param keyIdentifier
+         *            The key identifier, e.g.
+         *            https://{vault-name}.vault.azure.net/keys/{key-name}/{key-
+         *            version}.
+         */
+        public Builder(String keyIdentifier) {
+            KeyIdentifier id = new KeyIdentifier(keyIdentifier);
+            this.vaultBaseUrl = id.vault();
+            this.keyName = id.name();
+            this.keyVersion = id.version();
+        }
+
+        /**
+         * Set the key version value.
+         * 
+         * @param keyVersion
+         *            the key version.
+         * @return the Builder object itself.
+         */
+        public Builder withVersion(String keyVersion) {
+            this.keyVersion = keyVersion;
+            return this;
+        }
+
+        /**
+         * Set the key operations value.
+         * 
+         * @param keyOperations
+         *            the key operation list
+         * @return the Builder object itself.
+         */
+        public Builder withKeyOperations(List<String> keyOperations) {
+            this.keyOperations = keyOperations;
+            return this;
+        }
+
+        /**
+         * Set the key attributes value.
+         * 
+         * @param attributes
+         *            the key management attributes value to set
+         * @return the Builder object itself.
+         */
+        public Builder withAttributes(KeyAttributes attributes) {
+            this.attributes = attributes;
+            return this;
+        }
+
+        /**
+         * Set the tags value.
+         * 
+         * @param tags
+         *            Application-specific metadata in the form of key-value
+         *            pairs.
+         * @return the Builder object itself.
+         */
+        public Builder withTags(Map<String, String> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        /**
+         * builds the {@link UpdateKeyRequest} object.
+         * 
+         * @return the {@link UpdateKeyRequest} object.
+         */
+        public UpdateKeyRequest build() {
+            return new UpdateKeyRequest(this);
+        }
+    }
+
+    private UpdateKeyRequest(Builder builder) {
+        vaultBaseUrl = builder.vaultBaseUrl;
+        keyName = builder.keyName;
+        keyVersion = builder.keyVersion == null ? "" : builder.keyVersion;
+
+        if (builder.keyOperations != null) {
+            keyOperations = new ArrayList<String>(builder.keyOperations);
+        } else {
+            keyOperations = null;
+        }
+
+        if (builder.attributes != null) {
+            keyAttributes = (KeyAttributes) new KeyAttributes().withEnabled(builder.attributes.enabled())
+                    .withExpires(builder.attributes.expires()).withNotBefore(builder.attributes.notBefore());
+        } else {
+            keyAttributes = null;
+        }
+
+        if (builder.tags != null) {
+            tags = Collections.unmodifiableMap(builder.tags);
+        } else {
+            tags = null;
+        }
     }
 
     /**
-     * The builder for constructing {@link UpdateKeyRequest} object
-     * 
-     * @param keyIdentifier
-     *          The key identifier, e.g.
-     *          https://{vault-name}.vault.azure.net/keys/{key-name}/{key-
-     *          version}
+     * @return the vault base url
      */
-    public Builder(String keyIdentifier) {
-      KeyIdentifier id = new KeyIdentifier(keyIdentifier);
-      this.vaultBaseUrl = id.vault();
-      this.keyName = id.name();
-      this.keyVersion = id.version();
+    public String vaultBaseUrl() {
+        return vaultBaseUrl;
     }
 
     /**
-     * Set the key version value.
-     * 
-     * @param keyVersion
-     *          the key version
-     * @return the Builder object itself.
+     * @return the key name
      */
-    public Builder withVersion(String keyVersion) {
-      this.keyVersion = keyVersion;
-      return this;
+    public String keyName() {
+        return keyName;
     }
 
     /**
-     * Set the key operations value.
-     * 
-     * @param keyOperations
-     *          the key operation list
-     * @return the Builder object itself.
+     * @return the key version
      */
-    public Builder withKeyOperations(List<String> keyOperations) {
-      this.keyOperations = keyOperations;
-      return this;
+    public String keyVersion() {
+        return keyVersion;
     }
 
     /**
-     * Set the key attributes value.
-     * 
-     * @param attributes
-     *          the key management attributes value to set
-     * @return the Builder object itself.
+     * @return the key operations
      */
-    public Builder withAttributes(KeyAttributes attributes) {
-      this.attributes = attributes;
-      return this;
+    public List<String> keyOperations() {
+        return keyOperations;
     }
 
     /**
-     * Set the tags value.
-     * 
-     * @param tags
-     *          Application-specific metadata in the form of key-value pairs.
-     * @return the Builder object itself.
+     * @return the key attributes
      */
-    public Builder withTags(Map<String, String> tags) {
-      this.tags = tags;
-      return this;
+    public KeyAttributes keyAttributes() {
+        return keyAttributes;
     }
 
     /**
-     * builds the {@link UpdateKeyRequest} object
-     * @return the {@link UpdateKeyRequest} object
+     * @return the tags
      */
-    public UpdateKeyRequest build() {
-      return new UpdateKeyRequest(this);
+    public Map<String, String> tags() {
+        return tags;
     }
-  }
-
-  private UpdateKeyRequest(Builder builder) {
-    vaultBaseUrl = builder.vaultBaseUrl;
-    keyName = builder.keyName;
-    keyVersion = builder.keyVersion == null ? "" : builder.keyVersion;
-
-    if (builder.keyOperations != null) {
-      keyOperations = new ArrayList<String>(builder.keyOperations);
-    } else {
-      keyOperations = null;
-    }
-
-    if (builder.attributes != null) {
-      keyAttributes = (KeyAttributes) new KeyAttributes().withEnabled(builder.attributes.enabled())
-          .withExpires(builder.attributes.expires()).withNotBefore(builder.attributes.notBefore());
-    } else {
-      keyAttributes = null;
-    }
-
-    if (builder.tags != null) {
-      tags = Collections.unmodifiableMap(builder.tags);
-    } else {
-      tags = null;
-    }
-  }
-
-  /**
-   * @return the vault base url
-   */
-  public String vaultBaseUrl() {
-    return vaultBaseUrl;
-  }
-
-  /**
-   * @return the key name
-   */
-  public String keyName() {
-    return keyName;
-  }
-
-  /**
-   * @return the key version
-   */
-  public String keyVersion() {
-    return keyVersion;
-  }
-
-  /**
-   * @return the key operations
-   */
-  public List<String> keyOperations() {
-    return keyOperations;
-  }
-
-  /**
-   * @return the key attributes
-   */
-  public KeyAttributes keyAttributes() {
-    return keyAttributes;
-  }
-
-  /**
-   * @return the tags
-   */
-  public Map<String, String> tags() {
-    return tags;
-  }
 }

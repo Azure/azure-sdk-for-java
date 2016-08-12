@@ -241,7 +241,11 @@ public class CertificateOperation {
         this.requestId = requestId;
         return this;
     }
-    
+
+    /**
+     * The certificate operation identifier.
+     * @return the identifier value
+     */
     public CertificateOperationIdentifier certificateOperationIdentifier() {
         if (id() == null || id().isEmpty()) {
             return null;

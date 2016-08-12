@@ -137,7 +137,11 @@ public class IssuerBundle {
         this.attributes = attributes;
         return this;
     }
-    
+
+    /**
+     * The issuer identifier.
+     * @return identifier for issuer
+     */
     public IssuerIdentifier issuerIdentifier() {
         if (id() == null || id().isEmpty()) {
             return null;

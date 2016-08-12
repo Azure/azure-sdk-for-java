@@ -151,7 +151,7 @@ public class SecretBundle {
         this.tags = tags;
         return this;
     }
-    
+
     /**
      * Get the kid value.
      *
@@ -171,14 +171,18 @@ public class SecretBundle {
         this.kid = kid;
         return this;
     }
-    
+
+    /**
+     * the secret identifier.
+     * @return The Identifier value
+     */
     public SecretIdentifier secretIdentifier() {
         if (id() == null || id().length() == 0) {
             return null;
         }
         return new SecretIdentifier(id());
     }
-    
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

@@ -97,6 +97,10 @@ public class KeyBundle {
         return this;
     }
 
+    /**
+     * The key identifier.
+     * @return identifier for the key
+     */
     public KeyIdentifier keyIdentifier() {
         if (key() == null || key().kid() == null || key().kid().length() == 0) {
             return null;
