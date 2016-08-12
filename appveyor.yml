@@ -11,7 +11,7 @@ before_build:
   - git clone "git@github.com:Azure/azure-docs-sdk-java.git" "docs"
   
 build_script:
-  - ps: & docs\Scripts\build.ps1
+  - ps: docs\Scripts\build.ps1
 
 on_success:
   - cd docs
