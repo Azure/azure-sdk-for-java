@@ -18,4 +18,6 @@ on_success:
   - git add .
   - git commit -m "CI Updates"
   - git push -u origin master
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
