@@ -43,7 +43,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
                     @Override
                     public void onError(Throwable throwable) {
-                        throwable.printStackTrace();
+                        future.setException(throwable);
                     }
 
                     @Override
@@ -74,7 +74,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 null);
 
         Azure azure = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(HttpLoggingInterceptor.Level.NONE)
                 .authenticate(credentials)
                 .withDefaultSubscription();
         runTest(azure.virtualMachines(), azure.resourceGroups());

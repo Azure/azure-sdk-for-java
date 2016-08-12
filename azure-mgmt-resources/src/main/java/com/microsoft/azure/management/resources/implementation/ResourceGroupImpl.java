@@ -155,7 +155,6 @@ class ResourceGroupImpl extends
         params.withTags(this.inner().tags());
         return client.createOrUpdateAsync(this.name(), params, null)
                 .observable()
-                .subscribeOn(Schedulers.io())
                 .map(innerToFluentMap(this));
     }
 }

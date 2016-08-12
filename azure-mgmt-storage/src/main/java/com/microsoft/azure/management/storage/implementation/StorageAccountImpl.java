@@ -24,6 +24,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -266,25 +267,21 @@ class StorageAccountImpl
 
     @Override
     public Observable<StorageAccount> createResourceAsync() {
-        final StorageAccountImpl self = this;
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        final Observable<StorageAccount> getProperties = client.getPropertiesAsync(resourceGroupName(), name(), null)
-                .observable()
-                .map(new Func1<StorageAccountInner, StorageAccount>() {
-                    @Override
-                    public StorageAccount call(StorageAccountInner storageAccountInner) {
-                        self.setInner(storageAccountInner);
-                        clearWrapperProperties();
-                        return self;
-                    }
-                });
         return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters, null)
                 .observable()
-                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccount>>() {
+                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
                     @Override
-                    public Observable<StorageAccount> call(StorageAccountInner storageAccountInner) {
-                        return getProperties;
+                    public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
+                        return client.getPropertiesAsync(resourceGroupName(), name(), null).observable();
+                    }
+                })
+                .map(innerToFluentMap(this))
+                .doOnNext(new Action1<StorageAccount>() {
+                    @Override
+                    public void call(StorageAccount storageAccount) {
+                        clearWrapperProperties();
                     }
                 });
     }

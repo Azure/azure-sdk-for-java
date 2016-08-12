@@ -888,7 +888,7 @@ class VirtualMachineImpl
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
         final VirtualMachineImpl self = this;
         return handleStorageSettingsAsync()
-                .concatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
+                .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
                     @Override
                     public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
                         handleNetworkSettings();
