@@ -43,7 +43,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .define(SA_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(RG_NAME)
-                .createAsync(null).get().getBody();
+                .create();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());
         // List

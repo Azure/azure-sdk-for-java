@@ -10,6 +10,9 @@ package com.microsoft.rest;
 import com.google.common.util.concurrent.AbstractFuture;
 
 import retrofit2.Call;
+import rx.Observable;
+import rx.Scheduler;
+import rx.functions.Func1;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.
@@ -70,6 +73,31 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
     @Override
     public boolean isCancelled() {
         return call.isCanceled();
+    }
+
+    /**
+     * Get an RxJava Observable object for the response.
+     *
+     * @return the Observable
+     */
+    public Observable<T> observable() {
+        return Observable.from(this)
+                .map(new Func1<ServiceResponse<T>, T>() {
+                    @Override
+                    public T call(ServiceResponse<T> tServiceResponse) {
+                        return tServiceResponse.getBody();
+                    }
+                });
+    }
+
+    /**
+     * Get an RxJava Observable object for the response bound on a scheduler.
+     *
+     * @param scheduler the scheduler to bind to
+     * @return the Observable
+     */
+    public Observable<T> observable(Scheduler scheduler) {
+        return observable().subscribeOn(scheduler);
     }
 
     /**

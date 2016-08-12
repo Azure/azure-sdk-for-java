@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.TaskGroupBase;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
 /**
  * Type representing a group of tasks that can create resources that are dependents on each other.
@@ -19,10 +20,9 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
         /**
          * Creates the resource asynchronously.
          *
-         * @param serviceCallback the callback to be invoked after the creation of resource
          * @return the service call reference
          */
-        ServiceCall createResourceAsync(ServiceCallback<T> serviceCallback);
+        Observable<T> createResourceAsync();
 
         /**
          * Creates the resource synchronously.

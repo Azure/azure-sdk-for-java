@@ -6,6 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.CreatedResource
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
 /**
  * Providing access to creating a batch of Azure top level resources of same type.
@@ -27,9 +28,8 @@ public interface SupportsBatchCreation<ResourceT extends Resource> {
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when
      * system resources are available.
      *
-     * @param callback the callback to handle success and failure
      * @param creatables the creatables in the batch
      * @return a handle to cancel the request
      */
-    ServiceCall<CreatedResources<ResourceT>> createAsync(ServiceCallback<CreatedResources<ResourceT>> callback, Creatable<ResourceT>... creatables);
+    Observable<CreatedResources<ResourceT>> createAsync(Creatable<ResourceT>... creatables);
 }

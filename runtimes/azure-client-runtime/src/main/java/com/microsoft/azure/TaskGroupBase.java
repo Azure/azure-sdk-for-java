@@ -7,11 +7,18 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import org.apache.commons.lang3.tuple.MutablePair;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.functions.FuncN;
+import rx.schedulers.Schedulers;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The base implementation of TaskGroup interface.
@@ -22,7 +29,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     implements TaskGroup<T, U> {
     private DAGraph<U, DAGNode<U>> dag;
-    private ParallelServiceCall parallelServiceCall;
 
     /**
      * Creates TaskGroupBase.
@@ -32,7 +38,6 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
      */
     public TaskGroupBase(String rootTaskItemId, U rootTaskItem) {
         this.dag = new DAGraph<>(new DAGNode<>(rootTaskItemId, rootTaskItem));
-        this.parallelServiceCall = new ParallelServiceCall();
     }
 
     @Override
@@ -68,9 +73,8 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     }
 
     @Override
-    public ServiceCall<T> executeAsync(final ServiceCallback<T> callback) {
-        executeReadyTasksAsync(callback);
-        return parallelServiceCall;
+    public Observable<T> executeAsync() {
+        return executeReadyTasksAsync();
     }
 
     @Override
@@ -81,94 +85,39 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     /**
      * Executes all runnable tasks, a task is runnable when all the tasks its depends
      * on are finished running.
-     *
-     * @param callback the callback
      */
-    private void executeReadyTasksAsync(final ServiceCallback<T> callback) {
+    private Observable<T> executeReadyTasksAsync() {
         DAGNode<U> nextNode = dag.getNext();
+        Observable<T> rootObservable = null;
+        final List<Observable<T>> observables = new ArrayList<>();
         while (nextNode != null) {
-            ServiceCall serviceCall = nextNode.data().executeAsync(taskCallback(nextNode, callback));
-            this.parallelServiceCall.addCall(serviceCall);
+            final DAGNode<U> thisNode = nextNode;
+            if (dag().isRootNode(nextNode)) {
+                rootObservable = nextNode.data().executeAsync()
+                        .doOnNext(new Action1<T>() {
+                            @Override
+                            public void call(T t) {
+                                dag().reportedCompleted(thisNode);
+                            }
+                        });
+            } else {
+                Observable<T> nextNodeObservable = nextNode.data().executeAsync()
+                        .flatMap(new Func1<T, Observable<T>>() {
+                            @Override
+                            public Observable<T> call(T t) {
+                                dag().reportedCompleted(thisNode);
+                                return executeReadyTasksAsync();
+                            }
+                        });
+                observables.add(nextNodeObservable);
+            }
             nextNode = dag.getNext();
         }
-    }
-
-    /**
-     * This method create and return a callback for the runnable task stored in the given node.
-     * This callback wraps the given callback.
-     *
-     * @param taskNode the node containing runnable task
-     * @param callback the callback to wrap
-     * @return the task callback
-     */
-    private ServiceCallback<T> taskCallback(final DAGNode<U> taskNode, final ServiceCallback<T> callback) {
-        final TaskGroupBase<T, U> self = this;
-        return new ServiceCallback<T>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-                parallelServiceCall.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<T> result) {
-                self.dag().reportedCompleted(taskNode);
-                if (self.dag().isRootNode(taskNode)) {
-                    if (callback != null) {
-                        callback.success(result);
-                    }
-                    parallelServiceCall.success(result);
-                } else {
-                    self.executeReadyTasksAsync(callback);
-                }
-            }
-        };
-    }
-
-    /**
-     * Type represents a set of REST calls running possibly in parallel.
-     */
-    private class ParallelServiceCall extends ServiceCall<T> {
-        private ConcurrentLinkedQueue<ServiceCall<?>> serviceCalls;
-
-        /**
-         * Creates a ParallelServiceCall.
-         */
-        ParallelServiceCall() {
-            super(null);
-            this.serviceCalls = new ConcurrentLinkedQueue<>();
+        if (rootObservable != null) {
+            return rootObservable;
         }
-
-        /**
-         * Cancels all the service calls currently executing.
-         */
-        public void cancel() {
-            for (ServiceCall<?> call : this.serviceCalls) {
-                call.cancel(true);
-            }
-        }
-
-        /**
-         * @return true if the call has been canceled; false otherwise.
-         */
-        public boolean isCancelled() {
-            for (ServiceCall<?> call : this.serviceCalls) {
-                if (!call.isCancelled()) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Add a call to the list of parallel calls.
-         *
-         * @param call the call
-         */
-        private void addCall(ServiceCall call) {
-            if (call != null) {
-                this.serviceCalls.add(call);
-            }
+        else {
+            return Observable.merge(observables).last();
         }
     }
 }

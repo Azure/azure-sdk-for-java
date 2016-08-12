@@ -12,6 +12,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,8 +99,8 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
-        return createAsync(callback);
+    public Observable<NetworkSecurityGroup> applyAsync() {
+        return createAsync();
     }
 
     // Setters (fluent)
@@ -152,7 +155,7 @@ class NetworkSecurityGroupImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public NetworkSecurityGroup createResource() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
@@ -161,20 +164,16 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<NetworkSecurityGroup> createResourceAsync() {
         final NetworkSecurityGroupImpl self = this;
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<NetworkSecurityGroupInner>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
+                .observable()
+                .map(new Func1<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
                     @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
-                        self.setInner(response.getBody());
+                    public NetworkSecurityGroup call(NetworkSecurityGroupInner networkSecurityGroupInner) {
+                        self.setInner(networkSecurityGroupInner);
                         initializeRulesFromInner();
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                        return self;
                     }
                 });
     }

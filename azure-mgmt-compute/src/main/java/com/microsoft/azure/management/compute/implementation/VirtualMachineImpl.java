@@ -52,6 +52,10 @@ import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Action0;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -155,8 +159,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<VirtualMachine> callback) {
-        return this.createAsync(callback);
+    public Observable<VirtualMachine> applyAsync() {
+        return this.createAsync();
     }
 
     @Override
@@ -857,7 +861,7 @@ class VirtualMachineImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public VirtualMachine createResource() throws Exception {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -876,42 +880,32 @@ class VirtualMachineImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
         final VirtualMachineImpl self = this;
-        final ServiceCall call = new ServiceCall(null);
-        handleStorageSettingsAsync(new ServiceCallback<Void>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<Void> result) {
-                handleNetworkSettings();
-                handleAvailabilitySettings();
-                call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
-                        new ServiceCallback<VirtualMachineInner>() {
-                            @Override
-                            public void failure(Throwable t) {
-                                callback.failure(t);
-                            }
-
-                            @Override
-                            public void success(ServiceResponse<VirtualMachineInner> response) {
-                                self.setInner(response.getBody());
-                                clearCachedRelatedResources();
-                                initializeDataDisks();
-                                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                            }
-                        }).getCall());
-            }
-        });
-        return call;
+        return handleStorageSettingsAsync()
+                .concatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
+                        handleNetworkSettings();
+                        handleAvailabilitySettings();
+                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), null)
+                                .observable()
+                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
+                                        self.setInner(virtualMachineInner);
+                                        clearCachedRelatedResources();
+                                        initializeDataDisks();
+                                        return self;
+                                    }
+                                });
+                    }
+                });
     }
 
     // Helpers
@@ -1011,59 +1005,46 @@ class VirtualMachineImpl
         }
     }
 
-    private void handleStorageSettingsAsync(final ServiceCallback<Void> callback) {
-        final ServiceCallback<StorageAccount> storageAccountServiceCallback = new ServiceCallback<StorageAccount>() {
+    private Observable<StorageAccount> handleStorageSettingsAsync() {
+        final Func1<StorageAccount, StorageAccount> storageAccountFunc = new Func1<StorageAccount, StorageAccount>() {
             @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<StorageAccount> result) {
+            public StorageAccount call(StorageAccount storageAccount) {
                 if (isInCreateMode()) {
                     if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
                         String uri = inner()
                                 .storageProfile()
                                 .osDisk().vhd().uri()
-                                .replaceFirst("\\{storage-base-url}", result.getBody().endPoints().primary().blob());
+                                .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                         inner().storageProfile().osDisk().vhd().withUri(uri);
                     }
-                    DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                 } else {
-                    if (result.getBody() != null) {
-                        DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    if (storageAccount != null) {
+                        DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                     } else {
                         DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
                     }
                 }
-                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+                return storageAccount;
             }
         };
+
         if (this.creatableStorageAccountKey != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    (StorageAccount) this.createdResource(this.creatableStorageAccountKey), null));
+            return Observable.just((StorageAccount) this.createdResource(this.creatableStorageAccountKey))
+                    .map(storageAccountFunc);
         } else if (this.existingStorageAccountToAssociate != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    this.existingStorageAccountToAssociate, null));
+            return Observable.just(this.existingStorageAccountToAssociate)
+                    .map(storageAccountFunc);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
-            this.storageManager.storageAccounts()
+            return this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync(new ServiceCallback<StorageAccount>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            callback.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<StorageAccount> result) {
-                            storageAccountServiceCallback.success(result);
-                        }
-                    });
+                    .createAsync()
+                    .map(storageAccountFunc);
         }
-
+        return Observable.just(null);
     }
 
     private void handleNetworkSettings() {

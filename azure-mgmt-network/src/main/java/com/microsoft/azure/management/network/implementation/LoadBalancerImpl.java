@@ -22,6 +22,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Implementation of the LoadBalancer interface.
@@ -65,8 +68,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<LoadBalancer> callback) {
-        return createAsync(callback);
+    public Observable<LoadBalancer> applyAsync() {
+        return createAsync();
     }
 
     // Helpers
@@ -214,7 +217,7 @@ class LoadBalancerImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public LoadBalancer createResource() throws Exception {
         ensureCreationPrerequisites();
 
         ServiceResponse<LoadBalancerInner> response =
@@ -225,25 +228,21 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback)  {
-        final LoadBalancerImpl self = this;
+    public Observable<LoadBalancer> createResourceAsync()  {
+        final LoadBalancer self = this;
         ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<LoadBalancerInner>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<LoadBalancerInner, Observable<LoadBalancer>>() {
                     @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<LoadBalancerInner> response) {
-                        self.setInner(response.getBody());
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                    public Observable<LoadBalancer> call(LoadBalancerInner loadBalancerInner) {
+                        setInner(loadBalancerInner);
                         try {
                             runPostCreationTasks();
+                            return Observable.just(self);
                         } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            return Observable.error(e);
                         }
                     }
                 });

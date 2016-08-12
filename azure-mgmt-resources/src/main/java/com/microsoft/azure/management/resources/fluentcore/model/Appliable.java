@@ -6,8 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
 /**
  * The base interface for all template interfaces that support update operations.
@@ -26,8 +25,7 @@ public interface Appliable<T> extends Indexable {
     /**
      * Execute the update request asynchronously.
      *
-     * @param callback the callback for success and failure
      * @return the handle to the REST call
      */
-    ServiceCall applyAsync(ServiceCallback<T> callback);
+    Observable<T> applyAsync();
 }

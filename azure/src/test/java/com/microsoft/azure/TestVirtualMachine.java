@@ -6,22 +6,25 @@
 
 package com.microsoft.azure;
 
+import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCall;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
+import rx.Subscriber;
+import rx.functions.Action1;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
         final VirtualMachine[] vms = new VirtualMachine[1];
-        ServiceCall<VirtualMachine> serviceCall = virtualMachines.define(vmName)
+        final SettableFuture<VirtualMachine> future = SettableFuture.create();
+        virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -31,8 +34,24 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                .createAsync(null);
-        vms[0] = serviceCall.get().getBody();
+                .createAsync()
+                .subscribe(new Subscriber<VirtualMachine>() {
+                    @Override
+                    public void onCompleted() {
+                        future.set(null);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(VirtualMachine virtualMachine) {
+                        System.out.println(virtualMachine);
+                    }
+                });
+        vms[0] = future.get();
         return vms[0];
     }
 

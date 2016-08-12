@@ -23,6 +23,9 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.List;
@@ -200,20 +203,11 @@ class StorageAccountImpl
     }
 
     @Override
-    public ServiceCall applyAsync(final ServiceCallback<StorageAccount> callback) {
-        final StorageAccountImpl self = this;
-        return client.updateAsync(resourceGroupName(), name(), updateParameters, new ServiceCallback<StorageAccountInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<StorageAccountInner> result) {
-                setInner(result.getBody());
-                callback.success(new ServiceResponse<StorageAccount>(self, result.getResponse()));
-            }
-        });
+    public Observable<StorageAccount> applyAsync() {
+        return client.updateAsync(resourceGroupName(), name(), updateParameters, null)
+                .observable()
+                .subscribeOn(Schedulers.io())
+                .map(innerToFluentMap(this));
     }
 
     @Override
@@ -257,7 +251,7 @@ class StorageAccountImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public StorageAccount createResource() throws Exception {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         this.client.create(this.resourceGroupName(), this.name(), createParameters);
@@ -271,33 +265,26 @@ class StorageAccountImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<StorageAccount> createResourceAsync() {
         final StorageAccountImpl self = this;
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
-                new ServiceCallback<StorageAccountInner>() {
+        final Observable<StorageAccount> getProperties = client.getPropertiesAsync(resourceGroupName(), name(), null)
+                .observable()
+                .map(new Func1<StorageAccountInner, StorageAccount>() {
                     @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
+                    public StorageAccount call(StorageAccountInner storageAccountInner) {
+                        self.setInner(storageAccountInner);
+                        clearWrapperProperties();
+                        return self;
                     }
-
+                });
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters, null)
+                .observable()
+                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccount>>() {
                     @Override
-                    public void success(ServiceResponse<StorageAccountInner> result) {
-                        client.getPropertiesAsync(resourceGroupName(), name(),
-                                new ServiceCallback<StorageAccountInner>() {
-                                    @Override
-                                    public void failure(Throwable t) {
-                                        callback.failure(t);
-                                    }
-
-                                    @Override
-                                    public void success(ServiceResponse<StorageAccountInner> response) {
-                                        self.setInner(response.getBody());
-                                        clearWrapperProperties();
-                                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                                    }
-                                });
+                    public Observable<StorageAccount> call(StorageAccountInner storageAccountInner) {
+                        return getProperties;
                     }
                 });
     }

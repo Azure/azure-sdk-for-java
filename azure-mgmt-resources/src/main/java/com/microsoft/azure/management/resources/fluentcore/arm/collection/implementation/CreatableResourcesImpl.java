@@ -9,6 +9,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.observables.BlockingObservable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,21 +39,21 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
     @Override
     public CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
-        ServiceCall<CreatedResources<T>> serviceCall = createAsync(null, creatables);
-        serviceCall.wait();
-        return serviceCall.get().getBody();
+        return BlockingObservable.from(createAsync(creatables)).first();
     }
 
     @Override
-    public ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback,
-                                                        Creatable<T> ... creatables) {
+    public Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
         CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
 
-        final CreateResourcesServiceCall createResourcesServiceCall = new CreateResourcesServiceCall();
-        ServiceCall<CreatableResourcesRoot<T>> serviceCall = rootResource.createAsync(createResourcesServiceCall.wrapCallback(callback));
-        createResourcesServiceCall.setInnerServiceCall(serviceCall);
-        return createResourcesServiceCall;
+        return rootResource.createAsync()
+                .map(new Func1<CreatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableResourcesRoot<T> tCreatableResourcesRoot) {
+                        return new CreatedResourcesImpl<T>(tCreatableResourcesRoot);
+                    }
+                });
     }
 
     /**
@@ -204,7 +207,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatableResourcesRootImpl<ResourceT extends Resource>
-            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl, Resource>
+            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl<ResourceT>>
             implements CreatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.
@@ -238,13 +241,12 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public ServiceCall createResourceAsync(ServiceCallback<Resource> serviceCallback) {
-            serviceCallback.success(new ServiceResponse<Resource>(this, null));
-            return null;
+        public Observable<CreatableResourcesRoot<ResourceT>> createResourceAsync() {
+            return Observable.just((CreatableResourcesRoot<ResourceT>) this);
         }
 
         @Override
-        public Resource createResource() throws Exception {
+        public CreatableResourcesRoot<ResourceT> createResource() throws Exception {
             return this;
         }
 
@@ -253,7 +255,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // resources.
 
         @Override
-        public CreatableResourcesRoot refresh() throws Exception {
+        public CreatableResourcesRoot<ResourceT> refresh() throws Exception {
             return null;
         }
 
