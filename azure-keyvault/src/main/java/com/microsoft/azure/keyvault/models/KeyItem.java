@@ -92,15 +92,16 @@ public class KeyItem {
         this.tags = tags;
         return this;
     }
-    
+
     /**
+     * The key identifier.
      * @return The Identifier value
      */
     public KeyIdentifier identifier() {
-    	KeyIdentifier identifier = null;
-    	
+        KeyIdentifier identifier = null;
+
         if (kid() != null && !kid().isEmpty()) {
-        	identifier = new KeyIdentifier(kid());
+            identifier = new KeyIdentifier(kid());
         }
 
         return identifier;

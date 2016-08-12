@@ -27,42 +27,52 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.HttpUrl;
 
 /**
- * An implementation of {@link ServiceClientCredentials} that supports automatic bearer
- * token refresh.
+ * An implementation of {@link ServiceClientCredentials} that supports automatic bearer token refresh.
  *
  */
 class ChallengeCache {
-	
+
     private final HashMap<String, Map<String, String>> cachedChallenges = new HashMap<String, Map<String, String>>();
-    
+
     /**
-     * Uses authority to retrieve the cached values
-     * @param url the url that is used as a cache key
-     * @return cached value or null if value is not available
+     * Uses authority to retrieve the cached values.
+     * 
+     * @param url
+     *            the url that is used as a cache key.
+     * @return cached value or null if value is not available.
      */
     public Map<String, String> getCachedChallenge(HttpUrl url) {
-    	if(url == null) return null;
+        if (url == null) {
+            return null;
+        }
         String authority = getAuthority(url);
         authority = authority.toLowerCase(Locale.ENGLISH);
         return cachedChallenges.get(authority);
     }
-    
+
     /**
-     * Uses authority to cache challenge
-     * @param url the url that is used as a cache key
-     * @param challenge the challenge to cache
+     * Uses authority to cache challenge.
+     * 
+     * @param url
+     *            the url that is used as a cache key.
+     * @param challenge
+     *            the challenge to cache.
      */
     public void addCachedChallenge(HttpUrl url, Map<String, String> challenge) {
-    	if(url == null || challenge == null) return;
+        if (url == null || challenge == null) {
+            return;
+        }
         String authority = getAuthority(url);
         authority = authority.toLowerCase(Locale.ENGLISH);
         cachedChallenges.put(authority, challenge);
     }
 
     /**
-     * Gets authority of a url
-     * @param url the url to get the authority for
-     * @return the authority
+     * Gets authority of a url.
+     * 
+     * @param url
+     *            the url to get the authority for.
+     * @return the authority.
      */
     public String getAuthority(HttpUrl url) {
         String scheme = url.scheme();

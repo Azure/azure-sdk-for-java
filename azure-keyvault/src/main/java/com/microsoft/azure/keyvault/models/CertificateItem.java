@@ -127,15 +127,16 @@ public class CertificateItem {
         }
         return this;
     }
-    
+
     /**
-     * @return The Identifier value
+     * The certificate identifier.
+     * @return The Identifier value.
      */
     public CertificateIdentifier identifier() {
-    	CertificateIdentifier identifier = null;
-    	
+        CertificateIdentifier identifier = null;
+
         if (id() != null && !id().isEmpty()) {
-        	identifier = new CertificateIdentifier(id());
+            identifier = new CertificateIdentifier(id());
         }
 
         return identifier;

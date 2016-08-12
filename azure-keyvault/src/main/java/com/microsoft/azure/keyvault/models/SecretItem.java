@@ -119,13 +119,14 @@ public class SecretItem {
     }
 
     /**
+     * the secret identifier.
      * @return The Identifier value
      */
     public SecretIdentifier identifier() {
-    	SecretIdentifier identifier = null;
-    	
+        SecretIdentifier identifier = null;
+
         if (id() != null && !id().isEmpty()) {
-        	identifier = new SecretIdentifier(id());
+            identifier = new SecretIdentifier(id());
         }
 
         return identifier;

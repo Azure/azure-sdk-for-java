@@ -203,21 +203,33 @@ public class CertificateBundle {
         this.tags = tags;
         return this;
     }
-    
+
+    /**
+     * The certificate identifier.
+     * @return certificate identifier
+     */
     public CertificateIdentifier certificateIdentifier() {
         if (id() == null || id().isEmpty()) {
             return null;
         }
         return new CertificateIdentifier(id());
     }
-    
+
+    /**
+     * The secret identifier.
+     * @return secret identifier
+     */
     public SecretIdentifier secretIdentifier() {
         if (sid() == null || sid().isEmpty()) {
             return null;
         }
         return new SecretIdentifier(sid());
     }
-    
+
+    /**
+     * The key identifier.
+     * @return key identifier
+     */
     public KeyIdentifier keyIdentifier() {
         if (kid() == null || kid().isEmpty()) {
             return null;

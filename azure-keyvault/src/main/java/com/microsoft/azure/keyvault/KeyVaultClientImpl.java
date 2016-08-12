@@ -175,7 +175,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param credentials the management credentials for Azure
      */
-    public KeyVaultClientImpl(ServiceClientCredentials credentials) {
+    KeyVaultClientImpl(ServiceClientCredentials credentials) {
         this("https://{vaultBaseUrl}", credentials);
     }
 
@@ -197,7 +197,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public KeyVaultClientImpl(RestClient restClient) {
+    KeyVaultClientImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }

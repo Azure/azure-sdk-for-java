@@ -36,8 +36,14 @@ import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.rest.ServiceResponse;
 
+/**
+ * The key vault key that performs cryptography operations.
+ */
 public class KeyVaultKey implements IKey {
-	
+    
+    /**
+     * Transforms the result of decrypt operation to byte array.
+     */
     class DecryptResultTransform implements Function<ServiceResponse<KeyOperationResult>, byte[]> {
 
         DecryptResultTransform() {
@@ -50,24 +56,27 @@ public class KeyVaultKey implements IKey {
         }
     }
 
+    /**
+     * Transforms the result of sign operation to byte array and algorithm pair.
+     */
     class SignResultTransform implements Function<ServiceResponse<KeyOperationResult>, Pair<byte[], String>> {
 
-    	private final String _algorithm;
+        private final String algorithm;
 
         SignResultTransform(String algorithm) {
             super();
-            _algorithm = algorithm;
+            this.algorithm = algorithm;
         }
-    	
-		@Override
-		public Pair<byte[], String> apply(ServiceResponse<KeyOperationResult> input) {
+        
+        @Override
+        public Pair<byte[], String> apply(ServiceResponse<KeyOperationResult> input) {
 
-			return Pair.of(input.getBody().result(), _algorithm);
-		}
+            return Pair.of(input.getBody().result(), algorithm);
+        }
     }
 
-    private final KeyVaultClient _client;
-    private IKey                 _implementation;
+    private final KeyVaultClient client;
+    private IKey                 implementation;
 
     protected KeyVaultKey(KeyVaultClient client, KeyBundle keyBundle) {
 
@@ -86,70 +95,70 @@ public class KeyVaultKey implements IKey {
         }
 
         if (key.kty().equals(JsonWebKeyType.RSA)) {
-        	// The private key is not available for KeyVault keys
-            _implementation = new RsaKey(key.kid(), key.toRSA(false));
+            // The private key is not available for KeyVault keys
+            implementation = new RsaKey(key.kid(), key.toRSA(false));
         } else if (key.kty().equals(JsonWebKeyType.RSAHSM)) {
-        	// The private key is not available for KeyVault keys
-            _implementation = new RsaKey(key.kid(), key.toRSA(false));
+            // The private key is not available for KeyVault keys
+            implementation = new RsaKey(key.kid(), key.toRSA(false));
         }
 
-        if (_implementation == null) {
+        if (implementation == null) {
             throw new IllegalArgumentException(String.format("The key type %s is not supported", key.kty()));
         }
 
-        _client = client;
+        this.client = client;
     }
 
     @Override
     public void close() throws IOException {
-        if (_implementation != null) {
-            _implementation.close();
+        if (implementation != null) {
+            implementation.close();
         }
     }
 
     @Override
     public String getDefaultEncryptionAlgorithm() {
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.getDefaultEncryptionAlgorithm();
+        return implementation.getDefaultEncryptionAlgorithm();
     }
 
     @Override
     public String getDefaultKeyWrapAlgorithm() {
 
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.getDefaultKeyWrapAlgorithm();
+        return implementation.getDefaultKeyWrapAlgorithm();
     }
 
     @Override
     public String getDefaultSignatureAlgorithm() {
 
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.getDefaultSignatureAlgorithm();
+        return implementation.getDefaultSignatureAlgorithm();
     }
 
     @Override
     public String getKid() {
 
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.getKid();
+        return implementation.getKid();
     }
 
     @Override
     public ListenableFuture<byte[]> decryptAsync(byte[] ciphertext, byte[] iv, byte[] authenticationData, byte[] authenticationTag, String algorithm) {
 
-    	if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
@@ -159,35 +168,35 @@ public class KeyVaultKey implements IKey {
 
         // Never local
         ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall =
-            	_client.decryptAsync(
-                		_implementation.getKid(),
-                		algorithm,
-                		ciphertext,
-                		null );
-        return Futures.transform(futureCall, new DecryptResultTransform() );
+                client.decryptAsync(
+                        implementation.getKid(),
+                        algorithm,
+                        ciphertext,
+                        null);
+        return Futures.transform(futureCall, new DecryptResultTransform());
     }
 
     @Override
     public ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(byte[] plaintext, byte[] iv, byte[] authenticationData, String algorithm) throws NoSuchAlgorithmException {
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.encryptAsync(plaintext, iv, authenticationData, algorithm);
+        return implementation.encryptAsync(plaintext, iv, authenticationData, algorithm);
     }
 
     @Override
     public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(byte[] plaintext, String algorithm) throws NoSuchAlgorithmException {
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.wrapKeyAsync(plaintext, algorithm);
+        return implementation.wrapKeyAsync(plaintext, algorithm);
     }
 
     @Override
     public ListenableFuture<byte[]> unwrapKeyAsync(byte[] ciphertext, String algorithm) {
-        if (_implementation == null) {
+        if (implementation == null) {
             return null;
         }
 
@@ -197,17 +206,17 @@ public class KeyVaultKey implements IKey {
 
         // Never local
         ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall = 
-            	_client.unwrapKeyAsync(
-                		_implementation.getKid(),
-                		algorithm,
-                		ciphertext,
-                		null );
-        return Futures.transform(futureCall, new DecryptResultTransform() );
+                client.unwrapKeyAsync(
+                        implementation.getKid(),
+                        algorithm,
+                        ciphertext,
+                        null);
+        return Futures.transform(futureCall, new DecryptResultTransform());
     }
 
     @Override
-    public ListenableFuture<Pair<byte[], String>> signAsync(byte[] digest, String algorithm) {
-        if (_implementation == null) {
+    public ListenableFuture<Pair<byte[], String>> signAsync(byte[] digest, String algorithm) throws NoSuchAlgorithmException {
+        if (implementation == null) {
             return null;
         }
 
@@ -217,20 +226,20 @@ public class KeyVaultKey implements IKey {
         
         // Never local
         ListenableFuture<ServiceResponse<KeyOperationResult>>  futureCall = 
-            	_client.signAsync(
-                		_implementation.getKid(),
-                		algorithm,
-                		digest,
-                		null );
-        return Futures.transform(futureCall, new SignResultTransform(algorithm) );
+                client.signAsync(
+                        implementation.getKid(),
+                        algorithm,
+                        digest,
+                        null);
+        return Futures.transform(futureCall, new SignResultTransform(algorithm));
     }
 
     @Override
-    public ListenableFuture<Boolean> verifyAsync(byte[] digest, byte[] signature, String algorithm) {
-        if (_implementation == null) {
+    public ListenableFuture<Boolean> verifyAsync(byte[] digest, byte[] signature, String algorithm) throws NoSuchAlgorithmException {
+        if (implementation == null) {
             return null;
         }
 
-        return _implementation.verifyAsync(digest, signature, algorithm);
+        return implementation.verifyAsync(digest, signature, algorithm);
     }
 }

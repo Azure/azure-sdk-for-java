@@ -20,6 +20,7 @@ package com.microsoft.azure.keyvault.core;
 
 import java.io.Closeable;
 import java.security.NoSuchAlgorithmException;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -34,7 +35,7 @@ public interface IKey extends Closeable {
 
     /**
      * The default encryption algorithm for this key, using the representations
-     * from Json Web Key Algorithms, RFC7513
+     * from Json Web Key Algorithms, RFC7513.
      *
      * @return The default encryption algorithm for this key.
      */
@@ -42,7 +43,7 @@ public interface IKey extends Closeable {
 
     /**
      * The default key wrap algorithm for this key, using the representations
-     * from Json Web Key Algorithms, RFC7513
+     * from Json Web Key Algorithms, RFC7513.
      *
      * @return The default key wrap algorithm for this key.
      */
@@ -50,7 +51,7 @@ public interface IKey extends Closeable {
 
     /**
      * The default signature algorithm for this key, using the representations
-     * from Json Web Key Algorithms, RFC7513
+     * from Json Web Key Algorithms, RFC7513.
      *
      * @return The default signature algorithm for this key.
      */
@@ -78,7 +79,7 @@ public interface IKey extends Closeable {
      *            with some algorithms)
      * @param algorithm
      *            The encryption algorithm to use, must be supplied
-     * @return A {@link:ListenableFuture} containing the plain text
+     * @return A ListenableFuture containing the plain text
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
     ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException;
@@ -96,7 +97,7 @@ public interface IKey extends Closeable {
      * @param algorithm
      *            The encryption algorithm to use, defaults to the keys
      *            DefaultEncryptionAlgorithm
-     * @return A {@link:ListenableFuture} containing the cipher text, the authentication
+     * @return A ListenableFuture containing the cipher text, the authentication
      *         tag and the algorithm that was used
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
@@ -111,7 +112,7 @@ public interface IKey extends Closeable {
      * @param algorithm
      *            The wrapping algorithm to use, defaults to the keys
      *            DefaultKeyWrapAlgorithm
-     * @return {@link:ListenableFuture} containing the encrypted key and the algorithm
+     * @return ListenableFuture containing the encrypted key and the algorithm
      *         that was used
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
@@ -124,7 +125,8 @@ public interface IKey extends Closeable {
      *            The encrypted key to decrypt
      * @param algorithm
      *            The algorithm to use, must be supplied
-     * @return A {@link:ListenableFuture} containing the unwrapped key
+     * @return A ListenableFuture containing the unwrapped key
+     * @throws NoSuchAlgorithmException the algorithm is not valid
      */
     ListenableFuture<byte[]> unwrapKeyAsync(final byte[] encryptedKey, final String algorithm) throws NoSuchAlgorithmException;
 
@@ -136,9 +138,10 @@ public interface IKey extends Closeable {
      *            The digest to sign
      * @param algorithm
      *            The signature algorithm to use
-     * @return A {@link:ListenableFuture} containing the signature and the algorithm used.
+     * @return A ListenableFuture containing the signature and the algorithm used.
+     * @throws NoSuchAlgorithmException the algorithm is not valid
      */
-    ListenableFuture<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm);
+    ListenableFuture<Pair<byte[], String>> signAsync(final byte[] digest, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
      * Verifies the supplied signature value using the supplied digest and
@@ -150,7 +153,8 @@ public interface IKey extends Closeable {
      *            The signature to verify
      * @param algorithm
      *            The algorithm to use, must be provided
-     * @return A {@link:ListenableFuture} containing a boolean result
+     * @return A ListenableFuture containing a boolean result
+     * @throws NoSuchAlgorithmException the algorithm is not valid
      */
-    ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm);
+    ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) throws NoSuchAlgorithmException;
 }

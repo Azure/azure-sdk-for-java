@@ -25,25 +25,30 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 
+/**
+ * The key resolver that caches the key after resolving to {@link IKey}.
+ */
 public class CachingKeyResolver implements IKeyResolver {
 
-    private final LoadingCache<String, ListenableFuture<IKey>> _cache;
-    private final IKeyResolver                       _inner;
+    private final LoadingCache<String, ListenableFuture<IKey>> cache;
+    
+    /**
+     * Constructor.
+     * @param capacity the cache size
+     * @param keyResolver the key resolver
+     */
+    public CachingKeyResolver(int capacity, final IKeyResolver keyResolver) {
+        cache = CacheBuilder.newBuilder().maximumSize(capacity)
+                .build(new CacheLoader<String, ListenableFuture<IKey>>() {
 
-    public CachingKeyResolver(int capacity, IKeyResolver inner) {
-        _cache = CacheBuilder.newBuilder().maximumSize(capacity)
-        		.build( new CacheLoader<String, ListenableFuture<IKey>>(){
-
-					@Override
-					public ListenableFuture<IKey> load(String kid) {
-						return _inner.resolveKeyAsync(kid);
-					}});
-        
-        _inner = inner;
+                    @Override
+                    public ListenableFuture<IKey> load(String kid) {
+                        return keyResolver.resolveKeyAsync(kid);
+                    } });
     }
 
     @Override
     public ListenableFuture<IKey> resolveKeyAsync(String kid) {
-    	return _cache.getUnchecked(kid);
+        return cache.getUnchecked(kid);
     }
 }
