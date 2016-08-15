@@ -21,15 +21,10 @@ package com.microsoft.azure.keyvault.cryptography.test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +37,10 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
 
-public class AesKwDefaultProviderTest {
+public class AesKwTest {
+	
+    // Always null for the default provider
+	private Provider _provider = null;
     
     private static boolean hasUnlimitedCrypto() {
         try {
@@ -68,8 +66,9 @@ public class AesKwDefaultProviderTest {
     public void tearDown() throws Exception {
     }
 
-    // Always null for the default provider
-    private Provider _provider = null;
+    protected void setProvider(Provider provider) {
+    	_provider = provider;
+    }
 
     @Test
     public void KeyVault_AesKw128() {
@@ -84,28 +83,16 @@ public class AesKwDefaultProviderTest {
 
         try {
             encryptor = kw.CreateEncryptor(KEK, _provider);
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         byte[] encrypted = null;
 
         try {
             encrypted = encryptor.doFinal(CEK);
-        } catch (IllegalBlockSizeException e) {
-            fail("IllegalBlockSizeException");
-        } catch (BadPaddingException e) {
-            fail("BadPaddingException");
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         // Assert
@@ -115,28 +102,16 @@ public class AesKwDefaultProviderTest {
 
         try {
             decryptor = kw.CreateDecryptor(KEK, _provider);
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         byte[] decrypted = null;
 
         try {
             decrypted = decryptor.doFinal(EK);
-        } catch (IllegalBlockSizeException e) {
-            fail("IllegalBlockSizeException");
-        } catch (BadPaddingException e) {
-            fail("BadPaddingException");
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         // Assert
@@ -161,17 +136,13 @@ public class AesKwDefaultProviderTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK);
+            encryptor = kw.CreateEncryptor(KEK, _provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         if (unlimited) {
@@ -179,14 +150,8 @@ public class AesKwDefaultProviderTest {
     
             try {
                 encrypted = encryptor.doFinal(CEK);
-            } catch (IllegalBlockSizeException e) {
-                fail("IllegalBlockSizeException");
-            } catch (BadPaddingException e) {
-                fail("BadPaddingException");
-            } catch (InvalidKeyException e) {
-                fail("InvalidKeyException");
-            } catch (NoSuchAlgorithmException e) {
-                fail("NoSuchAlgorithmException");
+            } catch (Exception e) {
+                fail(e.getMessage());
             }
     
             // Assert
@@ -196,16 +161,12 @@ public class AesKwDefaultProviderTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK);
+            decryptor = kw.CreateDecryptor(KEK, _provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
             if (unlimited) fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         if (unlimited) {
@@ -213,14 +174,8 @@ public class AesKwDefaultProviderTest {
     
             try {
                 decrypted = decryptor.doFinal(EK);
-            } catch (IllegalBlockSizeException e) {
-                fail("IllegalBlockSizeException");
-            } catch (BadPaddingException e) {
-                fail("BadPaddingException");
-            } catch (InvalidKeyException e) {
-                fail("InvalidKeyException");
-            } catch (NoSuchAlgorithmException e) {
-                fail("NoSuchAlgorithmException");
+            } catch (Exception e) {
+                fail(e.getMessage());
             }
     
             // Assert
@@ -246,16 +201,12 @@ public class AesKwDefaultProviderTest {
         ICryptoTransform encryptor = null;
 
         try {
-            encryptor = kw.CreateEncryptor(KEK);
+            encryptor = kw.CreateEncryptor(KEK, _provider);
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
         	if (unlimited) fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         if (unlimited) {
@@ -263,14 +214,8 @@ public class AesKwDefaultProviderTest {
     
             try {
                 encrypted = encryptor.doFinal(CEK);
-            } catch (IllegalBlockSizeException e) {
-                fail("IllegalBlockSizeException");
-            } catch (BadPaddingException e) {
-                fail("BadPaddingException");
-            } catch (InvalidKeyException e) {
-                fail("InvalidKeyException");
-            } catch (NoSuchAlgorithmException e) {
-                fail("NoSuchAlgorithmException");
+            } catch (Exception e) {
+                fail(e.getMessage());
             }
     
             // Assert
@@ -280,17 +225,13 @@ public class AesKwDefaultProviderTest {
         ICryptoTransform decryptor = null;
 
         try {
-            decryptor = kw.CreateDecryptor(KEK);
+            decryptor = kw.CreateDecryptor(KEK, _provider);
             
             if (!unlimited) fail("Expected InvalidKeyException");
         } catch (InvalidKeyException e) {
         	if (unlimited) fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e) {
-            fail("InvalidAlgorithmParameterException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         if (unlimited) {
@@ -298,14 +239,8 @@ public class AesKwDefaultProviderTest {
     
             try {
                 decrypted = decryptor.doFinal(EK);
-            } catch (IllegalBlockSizeException e) {
-                fail("IllegalBlockSizeException");
-            } catch (BadPaddingException e) {
-                fail("BadPaddingException");
-            } catch (InvalidKeyException e) {
-                fail("InvalidKeyException");
-            } catch (NoSuchAlgorithmException e) {
-                fail("NoSuchAlgorithmException");
+            } catch (Exception e) {
+                fail(e.getMessage());
             }
     
             // Assert

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 import java.security.interfaces.RSAPublicKey;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -52,6 +53,8 @@ public class RsaKey implements IKey {
 
     public RsaKey(String kid, int keySize) throws NoSuchAlgorithmException {
 
+    	this(kid, keySize, null);
+    	/*
         if (Strings.isNullOrWhiteSpace(kid)) {
             throw new IllegalArgumentException("kid");
         }
@@ -62,6 +65,22 @@ public class RsaKey implements IKey {
 
         _keyPair = generator.generateKeyPair();
         _kid = kid;
+        */
+    }
+    
+    public RsaKey(String kid, int keySize, Provider provider) throws NoSuchAlgorithmException {
+
+        if (Strings.isNullOrWhiteSpace(kid)) {
+            throw new IllegalArgumentException("kid");
+        }
+
+        final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", provider);
+
+        generator.initialize(keySize);
+
+        _keyPair = generator.generateKeyPair();
+        _kid     = kid;
+    	
     }
 
     public RsaKey(String kid, KeyPair keyPair) {
