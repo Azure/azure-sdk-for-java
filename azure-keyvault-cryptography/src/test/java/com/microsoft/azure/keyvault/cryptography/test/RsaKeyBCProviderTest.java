@@ -1,12 +1,11 @@
 package com.microsoft.azure.keyvault.cryptography.test;
 
 import java.security.Provider;
-
 import org.junit.Before;
 
-public class AesCbcBCProviderTest extends AesCbcTest {
+public class RsaKeyBCProviderTest extends RsaKeyTest {
 
-    @Before
+	@Before
     public void setUp() throws Exception {
         try {
             super.setProvider((Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance());
@@ -14,5 +13,4 @@ public class AesCbcBCProviderTest extends AesCbcTest {
             throw new RuntimeException(ex.getMessage());
         }
     }
-
 }

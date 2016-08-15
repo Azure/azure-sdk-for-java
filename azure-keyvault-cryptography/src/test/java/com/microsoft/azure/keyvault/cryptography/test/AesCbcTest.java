@@ -3,13 +3,7 @@ package com.microsoft.azure.keyvault.cryptography.test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.security.Provider;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,8 +14,10 @@ import org.junit.Test;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;
 
-public class AesCbcDefaultProviderTest {
+public class AesCbcTest {
 
+	private Provider _provider = null;
+	
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -32,10 +28,15 @@ public class AesCbcDefaultProviderTest {
 
     @Before
     public void setUp() throws Exception {
+    	setProvider(null);
     }
 
     @After
     public void tearDown() throws Exception {
+    }
+    
+    protected void setProvider(Provider provider) {
+    	_provider = provider;
     }
 
     @Test
@@ -63,54 +64,30 @@ public class AesCbcDefaultProviderTest {
 
         ICryptoTransform encryptor = null;
         try {
-            encryptor = algo.CreateEncryptor(realCEK, IV, null);
-        } catch (InvalidKeyException e1) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e1) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e1) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e1) {
-            fail("InvalidAlgorithmParameterException");
+            encryptor = algo.CreateEncryptor(realCEK, IV, null, _provider);
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         try {
             encrypted = encryptor.doFinal(PLAIN);
-        } catch (IllegalBlockSizeException e) {
-            fail("IllegalBlockSizeException");
-        } catch (BadPaddingException e) {
-            fail("BadPaddingException");
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         ICryptoTransform decryptor = null;
         try {
-            decryptor = algo.CreateDecryptor(realCEK, IV, null);
-        } catch (InvalidKeyException e1) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e1) {
-            fail("NoSuchAlgorithmException");
-        } catch (NoSuchPaddingException e1) {
-            fail("NoSuchPaddingException");
-        } catch (InvalidAlgorithmParameterException e1) {
-            fail("InvalidAlgorithmParameterException");
+            decryptor = algo.CreateDecryptor(realCEK, IV, null, _provider);
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         byte[] decrypted = null;
 
         try {
             decrypted = decryptor.doFinal(encrypted);
-        } catch (IllegalBlockSizeException e) {
-            fail("IllegalBlockSizeException");
-        } catch (BadPaddingException e) {
-            fail("BadPaddingException");
-        } catch (InvalidKeyException e) {
-            fail("InvalidKeyException");
-        } catch (NoSuchAlgorithmException e) {
-            fail("NoSuchAlgorithmException");
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
 
         // Assert

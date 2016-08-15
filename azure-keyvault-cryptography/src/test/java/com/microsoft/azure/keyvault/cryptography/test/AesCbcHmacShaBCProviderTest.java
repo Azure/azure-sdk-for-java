@@ -4,7 +4,7 @@ import java.security.Provider;
 
 import org.junit.Before;
 
-public class AesCbcBCProviderTest extends AesCbcTest {
+public class AesCbcHmacShaBCProviderTest extends AesCbcHmacShaTest {
 
     @Before
     public void setUp() throws Exception {
@@ -14,5 +14,4 @@ public class AesCbcBCProviderTest extends AesCbcTest {
             throw new RuntimeException(ex.getMessage());
         }
     }
-
 }
