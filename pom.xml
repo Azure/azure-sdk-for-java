@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<description>Java libraries for talking to Windows Azure Service Bus</description>
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.microsoft.azure</groupId>
+	<artifactId>azure-messaging-java-clients</artifactId>
+	<version>${client-current-version}</version>
+	<packaging>pom</packaging>
+	
+	<url>https://github.com/Azure/azure-messaging-java</url>
+	
+	<properties>
+		<proton-j-version>0.13.1</proton-j-version>
+	  	<junit-version>4.12</junit-version>
+		<client-current-version>0.1.0-SNAPSHOT</client-current-version>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<optimize>true</optimize>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	 <dependencies>
+	 	<dependency>
+	 	    <groupId>org.apache.qpid</groupId>
+	 	    <artifactId>proton-j</artifactId>
+	 	    <version>${proton-j-version}</version>
+	 	</dependency>
+	 	<!--<dependency>
+	 	    <groupId>org.bouncycastle</groupId> 
+	 	    <artifactId>bcpkix-jdk15on</artifactId> 
+	 	    <version>1.49</version> 
+	  	</dependency>-->   	
+		<dependency>
+	 	    <groupId>junit</groupId>
+	 	    <artifactId>junit</artifactId>
+	 	    <version>${junit-version}</version>
+	 	    <scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
