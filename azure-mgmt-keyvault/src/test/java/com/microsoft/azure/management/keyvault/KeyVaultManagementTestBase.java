@@ -8,10 +8,10 @@ package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.rest.credentials.TokenCredentials;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -23,22 +23,22 @@ public abstract class KeyVaultManagementTestBase {
     protected static KeyVaultManager keyVaultManager;
 
     protected static void createClients() {
-//        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-//                System.getenv("client-id"),
-//                System.getenv("domain"),
-//                System.getenv("secret"),
-//                null);
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                System.getenv("client-id"),
+                System.getenv("domain"),
+                System.getenv("secret"),
+                null);
 
-//        ApplicationTokenCredentials graphCredentials = new ApplicationTokenCredentials(
-//                System.getenv("client-id"),
-//                System.getenv("domain"),
-//                System.getenv("secret"),
-//                "https://graph.windows.net/",
-//                null);
+        ApplicationTokenCredentials graphCredentials = new ApplicationTokenCredentials(
+                System.getenv("client-id"),
+                System.getenv("domain"),
+                System.getenv("secret"),
+                "https://graph.windows.net/",
+                null);
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(HttpLoggingInterceptor.Level.NONE)
                 .build();
 
         resourceManager = ResourceManager
@@ -46,9 +46,11 @@ public abstract class KeyVaultManagementTestBase {
                 .withSubscription(System.getenv("subscription-id"));
 
         graphRbacManager = GraphRbacManager
+                .configure()
+                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .authenticate(graphCredentials, System.getenv("domain"));
 
         keyVaultManager = KeyVaultManager
-                .authenticate(restClient, System.getenv("domain"), "6b085460-5f21-477e-ba44-1035046e9101");
+                .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));
     }
 }

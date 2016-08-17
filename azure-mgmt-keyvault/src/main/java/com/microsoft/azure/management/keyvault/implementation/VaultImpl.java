@@ -252,13 +252,17 @@ class VaultImpl
                     parallelServiceCall.addCall(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName, new ServiceCallback<User>() {
                         @Override
                         public void failure(Throwable t) {
-                            callback.failure(t);
+                            if (callback != null) {
+                                callback.failure(t);
+                            }
                             parallelServiceCall.failure(t);
                         }
 
                         @Override
                         public void success(ServiceResponse<User> result) {
-                            callback.success(null);
+                            if (callback != null) {
+                                callback.success(null);
+                            }
                             accessPolicy.forUser(result.getBody());
                         }
                     }));
@@ -266,13 +270,17 @@ class VaultImpl
                     parallelServiceCall.addCall(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName, new ServiceCallback<ServicePrincipal>() {
                         @Override
                         public void failure(Throwable t) {
-                            callback.failure(t);
+                            if (callback != null) {
+                                callback.failure(t);
+                            }
                             parallelServiceCall.failure(t);
                         }
 
                         @Override
                         public void success(ServiceResponse<ServicePrincipal> result) {
-                            callback.success(null);
+                            if (callback != null) {
+                                callback.success(null);
+                            }
                             accessPolicy.forServicePrincipal(result.getBody());
                         }
                     }));

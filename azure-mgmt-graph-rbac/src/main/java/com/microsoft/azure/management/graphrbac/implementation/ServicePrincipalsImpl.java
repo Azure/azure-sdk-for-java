@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
@@ -83,9 +84,9 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback) {
+    public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
         final ServiceCall<ServicePrincipal> serviceCall = new ServiceCall<>(null);
-        serviceCall.newCall(innerCollection.getAsync(spn, new ServiceCallback<ServicePrincipalInner>() {
+        serviceCall.newCall(innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn), new ListOperationCallback<ServicePrincipalInner>() {
             @Override
             public void failure(Throwable t) {
                 callback.failure(t);
@@ -93,8 +94,12 @@ class ServicePrincipalsImpl
             }
 
             @Override
-            public void success(ServiceResponse<ServicePrincipalInner> result) {
-                ServicePrincipal user = new ServicePrincipalImpl(result.getBody(), innerCollection);
+            public void success(ServiceResponse<List<ServicePrincipalInner>> result) {
+                List<ServicePrincipalInner> servicePrincipals = result.getBody();
+                if (servicePrincipals == null || servicePrincipals.isEmpty()) {
+                    failure(new GraphErrorException("Service principal not found for SPN: " + spn));
+                }
+                ServicePrincipal user = new ServicePrincipalImpl(servicePrincipals.get(0), innerCollection);
                 ServiceResponse<ServicePrincipal> clientResponse = new ServiceResponse<>(user, result.getResponse());
                 callback.success(clientResponse);
                 serviceCall.success(clientResponse);
