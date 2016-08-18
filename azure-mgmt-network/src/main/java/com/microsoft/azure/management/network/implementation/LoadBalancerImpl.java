@@ -5,10 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -16,15 +12,16 @@ import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of the LoadBalancer interface.

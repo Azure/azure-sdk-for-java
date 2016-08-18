@@ -5,11 +5,9 @@
  */
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
+
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.functions.Func1;
 

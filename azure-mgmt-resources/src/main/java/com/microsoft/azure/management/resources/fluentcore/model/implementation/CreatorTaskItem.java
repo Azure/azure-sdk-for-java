@@ -1,12 +1,8 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.TaskItem;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Represents a task that creates a resource when executed.

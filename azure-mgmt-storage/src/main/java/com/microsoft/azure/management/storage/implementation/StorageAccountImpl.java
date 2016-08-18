@@ -7,20 +7,17 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.storage.PublicEndpoints;
-import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.AccessTier;
 import com.microsoft.azure.management.storage.CustomDomain;
 import com.microsoft.azure.management.storage.Encryption;
 import com.microsoft.azure.management.storage.Kind;
 import com.microsoft.azure.management.storage.ProvisioningState;
+import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
+import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;

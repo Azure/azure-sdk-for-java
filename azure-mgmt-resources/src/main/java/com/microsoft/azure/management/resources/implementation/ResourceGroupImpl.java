@@ -11,14 +11,9 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.Arrays;
