@@ -34,7 +34,7 @@ public class VnetInfoInner extends Resource {
     /**
      * A certificate file (.cer) blob containing the public key of the private
      * key used to authenticate a
-     * Point-To-Site VPN connection.
+     * Point-To-WebApp VPN connection.
      */
     @JsonProperty(value = "properties.certBlob")
     private String certBlob;

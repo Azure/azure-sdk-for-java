@@ -39,7 +39,7 @@ import retrofit2.Response;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in Sites.
+ * in WebApps.
  */
 public final class SitesInner {
     /** The Retrofit service to perform REST calls. */
@@ -59,7 +59,7 @@ public final class SitesInner {
     }
 
     /**
-     * The interface defining all the services for Sites to be
+     * The interface defining all the services for WebApps to be
      * used by Retrofit to perform actually REST calls.
      */
     interface SitesService {
@@ -10766,7 +10766,7 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param siteLogsConfig Site logs configuration
+     * @param siteLogsConfig WebApp logs configuration
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -10798,7 +10798,7 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @param siteLogsConfig Site logs configuration
+     * @param siteLogsConfig WebApp logs configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */
@@ -10939,7 +10939,7 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param siteLogsConfig Site logs configuration
+     * @param siteLogsConfig WebApp logs configuration
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -10975,7 +10975,7 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param siteLogsConfig Site logs configuration
+     * @param siteLogsConfig WebApp logs configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link Call} object
      */

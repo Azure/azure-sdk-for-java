@@ -36,7 +36,7 @@ public class RecommendationInner {
 
     /**
      * Name of a resource type this recommendation applies, e.g. Subscription,
-     * ServerFarm, Site.
+     * ServerFarm, WebApp.
      */
     private String resourceScope;
 

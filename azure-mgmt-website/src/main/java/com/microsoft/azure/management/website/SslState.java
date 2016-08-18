@@ -45,7 +45,13 @@ public enum SslState {
                 return item;
             }
         }
-        return null;
+        // not found, try index
+        try {
+            int index = Integer.parseInt(value);
+            return items[index];
+        } catch (NumberFormatException | IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     @JsonValue
