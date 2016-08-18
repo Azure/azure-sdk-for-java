@@ -9,6 +9,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -67,7 +68,7 @@ class NetworkImpl
     }
 
     @Override
-    public NetworkImpl apply() throws Exception {
+    public Network apply() throws Exception {
         return this.create();
     }
 
@@ -194,22 +195,19 @@ class NetworkImpl
     }
 
     @Override
-    public ServiceCall<VirtualNetworkInner> createResourceAsync(final ServiceCallback<Resource> callback) {
-        final  NetworkImpl self = this;
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
         ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<VirtualNetworkInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<VirtualNetworkInner> response) {
-                        self.setInner(response.getBody());
-                        initializeSubnetsFromInner();
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+        ResourceServiceCall<Network, VirtualNetworkInner, NetworkImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualNetworkInner>() {
+            @Override
+            public void success(ServiceResponse<VirtualNetworkInner> response) {
+                initializeSubnetsFromInner();
+            }
+        });
+        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(),
+                this.name(),
+                this.inner(),
+                serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
 }

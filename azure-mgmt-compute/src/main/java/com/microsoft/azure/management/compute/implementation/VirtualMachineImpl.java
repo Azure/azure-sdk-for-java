@@ -43,6 +43,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
@@ -150,12 +151,12 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl apply() throws Exception {
+    public VirtualMachine apply() throws Exception {
         return this.create();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<VirtualMachine> callback) {
+    public ServiceCall<VirtualMachine> applyAsync(ServiceCallback<VirtualMachine> callback) {
         return this.createAsync(callback);
     }
 
@@ -876,42 +877,34 @@ class VirtualMachineImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-        final VirtualMachineImpl self = this;
-        final ServiceCall call = new ServiceCall(null);
+        final ResourceServiceCall<VirtualMachine, VirtualMachineInner, VirtualMachineImpl> serviceCall = new ResourceServiceCall<>(this);
         handleStorageSettingsAsync(new ServiceCallback<Void>() {
             @Override
             public void failure(Throwable t) {
-                callback.failure(t);
+                serviceCall.failure(t);
             }
 
             @Override
             public void success(ServiceResponse<Void> result) {
                 handleNetworkSettings();
                 handleAvailabilitySettings();
-                call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
-                        new ServiceCallback<VirtualMachineInner>() {
-                            @Override
-                            public void failure(Throwable t) {
-                                callback.failure(t);
-                            }
-
-                            @Override
-                            public void success(ServiceResponse<VirtualMachineInner> response) {
-                                self.setInner(response.getBody());
-                                clearCachedRelatedResources();
-                                initializeDataDisks();
-                                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                            }
-                        }).getCall());
+                serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualMachineInner>() {
+                    @Override
+                    public void success(ServiceResponse<VirtualMachineInner> response) {
+                        clearCachedRelatedResources();
+                        initializeDataDisks();
+                    }
+                });
+                client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), serviceCall.wrapCallBack(callback));
             }
         });
-        return call;
+        return serviceCall;
     }
 
     // Helpers

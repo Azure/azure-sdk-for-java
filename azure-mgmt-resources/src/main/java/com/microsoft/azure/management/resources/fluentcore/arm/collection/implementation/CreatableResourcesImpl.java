@@ -35,14 +35,15 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     @Override
-    public CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
+    @SafeVarargs
+    public final CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
         ServiceCall<CreatedResources<T>> serviceCall = createAsync(null, creatables);
-        serviceCall.wait();
         return serviceCall.get().getBody();
     }
 
     @Override
-    public ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback,
+    @SafeVarargs
+    public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback,
                                                         Creatable<T> ... creatables) {
         CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
@@ -227,7 +228,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
         @Override
         public Resource createdRelatedResource(String key) {
-            return (Resource) creatorTaskGroup().createdResource(key);
+            return creatorTaskGroup().createdResource(key);
         }
 
         void addCreatableDependencies(Creatable<T> ... creatables) {
@@ -238,7 +239,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public ServiceCall createResourceAsync(ServiceCallback<Resource> serviceCallback) {
+        public ServiceCall<Resource> createResourceAsync(ServiceCallback<Resource> serviceCallback) {
             serviceCallback.success(new ServiceResponse<Resource>(this, null));
             return null;
         }
@@ -253,7 +254,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // resources.
 
         @Override
-        public CreatableResourcesRoot refresh() throws Exception {
+        public CreatableResourcesRoot<ResourceT> refresh() throws Exception {
             return null;
         }
 
@@ -324,18 +325,18 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
             return new ServiceCallback<CreatableResourcesRoot<T>>() {
                 @Override
                 public void failure(Throwable t) {
-                    self.failure(t);
                     if (innerCallback != null) {
                         innerCallback.failure((t));
                     }
+                    self.failure(t); // Signal Future
                 }
 
                 @Override
                 public void success(ServiceResponse<CreatableResourcesRoot<T>> result) {
-                    self.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null));
                     if (innerCallback != null) {
                         innerCallback.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null));
                     }
+                    self.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null)); // Signal Future
                 }
             };
         }

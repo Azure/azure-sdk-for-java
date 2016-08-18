@@ -31,6 +31,7 @@ import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -86,7 +87,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl apply() throws Exception {
+    public LoadBalancer apply() throws Exception {
         return this.create();
     }
 
@@ -107,31 +108,6 @@ class LoadBalancerImpl
         this.setInner(response.getBody());
         afterCreating();
         return this;
-    }
-
-    @Override
-    public ServiceCall<LoadBalancerInner> createResourceAsync(final ServiceCallback<Resource> callback)  {
-        final LoadBalancerImpl self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<LoadBalancerInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<LoadBalancerInner> response) {
-                        self.setInner(response.getBody());
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                        try {
-                            afterCreating();
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                });
     }
 
     private void beforeCreating()  {
@@ -695,5 +671,23 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);
+    }
+
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback)  {
+        beforeCreating();
+        ResourceServiceCall<LoadBalancer, LoadBalancerInner, LoadBalancerImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<LoadBalancerInner>() {
+            @Override
+            public void success(ServiceResponse<LoadBalancerInner> response) {
+                try {
+                    afterCreating();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
 }

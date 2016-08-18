@@ -66,11 +66,11 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelImplT create() throws Exception {
+    public FluentModelT create() throws Exception {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
             creatorTaskGroup.execute();
-            return (FluentModelImplT) this;
+            return (FluentModelT) this;
         }
         throw new IllegalStateException("Internal Error: create can be called only on preparer");
     }
@@ -93,7 +93,7 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     /**
      * @return the task group associated with this creatable.
      */
-    public CreatorTaskGroup creatorTaskGroup() {
+    public CreatorTaskGroup<ResourceT> creatorTaskGroup() {
         return this.creatorTaskGroup;
     }
 }

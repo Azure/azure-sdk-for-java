@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptio
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -118,12 +119,12 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {
+    public ResourceGroup apply() throws Exception {
         return this.create();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<ResourceGroup> callback) {
+    public ServiceCall<ResourceGroup> applyAsync(ServiceCallback<ResourceGroup> callback) {
         return createAsync(callback);
     }
 
@@ -144,22 +145,12 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
-        final ResourceGroupImpl self = this;
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        return client.createOrUpdateAsync(this.name(), params, new ServiceCallback<ResourceGroupInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<ResourceGroupInner> response) {
-                self.setInner(response.getBody());
-                callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-            }
-        });
+        ResourceServiceCall<ResourceGroup, ResourceGroupInner, ResourceGroupImpl> serviceCall = new ResourceServiceCall<>(this);
+        client.createOrUpdateAsync(this.name(), params, serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
 }

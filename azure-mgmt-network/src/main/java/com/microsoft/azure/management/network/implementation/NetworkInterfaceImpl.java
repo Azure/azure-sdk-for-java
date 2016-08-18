@@ -19,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -86,7 +87,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl apply() throws Exception {
+    public NetworkInterface apply() throws Exception {
         return this.create();
     }
 
@@ -383,26 +384,22 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public ServiceCall<NetworkInterfaceInner> createResourceAsync(final ServiceCallback<Resource> callback) {
-        final NetworkInterfaceImpl self = this;
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        return this.client.createOrUpdateAsync(this.resourceGroupName(),
+        ResourceServiceCall<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkInterfaceInner>() {
+            @Override
+            public void success(ServiceResponse<NetworkInterfaceInner> response) {
+                clearCachedRelatedResources();
+                initializeNicIpConfigurations();
+            }
+        });
+
+        this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
                 this.inner(),
-                new ServiceCallback<NetworkInterfaceInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<NetworkInterfaceInner> response) {
-                        self.setInner(response.getBody());
-                        clearCachedRelatedResources();
-                        initializeNicIpConfigurations();
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+                serviceCall.wrapCallBack((callback)));
+        return serviceCall;
     }
 
     /**************************************************.

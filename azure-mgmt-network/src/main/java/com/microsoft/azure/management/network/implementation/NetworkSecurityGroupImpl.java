@@ -9,6 +9,7 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -91,7 +92,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl apply() throws Exception {
+    public NetworkSecurityGroup apply() throws Exception {
         return this.create();
     }
 
@@ -161,21 +162,19 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall<NetworkSecurityGroupInner> createResourceAsync(final ServiceCallback<Resource> callback) {
-        final NetworkSecurityGroupImpl self = this;
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<NetworkSecurityGroupInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+        ResourceServiceCall<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkSecurityGroupInner>() {
+            @Override
+            public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
+                initializeRulesFromInner();
+            }
+        });
 
-                    @Override
-                    public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
-                        self.setInner(response.getBody());
-                        initializeRulesFromInner();
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(),
+                this.name(),
+                this.inner(),
+                serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
  }
