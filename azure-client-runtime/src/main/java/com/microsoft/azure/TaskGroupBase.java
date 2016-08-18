@@ -21,6 +21,9 @@ import java.util.List;
  */
 public abstract class TaskGroupBase<T, U extends TaskItem<T>>
     implements TaskGroup<T, U> {
+    /**
+     * Stores the tasks in this group and their dependency information.
+     */
     private DAGraph<U, DAGNode<U>> dag;
 
     /**
