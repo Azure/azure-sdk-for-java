@@ -18,6 +18,8 @@ import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;
@@ -195,7 +197,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl apply() throws Exception {
+    public StorageAccount apply() throws Exception {
         this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
         return this;
     }
@@ -206,6 +208,11 @@ class StorageAccountImpl
                 .observable()
                 .subscribeOn(Schedulers.io())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public ServiceCall<StorageAccount> applyAsync(final ServiceCallback<StorageAccount> callback) {
+        return observableToFuture(applyAsync(), callback);
     }
 
     @Override

@@ -368,7 +368,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl apply() throws Exception {
+    public Deployment apply() throws Exception {
         if (this.templateLink() != null && this.template() != null) {
             this.withTemplate(null);
         }
@@ -391,5 +391,9 @@ final class DeploymentImpl extends
             return Observable.error(e);
         }
         return this.createAsync();
+    }
+
+    public ServiceCall<Deployment> applyAsync(ServiceCallback<Deployment> callback) {
+        return observableToFuture(applyAsync(), callback);
     }
 }

@@ -163,6 +163,11 @@ final class GenericResourceImpl
         return createAsync();
     }
 
+    @Override
+    public ServiceCall<GenericResource> applyAsync(ServiceCallback<GenericResource> callback) {
+        return createAsync(callback);
+    }
+
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override

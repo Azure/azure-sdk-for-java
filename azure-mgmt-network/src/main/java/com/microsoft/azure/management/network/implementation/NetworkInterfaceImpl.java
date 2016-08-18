@@ -19,8 +19,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -87,13 +90,18 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl apply() throws Exception {
+    public NetworkInterface apply() throws Exception {
         return this.create();
     }
 
     @Override
     public Observable<NetworkInterface> applyAsync() {
         return createAsync();
+    }
+
+    @Override
+    public ServiceCall<NetworkInterface> applyAsync(ServiceCallback<NetworkInterface> callback) {
+        return createAsync(callback);
     }
 
     // Setters (fluent)
@@ -377,6 +385,15 @@ class NetworkInterfaceImpl
     public Observable<NetworkInterface> createResourceAsync() {
         final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
+        ResourceServiceCall<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkInterfaceInner>() {
+            @Override
+            public void success(ServiceResponse<NetworkInterfaceInner> response) {
+                clearCachedRelatedResources();
+                initializeNicIpConfigurations();
+            }
+        });
+
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
                 this.inner(),

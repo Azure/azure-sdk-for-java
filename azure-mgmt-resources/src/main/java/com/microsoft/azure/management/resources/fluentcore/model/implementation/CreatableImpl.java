@@ -49,7 +49,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Resource> creatableResource) {
         CreatorTaskGroup<FluentModelT> childGroup =
-                ((CreatorTaskGroup.ResourceCreator<Resource>) creatableResource).creatorTaskGroup();
+                ((CreatorTaskGroup.ResourceCreator<FluentModelT>) creatableResource).creatorTaskGroup();
         childGroup.merge(this.creatorTaskGroup);
     }
 
@@ -71,11 +71,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelImplT create() throws Exception {
+    public FluentModelT create() throws Exception {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
             creatorTaskGroup.execute();
-            return (FluentModelImplT) this;
+            return (FluentModelT) this;
         }
         throw new IllegalStateException("Internal Error: create can be called only on preparer");
     }
@@ -126,7 +126,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     /**
      * @return the task group associated with this creatable.
      */
-    public CreatorTaskGroup creatorTaskGroup() {
+    public CreatorTaskGroup<FluentModelT> creatorTaskGroup() {
         return this.creatorTaskGroup;
     }
 
@@ -138,5 +138,24 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
                 return (FluentModelT) fluentModelImplT;
             }
         };
+    }
+
+    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable, final ServiceCallback<FluentModelT> callback) {
+        final ServiceCall<FluentModelT> serviceCall = new ServiceCall<>(null);
+        observable.subscribe(new Action1<FluentModelT>() {
+            @Override
+            public void call(FluentModelT fluentModelT) {
+                ServiceResponse<FluentModelT> serviceResponse = new ServiceResponse<>(fluentModelT, null);
+                serviceCall.success(serviceResponse);
+                callback.success(serviceResponse);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                serviceCall.failure(throwable);
+                callback.failure(throwable);
+            }
+        });
+        return serviceCall;
     }
 }

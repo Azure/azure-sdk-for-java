@@ -4,6 +4,8 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
 /**
@@ -27,7 +29,17 @@ public interface SupportsBatchCreation<ResourceT extends Resource> {
      * system resources are available.
      *
      * @param creatables the creatables in the batch
-     * @return a handle to cancel the request
+     * @return an observable for the resources
      */
     Observable<CreatedResources<ResourceT>> createAsync(Creatable<ResourceT>... creatables);
+
+    /**
+     * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when
+     * system resources are available.
+     *
+     * @param callback the callback to handle success and failure
+     * @param creatables the creatables in the batch
+     * @return a handle to cancel the request
+     */
+    ServiceCall<CreatedResources<ResourceT>> createAsync(ServiceCallback<CreatedResources<ResourceT>> callback, Creatable<ResourceT>... creatables);
 }

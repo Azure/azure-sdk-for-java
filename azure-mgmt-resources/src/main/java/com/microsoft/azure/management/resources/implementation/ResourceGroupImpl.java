@@ -12,6 +12,8 @@ import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
@@ -118,13 +120,18 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {
+    public ResourceGroup apply() throws Exception {
         return this.create();
     }
 
     @Override
     public Observable<ResourceGroup> applyAsync() {
         return createAsync();
+    }
+
+    @Override
+    public ServiceCall<ResourceGroup> applyAsync(ServiceCallback<ResourceGroup> callback) {
+        return createAsync(callback);
     }
 
     @Override

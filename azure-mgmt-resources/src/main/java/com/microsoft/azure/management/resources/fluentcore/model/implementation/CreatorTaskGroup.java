@@ -18,7 +18,7 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
         /**
          * Creates the resource asynchronously.
          *
-         * @return the service call reference
+         * @return the observable reference
          */
         Observable<T> createResourceAsync();
 
@@ -33,7 +33,7 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
         /**
          * @return Gets the task group.
          */
-        CreatorTaskGroup creatorTaskGroup();
+        CreatorTaskGroup<T> creatorTaskGroup();
     }
 
     /**
