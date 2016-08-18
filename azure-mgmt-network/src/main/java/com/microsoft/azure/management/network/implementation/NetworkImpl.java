@@ -162,7 +162,7 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    private void ensureCreationPrerequisites() {
+    private void beforeCreating() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
@@ -185,7 +185,7 @@ class NetworkImpl
 
     @Override
     public Resource createResource() throws Exception {
-        ensureCreationPrerequisites();
+        beforeCreating();
 
         ServiceResponse<VirtualNetworkInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
@@ -196,7 +196,7 @@ class NetworkImpl
 
     @Override
     public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ensureCreationPrerequisites();
+        beforeCreating();
         ResourceServiceCall<Network, VirtualNetworkInner, NetworkImpl> serviceCall = new ResourceServiceCall<>(this);
         serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualNetworkInner>() {
             @Override
