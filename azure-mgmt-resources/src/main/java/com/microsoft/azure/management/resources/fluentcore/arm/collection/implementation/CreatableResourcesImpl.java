@@ -67,13 +67,17 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
             public void call(CreatedResources<T> fluentModelT) {
                 ServiceResponse<CreatedResources<T>> serviceResponse = new ServiceResponse<>(fluentModelT, null);
                 serviceCall.success(serviceResponse);
-                callback.success(serviceResponse);
+                if (callback != null) {
+                    callback.success(serviceResponse);
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 serviceCall.failure(throwable);
-                callback.failure(throwable);
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
             }
         });
         return serviceCall;

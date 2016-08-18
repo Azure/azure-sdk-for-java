@@ -127,25 +127,7 @@ final class GenericResourceImpl
     }
 
     public ServiceCall<GenericResource> createAsync(final ServiceCallback<GenericResource> callback) {
-        final ServiceCall<GenericResource> serviceCall = new ServiceCall<>(null);
-        createAsync().subscribe(new Action1<GenericResource>() {
-            @Override
-            public void call(GenericResource fluentModelT) {
-                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
-                if (callback != null) {
-                    callback.success(new ServiceResponse<>(fluentModelT, null));
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                serviceCall.failure(throwable);
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-            }
-        });
-        return serviceCall;
+        return observableToFuture(createAsync(), callback);
     }
 
     @Override

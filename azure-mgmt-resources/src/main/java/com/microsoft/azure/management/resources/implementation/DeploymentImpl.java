@@ -295,25 +295,7 @@ final class DeploymentImpl extends
 
     @Override
     public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
-        final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
-        createAsync().subscribe(new Action1<Deployment>() {
-            @Override
-            public void call(Deployment fluentModelT) {
-                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
-                if (callback != null) {
-                    callback.success(new ServiceResponse<>(fluentModelT, null));
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                serviceCall.failure(throwable);
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-            }
-        });
-        return serviceCall;
+        return observableToFuture(createAsync(), callback);
     }
 
     @Override

@@ -88,25 +88,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
      * @return a handle to cancel the request
      */
     public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        final ServiceCall<FluentModelT> serviceCall = new ServiceCall<>(null);
-        createAsync().subscribe(new Action1<FluentModelT>() {
-            @Override
-            public void call(FluentModelT fluentModelT) {
-                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
-                if (callback != null) {
-                    callback.success(new ServiceResponse<>(fluentModelT, null));
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                serviceCall.failure(throwable);
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-            }
-        });
-        return serviceCall;
+        return observableToFuture(createAsync(), callback);
     }
 
     /**
@@ -147,13 +129,17 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
             public void call(FluentModelT fluentModelT) {
                 ServiceResponse<FluentModelT> serviceResponse = new ServiceResponse<>(fluentModelT, null);
                 serviceCall.success(serviceResponse);
-                callback.success(serviceResponse);
+                if (callback != null) {
+                    callback.success(serviceResponse);
+                }
             }
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
                 serviceCall.failure(throwable);
-                callback.failure(throwable);
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
             }
         });
         return serviceCall;
