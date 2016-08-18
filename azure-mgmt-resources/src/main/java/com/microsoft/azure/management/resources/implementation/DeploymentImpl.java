@@ -23,8 +23,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -287,6 +291,29 @@ final class DeploymentImpl extends
         }
         createResource();
         return this;
+    }
+
+    @Override
+    public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
+        final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
+        createAsync().subscribe(new Action1<Deployment>() {
+            @Override
+            public void call(Deployment fluentModelT) {
+                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
+                if (callback != null) {
+                    callback.success(new ServiceResponse<>(fluentModelT, null));
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                serviceCall.failure(throwable);
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     @Override

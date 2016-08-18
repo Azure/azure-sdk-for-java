@@ -8,7 +8,11 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -74,6 +78,35 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
             return (FluentModelImplT) this;
         }
         throw new IllegalStateException("Internal Error: create can be called only on preparer");
+    }
+
+    /**
+     * Puts the request into the queue and allow the HTTP client to execute
+     * it when system resources are available.
+     *
+     * @param callback the callback to handle success and failure
+     * @return a handle to cancel the request
+     */
+    public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        final ServiceCall<FluentModelT> serviceCall = new ServiceCall<>(null);
+        createAsync().subscribe(new Action1<FluentModelT>() {
+            @Override
+            public void call(FluentModelT fluentModelT) {
+                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
+                if (callback != null) {
+                    callback.success(new ServiceResponse<>(fluentModelT, null));
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                serviceCall.failure(throwable);
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     /**

@@ -10,7 +10,10 @@ import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -123,9 +126,30 @@ final class GenericResourceImpl
         return this;
     }
 
+    public ServiceCall<GenericResource> createAsync(final ServiceCallback<GenericResource> callback) {
+        final ServiceCall<GenericResource> serviceCall = new ServiceCall<>(null);
+        createAsync().subscribe(new Action1<GenericResource>() {
+            @Override
+            public void call(GenericResource fluentModelT) {
+                serviceCall.success(new ServiceResponse<>(fluentModelT, null));
+                if (callback != null) {
+                    callback.success(new ServiceResponse<>(fluentModelT, null));
+                }
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                serviceCall.failure(throwable);
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
     @Override
     public Observable<GenericResource> createAsync() {
-        final ServiceCall<GenericResource> serviceCall = new ServiceCall<>(null);
         return createResourceAsync();
     }
 
