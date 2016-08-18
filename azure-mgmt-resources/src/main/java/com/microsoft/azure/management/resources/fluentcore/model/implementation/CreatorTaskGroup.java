@@ -22,7 +22,7 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
          * @param serviceCallback the callback to be invoked after the creation of resource
          * @return the service call reference
          */
-        ServiceCall createResourceAsync(ServiceCallback<T> serviceCallback);
+        ServiceCall<T> createResourceAsync(ServiceCallback<T> serviceCallback);
 
         /**
          * Creates the resource synchronously.
@@ -35,7 +35,7 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
         /**
          * @return Gets the task group.
          */
-        CreatorTaskGroup creatorTaskGroup();
+        CreatorTaskGroup<T> creatorTaskGroup();
     }
 
     /**

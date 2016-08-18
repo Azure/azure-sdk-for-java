@@ -10,6 +10,7 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -92,12 +93,12 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl apply() throws Exception {
+    public AvailabilitySet apply() throws Exception {
         return this.create();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<AvailabilitySet> callback) {
+    public ServiceCall<AvailabilitySet> applyAsync(ServiceCallback<AvailabilitySet> callback) {
         return this.createAsync(callback);
     }
 
@@ -112,21 +113,18 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
-        final AvailabilitySetImpl self = this;
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<AvailabilitySetInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<AvailabilitySetInner> response) {
-                        self.setInner(response.getBody());
-                        idOfVMsInSet = null;
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+        ResourceServiceCall<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl> serviceCall = new ResourceServiceCall<>(this);
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<AvailabilitySetInner>() {
+            @Override
+            public void success(ServiceResponse<AvailabilitySetInner> response) {
+                idOfVMsInSet = null;
+            }
+        });
+        this.client.createOrUpdateAsync(this.resourceGroupName(),
+                this.name(),
+                this.inner(),
+                serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
 }

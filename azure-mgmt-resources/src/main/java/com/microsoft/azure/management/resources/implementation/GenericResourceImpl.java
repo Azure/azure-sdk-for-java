@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.Plan;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -150,7 +151,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<GenericResource> callback) {
+    public ServiceCall<GenericResource> applyAsync(ServiceCallback<GenericResource> callback) {
         return createAsync(callback);
     }
 
@@ -172,9 +173,9 @@ final class GenericResourceImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
-        final GenericResourceImpl self = this;
-        return client.createOrUpdateAsync(
+    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+        ResourceServiceCall<GenericResource, GenericResourceInner, GenericResourceImpl> serviceCall = new ResourceServiceCall<>(this);
+        client.createOrUpdateAsync(
                 resourceGroupName(),
                 resourceProviderNamespace,
                 parentResourceId,
@@ -182,17 +183,7 @@ final class GenericResourceImpl
                 name(),
                 apiVersion,
                 inner(),
-                new ServiceCallback<GenericResourceInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<GenericResourceInner> response) {
-                        self.setInner(response.getBody());
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+                serviceCall.wrapCallBack(callback));
+        return serviceCall;
     }
 }
