@@ -7,8 +7,6 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
 /**
