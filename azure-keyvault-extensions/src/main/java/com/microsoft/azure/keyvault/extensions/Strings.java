@@ -24,13 +24,13 @@ package com.microsoft.azure.keyvault.extensions;
 public class Strings {
 
     /**
-     * Verifier if the string is empty or null.
+     * Determines whether the parameter string is either null or empty.
      * @param arg the string to verify
-     * @return true if the string is empty or null and false otherwise
+     * @return true if the string is empty or null and false otherwise.
      */
     public static boolean isNullOrEmpty(String arg) {
 
-        if (arg == null || arg.isEmpty()) {
+        if (arg == null || arg.length() == 0) {
             return true;
         }
 
@@ -38,7 +38,7 @@ public class Strings {
     }
 
     /**
-     * Verifier if the string is empty, contains only whitespace or is null.
+     * Determines whether the parameter string is null, empty or whitespace.
      * @param arg the string to verify
      * @return true if the string is empty, contains only whitespace or is null and false otherwise
      */

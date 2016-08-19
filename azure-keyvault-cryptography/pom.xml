@@ -59,5 +59,15 @@
 			<artifactId>azure-keyvault-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<scope>test</scope>
+		</dependency>
+	    <dependency>
+	   		<groupId>commons-codec</groupId>
+	      	<artifactId>commons-codec</artifactId>
+			<scope>test</scope>
+	    </dependency>
 	</dependencies>
 </project>
