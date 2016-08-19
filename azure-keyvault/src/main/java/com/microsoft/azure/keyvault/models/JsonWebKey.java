@@ -29,6 +29,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.Base64Url;
 
 /**
@@ -95,7 +96,6 @@ public class JsonWebKey {
     /**
      * Symmetric key.
      */
-    @JsonProperty(value = "K")
     private Base64Url k;
 
     /**
@@ -436,7 +436,8 @@ public class JsonWebKey {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

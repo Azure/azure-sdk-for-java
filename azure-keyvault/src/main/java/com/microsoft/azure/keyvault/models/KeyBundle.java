@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 /**
  * A KeyBundle consisting of a WebKey plus its Attributes.
@@ -110,7 +111,8 @@ public class KeyBundle {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

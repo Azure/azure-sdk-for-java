@@ -1,7 +1,11 @@
 package com.microsoft.azure.keyvault.requests;
 
+import java.util.ArrayList;
+
+import com.microsoft.azure.keyvault.models.AdministratorDetails;
 import com.microsoft.azure.keyvault.models.IssuerAttributes;
-import com.microsoft.azure.keyvault.models.IssuerBundle;
+import com.microsoft.azure.keyvault.models.IssuerCredentials;
+import com.microsoft.azure.keyvault.models.OrganizationDetails;
 
 /**
  * The update certificate issuer request class.
@@ -9,7 +13,10 @@ import com.microsoft.azure.keyvault.models.IssuerBundle;
 public final class UpdateCertificateIssuerRequest {
     private final String vaultBaseUrl;
     private final String issuerName;
-    private final IssuerBundle issuer;
+    private final String provider;
+    private final IssuerCredentials credentials;
+    private final OrganizationDetails organizationDetails;
+    private final IssuerAttributes attributes;
 
     /**
      * The {@link UpdateCertificateIssuerRequest} builder.
@@ -19,9 +26,12 @@ public final class UpdateCertificateIssuerRequest {
         // Required parameters
         private final String vaultBaseUrl;
         private final String issuerName;
+        private final String provider;
 
         // Optional parameters
-        private IssuerBundle issuer;
+        private IssuerCredentials credentials;
+        private OrganizationDetails organizationDetails;
+        private IssuerAttributes attributes;
 
         /**
          * The builder for constructing {@link UpdateCertificateIssuerRequest}
@@ -32,20 +42,45 @@ public final class UpdateCertificateIssuerRequest {
          * @param issuerName
          *            The name of the issuer in the given vault.
          */
-        public Builder(String vaultBaseUrl, String issuerName) {
+        public Builder(String vaultBaseUrl, String issuerName, String provider) {
             this.vaultBaseUrl = vaultBaseUrl;
             this.issuerName = issuerName;
+            this.provider = provider;
         }
 
         /**
-         * Set the issuer value.
+         * Set issuer credentials.
          * 
-         * @param issuer
-         *            The issuer bundle.
+         * @param credentials
+         *            The issuer credentials.
          * @return the Builder object itself.
          */
-        public Builder withIssuer(IssuerBundle issuer) {
-            this.issuer = issuer;
+        public Builder withCredentials(IssuerCredentials credentials) {
+            this.credentials = credentials;
+            return this;
+        }
+        
+        /**
+         * Set issuer organization details.
+         * 
+         * @param organizationDetails
+         *            The issuer organization details.
+         * @return the Builder object itself.
+         */
+        public Builder withOrganizationDetails(OrganizationDetails organizationDetails) {
+            this.organizationDetails = organizationDetails;
+            return this;
+        }
+        
+        /**
+         * Set issuer attributes.
+         * 
+         * @param organizationDetails
+         *            The issuer attributes.
+         * @return the Builder object itself.
+         */
+        public Builder withAttributes(IssuerAttributes attributes) {
+            this.attributes = attributes;
             return this;
         }
 
@@ -62,16 +97,25 @@ public final class UpdateCertificateIssuerRequest {
     private UpdateCertificateIssuerRequest(Builder builder) {
         vaultBaseUrl = builder.vaultBaseUrl;
         issuerName = builder.issuerName;
-
-        if (builder.issuer != null) {
-            issuer = new IssuerBundle().withProvider(builder.issuer.provider())
-                    .withOrganizationDetails(builder.issuer.organizationDetails())
-                    .withCredentials(builder.issuer.credentials());
-            if (builder.issuer.attributes() != null) {
-                issuer.withAttributes(new IssuerAttributes().withEnabled(builder.issuer.attributes().enabled()));
-            }
+        provider = builder.provider;
+        if(builder.organizationDetails != null) {
+            organizationDetails = new OrganizationDetails()
+                .withId(builder.organizationDetails.id())
+                .withAdminDetails(new ArrayList<AdministratorDetails>(builder.organizationDetails.adminDetails()));
         } else {
-            issuer = null;
+            organizationDetails = null;
+        }
+        if(builder.credentials != null) {
+            credentials = new IssuerCredentials()
+                .withAccountId(builder.credentials.accountId())
+                .withPassword(builder.credentials.password());
+        } else {
+            credentials = null;
+        }
+        if (builder.attributes != null) {
+            attributes = new IssuerAttributes().withEnabled(builder.attributes.enabled());
+        } else {
+            attributes = null;
         }
     }
 
@@ -90,9 +134,30 @@ public final class UpdateCertificateIssuerRequest {
     }
 
     /**
-     * @return the issuer
+     * @return the issuer provider name
      */
-    public IssuerBundle issuer() {
-        return issuer;
+    public String provider() {
+        return provider;
+    }
+    
+    /**
+     * @return the issuer credentials
+     */
+    public IssuerCredentials credentials() {
+        return credentials;
+    }
+    
+    /**
+     * @return the organization details
+     */
+    public OrganizationDetails organizationDetails() {
+        return organizationDetails;
+    }
+    
+    /**
+     * @return the issuer attributes
+     */
+    public IssuerAttributes attributes() {
+        return attributes;
     }
 }

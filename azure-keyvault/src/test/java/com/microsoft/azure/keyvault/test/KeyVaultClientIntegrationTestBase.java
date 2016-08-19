@@ -25,6 +25,7 @@ import java.util.concurrent.Future;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -37,6 +38,7 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
+import com.microsoft.azure.keyvault.models.Attributes;
 
 public class KeyVaultClientIntegrationTestBase {
 
@@ -95,7 +97,7 @@ public class KeyVaultClientIntegrationTestBase {
     private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
         String clientId = System.getenv("arm.clientid");
-    	
+    
         if (clientId == null) {
             throw new Exception("Please inform arm.clientid in the environment settings.");
         }
@@ -136,6 +138,14 @@ public class KeyVaultClientIntegrationTestBase {
         return result;
     }
 
+    protected static void compareAttributes(Attributes expectedAttributes, Attributes actualAttribute) {
+        if(expectedAttributes != null) {
+            Assert.assertEquals(expectedAttributes.enabled(), actualAttribute.enabled());
+            Assert.assertEquals(expectedAttributes.expires(), actualAttribute.expires());
+            Assert.assertEquals(expectedAttributes.notBefore(), actualAttribute.notBefore());
+        }
+    }
+    
     protected static ObjectWriter jsonWriter;
     protected static ObjectReader jsonReader;
 
