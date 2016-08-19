@@ -1,14 +1,12 @@
 package com.microsoft.azure.keyvault.requests;
 
-import com.microsoft.azure.keyvault.models.CertificateOperation;
-
 /**
  * The update certificate operation request class.
  */
 public final class UpdateCertificateOperationRequest {
     private final String vaultBaseUrl;
     private final String certificateName;
-    private final CertificateOperation certificateOperation;
+    private final Boolean cancellationRequested;
 
     /**
      * The {@link UpdateCertificateOperationRequest} builder.
@@ -18,9 +16,9 @@ public final class UpdateCertificateOperationRequest {
         // Required parameters
         private final String vaultBaseUrl;
         private final String certificateName;
+        private final Boolean cancellationRequested;
 
         // Optional parameters
-        private Boolean cancellationRequested;
 
         /**
          * The builder for constructing {@link CreateCertificateRequest} object.
@@ -29,23 +27,13 @@ public final class UpdateCertificateOperationRequest {
          *            The vault name, e.g. https://myvault.vault.azure.net.
          * @param certificateName
          *            The name of the certificate in the given vault.
+         * @param cancellationRequested
+         *            Indicates if cancellation was requested on the certificate operation.
          */
-        public Builder(String vaultBaseUrl, String certificateName) {
+        public Builder(String vaultBaseUrl, String certificateName, Boolean cancellationRequested) {
             this.vaultBaseUrl = vaultBaseUrl;
             this.certificateName = certificateName;
-        }
-
-        /**
-         * Set the cancellationRequested value.
-         *
-         * @param cancellationRequested
-         *            Indicates if cancellation was requested on the certificate
-         *            operation.
-         * @return the Builder object itself.
-         */
-        public Builder withCancellationRequested(Boolean cancellationRequested) {
             this.cancellationRequested = cancellationRequested;
-            return this;
         }
 
         /**
@@ -61,11 +49,7 @@ public final class UpdateCertificateOperationRequest {
     private UpdateCertificateOperationRequest(Builder builder) {
         vaultBaseUrl = builder.vaultBaseUrl;
         certificateName = builder.certificateName;
-        if (builder.cancellationRequested != null) {
-            certificateOperation = new CertificateOperation().withCancellationRequested(builder.cancellationRequested);
-        } else {
-            certificateOperation = null;
-        }
+        cancellationRequested = builder.cancellationRequested;
     }
 
     /**
@@ -85,7 +69,7 @@ public final class UpdateCertificateOperationRequest {
     /**
      * @return the certificate policy
      */
-    public CertificateOperation certificateOperation() {
-        return certificateOperation;
+    public Boolean cancellationRequested() {
+        return cancellationRequested;
     }
 }

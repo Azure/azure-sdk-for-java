@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
+import com.microsoft.azure.keyvault.models.SecretAttributes;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.SecretIdentifier;
@@ -45,17 +46,30 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Create a secret on a vault.
         {
-        	SecretBundle secret = keyVaultClient.setSecret(
-        			new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
-            validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, null);
+            SecretAttributes attributes = (SecretAttributes) new SecretAttributes()
+                    .withEnabled(true)
+                    .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
+                    .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
+            Map<String, String> tags = new HashMap<String, String>();
+            tags.put("foo", "baz");
+            String contentType = "contentType";
+            
+            SecretBundle secret = keyVaultClient.setSecret(
+                    new SetSecretRequest
+                        .Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE)
+                        .withAttributes(attributes)
+                        .withContentType(contentType)
+                        .withTags(tags)
+                        .build()).getBody();
+            validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, contentType, attributes);
         }
 
         // Create a secret on a different vault. Secret Vault Data Plane returns
         // 401, which must be transparently handled by KeyVaultCredentials.
         {
-        	SecretBundle secret = keyVaultClient.setSecret(
-        			new SetSecretRequest.Builder(getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
-            validateSecret(secret, getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE, null);
+            SecretBundle secret = keyVaultClient.setSecret(
+                    new SetSecretRequest.Builder(getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+            validateSecret(secret, getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
         }
 
     }
@@ -63,12 +77,12 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     @Test
     public void crudOperations() throws Exception {
 
-    	SecretBundle secret;
+        SecretBundle secret;
         {
             // Create secret
-        	secret = keyVaultClient.setSecret(
-        			new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
-            validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, null);
+            secret = keyVaultClient.setSecret(
+                    new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+            validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
         }
 
         // Secret identifier.
@@ -76,47 +90,47 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         {
             // Get secret using kid WO version
-        	SecretBundle readBundle = keyVaultClient.getSecret(secretId.baseIdentifier()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(secretId.baseIdentifier()).getBody();
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using full kid as defined in the bundle
-        	SecretBundle readBundle = keyVaultClient.getSecret(secret.id()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(secret.id()).getBody();
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using vault and secret name.
-        	SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME).getBody();
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using vault, secret name and version.
-        	SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME, secretId.version()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME, secretId.version()).getBody();
             compareSecrets(secret, readBundle);
         }
 
         {
-        	secret.attributes().withExpires(new DateTime()
-    											.withMonthOfYear(2)
-    											.withDayOfMonth(1)
-    											.withYear(2050));        	
-        	Map<String, String> tags = new HashMap<String, String>();
-        	tags.put("foo", "baz");
-        	secret.withTags(tags)
-        		  .withContentType("application/html")
-        		  .withValue(null);	// The value doesn't get updated
-        	
+            secret.attributes().withExpires(new DateTime()
+                                                  .withMonthOfYear(2)
+                                                  .withDayOfMonth(1)
+                                                  .withYear(2050));
+            Map<String, String> tags = new HashMap<String, String>();
+            tags.put("foo", "baz");
+            secret.withTags(tags)
+                  .withContentType("application/html")
+                  .withValue(null);    // The value doesn't get updated
+            
             // Update secret using the kid as defined in the bundle
             SecretBundle updatedSecret = keyVaultClient.updateSecret(
-            		new UpdateSecretRequest
-            			.Builder(secret.id())
-	            			.withContentType(secret.contentType())
-	            			.withAttributes(secret.attributes())
-	            			.withTags(secret.tags())
-	            			.build()).getBody();
+                    new UpdateSecretRequest
+                        .Builder(secret.id())
+                            .withContentType(secret.contentType())
+                            .withAttributes(secret.attributes())
+                            .withTags(secret.tags())
+                            .build()).getBody();
             compareSecrets(secret, updatedSecret);
 
             // Subsequent operations must use the updated bundle for comparison.
@@ -126,37 +140,42 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         {
             // Update secret using vault and secret name.
 
-        	secret.attributes().withNotBefore(new DateTime()
-													.withMonthOfYear(2)
-													.withDayOfMonth(1)
-													.withYear(2000));   
-        	Map<String, String> tags = new HashMap<String, String>();
-        	tags.put("rex", "woof");
-        	secret.withTags(tags)
-  		          .withContentType("application/html");
+            secret.attributes().withNotBefore(new DateTime()
+                                                    .withMonthOfYear(2)
+                                                    .withDayOfMonth(1)
+                                                    .withYear(2000));   
+            Map<String, String> tags = new HashMap<String, String>();
+            tags.put("rex", "woof");
+            secret.withTags(tags)
+                  .withContentType("application/html");
 
             // Perform the operation.
             SecretBundle updatedSecret = keyVaultClient.updateSecret(
-            		new UpdateSecretRequest
-            			.Builder(getVaultUri(), SECRET_NAME)
-	            			.withContentType(secret.contentType())
-	            			.withAttributes(secret.attributes())
-	            			.withTags(secret.tags())
-	            			.build()).getBody();
+                    new UpdateSecretRequest
+                        .Builder(getVaultUri(), SECRET_NAME)
+                            .withVersion(secret.secretIdentifier().version())
+                            .withContentType(secret.contentType())
+                            .withAttributes(secret.attributes())
+                            .withTags(secret.tags())
+                            .build()).getBody();
 
             compareSecrets(secret, updatedSecret);
+            validateSecret(updatedSecret, 
+                    secret.secretIdentifier().vault(), 
+                    secret.secretIdentifier().name(), 
+                    null, secret.contentType(), secret.attributes());
         }
 
         {
             // Delete secret
-        	SecretBundle deleteBundle = keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME).getBody();
+            SecretBundle deleteBundle = keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME).getBody();
             compareSecrets(secret, deleteBundle);
         }
 
         {
             // Expects a secret not found
             try {
-            	keyVaultClient.getSecret(secretId.baseIdentifier());
+                keyVaultClient.getSecret(secretId.baseIdentifier());
             } catch (KeyVaultErrorException e) {
                 Assert.assertNotNull(e.getBody().error().code());
                 Assert.assertEquals("SecretNotFound", e.getBody().error().code());
@@ -165,7 +184,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     }
 
-	@Test
+    @Test
     public void listSecrets() throws Exception {
 
         HashSet<String> secrets = new HashSet<String>();
@@ -174,7 +193,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             for (;;) {
                 try {
                     SecretBundle secret = keyVaultClient.setSecret(
-                    		new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build()).getBody();
+                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build()).getBody();
                     SecretIdentifier id = new SecretIdentifier(secret.id());
                     secrets.add(id.baseIdentifier());
                     break;
@@ -190,7 +209,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<SecretItem> listResult = keyVaultClient.getSecrets(getVaultUri(), PAGELIST_MAX_SECRETS).getBody();
+        PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS).getBody();
         Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
 
         HashSet<String> toDelete = new HashSet<String>();
@@ -204,14 +223,14 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(0, secrets.size());
 
         for (String secretName : toDelete) {
-        	try{
-        		keyVaultClient.deleteSecret(getVaultUri(), secretName);
-        	}
-        	catch(KeyVaultErrorException e){
-        		// Ignore forbidden exception for certificate secrets that cannot be deleted
-        		if(!e.getBody().error().code().equals("Forbidden"))
-        			throw e;
-        	}
+            try{
+                keyVaultClient.deleteSecret(getVaultUri(), secretName);
+            }
+            catch(KeyVaultErrorException e){
+                // Ignore forbidden exception for certificate secrets that cannot be deleted
+                if(!e.getBody().error().code().equals("Forbidden"))
+                    throw e;
+            }
         }
     }
 
@@ -224,7 +243,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             for (;;) {
                 try {
                     SecretBundle secret = keyVaultClient.setSecret(
-                    		new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
                     secrets.add(secret.id());
                     break;
                 } catch (KeyVaultErrorException e) {
@@ -239,19 +258,12 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<SecretItem> listResult = keyVaultClient.getSecretVersions(getVaultUri(), SECRET_NAME, PAGELIST_MAX_SECRETS).getBody();
+        PagedList<SecretItem> listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME, PAGELIST_MAX_SECRETS).getBody();
         Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
 
-        listResult = keyVaultClient.getSecretVersions(getVaultUri(), SECRET_NAME).getBody();
-        for (;;) {
-        	for (SecretItem item : listResult) {
-                secrets.remove(item.id());
-            }
-            String nextLink = listResult.nextPageLink();
-            if (nextLink == null) {
-                break;
-            }
-            keyVaultClient.getSecretVersionsNext(nextLink).getBody();
+        listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME).getBody();
+        for (SecretItem item : listResult) {
+            secrets.remove(item.id());
         }
 
         Assert.assertEquals(0, secrets.size());
@@ -259,7 +271,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME);
     }
 
-    private static void validateSecret(SecretBundle secret, String vault, String name, String value, String contentType) throws Exception {
+    private static void validateSecret(SecretBundle secret, String vault, String name, String value, String contentType, SecretAttributes attributes) throws Exception {
         String prefix = vault + "/secrets/" + name + "/";
         String id = secret.id();
         Assert.assertTrue( //
@@ -271,17 +283,19 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         Assert.assertNotNull("\"created\" should not be null.", secret.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", secret.attributes().updated());
+        
+        compareAttributes(attributes, secret.attributes());
     }
 
     private void compareSecrets(SecretBundle expected, SecretBundle actual) {
-    	Assert.assertEquals(expected.contentType(), actual.contentType());
-    	Assert.assertEquals(expected.id(), actual.id());
-    	Assert.assertEquals(expected.value(), actual.value());
-    	Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-    	Assert.assertEquals(expected.attributes().expires(), actual.attributes().expires());
-    	Assert.assertEquals(expected.attributes().notBefore(), actual.attributes().notBefore());
-    	if(expected.tags() != null || actual.tags() != null)
-    		Assert.assertTrue(expected.tags().equals(actual.tags()));
-	}
+        Assert.assertEquals(expected.contentType(), actual.contentType());
+        Assert.assertEquals(expected.id(), actual.id());
+        Assert.assertEquals(expected.value(), actual.value());
+        Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
+        Assert.assertEquals(expected.attributes().expires(), actual.attributes().expires());
+        Assert.assertEquals(expected.attributes().notBefore(), actual.attributes().notBefore());
+        if(expected.tags() != null || actual.tags() != null)
+            Assert.assertTrue(expected.tags().equals(actual.tags()));
+    }
 
 }

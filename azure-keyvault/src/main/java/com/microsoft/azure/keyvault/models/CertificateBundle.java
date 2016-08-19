@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import com.microsoft.azure.keyvault.CertificateIdentifier;
 import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.SecretIdentifier;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.Base64Url;
 
 import java.io.IOException;
@@ -239,7 +240,8 @@ public class CertificateBundle {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

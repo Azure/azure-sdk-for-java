@@ -18,6 +18,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CertificateUpdateParameters {
     /**
+     * The management policy for the certificate.
+     */
+    @JsonProperty(value = "policy")
+    private CertificatePolicy certificatePolicy;
+
+    /**
      * The attributes of the certificate (optional).
      */
     @JsonProperty(value = "attributes")
@@ -27,6 +33,26 @@ public class CertificateUpdateParameters {
      * Application-specific metadata in the form of key-value pairs.
      */
     private Map<String, String> tags;
+
+    /**
+     * Get the certificatePolicy value.
+     *
+     * @return the certificatePolicy value
+     */
+    public CertificatePolicy certificatePolicy() {
+        return this.certificatePolicy;
+    }
+
+    /**
+     * Set the certificatePolicy value.
+     *
+     * @param certificatePolicy the certificatePolicy value to set
+     * @return the CertificateUpdateParameters object itself.
+     */
+    public CertificateUpdateParameters withCertificatePolicy(CertificatePolicy certificatePolicy) {
+        this.certificatePolicy = certificatePolicy;
+        return this;
+    }
 
     /**
      * Get the certificateAttributes value.

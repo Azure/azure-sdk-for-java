@@ -10,28 +10,16 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.keyvault.IssuerIdentifier;
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 /**
- * The issuer for Key Vault certificate.
+ * The certificate issuer set parameters.
  */
-public class IssuerBundle {
-    /**
-     * Identifier for the issuer object.
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
+public class CertificateIssuerSetParameters {
     /**
      * The name of the issuer.
      */
+    @JsonProperty(required = true)
     private String provider;
 
     /**
@@ -51,15 +39,6 @@ public class IssuerBundle {
     private IssuerAttributes attributes;
 
     /**
-     * Get the id value.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Get the provider value.
      *
      * @return the provider value
@@ -72,9 +51,9 @@ public class IssuerBundle {
      * Set the provider value.
      *
      * @param provider the provider value to set
-     * @return the IssuerBundle object itself.
+     * @return the CertificateIssuerSetParameters object itself.
      */
-    public IssuerBundle withProvider(String provider) {
+    public CertificateIssuerSetParameters withProvider(String provider) {
         this.provider = provider;
         return this;
     }
@@ -92,9 +71,9 @@ public class IssuerBundle {
      * Set the credentials value.
      *
      * @param credentials the credentials value to set
-     * @return the IssuerBundle object itself.
+     * @return the CertificateIssuerSetParameters object itself.
      */
-    public IssuerBundle withCredentials(IssuerCredentials credentials) {
+    public CertificateIssuerSetParameters withCredentials(IssuerCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -112,9 +91,9 @@ public class IssuerBundle {
      * Set the organizationDetails value.
      *
      * @param organizationDetails the organizationDetails value to set
-     * @return the IssuerBundle object itself.
+     * @return the CertificateIssuerSetParameters object itself.
      */
-    public IssuerBundle withOrganizationDetails(OrganizationDetails organizationDetails) {
+    public CertificateIssuerSetParameters withOrganizationDetails(OrganizationDetails organizationDetails) {
         this.organizationDetails = organizationDetails;
         return this;
     }
@@ -132,36 +111,11 @@ public class IssuerBundle {
      * Set the attributes value.
      *
      * @param attributes the attributes value to set
-     * @return the IssuerBundle object itself.
+     * @return the CertificateIssuerSetParameters object itself.
      */
-    public IssuerBundle withAttributes(IssuerAttributes attributes) {
+    public CertificateIssuerSetParameters withAttributes(IssuerAttributes attributes) {
         this.attributes = attributes;
         return this;
     }
 
-    /**
-     * The issuer identifier.
-     * @return identifier for issuer
-     */
-    public IssuerIdentifier issuerIdentifier() {
-        if (id() == null || id().isEmpty()) {
-            return null;
-        }
-        return new IssuerIdentifier(id());
-    }
-
-    @Override
-    public String toString() {
-        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
-        ObjectMapper mapper = mapperAdapter.getObjectMapper();
-        try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonGenerationException e) {
-            throw new IllegalStateException(e);
-        } catch (JsonMappingException e) {
-            throw new IllegalStateException(e);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 }
