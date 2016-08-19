@@ -38,7 +38,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public ServiceCall executeAsync(final ServiceCallback<ResourceT> callback) {
+    public ServiceCall<ResourceT> executeAsync(final ServiceCallback<ResourceT> callback) {
         final CreatorTaskItem<ResourceT> self = this;
         return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
             @Override
