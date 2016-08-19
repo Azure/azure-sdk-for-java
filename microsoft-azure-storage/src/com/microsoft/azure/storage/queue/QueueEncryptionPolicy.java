@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.queue;
 
+import java.util.HashMap;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -126,6 +128,11 @@ public final class QueueEncryptionPolicy {
 
         CloudQueueEncryptedMessage encryptedMessage = new CloudQueueEncryptedMessage();
         EncryptionData encryptionData = new EncryptionData();
+        if (encryptionData.getKeyWrappingMetadata() == null) {
+            encryptionData.setKeyWrappingMetadata(new HashMap<String, String>());
+        }
+        
+        encryptionData.getKeyWrappingMetadata().put("EncryptionLibrary", "Java " + Constants.HeaderConstants.USER_AGENT_VERSION);
         encryptionData.setEncryptionAgent(new EncryptionAgent(
                 Constants.EncryptionConstants.ENCRYPTION_PROTOCOL_V1, EncryptionAlgorithm.AES_CBC_256));
   

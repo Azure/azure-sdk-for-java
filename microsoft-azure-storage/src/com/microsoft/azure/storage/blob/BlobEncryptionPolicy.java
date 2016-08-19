@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -288,6 +289,11 @@ public final class BlobEncryptionPolicy {
             myAes.init(Cipher.ENCRYPT_MODE, aesKey);
 
             BlobEncryptionData encryptionData = new BlobEncryptionData();
+            if (encryptionData.getKeyWrappingMetadata() == null) {
+                encryptionData.setKeyWrappingMetadata(new HashMap<String, String>());
+            }
+            
+            encryptionData.getKeyWrappingMetadata().put(Constants.EncryptionConstants.ENCRYPTION_LIBRARY, "Java " + Constants.HeaderConstants.USER_AGENT_VERSION);
             encryptionData.setEncryptionAgent(new EncryptionAgent(Constants.EncryptionConstants.ENCRYPTION_PROTOCOL_V1,
                     EncryptionAlgorithm.AES_CBC_256));
 
