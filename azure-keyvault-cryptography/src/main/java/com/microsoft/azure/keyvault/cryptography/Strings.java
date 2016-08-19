@@ -18,19 +18,29 @@
 
 package com.microsoft.azure.keyvault.cryptography;
 
-import com.microsoft.azure.keyvault.cryptography.Strings;
+public final class Strings {
 
-public class Strings {
-
+    /**
+     * Determines whether the parameter string is either null or empty.
+     * 
+     * @param arg The string to be checked.
+     * @return true if the string is null or empty.
+     */
     public static boolean isNullOrEmpty(String arg) {
 
-        if (arg == null || arg.isEmpty()) {
+        if (arg == null || arg.length() == 0) {
             return true;
         }
 
         return false;
     }
 
+    /**
+     * Determines whether the parameter string is null, empty or whitespace.
+     * 
+     * @param arg The string to be checked.
+     * @return true if the string is null, empty or whitespace.
+     */
     public static boolean isNullOrWhiteSpace(String arg) {
 
         if (Strings.isNullOrEmpty(arg) || arg.trim().isEmpty()) {

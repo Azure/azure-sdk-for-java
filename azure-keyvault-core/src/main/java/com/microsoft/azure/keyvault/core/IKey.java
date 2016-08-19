@@ -153,7 +153,7 @@ public interface IKey extends Closeable {
      *            The signature to verify
      * @param algorithm
      *            The algorithm to use, must be provided
-     * @return A ListenableFuture containing a boolean result
+     * @return A ListenableFuture containing the signature and the algorithm used.
      * @throws NoSuchAlgorithmException the algorithm is not valid
      */
     ListenableFuture<Boolean> verifyAsync(final byte[] digest, final byte[] signature, final String algorithm) throws NoSuchAlgorithmException;

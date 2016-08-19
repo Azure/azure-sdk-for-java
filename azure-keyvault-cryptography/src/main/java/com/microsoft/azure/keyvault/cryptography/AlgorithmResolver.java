@@ -30,6 +30,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rsa15;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
 
@@ -53,31 +54,38 @@ public class AlgorithmResolver {
         Default.put(Rsa15.AlgorithmName, new Rsa15());
         Default.put(RsaOaep.AlgorithmName, new RsaOaep());
 
-        // Default.put( Rs256.AlgorithmName, new Rs256() );
+        Default.put( Rs256.AlgorithmName, new Rs256() );
         // Default.put( RsNull.AlgorithmName, new RsNull() );
     }
 
     private final ConcurrentMap<String, Algorithm> _algorithms = new ConcurrentHashMap<String, Algorithm>();
 
-    /// <summary>
-    /// Returns the implementation for an algorithm name
-    /// </summary>
-    /// <param name="algorithmName">The algorithm name</param>
-    /// <returns></returns>
+    /**
+     * Returns the implementation for an algorithm name.
+     * 
+     * @param algorithmName The algorithm name.
+     * @return The implementation for the algorithm or null.
+     */
     public Algorithm get(String algorithmName) {
         return _algorithms.get(algorithmName);
     }
 
+    /**
+     * Add/Update a named algorithm implementation.
+     * 
+     * @param algorithmName The algorithm name.
+     * @param provider The implementation of the algorithm.
+     */
     public void put(String algorithmName, Algorithm provider) {
         _algorithms.put(algorithmName, provider);
     }
 
-    /// <summary>
-    /// Removes an algorithm from the resolver
-    /// </summary>
-    /// <param name="algorithmName">The algorithm name</param>
+    /**
+     * Remove a named algorithm implementation.
+     * 
+     * @param algorithmName The algorithm name
+     */
     public void remove(String algorithmName) {
         _algorithms.remove(algorithmName);
     }
-
 }

@@ -16,21 +16,25 @@
  *
  */
 
-package com.microsoft.azure.keyvault.cryptography;
+package com.microsoft.azure.keyvault.cryptography.test;
 
-public abstract class Algorithm {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-    private final String _name;
+/**
+ * Supported JsonWebKey key types (kty)
+ */
+public final class JsonWebKeyType {
 
-    protected Algorithm(String name) {
-        if (Strings.isNullOrWhiteSpace(name)) {
-            throw new IllegalArgumentException("name");
-        }
+    public static final String EC     = "EC";
+    public static final String RSA    = "RSA";
+    public static final String RSAHSM = "RSA-HSM";
+    public static final String OCT    = "oct";
 
-        _name = name;
-    }
+    public static final List<String> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(new String[] { EC, RSA, RSAHSM, OCT }));
 
-    public String getName() {
-        return _name;
+    private JsonWebKeyType() {
+        // not instantiable
     }
 }
