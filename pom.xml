@@ -7,7 +7,6 @@
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-messaging-java-clients</artifactId>
 	<version>${client-current-version}</version>
-	<packaging>pom</packaging>
 	
 	<url>https://github.com/Azure/azure-messaging-java</url>
 	
@@ -52,4 +51,5 @@
 	 	    <scope>test</scope>
 		</dependency>
 	</dependencies>
+	 <name>azure-messaging-java-clients</name>
 </project>
