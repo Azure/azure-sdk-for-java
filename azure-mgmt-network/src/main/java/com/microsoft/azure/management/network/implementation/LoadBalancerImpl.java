@@ -28,6 +28,7 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -121,7 +122,6 @@ class LoadBalancerImpl
         this.creatablePIPKeys.clear();
 
         // Reset and update backends
-        Backend defaultBackend = this.backends.get(DEFAULT);
         if (this.backends.size() > 0) {
             this.inner().withBackendAddressPools(null);
             List<BackendAddressPoolInner> backendsInner = ensureInnerBackends();
@@ -131,7 +131,6 @@ class LoadBalancerImpl
         }
 
         // Reset and update frontends
-        Frontend defaultFrontend = this.frontends.get(DEFAULT);
         if (this.frontends.size() > 0) {
             this.inner().withFrontendIPConfigurations(null);
             List<FrontendIPConfigurationInner> frontendsInner = ensureInnerFrontends();
@@ -140,25 +139,33 @@ class LoadBalancerImpl
             }
         }
 
-        // Connect the load balancing rules to the defaults
-        if (this.inner().loadBalancingRules() != null) {
-            for (LoadBalancingRuleInner lbRule : this.inner().loadBalancingRules()) {
-                if (lbRule.frontendIPConfiguration() == null && defaultFrontend != null) {
-                    // If no reference to frontend IP config yet, add reference to "default"
-                    lbRule.withFrontendIPConfiguration(new SubResource()
-                            .withId(this.futureResourceId() + "/frontendIPConfigurations/" + defaultFrontend.name()));
+        // Reset and update load balancing rules
+        if (this.loadBalancingRules.size() > 0) {
+            this.inner().withLoadBalancingRules(null);
+            List<LoadBalancingRuleInner> rulesInner = ensureInnerLoadBalancingRules();
+            for (LoadBalancingRule lbRule : this.loadBalancingRules.values()) {
+                rulesInner.add(lbRule.inner());
+
+                // Clear deleted frontend references
+                SubResource frontendRef = lbRule.inner().frontendIPConfiguration();
+                if (frontendRef != null
+                        && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
+                    lbRule.inner().withFrontendIPConfiguration(null);
                 }
 
-                if (lbRule.backendAddressPool() == null && defaultBackend != null) {
-                    // If no reference to a back end pool, then add reference to the "default" backend if exists
-                    lbRule.withBackendAddressPool(new SubResource()
-                            .withId(this.futureResourceId() + "/backendAddressPools/" + defaultBackend.name()));
+                // Clear deleted backend references
+                SubResource backendRef = lbRule.inner().backendAddressPool();
+                if (backendRef != null
+                        && !this.backends().containsKey(ResourceUtils.nameFromResourceId(backendRef.id()))) {
+                    lbRule.inner().withBackendAddressPool(null);
                 }
 
-                if (lbRule.probe() == null) {
-                    // If no probe assigned, add a reference to the "default"
-                    lbRule.withProbe(new SubResource()
-                            .withId(this.futureResourceId() + "/probes/" + DEFAULT));
+                // Clear deleted probe references
+                SubResource probeRef = lbRule.inner().probe();
+                if (probeRef != null
+                        && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(probeRef.id()))
+                        && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(probeRef.id()))) {
+                    lbRule.inner().withProbe(null);
                 }
             }
         }
@@ -298,7 +305,6 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withLoadBalancingRule(LoadBalancingRuleImpl loadBalancingRule) {
-        ensureInnerLoadBalancingRules().add(loadBalancingRule.inner());
         this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
         return this;
     }
@@ -384,8 +390,11 @@ class LoadBalancerImpl
     public LoadBalancerImpl withLoadBalancingRule(int frontendPort, TransportProtocol protocol, int backendPort) {
         this.defineLoadBalancingRule(DEFAULT)
             .withFrontendPort(frontendPort)
+            .withFrontend(DEFAULT)
             .withBackendPort(backendPort)
+            .withBackend(DEFAULT)
             .withProtocol(protocol)
+            .withProbe(DEFAULT)
             .attach();
         return this;
     }
@@ -485,17 +494,6 @@ class LoadBalancerImpl
             frontendId = null;
         }
 
-        // Remove references from LB rules
-        List<LoadBalancingRuleInner> lbRulesInner = this.inner().loadBalancingRules();
-        if (lbRulesInner != null && frontendId != null) {
-            for (LoadBalancingRuleInner lbRuleInner : lbRulesInner) {
-                final SubResource frontendRef = lbRuleInner.frontendIPConfiguration();
-                if (frontendRef != null && frontendRef.id().equalsIgnoreCase(frontendId)) {
-                    lbRuleInner.withFrontendIPConfiguration(null);
-                }
-            }
-        }
-
         // Remove references from inbound NAT rules
         List<InboundNatRuleInner> natRulesInner = this.inner().inboundNatRules();
         if (natRulesInner != null && frontendId != null) {
@@ -512,20 +510,10 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withoutProbe(String name) {
-        Probe probe = null;
         if (this.httpProbes.containsKey(name)) {
-            probe = this.httpProbes.get(name);
             this.httpProbes.remove(name);
         } else if (this.tcpProbes.containsKey(name)) {
-            probe = this.tcpProbes.get(name);
             this.tcpProbes.remove(name);
-        }
-
-        final String probeId;
-        if (probe != null) {
-            probeId = probe.inner().id();
-        } else {
-            probeId = null;
         }
 
         List<ProbeInner> probes = this.inner().probes();
@@ -534,17 +522,6 @@ class LoadBalancerImpl
                 if (probes.get(i).name().equalsIgnoreCase(name)) {
                     probes.remove(i);
                     break;
-                }
-            }
-        }
-
-        // Remove probe referenced from load balancing rules, if any
-        List<LoadBalancingRuleInner> lbRulesInner = this.inner().loadBalancingRules();
-        if (lbRulesInner != null && probeId != null) {
-            for (LoadBalancingRuleInner lbRuleInner : lbRulesInner) {
-                SubResource probeRef = lbRuleInner.probe();
-                if (probeRef != null && probeRef.id().equalsIgnoreCase(probeId)) {
-                    lbRuleInner.withProbe(null);
                 }
             }
         }
@@ -606,18 +583,6 @@ class LoadBalancerImpl
             backendId = backend.inner().id();
         } else {
             backendId = null;
-        }
-
-        // Remove any LB rule references to it
-        // TODO Revisit when full LB rule CRUD is done
-        List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
-        if (rulesInner != null && backendId != null) {
-            for (LoadBalancingRuleInner ruleInner : rulesInner) {
-                SubResource backendRef = ruleInner.backendAddressPool();
-                if (backendRef != null && backendRef.id().equalsIgnoreCase(backendId)) {
-                    ruleInner.withBackendAddressPool(null);
-                }
-            }
         }
 
         // Remove any outbound NAT rules to it

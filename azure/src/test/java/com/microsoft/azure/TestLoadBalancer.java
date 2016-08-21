@@ -190,6 +190,15 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Assert.assertTrue(!lb.httpProbes().containsKey("default"));
         Assert.assertTrue(!lb.tcpProbes().containsKey("default"));
 
+        // Verify rules
+        Assert.assertTrue(lb.loadBalancingRules().containsKey("rule1"));
+        Assert.assertTrue(!lb.loadBalancingRules().containsKey("default"));
+        Assert.assertTrue(lb.loadBalancingRules().values().size() == 1);
+        LoadBalancingRule rule = lb.loadBalancingRules().get("rule1");
+        Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
+        Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
+        Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
+
         return lb;
     }
 
@@ -208,7 +217,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         return resource;
     }
 
-    public static void printLB(LoadBalancer resource) {
+    static void printLB(LoadBalancer resource) {
         StringBuilder info = new StringBuilder();
         info.append("Load balancer: ").append(resource.id())
                 .append("Name: ").append(resource.name())

@@ -155,7 +155,7 @@ public class AzureTests {
     }
 
     @Test
-    public void testLoadbalancersInternetMinimum() throws Exception {
+    public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancerInternetMinimum(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),

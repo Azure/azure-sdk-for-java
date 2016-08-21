@@ -124,10 +124,14 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
         LoadBalancer lb = resources.define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(groupName)
-                .withExistingPublicIpAddresses(pip1)                // Frontend
-                .withExistingVirtualMachines(existingVMs)           // Backend
-                .withTcpProbe(22)                                   // Probe
-                .withLoadBalancingRule(80, TransportProtocol.TCP)   // LB rule
+                // Frontend (default)
+                .withExistingPublicIpAddresses(pip1)
+                // Backend (default)
+                .withExistingVirtualMachines(existingVMs)
+                // Probe (default)
+                .withTcpProbe(22)
+                // LB rule (default)
+                .withLoadBalancingRule(80, TransportProtocol.TCP)
                 .create();
 
         Assert.assertTrue(lb.backends().containsKey("default"));
@@ -170,7 +174,10 @@ public class TestLoadBalancerInternetMinimum extends TestTemplate<LoadBalancer, 
                     .parent()
                 .defineLoadBalancingRule("lbrule2")
                     .withProtocol(TransportProtocol.UDP)
+                    .withFrontend("default")
                     .withFrontendPort(22)
+                    .withProbe("httpprobe")
+                    .withBackend("backend2")
                     .attach()
                 .defineBackend("backend2")
                     .attach()

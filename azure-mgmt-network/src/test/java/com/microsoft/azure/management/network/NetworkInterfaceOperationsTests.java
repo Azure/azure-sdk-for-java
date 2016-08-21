@@ -86,7 +86,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
 
         Assert.assertTrue(batchNics.size() == 4);
         HashMap<String, Boolean> found = new LinkedHashMap<>();
-        for(NetworkInterface nic : batchNics) {
+        for (NetworkInterface nic : batchNics) {
             if (nic.name().equalsIgnoreCase(nic1Name)) {
                 found.put(nic1Name, true);
             }

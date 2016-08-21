@@ -336,11 +336,11 @@ public interface LoadBalancingRule extends
              * @param protocol a transfer protocol
              * @return the next stage of the definition
              */
-            WithFrontendPort<ParentT> withProtocol(TransportProtocol protocol);
+            WithFrontend<ParentT> withProtocol(TransportProtocol protocol);
         }
 
         /**
-         * The stage of a load balancing rule definition allowing to specify the front end port to load balance.
+         * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithFrontendPort<ParentT> {
@@ -349,14 +349,56 @@ public interface LoadBalancingRule extends
              * @param port a port number
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withFrontendPort(int port);
+            WithProbe<ParentT> withFrontendPort(int port);
+        }
+
+        /**
+         * The stage of a load balancing rule definition allowing to specify the frontend to associate with the rule.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFrontend<ParentT> {
+            /**
+             * Associates the specified existing frontend of this load balancer with the load balancing rule.
+             * <p>
+             * A frontend with the specified name must already exist on this load balancer.
+             * @param frontendName the name of an existing frontend
+             * @return the next stage of the definition
+             */
+            WithFrontendPort<ParentT> withFrontend(String frontendName);
+        }
+
+        /**
+         * The stage of a load balancing rule definition allowing to specify the probe to associate with the rule.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithProbe<ParentT> {
+            /**
+             * Associates the specified existing HTTP or TCP probe of this load balancer with the load balancing rule.
+             * @param name the name of an existing HTTP or TCP probe
+             * @return the next stage of the definition
+             */
+            WithBackend<ParentT> withProbe(String name);
+        }
+
+        /** The stage of a load balancing rule definition allowing to specify the backend to associate the rule with.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithBackend<ParentT> {
+            /**
+             * Associates the load balancing rule with the specified backend of this load balancer.
+             * <p>
+             * A backedn with the specified name must already exist on this load balancer.
+             * @param backendName the name of an existing backend
+             * @return the next stage of the definition
+             */
+            WithBackendPort<ParentT> withBackend(String backendName);
         }
 
         /**
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithBackendPort<ParentT> {
+        interface WithBackendPort<ParentT> extends WithAttach<ParentT> {
             /**
              * Specifies the backend port to send the load-balanced traffic to.
              * @param port a port number
@@ -404,7 +446,8 @@ public interface LoadBalancingRule extends
             WithAttach<ParentT> withLoadDistribution(LoadDistribution loadDistribution);
         }
 
-        /** The final stage of the load balancing rule definition.
+        /**
+         * The final stage of the load balancing rule definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the load balancing rule definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
@@ -412,7 +455,6 @@ public interface LoadBalancingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
-            UpdateDefinitionStages.WithBackendPort<ParentT>,
             UpdateDefinitionStages.WithFloatingIp<ParentT>,
             UpdateDefinitionStages.WithIdleTimeoutInMinutes<ParentT>,
             UpdateDefinitionStages.WithLoadDistribution<ParentT> {
@@ -425,7 +467,11 @@ public interface LoadBalancingRule extends
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithProtocol<ParentT>,
         UpdateDefinitionStages.WithFrontendPort<ParentT>,
-        UpdateDefinitionStages.WithProtocol<ParentT> {
+        UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithProbe<ParentT>,
+        UpdateDefinitionStages.WithBackend<ParentT>,
+        UpdateDefinitionStages.WithBackendPort<ParentT> {
     }
 }
