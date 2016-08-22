@@ -97,9 +97,7 @@ public class EventData implements Serializable
 	 * <p> Sample Code:
 	 * <pre>
 	 * EventData eventData = new EventData(telemetryEventBytes);
-	 * HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
-	 * applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-	 * eventData.setProperties(applicationProperties);
+	 * eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 * partitionSender.Send(eventData);
 	 * </pre>
 	 * @param data the actual payload of data in bytes to be Sent to EventHubs.
@@ -127,9 +125,7 @@ public class EventData implements Serializable
 	 *  <p> Illustration:
 	 *  <pre> {@code
 	 *  EventData eventData = new EventData(telemetryEventBytes, offset, length);
-	 *  HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
-	 *  applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-	 *	eventData.setProperties(applicationProperties);
+	 *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
 	 *  partitionSender.Send(eventData);
 	 *  }</pre>
 	 * @param data the byte[] where the payload of the Event to be sent to EventHubs is present
@@ -157,13 +153,11 @@ public class EventData implements Serializable
 	 * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
 	 *  </pre> 
 	 *  <p> Illustration:
-	 *  <code>
-	 *  	EventData eventData = new EventData(telemetryEventByteBuffer);
-	 *  	HashMap{@literal <}String, String{@literal >} applicationProperties = new HashMap{@literal <}String, String{@literal >}();
-	 *  	applicationProperties.put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-	 *		eventData.setProperties(applicationProperties);
-	 *  	partitionSender.Send(eventData);
-	 *  </code>
+	 *  <pre> {@code
+	 *  EventData eventData = new EventData(telemetryEventByteBuffer);
+	 *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
+	 *	partitionSender.Send(eventData);
+	 *  }</pre>
 	 * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
 	 * @see EventHubClient#createFromConnectionString(String)
 	 */
@@ -223,6 +217,17 @@ public class EventData implements Serializable
 		}
 
 		return this.properties;
+	}
+	
+	/**
+	 * Set Application Properties
+	 * @param applicationProperties the Application Properties bag
+	 * @deprecated use {@link #getProperties()} and add properties to the bag.
+	 */
+	@Deprecated 
+	public void setProperties(final Map<String, String> applicationProperties)
+	{
+		this.properties = applicationProperties;
 	}
 	
 	/**
