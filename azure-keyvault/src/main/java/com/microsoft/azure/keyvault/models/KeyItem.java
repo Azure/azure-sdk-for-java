@@ -34,6 +34,11 @@ public class KeyItem {
     private Map<String, String> tags;
 
     /**
+     * True if the secret's lifetime is managed by key vault.
+     */
+    private Boolean managed;
+
+    /**
      * Get the kid value.
      *
      * @return the kid value
@@ -90,6 +95,26 @@ public class KeyItem {
      */
     public KeyItem withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
+     * @return the KeyItem object itself.
+     */
+    public KeyItem withManaged(Boolean managed) {
+        this.managed = managed;
         return this;
     }
 

@@ -57,8 +57,10 @@ import org.junit.Test;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.CertificateIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.AdministratorDetails;
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
 import com.microsoft.azure.keyvault.models.CertificateBundle;
 import com.microsoft.azure.keyvault.models.Contact;
@@ -66,6 +68,7 @@ import com.microsoft.azure.keyvault.models.Contacts;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.IssuerCredentials;
 import com.microsoft.azure.keyvault.models.IssuerReference;
+import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.OrganizationDetails;
 import com.microsoft.azure.keyvault.models.CertificateItem;
@@ -143,8 +146,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withIssuerReference(issuerReference)
                     .withX509CertificateProperties(x509Properties);
 
-        CertificateAttributes attribute = (CertificateAttributes) new CertificateAttributes()
-                .withEnabled(false)
+        Attributes attribute = new CertificateAttributes()
+                .withEnabled(true)
                 .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                 .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
         
@@ -177,7 +180,13 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         // Retrieve the secret backing the certificate
         SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
         SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier()).getBody();
+        Assert.assertTrue(secret.managed());
 
+        // Retrieve the key backing the certificate
+        KeyIdentifier keyIdentifier = certificateBundle.keyIdentifier();
+        KeyBundle keyBundle = keyVaultClient.getKey(keyIdentifier.baseIdentifier()).getBody();
+        Assert.assertTrue(keyBundle.managed());
+        
         // Load the secret into a KeyStore
         String secretPassword = "";
         KeyStore keyStore = loadSecretToKeyStore(secret, secretPassword);
@@ -325,7 +334,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         // Retrieve the secret backing the certificate
         SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
         SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier()).getBody();
-
+        Assert.assertTrue(secret.managed());
+        
         // Load the secret into a KeyStore
         String secretPassword = "";
         KeyStore keyStore = loadSecretToKeyStore(secret, secretPassword);
@@ -538,7 +548,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties().withContentType(MIME_PKCS12);
         CertificatePolicy certificatePolicy = new CertificatePolicy().withSecretProperties(secretProperties);
-        CertificateAttributes attribute = (CertificateAttributes) new CertificateAttributes().withEnabled(true);
+        Attributes attribute = new CertificateAttributes().withEnabled(true);
 
         String vaultUri = getVaultUri();
         String certificateName = "importCertPkcs";
@@ -565,7 +575,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         // Retrieve the secret backing the certificate
         SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
         SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier()).getBody();
-
+        Assert.assertTrue(secret.managed());
+        
         // Load the secret into a KeyStore
         String secretPassword = "";
         KeyStore keyStore = loadSecretToKeyStore(secret, secretPassword);
@@ -605,14 +616,13 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .build()).getBody();
         
 
-        CertificateAttributes attribute = (CertificateAttributes) new CertificateAttributes()
-                .withEnabled(false)
+        Attributes attribute = new CertificateAttributes()
                 .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                 .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
         CertificateBundle updatedCertBundle = keyVaultClient.updateCertificate(
                 new UpdateCertificateRequest
                     .Builder(vaultUri, certificateName)
-                    .withAttributes((CertificateAttributes) attribute.withEnabled(false))
+                    .withAttributes(attribute.withEnabled(false))
                     .withTags(sTags)
                     .build()).getBody();
         Assert.assertEquals(attribute.enabled(), updatedCertBundle.attributes().enabled());
@@ -1098,6 +1108,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         // Retrieve the secret backing the certificate
         SecretIdentifier secretIdentifier = certificateBundle.secretIdentifier();
         SecretBundle secret = keyVaultClient.getSecret(secretIdentifier.baseIdentifier()).getBody();
+        Assert.assertTrue(secret.managed());
         String secretValue = secret.value();
 
         // Extract private key from PEM

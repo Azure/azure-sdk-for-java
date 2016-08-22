@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
 import com.microsoft.azure.keyvault.models.CertificatePolicy;
 import com.microsoft.azure.keyvault.models.IssuerReference;
@@ -89,8 +90,8 @@ public final class ImportCertificateRequest {
          *            The attributes of the certificate.
          * @return the Builder object itself.
          */
-        public Builder withAttributes(CertificateAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (CertificateAttributes) attributes;
             return this;
         }
 

@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.SecretAttributes;
 import com.microsoft.azure.keyvault.models.SecretBundle;
@@ -46,7 +47,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Create a secret on a vault.
         {
-            SecretAttributes attributes = (SecretAttributes) new SecretAttributes()
+            Attributes attributes = new SecretAttributes()
                     .withEnabled(true)
                     .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                     .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
@@ -271,7 +272,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME);
     }
 
-    private static void validateSecret(SecretBundle secret, String vault, String name, String value, String contentType, SecretAttributes attributes) throws Exception {
+    private static void validateSecret(SecretBundle secret, String vault, String name, String value, String contentType, Attributes attributes) throws Exception {
         String prefix = vault + "/secrets/" + name + "/";
         String id = secret.id();
         Assert.assertTrue( //
@@ -285,6 +286,8 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertNotNull("\"updated\" should not be null.", secret.attributes().updated());
         
         compareAttributes(attributes, secret.attributes());
+
+        Assert.assertTrue(secret.managed() == null || secret.managed() == false);
     }
 
     private void compareSecrets(SecretBundle expected, SecretBundle actual) {
@@ -296,6 +299,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(expected.attributes().notBefore(), actual.attributes().notBefore());
         if(expected.tags() != null || actual.tags() != null)
             Assert.assertTrue(expected.tags().equals(actual.tags()));
+        
     }
 
 }

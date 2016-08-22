@@ -47,6 +47,7 @@ import com.microsoft.azure.keyvault.models.KeyVerifyResult;
 import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.requests.ImportKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
@@ -68,7 +69,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             Map<String, String> tags = new HashMap<String, String>();
             tags.put("foo", "baz");
             List<String> keyOps = Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.DECRYPT);
-            KeyAttributes attribute = (KeyAttributes) new KeyAttributes()
+            Attributes attribute = new KeyAttributes()
                     .withEnabled(true)
                     .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                     .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
@@ -108,7 +109,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     private void checkImportOperation(KeyBundle keyBundle, boolean importToHardware) throws Exception {
-        KeyAttributes attribute = (KeyAttributes) new KeyAttributes()
+        Attributes attribute = new KeyAttributes()
                 .withEnabled(true)
                 .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
                 .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
@@ -546,7 +547,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
-    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, String kty, List<String> key_ops, KeyAttributes attributes) throws Exception {
+    private static void validateRsaKeyBundle(KeyBundle bundle, String vault, String keyName, String kty, List<String> key_ops, Attributes attributes) throws Exception {
         String prefix = vault + "/keys/" + keyName + "/";
         String kid = bundle.key().kid();
         Assert.assertTrue( 
@@ -562,6 +563,8 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());
         
         compareAttributes(attributes, bundle.attributes());
+        
+        Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
     }
 
 

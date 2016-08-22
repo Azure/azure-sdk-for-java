@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
 /**
@@ -94,8 +95,8 @@ public final class UpdateKeyRequest {
          *            the key management attributes value to set
          * @return the Builder object itself.
          */
-        public Builder withAttributes(KeyAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (KeyAttributes) attributes;
             return this;
         }
 
