@@ -33,4 +33,29 @@ public abstract class Algorithm {
     public String getName() {
         return _name;
     }
+    
+    /*
+     * Takes the first count bytes from the source and
+     * returns a new array containing those bytes.
+     * 
+     * @param count The number of bytes to take.
+     * @param source The source of the bytes.
+     * @return count bytes from the source as a new array.
+     */
+    public static byte[] Take(int count, byte[] source)
+    {
+    	if ( source == null ) {
+    		throw new IllegalArgumentException("source");
+    	}
+    	
+    	if ( count <= 0 || count > source.length ) {
+    		throw new IllegalArgumentException("count");
+    	}
+    	
+    	byte[] target = new byte[count];
+    	
+    	System.arraycopy(source, 0, target, 0, count);
+    	
+    	return target;
+    }
 }

@@ -21,6 +21,7 @@ package com.microsoft.azure.keyvault.cryptography.algorithms;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
 
 import javax.crypto.NoSuchPaddingException;
 
@@ -29,37 +30,39 @@ import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 public final class AesKw128 extends AesKw {
 
     public static final String AlgorithmName = "A128KW";
+    
+    static final int KeySizeInBytes = 128 >> 3;
 
     public AesKw128() {
         super(AlgorithmName);
     }
 
     @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length << 3 != 128) {
-            throw new IllegalArgumentException("key must be 128 bits long");
+        if (key.length < KeySizeInBytes) {
+            throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateEncryptor(key, iv);
+        return super.CreateEncryptor(Take(KeySizeInBytes,key), iv, provider);
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length << 3 != 128) {
-            throw new IllegalArgumentException("key must be 128 bits long");
+        if (key.length < KeySizeInBytes) {
+            throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateDecryptor(key, iv);
+        return super.CreateDecryptor(Take(KeySizeInBytes,key), iv, provider);
     }
 
 }

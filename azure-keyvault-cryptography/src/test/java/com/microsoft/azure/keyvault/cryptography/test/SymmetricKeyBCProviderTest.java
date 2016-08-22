@@ -21,7 +21,7 @@ package com.microsoft.azure.keyvault.cryptography.test;
 import java.security.Provider;
 import org.junit.Before;
 
-public class SymmetricKeyBCProviderTest extends SymmetricKeyBaseTest {
+public class SymmetricKeyBCProviderTest extends SymmetricKeyTest {
 
     @Before
     public void setUp() throws Exception {
