@@ -39,6 +39,11 @@ public class SecretItem {
     private String contentType;
 
     /**
+     * True if the secret's lifetime is managed by key vault.
+     */
+    private Boolean managed;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -115,6 +120,26 @@ public class SecretItem {
      */
     public SecretItem withContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
+     * @return the SecretItem object itself.
+     */
+    public SecretItem withManaged(Boolean managed) {
+        this.managed = managed;
         return this;
     }
 

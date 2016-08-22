@@ -54,6 +54,11 @@ public class SecretBundle {
     private String kid;
 
     /**
+     * True if the secret's lifetime is managed by key vault.
+     */
+    private Boolean managed;
+
+    /**
      * Get the value value.
      *
      * @return the value value
@@ -170,6 +175,26 @@ public class SecretBundle {
      */
     public SecretBundle withKid(String kid) {
         this.kid = kid;
+        return this;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
+     * @return the SecretBundle object itself.
+     */
+    public SecretBundle withManaged(Boolean managed) {
+        this.managed = managed;
         return this;
     }
 

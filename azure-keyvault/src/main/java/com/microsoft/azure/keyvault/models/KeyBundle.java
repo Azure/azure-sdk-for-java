@@ -39,6 +39,11 @@ public class KeyBundle {
     private Map<String, String> tags;
 
     /**
+     * True if the secret's lifetime is managed by key vault.
+     */
+    private Boolean managed;
+
+    /**
      * Get the key value.
      *
      * @return the key value
@@ -95,6 +100,26 @@ public class KeyBundle {
      */
     public KeyBundle withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed value.
+     *
+     * @param managed the managed value to set
+     * @return the KeyBundle object itself.
+     */
+    public KeyBundle withManaged(Boolean managed) {
+        this.managed = managed;
         return this;
     }
 

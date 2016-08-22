@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
@@ -71,8 +72,8 @@ public final class ImportKeyRequest {
          *            the key management attributes value to set
          * @return the Builder object itself.
          */
-        public Builder withAttributes(KeyAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (KeyAttributes) attributes;
             return this;
         }
 
