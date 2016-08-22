@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 
 import org.junit.Test;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import com.microsoft.azure.eventhubs.EventData;
 

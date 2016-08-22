@@ -497,7 +497,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			}
 
 			filter = new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-					String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.RECEIVED_AT_ANNOTATION_NAME, StringUtil.EMPTY, totalMilliSeconds));
+					String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, StringUtil.EMPTY, totalMilliSeconds));
 		}
 		else 
 		{
