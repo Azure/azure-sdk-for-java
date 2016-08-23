@@ -120,7 +120,11 @@ public final class Utility {
     /**
      * A factory to create SAXParser instances.
      */
-    private static final SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+    private static final ThreadLocal<SAXParserFactory> saxParserFactory = new ThreadLocal<SAXParserFactory>() {
+        @Override public SAXParserFactory initialValue() {
+            return SAXParserFactory.newInstance();
+        }
+    };
 
     /**
      * A factory to create XMLStreamWriter instances.
@@ -664,8 +668,8 @@ public final class Utility {
      * @throws SAXException
      */
     public static SAXParser getSAXParser() throws ParserConfigurationException, SAXException {
-        saxParserFactory.setNamespaceAware(true);
-        return saxParserFactory.newSAXParser();
+        saxParserFactory.get().setNamespaceAware(true);
+        return saxParserFactory.get().newSAXParser();
     }
     
     /**
