@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.models.Attributes;
-import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 /**
  * The import key request class.

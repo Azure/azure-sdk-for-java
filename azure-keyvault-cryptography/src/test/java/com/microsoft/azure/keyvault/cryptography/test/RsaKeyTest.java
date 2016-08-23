@@ -19,6 +19,7 @@ import com.microsoft.azure.keyvault.cryptography.RsaKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rsa15;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 public class RsaKeyTest {
 	

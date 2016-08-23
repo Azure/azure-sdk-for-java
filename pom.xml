@@ -239,6 +239,7 @@
     <module>./azure-keyvault-core</module>
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>
+    <module>./azure-keyvault-webkey</module>
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-storage</module>

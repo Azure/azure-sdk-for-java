@@ -29,7 +29,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.RsaKey;
-import com.microsoft.azure.keyvault.models.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;

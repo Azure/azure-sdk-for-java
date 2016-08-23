@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,6 +40,7 @@ import com.microsoft.azure.keyvault.models.IssuerReference;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
+import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyResult;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.models.SecretItem;
@@ -115,7 +117,21 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertTrue(verifypResult.value());
 
         keyBundle = keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get().getBody();
-        Assert.assertNotNull(keyBundle);        
+        Assert.assertNotNull(keyBundle);
+        
+        //Get the unavailable key to throw exception -> it gets stuck
+
+        try {
+            keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
+        } catch (ExecutionException ex) {
+
+            Throwable t = ex.getCause();
+            if(t instanceof KeyVaultErrorException)
+            {
+                Assert.assertEquals("KeyNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+            }
+            else throw ex;
+        }
     }
     
     @Test
@@ -144,6 +160,18 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         
         secretBundle = keyVaultClient.deleteSecretAsync(vault, secretname, null).get().getBody();
         Assert.assertNotNull(secretBundle);
+        
+        try {
+            keyVaultClient.deleteSecretAsync(vault, secretname, null).get();
+        } catch (ExecutionException ex) {
+
+            Throwable t = ex.getCause();
+            if(t instanceof KeyVaultErrorException)
+            {
+                Assert.assertEquals("SecretNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+            }
+            else throw ex;
+        }
     }
     
     @Test
@@ -199,7 +227,19 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         
         keyVaultClient.deleteCertificateOperationAsync(vault, certificateName, null).get().getBody();        
-        keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get().getBody();       
+        keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get().getBody();
+        
+        try {
+            keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get();
+        } catch (ExecutionException ex) {
+
+            Throwable t = ex.getCause();
+            if(t instanceof KeyVaultErrorException)
+            {
+                Assert.assertEquals("CertificateNotFound", ((KeyVaultErrorException) t).getBody().error().code());
+            }
+            else throw ex;
+        }
     }
     
     @Test
