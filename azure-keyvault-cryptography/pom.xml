@@ -34,40 +34,35 @@
       <tag>HEAD</tag>
     </scm>
 
-	<properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <legal>
-	        <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-	    <checkstyle.skip>true</checkstyle.skip>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <legal>
+            <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+        <checkstyle.skip>true</checkstyle.skip>
+    </properties>
 
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	    <dependency>
-	      <groupId>org.bouncycastle</groupId>
-	      <artifactId>bcprov-jdk15on</artifactId>
-	      <scope>test</scope>
-	      <version>1.54</version>
-	    </dependency>
-		<dependency>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.bouncycastle</groupId>
+          <artifactId>bcprov-jdk15on</artifactId>
+          <scope>test</scope>
+          <version>1.54</version>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
-			<artifactId>azure-keyvault-core</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<scope>test</scope>
-		</dependency>
-	    <dependency>
-	   		<groupId>commons-codec</groupId>
-	      	<artifactId>commons-codec</artifactId>
-			<scope>test</scope>
-	    </dependency>
-	</dependencies>
+            <artifactId>azure-keyvault-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>azure-keyvault-webkey</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 /**

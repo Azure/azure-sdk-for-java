@@ -3,7 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for KeyVaultClient. Performs cryptographic
- * key operations and vault operations against the Key Vault service.
+ * This package contains the classes for key vault JSON web key. 
  */
 package com.microsoft.azure.keyvault.webkey;

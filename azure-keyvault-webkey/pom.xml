@@ -12,11 +12,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-keyvault-extensions</artifactId>
+  <artifactId>azure-keyvault-webkey</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Key Vault Extensions</name>
-  <description>This package contains Microsoft Azure Key Vault SDK Extensions.</description>
+  <name>Microsoft Azure SDK for Key Vault WebKey</name>
+  <description>This package contains Microsoft Azure Key Vault WebKey library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,63 +45,15 @@
     </developer>
   </developers>
 
+
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <scope>test</scope>
-      <version>1.54</version>
-    </dependency>
-    <dependency>
-    	<groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault-core</artifactId>
-    	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault-cryptography</artifactId>
-    	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault</artifactId>
-    	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>${project.groupId}</groupId>
-    	<artifactId>azure-keyvault-webkey</artifactId>
-    	<version>${project.version}</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.mockito</groupId>
-    	<artifactId>mockito-core</artifactId>
-    	<version>1.10.19</version>
-    	<scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>com.microsoft.azure</groupId>
-    	<artifactId>azure-client-authentication</artifactId>
-    	<version>1.0.0-beta2</version>
-    	<scope>test</scope>
-    </dependency>
-    <dependency>
-    	<groupId>com.google.guava</groupId>
-    	<artifactId>guava</artifactId>
-    	<version>18.0</version>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
     </dependency>
   </dependencies>
   <build>
@@ -138,7 +90,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8</version>
         <configuration>
-          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
+          <excludePackageNames>com.microsoft.schemas._2003._10.serialization;</excludePackageNames>
           <bottom><![CDATA[<code>/**
 <br />* Copyright (c) Microsoft Corporation. All rights reserved.
 <br />* Licensed under the MIT License. See License.txt in the project root for
