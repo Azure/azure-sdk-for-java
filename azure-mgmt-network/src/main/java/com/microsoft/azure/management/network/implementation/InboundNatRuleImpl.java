@@ -5,8 +5,10 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -29,6 +31,41 @@ class InboundNatRuleImpl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public String networkInterfaceIpConfigurationId() {
+        return this.inner().backendIPConfiguration().id();
+    }
+
+    @Override
+    public int backendPort() {
+        if (this.inner().backendPort() == null) {
+            return 0;
+        } else {
+            return this.inner().backendPort().intValue();
+        }
+    }
+
+    @Override
+    public int frontendPort() {
+        if (this.inner().frontendPort() == null) {
+            return 0;
+        } else {
+            return this.inner().frontendPort().intValue();
+        }
+    }
+
+    @Override
+    public boolean floatingIpEnabled() {
+        return this.inner().enableFloatingIP().booleanValue();
+    }
+
+    @Override
+    public Frontend frontend() {
+        return this.parent().frontends().get(
+                ResourceUtils.nameFromResourceId(
+                        this.inner().frontendIPConfiguration().id()));
     }
 
     // Fluent setters

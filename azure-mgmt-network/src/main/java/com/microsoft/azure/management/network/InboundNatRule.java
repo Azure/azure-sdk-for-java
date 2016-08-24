@@ -19,6 +19,31 @@ public interface InboundNatRule extends
     ChildResource {
 
     /**
+     * @return the resource ID of the network interface IP configuration associated with this NAT rule
+     */
+    public String networkInterfaceIpConfigurationId();
+
+    /**
+     * @return the backend port number associated with this NAT rule
+     */
+    public int backendPort();
+
+    /**
+     * @return the frontend port number associated with this NAT rule
+     */
+    public int frontendPort();
+
+    /**
+     * @return the state of the floating IP enablement
+     */
+    public boolean floatingIpEnabled();
+
+    /**
+     * @return the frontend IP configuration associated with this NAT rule
+     */
+    public Frontend frontend();
+
+    /**
      * Grouping of inbound NAT rule definition stages.
      */
     interface DefinitionStages {
