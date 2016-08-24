@@ -17,6 +17,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -60,6 +61,7 @@ class LoadBalancerImpl
     private final TreeMap<String, HttpProbe> httpProbes = new TreeMap<>();
     private final TreeMap<String, LoadBalancingRule> loadBalancingRules = new TreeMap<>();
     private final TreeMap<String, Frontend> frontends = new TreeMap<>();
+    private final TreeMap<String, InboundNatRule> inboundNatRules = new TreeMap<>();
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -71,6 +73,7 @@ class LoadBalancerImpl
         initializeProbesFromInner();
         initializeBackendsFromInner();
         initializeLoadBalancingRulesFromInner();
+        initializeInboundNatRulesFromInner();
     }
 
     // Verbs
@@ -84,6 +87,7 @@ class LoadBalancerImpl
         initializeProbesFromInner();
         initializeBackendsFromInner();
         initializeLoadBalancingRulesFromInner();
+        initializeInboundNatRulesFromInner();
         return this;
     }
 
@@ -238,6 +242,17 @@ class LoadBalancerImpl
         }
     }
 
+    private void initializeInboundNatRulesFromInner() {
+        this.inboundNatRules.clear();
+        List<InboundNatRuleInner> rulesInner = this.inner().inboundNatRules();
+        if (rulesInner != null) {
+            for (InboundNatRuleInner ruleInner : rulesInner) {
+                InboundNatRuleImpl rule = new InboundNatRuleImpl(ruleInner, this);
+                this.inboundNatRules.put(ruleInner.name(), rule);
+            }
+        }
+    }
+
     NetworkManager myManager() {
         return this.myManager;
     }
@@ -306,6 +321,11 @@ class LoadBalancerImpl
 
     LoadBalancerImpl withLoadBalancingRule(LoadBalancingRuleImpl loadBalancingRule) {
         this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
+        return this;
+    }
+
+    LoadBalancerImpl withInboundNatRule(InboundNatRuleImpl inboundNatRule) {
+        this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
         return this;
     }
 
@@ -459,6 +479,18 @@ class LoadBalancerImpl
     }
 
     @Override
+    public InboundNatRuleImpl defineInboundNatRule(String name) {
+        InboundNatRule natRule = this.inboundNatRules.get(name);
+        if (natRule == null) {
+            InboundNatRuleInner inner = new InboundNatRuleInner()
+                    .withName(name);
+            return new InboundNatRuleImpl(inner, this);
+        } else {
+            return (InboundNatRuleImpl) natRule;
+        }
+    }
+
+    @Override
     public FrontendImpl defineInternetFrontend(String name) {
         Frontend frontend = this.frontends.get(name);
         if (frontend == null) {
@@ -545,6 +577,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public InboundNatRuleImpl updateInboundNatRule(String name) {
+        return (InboundNatRuleImpl) this.inboundNatRules.get(name);
+    }
+
+    @Override
     public ProbeImpl updateHttpProbe(String name) {
         return (ProbeImpl) this.httpProbes.get(name);
     }
@@ -561,6 +598,25 @@ class LoadBalancerImpl
         }
 
         List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
+        if (rulesInner != null) {
+            for (int i = 0; i < rulesInner.size(); i++) {
+                if (rulesInner.get(i).name().equalsIgnoreCase(name)) {
+                    rulesInner.remove(i);
+                    break;
+                }
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutInboundNatRule(String name) {
+        if (this.inboundNatRules.containsKey(name)) {
+            this.inboundNatRules.remove(name);
+        }
+
+        List<InboundNatRuleInner> rulesInner = this.inner().inboundNatRules();
         if (rulesInner != null) {
             for (int i = 0; i < rulesInner.size(); i++) {
                 if (rulesInner.get(i).name().equalsIgnoreCase(name)) {
@@ -615,6 +671,11 @@ class LoadBalancerImpl
     @Override
     public Map<String, Frontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public Map<String, InboundNatRule> inboundNatRules() {
+        return Collections.unmodifiableMap(this.inboundNatRules);
     }
 
     @Override

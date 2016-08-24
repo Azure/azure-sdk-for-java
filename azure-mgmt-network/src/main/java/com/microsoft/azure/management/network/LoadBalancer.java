@@ -48,6 +48,11 @@ public interface LoadBalancer extends
     Map<String, Backend> backends();
 
     /**
+     * @return inbound NAT rules for this balancer
+     */
+    Map<String, InboundNatRule> inboundNatRules();
+
+    /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
     Map<String, Frontend> frontends();
@@ -284,7 +289,7 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancingRule.DefinitionStages.WithAttach#attach()}
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */
@@ -298,13 +303,28 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of the load balancer definition containing all the required inputs for
+         * The stage of a load balancer definition containing all the required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allowing
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithInboundNatRule {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create a new inbound NAT rule.
+         */
+        interface WithInboundNatRule {
+            /**
+             * Begins the definition of a new inbound NAT rule to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link InboundNatRule.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the inbound NAT rule
+             * @return the first stage of the new inbound NAT rule definition
+             */
+            InboundNatRule.DefinitionStages.Blank<WithCreate> defineInboundNatRule(String name);
         }
     }
 
@@ -463,7 +483,7 @@ public interface LoadBalancer extends
             InternetFrontend.UpdateDefinitionStages.Blank<Update> defineInternetFrontend(String name);
 
             /**
-             * Removed the specified frontend from the load balancer.
+             * Removes the specified frontend from the load balancer.
              * @param name the name of an existing front end on this load balancer
              * @return the next stage of the update
              */
@@ -475,6 +495,34 @@ public interface LoadBalancer extends
              * @return the first stage of the frontend update
              */
             InternetFrontend.Update updateInternetFrontend(String name);
+        }
+
+        /**
+         * The stage of a load balancer update allowing to define, remove or edit inbound NAT rules.
+         */
+        interface WithInboundNatRule {
+            /**
+             * Removes the specified inbound NAT rule from the load balancer.
+             * @param name the name of an existing inbound NAT rule on this load balancer
+             * @return the next stage of the update
+             */
+            Update withoutInboundNatRule(String name);
+
+            /**
+             * Begins the update of a new inbound NAT rule.
+             * <p>
+             * The definition must be completed with a call to {@link InboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
+             * @param name the name for the inbound NAT rule
+             * @return the first stage of the new inbound NAT rule definition
+             */
+            InboundNatRule.UpdateDefinitionStages.Blank<Update> defineInboundNatRule(String name);
+
+            /**
+             * Begins the description of an update to an existing inbound NAT rule.
+             * @param name the name of the inbound NAT rule to update
+             * @return the first stage of the inbound NAT rule update
+             */
+            InboundNatRule.Update updateInboundNatRule(String name);
         }
     }
 
@@ -490,6 +538,7 @@ public interface LoadBalancer extends
         UpdateStages.WithProbe,
         UpdateStages.WithBackend,
         UpdateStages.WithLoadBalancingRule,
-        UpdateStages.WithInternetFrontend {
+        UpdateStages.WithInternetFrontend,
+        UpdateStages.WithInboundNatRule {
     }
 }
