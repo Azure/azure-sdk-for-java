@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.VirtualMachineExtensionImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -23,6 +24,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private AvailabilitySets availabilitySets;
     private VirtualMachines virtualMachines;
     private VirtualMachineImages virtualMachineImages;
+    private VirtualMachineExtensionImages virtualMachineExtensionImages;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -121,8 +123,20 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
      */
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
-            virtualMachineImages = new VirtualMachineImagesImpl(super.innerManagementClient.virtualMachineImages());
+            virtualMachineImages = new VirtualMachineImagesImpl(new VirtualMachinePublishersImpl(super.innerManagementClient.virtualMachineImages(),
+                    super.innerManagementClient.virtualMachineExtensionImages()));
         }
         return virtualMachineImages;
+    }
+
+    /**
+     * @return the virtual machine extension image resource management API entry point
+     */
+    public VirtualMachineExtensionImages virtualMachineExtensionImages() {
+        if (virtualMachineExtensionImages == null) {
+            virtualMachineExtensionImages = new VirtualMachineExtensionImagesImpl(new VirtualMachinePublishersImpl(super.innerManagementClient.virtualMachineImages(),
+                    super.innerManagementClient.virtualMachineExtensionImages()));
+        }
+        return virtualMachineExtensionImages;
     }
 }

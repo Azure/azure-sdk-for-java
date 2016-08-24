@@ -8,7 +8,7 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
- * Represents a virtual machine image publisher.
+ * Represents a virtual machine image and extension publisher.
  */
 public interface VirtualMachinePublisher {
     /**
@@ -25,4 +25,9 @@ public interface VirtualMachinePublisher {
      * @return the offers from this publisher
      */
     VirtualMachineOffers offers();
+
+    /**
+     * @return the virtual machine image extensions from this publisher.
+     */
+    VirtualMachineExtensionImageTypes extensionTypes();
 }
