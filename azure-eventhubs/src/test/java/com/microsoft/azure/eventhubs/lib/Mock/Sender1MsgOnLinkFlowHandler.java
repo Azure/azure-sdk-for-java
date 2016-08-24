@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventhubs.lib;
+package com.microsoft.azure.eventhubs.lib.Mock;
 
 import java.util.*;
 import java.util.logging.Level;

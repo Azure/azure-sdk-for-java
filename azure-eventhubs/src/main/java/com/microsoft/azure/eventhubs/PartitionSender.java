@@ -118,8 +118,7 @@ public final class PartitionSender extends ClientEntity
 	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
 	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 */
-	public final CompletableFuture<Void> send(EventData data) 
-			throws ServiceBusException
+	public final CompletableFuture<Void> send(EventData data)
 	{
 		return this.internalSender.send(data.toAmqpMessage());
 	}

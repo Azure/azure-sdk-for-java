@@ -1,14 +1,15 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import java.time.Duration;
-import java.util.Collection;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.lib.*;
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.servicebus.AuthorizationFailedException;
+import com.microsoft.azure.servicebus.RetryPolicy;
+import com.microsoft.azure.servicebus.ServerBusyException;
 
 public class RetryPolicyTest extends TestBase
 {

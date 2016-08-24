@@ -1,15 +1,16 @@
 package com.microsoft.azure.eventhubs.lib;
 
-import static org.junit.Assert.*;
-
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
 /**
  * all tests derive from this base - provides common functionality 
@@ -18,19 +19,20 @@ import com.microsoft.azure.servicebus.*;
  */
 public abstract class TestBase 
 {
-	final static String NoSasKey = "---------SasKey-----------";
-	final static String SasKey = NoSasKey;
-	public final static String SasRuleName = "RootManageSharedAccessKey";
+	// fill - in eventHub details which has atleast 4 partitions
+	final static String EVENT_HUB_ENV_NAME = "EVENT_HUB_NAME";
+	final static String NAMESPACE_ENV_NAME = "NAMESPACE_NAME";
+	final static String SAS_KEY_ENV_NAME = "SAS_KEY";
+	final static String SAS_KEY_NAME_ENV_NAME = "SAS_KEY_NAME";
 	
 	public static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test.trace");
-	
+		
 	public static TestEventHubInfo checkoutTestEventHub()
 	{
 		HashMap<String, String> sasRule = new HashMap<String, String>();
-		sasRule.put(TestBase.SasRuleName, SasKey);
+		sasRule.put(System.getenv(SAS_KEY_NAME_ENV_NAME), System.getenv(SAS_KEY_ENV_NAME));
 		
-		// fill - in eventHub details which has atleast 4 partitions
-		return new TestEventHubInfo("deviceeventstream", "FirstEHub-ns", null, sasRule);
+		return new TestEventHubInfo(System.getenv(EVENT_HUB_ENV_NAME), System.getenv(NAMESPACE_ENV_NAME), null, sasRule);
 	}
 	
 	public static ConnectionStringBuilder getConnectionString(TestEventHubInfo eventHubInfo)
@@ -39,14 +41,18 @@ public abstract class TestBase
 		return new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), sasRule.getKey(), sasRule.getValue());
 	}
 	
-	public static boolean isServiceRun()
+	public static boolean isTestConfigurationSet()
 	{
-		return !SasKey.equalsIgnoreCase(NoSasKey);
+		return System.getenv(EVENT_HUB_ENV_NAME) != null &&
+				System.getenv(SAS_KEY_ENV_NAME) != null &&
+				System.getenv(NAMESPACE_ENV_NAME) != null &&
+				System.getenv(SAS_KEY_NAME_ENV_NAME) != null;
 	}
 
 	public static void checkinTestEventHub(String name)
 	{
 		// TODO: Implement Checkin-Checkout functionality	
+		// useful when tests are running concurrently
 	}
 	
 	public static CompletableFuture<Void> pushEventsToPartition(final EventHubClient ehClient, final String partitionId, final int noOfEvents) 
@@ -61,18 +67,7 @@ public abstract class TestBase
 						for (int count = 0; count< noOfEvents; count++)
 						{
 							EventData sendEvent = new EventData("test string".getBytes());
-
-							try
-							{
-								// don't send-batch here - tests depend on an increasing timestamp on events
-								pSender.send(sendEvent);
-							} catch (ServiceBusException e)
-							{
-								e.printStackTrace();
-							} finally
-							{
-								// close sender
-							}
+							pSender.send(sendEvent);
 						}
 					}
 				});
