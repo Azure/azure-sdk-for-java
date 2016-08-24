@@ -19,7 +19,29 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
     }
 
     @Test
+    public void canListExtensionImages() throws Exception {
+        final int maxListing = 20;
+        int count = 0;
+        List<VirtualMachineExtensionImage> extensionImages =
+                computeManager.virtualMachineExtensionImages()
+                        .listByRegion(Region.US_EAST);
+        // Lazy listing
+        for (VirtualMachineExtensionImage extensionImage : extensionImages) {
+            Assert.assertNotNull(extensionImage);
+            count++;
+            if (count >= maxListing) {
+                break;
+            }
+        }
+        Assert.assertTrue(count == maxListing);
+    }
+
+    @Test
     public void canGetExtensionTypeVersionAndImage() throws Exception {
+        List<VirtualMachineExtensionImage> extensionImages =
+                computeManager.virtualMachineExtensionImages()
+                        .listByRegion(Region.US_EAST);
+
         final String dockerExtensionPublisherName = "Microsoft.Azure.Extensions";
         final String dockerExtensionImageTypeName = "DockerExtension";
 
