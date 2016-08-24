@@ -25,7 +25,8 @@ public class RsaKeyTest {
 	
 	// A Content Encryption Key, or Message. This value is kept consistent with the .NET
 	// unit test cases to enable cross platform testing.
-    static final byte[] CEK = { 4, (byte) 211, 31, (byte) 197, 84, (byte) 157, (byte) 252, (byte) 254, 11, 100, (byte) 157, (byte) 250, 63, (byte) 170, 106, (byte) 206, 107, 124, (byte) 212, 45, 111, 107, 9, (byte) 219, (byte) 200, (byte) 177, 0, (byte) 240, (byte) 143, (byte) 156, 44, (byte) 207 };
+    static final byte[] CEK                    = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF };
+    static final String CrossPlatformHash      = "qPrtarvzXBKksm5A9v6xnXNtkARcg7n5ox9jjTI+aBE=";
     static final String CrossPlatformSignature = "RaNc+8WcWxplS8I7ynJLSoLJKz+dgBvrZhIGH3VFlTTyzu7b9d+lpaV9IKhzCNBsgSysKhgL7EZwVCOTBZ4m6xvKSXqVFXYaBPyBTD7VoKPMYMW6ai5x6xV5XAMaZPfMkff3Deg/RXcc8xQ28FhYuUa8yly01GySY4Hk55anEvb2wBxSy1UGun/0LE1lYH3C3XEgSry4cEkJHDJl1hp+wB4J/noXOqn5ECGU+/4ehBJOyW1gtUH0/gRe8yXnDH0AXepHRyH8iBHLWlKX1r+1/OrMulqOoi82RZzJlTyEz9X+bsQhllqGF6n3hdLS6toH9o7wUtwYNqSx82JuQT6iMg==";
 	
 	private Provider _provider = null;
@@ -134,10 +135,19 @@ public class RsaKeyTest {
     	MessageDigest digest = MessageDigest.getInstance("SHA-256");
     	byte[] hash = digest.digest(CEK);
     	
+    	byte[] crossPlatformHash      = Base64.decodeBase64(CrossPlatformHash);
+    	byte[] crossPlatformSignature = Base64.decodeBase64(CrossPlatformSignature);
+    	
+    	assertNotNull( hash );
+    	assertEquals(  32, hash.length );
+    	assertArrayEquals(hash, crossPlatformHash);
+    	
     	Pair<byte[], String> signature = key.signAsync(hash, "RS256").get();
     	boolean              result    = key.verifyAsync(hash, signature.getLeft(), "RS256").get();
 
         assertTrue(result);
+        
+        //assertArrayEquals(crossPlatformSignature, signature.getLeft());
         
         // Now prove we can verify the cross platform signature
         result = key.verifyAsync(hash, Base64.decodeBase64(CrossPlatformSignature), "RS256").get();

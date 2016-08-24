@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.keyvault.cryptography.Algorithm;
 import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;

@@ -1,32 +1,19 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
+import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
 
 /**
  *
@@ -35,27 +22,31 @@ public class Rs256 extends RsaSignature {
 	
 	static final String RsaNone = "RSA/ECB/PKCS1Padding";
 	
-	public class Rs256Signer {
-		
+	class Rs256SignatureTransform implements ISignatureTransform {
+
 		private final KeyPair  _keyPair;
 		private final int      _emLen;
 		
-		private final BigInteger _n;
-		
-		Rs256Signer(KeyPair keyPair) {
-			
+		Rs256SignatureTransform(KeyPair keyPair) {
 			_keyPair  = keyPair;
-			_n = ((RSAPublicKey)_keyPair.getPublic()).getModulus();
 			
-			_emLen = getOctetLength( _n.bitLength() );
+			BigInteger modulus = ((RSAPublicKey)_keyPair.getPublic()).getModulus();
+			
+			_emLen    = getOctetLength( modulus.bitLength() );
+			
 		}
-		
-		public byte[] sign(final byte[] digest) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+		@Override
+		public byte[] sign(byte[] digest) throws NoSuchAlgorithmException {
 			// Signing isn't just a case of encrypting the digest, there is much more to do.
 			// For details of the algorithm, see https://tools.ietf.org/html/rfc3447#section-8.2
 			
+			if ( _keyPair.getPrivate() == null ) {
+				// TODO
+			}
+			
 			// Construct the encoded message
-			byte[] EM = EMSA_PKCS1_V1_5_ENCODE(digest, _emLen, "SHA-256");
+			byte[] EM = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
 			
 			// Convert to integer message
 			BigInteger s = OS2IP(EM);
@@ -64,26 +55,14 @@ public class Rs256 extends RsaSignature {
 			s = RSASP1((RSAPrivateKey)_keyPair.getPrivate(), s);
 			
 			// Convert to octet sequence
-			return I2OSP(s, getOctetLength( _n.bitLength() ) );
+			return I2OSP(s, _emLen );
 		}
-	}
-	
-	public class Rs256Verifier {
-		
-		private final KeyPair  _keyPair;
-		private final BigInteger _n;
-		private final int        _emLength;
-		
-		Rs256Verifier(KeyPair keyPair) {
-			_keyPair  = keyPair;
-			_n = ((RSAPublicKey)_keyPair.getPublic()).getModulus();
-			_emLength = getOctetLength( _n.bitLength() );
-		}
-		
-		public boolean verify(final byte[] signature, final byte[] digest) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+		@Override
+		public boolean verify(byte[] digest, byte[] signature) throws NoSuchAlgorithmException {
 			
-			if ( signature.length != getOctetLength( _n.bitLength() ) ) {
-				throw new IllegalBlockSizeException();
+			if ( signature.length != _emLen ) {
+				throw new IllegalArgumentException( "invalid signature length");
 			}
 			
 			// Convert to integer signature
@@ -92,21 +71,13 @@ public class Rs256 extends RsaSignature {
 			// Convert integer message
 			BigInteger m = RSAVP1((RSAPublicKey)_keyPair.getPublic(), s);
 			
+			byte[] EM  = I2OSP(m, _emLen );
+			byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
 			
-			byte[] EM  = I2OSP(m, getOctetLength( _n.bitLength() ) );
-			byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE(digest, _emLength, "SHA-256");
-			
-			// TODO: Need constant time compare
-			if ( EM.length != EM2.length )
-				return false;
-			
-			for ( int i = 0; i < digest.length; i++ ) {
-				if ( EM[i] != EM2[i] )
-					return false;
-			}
-			
-			return true;
+			// Use constant time compare
+			return ByteExtensions.sequenceEqualConstantTime(EM, EM2);
 		}
+		
 	}
 
     public final static String AlgorithmName = "RS256";
@@ -115,12 +86,9 @@ public class Rs256 extends RsaSignature {
         super(AlgorithmName);
     }
     
-    public Rs256Signer createSigner(KeyPair keyPair) {
+    @Override
+    public ISignatureTransform createSignatureTransform(KeyPair keyPair) {
     	
-    	return new Rs256Signer(keyPair);
-    }
-    
-    public Rs256Verifier createVerifier(KeyPair keyPair) {
-    	return new Rs256Verifier(keyPair);
+    	return new Rs256SignatureTransform(keyPair);
     }
 }
