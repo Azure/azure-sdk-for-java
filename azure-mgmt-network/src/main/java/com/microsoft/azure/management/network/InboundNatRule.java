@@ -57,7 +57,7 @@ public interface InboundNatRule extends
         /**
          * The final stage of the inbound NAT rule definition.
          * <p>
-         * At this stage, any remaining optional settings can be specified, or the imnbound NAT rule definition
+         * At this stage, any remaining optional settings can be specified, or the inbound NAT rule definition
          * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
