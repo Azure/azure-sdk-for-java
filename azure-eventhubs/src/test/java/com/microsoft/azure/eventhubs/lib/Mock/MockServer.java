@@ -1,15 +1,15 @@
-package com.microsoft.azure.eventhubs.lib;
+package com.microsoft.azure.eventhubs.lib.Mock;
 
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.apache.qpid.proton.*;
-import org.apache.qpid.proton.driver.*;
-import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.reactor.*;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.reactor.Acceptor;
+import org.apache.qpid.proton.reactor.Reactor;
+
+import com.microsoft.azure.eventhubs.lib.TestBase;
 
 /**
  * Mock Server (Singleton) designed to test AMQP related features in the javaClient

@@ -1,104 +1,90 @@
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import java.io.IOException;
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.logging.*;
+import java.time.Instant;
+import java.util.Iterator;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.lib.*;
-import com.microsoft.azure.servicebus.*;
-import com.microsoft.azure.servicebus.amqp.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
-public class ReceiveTest extends TestBase
+public class ReceiveTest extends ApiTestBase
 {
-	private static final Logger TEST_LOGGER = Logger.getLogger(ReceiveTest.class.toString());
+	static final TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
+	static final String cgName = eventHubInfo.getRandomConsumerGroup();
+	static final String partitionId = "0";
+	
+	static EventHubClient ehClient;
+	
+	PartitionReceiver offsetReceiver = null;
+	PartitionReceiver datetimeReceiver = null;
+	
+	@BeforeClass
+	public static void initializeEventHub()  throws Exception
+	{
+		final ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
+	}
 	
 	@Test()
-	public void testReceiverFilters() throws ServiceBusException, InterruptedException, ExecutionException, IOException
+	public void testReceiverStartOfStreamFilters() throws ServiceBusException
 	{
-		Assume.assumeTrue(TestBase.isServiceRun());
+		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false);
+		Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
 		
-		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		EventHubClient ehClient = null;
-		PartitionReceiver offsetReceiver = null;
-		PartitionReceiver datetimeReceiver = null;
+		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 		
-		try 
+		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, Instant.EPOCH);
+		Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
+		
+		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
+		
+		Iterator<EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
+		for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
 		{
-			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
-			ehClient = EventHubClient.createFromConnectionString(connectionString.toString()).get();
+			EventData eventDataUsingDateTime = dateTimeIterator.next();
+			Assert.assertTrue(
+					String.format("START_OF_STREAM offset: %s, EPOCH offset: %s", eventDataUsingOffset.getSystemProperties().getOffset(), eventDataUsingDateTime.getSystemProperties().getOffset()),
+					eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
 			
-			String cgName = eventHubInfo.getRandomConsumerGroup();
-			String partitionId = "0";
-			
-			TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
-			
-			offsetReceiver = ehClient.createReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
-			Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receive(100).get();
-			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
-			
-			// Test1: Validate DateTimeReceiver returns correct startingOffset with startOfEpoch
-			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, Instant.EPOCH).get();
-			Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receive(100).get();
-			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
-			
-			int counter = 0;
-			Iterator<EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
-			for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
-			{
-				EventData eventDataUsingDateTime = dateTimeIterator.next();
-				TEST_LOGGER.log(Level.FINE, String.format("recv by offset: %s.", eventDataUsingOffset.getSystemProperties().getOffset()));
-				TEST_LOGGER.log(Level.FINE, String.format("recv by dateTime: %s.", eventDataUsingDateTime.getSystemProperties().getOffset()));
-				
-				Assert.assertTrue(eventDataUsingOffset.getSystemProperties().getOffset().equalsIgnoreCase(eventDataUsingDateTime.getSystemProperties().getOffset()));
-				
-				counter++;
-				if (!dateTimeIterator.hasNext())
-					break;
-			}
-			
-			datetimeReceiver.close();
-			
-			Iterator<EventData> offsetIterator = startingEventsUsingOffsetReceiver.iterator();
-			offsetIterator.next();
-			// Test2: pick a random event from OffsetReceiver and then validate DateTime receiver using SystemProperties
-			if (!offsetIterator.hasNext()) {
-				startingEventsUsingOffsetReceiver = offsetReceiver.receive(100).get();
-			}
-			
-			Assert.assertTrue(startingEventsUsingOffsetReceiver.iterator().hasNext());
-			EventData nextEvent = startingEventsUsingOffsetReceiver.iterator().next();
-			datetimeReceiver = ehClient.createReceiver(cgName, partitionId, 
-				nextEvent.getSystemProperties().getEnqueuedTime().minusMillis(1)).get();
-			
-			Iterable<EventData> dateTimeEventsFromCustomOffset = datetimeReceiver.receive(100).get();
-			Assert.assertTrue(dateTimeEventsFromCustomOffset.iterator().hasNext());
-			EventData firstEventAfterGivenTime = dateTimeEventsFromCustomOffset.iterator().next();
-			TEST_LOGGER.log(Level.FINE, firstEventAfterGivenTime.getSystemProperties().getEnqueuedTime().toString());
-			
-			Assert.assertTrue(firstEventAfterGivenTime.getSystemProperties().getOffset().
-					equals(nextEvent.getSystemProperties().getOffset()));
-		}
-		finally
-		{
-			TestBase.checkinTestEventHub(eventHubInfo.getName());
-			if (offsetReceiver != null) {
-				offsetReceiver.close();
-			}
-			if (datetimeReceiver != null) {
-				datetimeReceiver.close();
-			}
-			
-			if (ehClient != null) {
-				ehClient.close();
-			}
+			if (!dateTimeIterator.hasNext())
+				break;
 		}
 	}
+	
+	@After
+	public void testCleanup() throws ServiceBusException
+	{
+		if (offsetReceiver != null)
+		{
+			offsetReceiver.closeSync();
+		}
+		
+		if (datetimeReceiver != null)
+		{
+			datetimeReceiver.closeSync();
+		}
+	}
+	
+	@AfterClass()
+	public static void cleanup() throws ServiceBusException
+	{
+		TestBase.checkinTestEventHub(eventHubInfo.getName());
 
+		if (ehClient != null)
+		{
+			ehClient.closeSync();
+		}
+	}
 }

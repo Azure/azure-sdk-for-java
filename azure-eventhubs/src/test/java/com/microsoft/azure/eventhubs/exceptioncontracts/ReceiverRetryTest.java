@@ -1,25 +1,29 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import java.io.*;
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.logging.*;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.logging.Level;
 
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.Target;
-import org.apache.qpid.proton.driver.*;
-import org.apache.qpid.proton.engine.*;
-import org.apache.qpid.proton.message.*;
-import org.apache.qpid.proton.reactor.*;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.message.Message;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.lib.*;
-import com.microsoft.azure.servicebus.*;
-import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.eventhubs.lib.Mock.MockServer;
+import com.microsoft.azure.eventhubs.lib.Mock.Sender1MsgOnLinkFlowHandler;
+import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.MessageReceiver;
+import com.microsoft.azure.servicebus.MessagingFactory;
 
 public class ReceiverRetryTest extends TestBase
 {
@@ -87,7 +91,6 @@ public class ReceiverRetryTest extends TestBase
 		server = MockServer.Create(recvFlowHandler);
 	}
 	
-	@Test
 	public void testRetryWhenReceiveFails() throws Exception
 	{
 		factory = MessagingFactory.createFromConnectionString(

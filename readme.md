@@ -152,7 +152,12 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   - mvn eclipse:eclipse
 4. Open Eclipse and use "Import Existing Maven projects" to open the project.
 5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.8 or higher
-  * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
+  * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.8 or higher]
+6. Set these Environment variables to be able to run unit tests:
+  * EVENT_HUB_NAME
+  * NAMESPACE_NAME
+  * SAS_KEY
+  * SAS_KEY_NAME
 
 ##How to provide feedback
 

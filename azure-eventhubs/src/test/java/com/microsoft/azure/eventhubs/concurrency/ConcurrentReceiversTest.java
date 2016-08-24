@@ -1,10 +1,11 @@
 package com.microsoft.azure.eventhubs.concurrency;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ExecutionException;
+
 import org.junit.After;
-import org.junit.Assume;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,23 +13,26 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
-public class ConcurrentReceiversTest
+public class ConcurrentReceiversTest extends ApiTestBase
 {
 	TestEventHubInfo eventHubInfo;
 	ConnectionStringBuilder connStr;
 	int partitionCount = 4;
+	int eventSentPerPartition = 10;
 	EventHubClient sender;
-
+	Instant sendStartTime;
+	
 	@Before
 	public void initializeEventHub()  throws Exception
 	{
-		Assume.assumeTrue(TestBase.isServiceRun());
-
+		sendStartTime = Instant.now();
+		
 		eventHubInfo = TestBase.checkoutTestEventHub();
 		connStr = new ConnectionStringBuilder(
 				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
@@ -37,42 +41,59 @@ public class ConcurrentReceiversTest
 
 		for (int i=0; i < partitionCount; i++)
 		{
-			TestBase.pushEventsToPartition(sender, Integer.toString(i), 10);
+			TestBase.pushEventsToPartition(sender, Integer.toString(i), eventSentPerPartition);
 		}
 	}
 
 	@Test()
-	public void testParallelReceivers() throws ServiceBusException, InterruptedException, ExecutionException, IOException
+	public void testParallelReceivers() throws ServiceBusException, IOException, InterruptedException
 	{
 		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
-
-		for (int repeatCount = 0; repeatCount< 4; repeatCount++)
+		EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
+		PartitionReceiver[] receivers = new PartitionReceiver[partitionCount];
+		EventCounter[] counter = new EventCounter[partitionCount];
+		
+		try
 		{
-			EventHubClient[] ehClients = new EventHubClient[partitionCount];
-			PartitionReceiver[] receivers = new PartitionReceiver[partitionCount];
-			try
+			for(int i=0; i < partitionCount; i++)
 			{
-				for(int i=0; i < partitionCount; i++)
+				receivers[i] = ehClient.createReceiverSync(consumerGroupName, Integer.toString(i), sendStartTime);
+				receivers[i].setReceiveTimeout(Duration.ofMillis(400));
+				
+				counter[i] = new EventCounter();
+				receivers[i].setReceiveHandler(counter[i]);
+			}
+			
+			int worstCaseRetryCount = partitionCount * 10;
+			boolean receivedOnAllPartitions = true;
+			
+			do
+			{
+				worstCaseRetryCount--;
+				Thread.sleep(500);
+				
+				receivedOnAllPartitions = true;
+				for (int i =0; i < partitionCount; i++)
 				{
-					ehClients[i] = EventHubClient.createFromConnectionString(connStr.toString()).get();
-					receivers[i] = ehClients[i].createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).get();
-					receivers[i].setReceiveHandler(new EventCounter());
+					receivedOnAllPartitions = receivedOnAllPartitions && (counter[i].count > 0);
+				}
+			} while(!receivedOnAllPartitions && worstCaseRetryCount > 0);
+			
+			Assert.assertTrue(receivedOnAllPartitions);
+		}
+		finally
+		{
+			for (int i=0; i < partitionCount; i++)
+			{
+				if (receivers[i] != null)
+				{
+					receivers[i].close();
 				}
 			}
-			finally
-			{
-				for (int i=0; i < partitionCount; i++)
-				{
-					if (receivers[i] != null)
-					{
-						receivers[i].close();
-					}
 
-					if (ehClients[i] != null)
-					{
-						ehClients[i].close();
-					}
-				}
+			if (ehClient != null)
+			{
+				ehClient.close();
 			}
 		}
 	}
@@ -88,7 +109,7 @@ public class ConcurrentReceiversTest
 
 	public static final class EventCounter extends PartitionReceiveHandler
 	{
-		private long count;
+		private int count;
 
 		public EventCounter()
 		{
@@ -99,10 +120,9 @@ public class ConcurrentReceiversTest
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
-			for(EventData event: events)
-			{
-				count++;
-			}
+			if (events != null)
+				for(@SuppressWarnings("unused") EventData eData: events)
+					count++;
 		}
 
 		@Override

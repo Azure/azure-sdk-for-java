@@ -9,18 +9,17 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class EventHubClientTest extends TestBase
+public class EventHubClientTest extends ApiTestBase
 {
 	
 	@Test()
 	public void testParallelEventHubClients() throws ServiceBusException, InterruptedException, ExecutionException, IOException
 	{
-		Assume.assumeTrue(TestBase.isServiceRun());
-		
 		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
 		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
 		String partitionId = "0";
 		
+		@SuppressWarnings("unchecked")
 		CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[4];
 		try 
 		{
