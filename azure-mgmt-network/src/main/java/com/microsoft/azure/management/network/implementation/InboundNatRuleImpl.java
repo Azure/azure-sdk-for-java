@@ -5,9 +5,11 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -69,6 +71,54 @@ class InboundNatRuleImpl
     }
 
     // Fluent setters
+
+    @Override
+    public InboundNatRuleImpl withBackendPort(int port) {
+        this.inner().withBackendPort(port);
+        return this;
+    }
+
+    @Override
+    public InboundNatRuleImpl withFloatingIpEnabled() {
+        return withFloatingIp(true);
+    }
+
+    @Override
+    public InboundNatRuleImpl withFloatingIpDisabled() {
+        return withFloatingIp(false);
+    }
+
+    @Override
+    public InboundNatRuleImpl withFloatingIp(boolean enabled) {
+        this.inner().withEnableFloatingIP(enabled);
+        return this;
+    }
+
+    @Override
+    public InboundNatRuleImpl withFrontendPort(int port) {
+        this.inner().withFrontendPort(port);
+        return this;
+    }
+
+    @Override
+    public InboundNatRuleImpl withIdleTimeoutInMinutes(int minutes) {
+        this.inner().withIdleTimeoutInMinutes(minutes);
+        return this;
+    }
+
+    @Override
+    public InboundNatRuleImpl withProtocol(TransportProtocol protocol) {
+        this.inner().withProtocol(protocol);
+        return this;
+    }
+
+    @Override
+    public InboundNatRuleImpl withFrontend(String frontendName) {
+        SubResource frontendRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
+        this.inner().withFrontendIPConfiguration(frontendRef);
+        return this;
+    }
 
     // Verbs
 
