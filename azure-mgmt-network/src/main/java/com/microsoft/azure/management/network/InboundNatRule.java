@@ -291,7 +291,103 @@ public interface InboundNatRule extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT> {
+            Attachable.InUpdate<ParentT>,
+            UpdateDefinitionStages.WithBackendPort<ParentT>,
+            UpdateDefinitionStages.WithFloatingIp<ParentT>,
+            UpdateDefinitionStages.WithFrontend<ParentT>,
+            UpdateDefinitionStages.WithFrontendPort<ParentT>,
+            UpdateDefinitionStages.WithIdleTimeout<ParentT>,
+            UpdateDefinitionStages.WithProtocol<ParentT> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the backend port.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithBackendPort<ParentT> {
+            /**
+             * Specifies the backend port for this inbound NAT rule.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withBackendPort(int port);
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify whether floating IP should be enabled.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFloatingIp<ParentT> {
+            /**
+             * Enables the floating IP feature.
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withFloatingIpEnabled();
+
+            /**
+             * Disables the floating IP feature.
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withFloatingIpDisabled();
+
+            /**
+             * Specifies whether the floating IP feature should be enabled or disabled.
+             * @param enabled true if enabled, else false
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withFloatingIp(boolean enabled);
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify a frontend for the rule to apply to.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFrontend<ParentT> {
+            /**
+             * Specifies the frontend for the inbound NAT rule to apply to.
+             * @param frontendName an existing frontend name on this load balancer
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withFrontend(String frontendName);
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the frontend port.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFrontendPort<ParentT> {
+            /**
+             * Specifies the frontend port.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withFrontendPort(int port);
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the idle connection timeout for this inbound NAT rule.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithIdleTimeout<ParentT> {
+            /**
+             * Specifies the idle connection timeout in minutes.
+             * @param minutes a number of minutes
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the transport protocol for the rule to apply to.
+         * @param <ParentT> the patent load balancer type
+         */
+        interface WithProtocol<ParentT> {
+            /**
+             * Specifies the transport protocol for the inbound NAT rule to apply to.
+             * @param protocol a transport protocol
+             * @return the next stage of the definition
+             */
+            public WithAttach<ParentT> withProtocol(TransportProtocol protocol);
         }
     }
 
