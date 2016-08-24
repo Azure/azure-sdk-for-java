@@ -1,45 +1,93 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RestClient;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.compute.implementation.ComputeManagementClientImpl;
-import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionImageInner;
-import com.microsoft.rest.ServiceResponse;
-import okhttp3.logging.HttpLoggingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.List;
 
-public class VirtualMachineExtensionImageOperationsTests {
+public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTestBase {
+    @BeforeClass
+    public static void setup() throws Exception {
+        createClients();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+    }
+
     @Test
-    public void firstTest() throws Exception {
-        RestClient.Builder.Buildable restClientBuilder = AzureEnvironment.AZURE.newRestClientBuilder();
-        RestClient restClient = restClientBuilder
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .withCredentials(ApplicationTokenCredentials.fromFile(new File("c:\\my.azureauth")))
-                .build();
+    public void canGetExtensionTypeVersionAndImage() throws Exception {
+        final String dockerExtensionPublisherName = "Microsoft.Azure.Extensions";
+        final String dockerExtensionImageTypeName = "DockerExtension";
 
-        ComputeManagementClientImpl computeClient = new ComputeManagementClientImpl(restClient).withSubscriptionId("1c638cf4-608f-4ee6-b680-c329e824c3a8");
-        try {
-            //ServiceResponse<VirtualMachineExtensionImageInner> response =computeClient.virtualMachineExtensionImages()
-            //        .get("eastus", "Microsoft.Azure.Extensions", "DockerExtension", "1.2.0");
+        // Lookup Azure docker extension publisher
+        //
+        List<VirtualMachinePublisher> publishers =
+                computeManager.virtualMachineExtensionImages()
+                        .publishers()
+                        .listByRegion(Region.US_EAST);
 
-            ServiceResponse<VirtualMachineExtensionImageInner> response =computeClient.virtualMachineExtensionImages()
-                    .get("eastus", "Microsoft.OSTCExtensions", "LinuxDiagnostic", "2.3.9007");
-
-            VirtualMachineExtensionImageInner ext =  response.getBody();
-
-            ServiceResponse<List<VirtualMachineExtensionImageInner>> response1 =computeClient.virtualMachineExtensionImages()
-                    .listTypes("eastus", "Microsoft.OSTCExtensions");
-
-            ServiceResponse<List<VirtualMachineExtensionImageInner>> response2 =computeClient.virtualMachineExtensionImages()
-                    .listVersions("eastus", "Microsoft.OSTCExtensions", "LinuxDiagnostic");
-
-
-        } catch (Exception ex) {
-            System.out.println(ex);
+        VirtualMachinePublisher azureDockerExtensionPublisher = null;
+        for (VirtualMachinePublisher publisher : publishers) {
+            if (publisher.name().equalsIgnoreCase(dockerExtensionPublisherName)) {
+                azureDockerExtensionPublisher = publisher;
+                break;
+            }
         }
+        Assert.assertNotNull(azureDockerExtensionPublisher);
+
+        // Lookup Azure docker extension type
+        //
+        VirtualMachineExtensionImageTypes extensionImageTypes = azureDockerExtensionPublisher.extensionTypes();
+        Assert.assertTrue(extensionImageTypes.list().size() > 0);
+
+        VirtualMachineExtensionImageType dockerExtensionImageType = null;
+        for (VirtualMachineExtensionImageType extensionImageType : extensionImageTypes.list()) {
+            if (extensionImageType.name().equalsIgnoreCase(dockerExtensionImageTypeName)) {
+                dockerExtensionImageType = extensionImageType;
+                break;
+            }
+        }
+        Assert.assertNotNull(dockerExtensionImageType);
+
+        Assert.assertNotNull(dockerExtensionImageType.id());
+        Assert.assertTrue(dockerExtensionImageType.name().equalsIgnoreCase(dockerExtensionImageTypeName));
+        Assert.assertTrue(dockerExtensionImageType.regionName().equalsIgnoreCase(Region.US_EAST.toString()));
+        Assert.assertTrue(dockerExtensionImageType.id()
+                .toLowerCase()
+                .endsWith("/Providers/Microsoft.Compute/Locations/eastus/Publishers/Microsoft.Azure.Extensions/ArtifactTypes/VMExtension/Types/DockerExtension".toLowerCase()));
+        Assert.assertNotNull(dockerExtensionImageType.publisher());
+        Assert.assertTrue(dockerExtensionImageType.publisher().name().equalsIgnoreCase(dockerExtensionPublisherName));
+
+        // Fetch Azure docker extension versions
+        //
+        VirtualMachineExtensionImageVersions extensionImageVersions = dockerExtensionImageType.versions();
+        Assert.assertTrue(extensionImageVersions.list().size() > 0);
+
+        VirtualMachineExtensionImageVersion extensionImageFirstVersion = null;
+        for (VirtualMachineExtensionImageVersion extensionImageVersion : extensionImageVersions.list()) {
+            extensionImageFirstVersion = extensionImageVersion;
+            break;
+        }
+
+        Assert.assertNotNull(extensionImageFirstVersion);
+        String versionName = extensionImageFirstVersion.name();
+        Assert.assertTrue(extensionImageFirstVersion.id()
+                .toLowerCase()
+                .endsWith(("/Providers/Microsoft.Compute/Locations/eastus/Publishers/Microsoft.Azure.Extensions/ArtifactTypes/VMExtension/Types/DockerExtension/Versions/" + versionName).toLowerCase()));
+        Assert.assertNotNull(extensionImageFirstVersion.type());
+
+        // Fetch the Azure docker extension image
+        //
+        VirtualMachineExtensionImage dockerExtensionImage = extensionImageFirstVersion.image();
+
+        Assert.assertTrue(dockerExtensionImage.regionName().equalsIgnoreCase(Region.US_EAST.toString()));
+        Assert.assertTrue(dockerExtensionImage.publisherName().equalsIgnoreCase(dockerExtensionPublisherName));
+        Assert.assertTrue(dockerExtensionImage.typeName().equalsIgnoreCase(dockerExtensionImageTypeName));
+        Assert.assertTrue(dockerExtensionImage.versionName().equalsIgnoreCase(versionName));
+        Assert.assertTrue(dockerExtensionImage.osType() == OperatingSystemTypes.LINUX || dockerExtensionImage.osType() == OperatingSystemTypes.WINDOWS);
     }
 }
