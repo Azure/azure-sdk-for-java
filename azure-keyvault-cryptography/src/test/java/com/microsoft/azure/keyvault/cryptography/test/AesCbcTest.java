@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.cryptography.Algorithm;
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;
 
@@ -63,7 +64,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(16,encrypted),ED);
+            assertArrayEquals(ByteExtensions.take(encrypted, 16), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -81,7 +82,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(16, decrypted), PLAIN);
+            assertArrayEquals(ByteExtensions.take(decrypted, 16), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -110,7 +111,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(32,encrypted),ED);
+            assertArrayEquals(ByteExtensions.take(encrypted, 32), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -128,7 +129,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(32, decrypted), PLAIN);
+            assertArrayEquals(ByteExtensions.take(decrypted, 32), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -157,7 +158,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(16,encrypted),ED);
+            assertArrayEquals(ByteExtensions.take(encrypted, 16),ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -175,7 +176,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(16, decrypted), PLAIN);
+            assertArrayEquals(ByteExtensions.take(decrypted, 16), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -204,7 +205,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(32,encrypted),ED);
+            assertArrayEquals(ByteExtensions.take(encrypted, 32), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -222,7 +223,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(Algorithm.Take(32, decrypted), PLAIN);
+            assertArrayEquals(ByteExtensions.take(decrypted, 32), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }

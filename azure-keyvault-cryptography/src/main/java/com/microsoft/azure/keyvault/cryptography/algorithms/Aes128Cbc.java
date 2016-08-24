@@ -1,19 +1,7 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
@@ -25,6 +13,7 @@ import java.security.Provider;
 
 import javax.crypto.NoSuchPaddingException;
 
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 
 public class Aes128Cbc extends AesCbc {
@@ -44,7 +33,7 @@ public class Aes128Cbc extends AesCbc {
     		throw new InvalidKeyException("key must be at least 128 bits in length");
     	}
     	
-        return new AesCbcEncryptor(AesCbc.Take(KeySizeInBytes, key), iv, null);
+        return new AesCbcEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, null);
     }
 
     @Override
@@ -54,7 +43,7 @@ public class Aes128Cbc extends AesCbc {
     		throw new InvalidKeyException("key must be at least 128 bits in length");
     	}
     	
-        return new AesCbcEncryptor(AesCbc.Take(KeySizeInBytes, key), iv, provider);
+        return new AesCbcEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
     }
 
     @Override
@@ -64,7 +53,7 @@ public class Aes128Cbc extends AesCbc {
     		throw new InvalidKeyException("key must be at least 128 bits in length");
     	}
     	
-        return new AesCbcDecryptor(AesCbc.Take(KeySizeInBytes, key), iv, null);
+        return new AesCbcDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, null);
     }
 
     @Override
@@ -74,6 +63,6 @@ public class Aes128Cbc extends AesCbc {
     		throw new InvalidKeyException("key must be at least 128 bits in length");
     	}
     	
-        return new AesCbcDecryptor(AesCbc.Take(KeySizeInBytes, key), iv, provider);
+        return new AesCbcDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
     }
 }

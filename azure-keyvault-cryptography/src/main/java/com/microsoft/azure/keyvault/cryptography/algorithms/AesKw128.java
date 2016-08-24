@@ -1,19 +1,7 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
@@ -25,6 +13,7 @@ import java.security.Provider;
 
 import javax.crypto.NoSuchPaddingException;
 
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 
 public final class AesKw128 extends AesKw {
@@ -48,7 +37,7 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateEncryptor(Take(KeySizeInBytes,key), iv, provider);
+        return super.CreateEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
     }
 
     @Override
@@ -62,7 +51,7 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateDecryptor(Take(KeySizeInBytes,key), iv, provider);
+        return super.CreateDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
     }
 
 }
