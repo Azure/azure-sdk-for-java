@@ -66,7 +66,7 @@ public interface InboundNatRule extends
             DefinitionStages.WithBackendPort<ParentT>,
             DefinitionStages.WithFloatingIp<ParentT>,
             DefinitionStages.WithFrontendPort<ParentT>,
-            DefinitionStages.WithIdleTimout<ParentT>,
+            DefinitionStages.WithIdleTimeout<ParentT>,
             DefinitionStages.WithProtocol<ParentT>,
             DefinitionStages.WithFrontend<ParentT> {
         }
@@ -136,10 +136,10 @@ public interface InboundNatRule extends
         }
 
         /**
-         * The stage of an inbound NAT rule definition allowing to specify the idle connectiojn timeout for this inbound NAT rule.
+         * The stage of an inbound NAT rule definition allowing to specify the idle connection timeout for this inbound NAT rule.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithIdleTimout<ParentT> {
+        interface WithIdleTimeout<ParentT> {
             /**
              * Specifies the idle connection timeout in minutes.
              * @param minutes a number of minutes
@@ -174,13 +174,102 @@ public interface InboundNatRule extends
      * Grouping of inbound NAT rule update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an inbound NAT rule update allowing to specify the backend port.
+         */
+        interface WithBackendPort {
+            /**
+             * Specifies the backend port for this inbound NAT rule.
+             * @param port a port number
+             * @return the next stage of the update
+             */
+            public Update withBackendPort(int port);
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify whether floating IP should be enabled.
+         */
+        interface WithFloatingIp {
+            /**
+             * Enables the floating IP feature.
+             * @return the next stage of the update
+             */
+            public Update withFloatingIpEnabled();
+
+            /**
+             * Disables the floating IP feature.
+             * @return the next stage of the update
+             */
+            public Update withFloatingIpDisabled();
+
+            /**
+             * Specifies whether the floating IP feature should be enabled or disabled.
+             * @param enabled true if enabled, else false
+             * @return the next stage of the update
+             */
+            public Update withFloatingIp(boolean enabled);
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify a frontend for the rule to apply to.
+         */
+        interface WithFrontend {
+            /**
+             * Specifies the frontend for the inbound NAT rule to apply to.
+             * @param frontendName an existing frontend name on this load balancer
+             * @return the next stage of the update
+             */
+            public Update withFrontend(String frontendName);
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify the frontend port.
+         */
+        interface WithFrontendPort {
+            /**
+             * Specifies the frontend port.
+             * @param port a port number
+             * @return the next stage of the update
+             */
+            public Update withFrontendPort(int port);
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify the idle connection timeout for this inbound NAT rule.
+         */
+        interface WithIdleTimeout {
+            /**
+             * Specifies the idle connection timeout in minutes.
+             * @param minutes a number of minutes
+             * @return the next stage of the update
+             */
+            Update withIdleTimeoutInMinutes(int minutes);
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify the transport protocol for the rule to apply to.
+         */
+        interface WithProtocol {
+            /**
+             * Specifies the transport protocol for the inbound NAT rule to apply to.
+             * @param protocol a transport protocol
+             * @return the next stage of the update
+             */
+            public Update withProtocol(TransportProtocol protocol);
+        }
     }
 
     /**
      * The entirety of an inbound NAT rule update as part of a load balancer update.
      */
     interface Update extends
-        Settable<LoadBalancer.Update> {
+        Settable<LoadBalancer.Update>,
+        UpdateStages.WithBackendPort,
+        UpdateStages.WithFloatingIp,
+        UpdateStages.WithFrontend,
+        UpdateStages.WithFrontendPort,
+        UpdateStages.WithIdleTimeout,
+        UpdateStages.WithProtocol {
     }
 
     /**
