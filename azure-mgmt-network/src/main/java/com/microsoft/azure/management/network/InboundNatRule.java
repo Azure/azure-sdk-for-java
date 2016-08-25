@@ -21,27 +21,27 @@ public interface InboundNatRule extends
     /**
      * @return the resource ID of the network interface IP configuration associated with this NAT rule
      */
-    public String networkInterfaceIpConfigurationId();
+    String networkInterfaceIpConfigurationId();
 
     /**
      * @return the backend port number associated with this NAT rule
      */
-    public int backendPort();
+    int backendPort();
 
     /**
      * @return the frontend port number associated with this NAT rule
      */
-    public int frontendPort();
+    int frontendPort();
 
     /**
      * @return the state of the floating IP enablement
      */
-    public boolean floatingIpEnabled();
+    boolean floatingIpEnabled();
 
     /**
      * @return the frontend IP configuration associated with this NAT rule
      */
-    public Frontend frontend();
+    Frontend frontend();
 
     /**
      * Grouping of inbound NAT rule definition stages.
@@ -81,7 +81,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withBackendPort(int port);
+            WithAttach<ParentT> withBackendPort(int port);
         }
 
         /**
@@ -93,20 +93,20 @@ public interface InboundNatRule extends
              * Enables the floating IP feature.
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIpEnabled();
+            WithAttach<ParentT> withFloatingIpEnabled();
 
             /**
              * Disables the floating IP feature.
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIpDisabled();
+            WithAttach<ParentT> withFloatingIpDisabled();
 
             /**
              * Specifies whether the floating IP feature should be enabled or disabled.
              * @param enabled true if enabled, else false
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIp(boolean enabled);
+            WithAttach<ParentT> withFloatingIp(boolean enabled);
         }
 
         /**
@@ -119,7 +119,7 @@ public interface InboundNatRule extends
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFrontend(String frontendName);
+            WithAttach<ParentT> withFrontend(String frontendName);
         }
 
         /**
@@ -132,7 +132,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFrontendPort(int port);
+            WithAttach<ParentT> withFrontendPort(int port);
         }
 
         /**
@@ -158,7 +158,7 @@ public interface InboundNatRule extends
              * @param protocol a transport protocol
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withProtocol(TransportProtocol protocol);
+            WithAttach<ParentT> withProtocol(TransportProtocol protocol);
         }
     }
 
@@ -183,7 +183,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the update
              */
-            public Update withBackendPort(int port);
+            Update withBackendPort(int port);
         }
 
         /**
@@ -194,20 +194,20 @@ public interface InboundNatRule extends
              * Enables the floating IP feature.
              * @return the next stage of the update
              */
-            public Update withFloatingIpEnabled();
+            Update withFloatingIpEnabled();
 
             /**
              * Disables the floating IP feature.
              * @return the next stage of the update
              */
-            public Update withFloatingIpDisabled();
+            Update withFloatingIpDisabled();
 
             /**
              * Specifies whether the floating IP feature should be enabled or disabled.
              * @param enabled true if enabled, else false
              * @return the next stage of the update
              */
-            public Update withFloatingIp(boolean enabled);
+            Update withFloatingIp(boolean enabled);
         }
 
         /**
@@ -219,7 +219,7 @@ public interface InboundNatRule extends
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the update
              */
-            public Update withFrontend(String frontendName);
+            Update withFrontend(String frontendName);
         }
 
         /**
@@ -231,7 +231,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the update
              */
-            public Update withFrontendPort(int port);
+            Update withFrontendPort(int port);
         }
 
         /**
@@ -255,7 +255,7 @@ public interface InboundNatRule extends
              * @param protocol a transport protocol
              * @return the next stage of the update
              */
-            public Update withProtocol(TransportProtocol protocol);
+            Update withProtocol(TransportProtocol protocol);
         }
     }
 
@@ -310,7 +310,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withBackendPort(int port);
+            WithAttach<ParentT> withBackendPort(int port);
         }
 
         /**
@@ -322,20 +322,20 @@ public interface InboundNatRule extends
              * Enables the floating IP feature.
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIpEnabled();
+            WithAttach<ParentT> withFloatingIpEnabled();
 
             /**
              * Disables the floating IP feature.
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIpDisabled();
+            WithAttach<ParentT> withFloatingIpDisabled();
 
             /**
              * Specifies whether the floating IP feature should be enabled or disabled.
              * @param enabled true if enabled, else false
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFloatingIp(boolean enabled);
+            WithAttach<ParentT> withFloatingIp(boolean enabled);
         }
 
         /**
@@ -348,7 +348,7 @@ public interface InboundNatRule extends
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFrontend(String frontendName);
+            WithAttach<ParentT> withFrontend(String frontendName);
         }
 
         /**
@@ -361,7 +361,7 @@ public interface InboundNatRule extends
              * @param port a port number
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withFrontendPort(int port);
+            WithAttach<ParentT> withFrontendPort(int port);
         }
 
         /**
@@ -387,7 +387,7 @@ public interface InboundNatRule extends
              * @param protocol a transport protocol
              * @return the next stage of the definition
              */
-            public WithAttach<ParentT> withProtocol(TransportProtocol protocol);
+            WithAttach<ParentT> withProtocol(TransportProtocol protocol);
         }
     }
 
