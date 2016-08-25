@@ -224,7 +224,7 @@ public final class EventProcessorHost
      * </pre>
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
-     * @return						Future that does not complete until the processor host shuts down.
+     * @return						Future that completes when initialization is finished. If initialization fails, get() will throw. 
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType) throws Exception
     {
@@ -241,7 +241,7 @@ public final class EventProcessorHost
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
-     * @return						Future that does not complete until the processor host shuts down.
+     * @return
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
     {
@@ -261,7 +261,7 @@ public final class EventProcessorHost
      * This overload uses default options for the processor host and event processor(s).
      * 
      * @param factory	User-supplied event processor factory object.
-     * @return			Future that does not complete until the processor host shuts down.
+     * @return			Future that completes when initialization is finished. If initialization fails, get() will throw.
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
     {
@@ -275,7 +275,7 @@ public final class EventProcessorHost
      * 
      * @param factory			User-supplied event processor factory object.			
      * @param processorOptions	Options for the processor host and event processor(s).
-     * @return					Future that does not complete until the processor host shuts down.
+     * @return
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions) throws Exception
     {
