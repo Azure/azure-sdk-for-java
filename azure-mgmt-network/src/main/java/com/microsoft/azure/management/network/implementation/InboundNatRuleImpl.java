@@ -37,7 +37,11 @@ class InboundNatRuleImpl
 
     @Override
     public String networkInterfaceIpConfigurationId() {
-        return this.inner().backendIPConfiguration().id();
+        if (this.inner().backendIPConfiguration() == null) {
+            return null;
+        } else {
+            return this.inner().backendIPConfiguration().id();
+        }
     }
 
     @Override
