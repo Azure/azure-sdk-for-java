@@ -40,7 +40,7 @@ public class ReceiverEpochTest extends ApiTestBase
 	@Test (expected = ReceiverDisconnectedException.class)
 	public void testEpochReceiverWins() throws ServiceBusException, InterruptedException, ExecutionException
 	{
-		int sendEventCount = 10;
+		int sendEventCount = 5;
 		
 		PartitionReceiver receiverLowEpoch = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
 		receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
@@ -49,7 +49,7 @@ public class ReceiverEpochTest extends ApiTestBase
 		
 		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), Long.MAX_VALUE);
 		
-		for (int retryCount = 0; retryCount < 10; retryCount ++) // retry to flush all msgs in cache
+		for (int retryCount = 0; retryCount < sendEventCount; retryCount ++) // retry to flush all msgs in cache
 			receiverLowEpoch.receiveSync(10);
 	}
 
@@ -66,14 +66,14 @@ public class ReceiverEpochTest extends ApiTestBase
 		receiver.setReceiveTimeout(Duration.ofSeconds(10));
 		ehClient.createEpochReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10);
 		
-		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
+		TestBase.pushEventsToPartition(ehClient, partitionId, 5).get();
 		Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
 	}
 	
 	@Test (expected = ReceiverDisconnectedException.class)
 	public void testNewHighestEpochWins() throws ServiceBusException, InterruptedException, ExecutionException
 	{
-		int sendEventCount = 10;
+		int sendEventCount = 5;
 		long epoch = new Random().nextInt(Integer.MAX_VALUE);
 
 		PartitionReceiver receiverLowEpoch = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), epoch);
@@ -83,7 +83,7 @@ public class ReceiverEpochTest extends ApiTestBase
 		
 		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), Long.MAX_VALUE);
 		
-		for (int retryCount = 0; retryCount < 10; retryCount ++) // retry to flush all msgs in cache
+		for (int retryCount = 0; retryCount < sendEventCount; retryCount ++) // retry to flush all msgs in cache
 			receiverLowEpoch.receiveSync(10);
 	}
 	

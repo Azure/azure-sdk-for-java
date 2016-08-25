@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,7 +14,6 @@ import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.PayloadSizeExceededException;
