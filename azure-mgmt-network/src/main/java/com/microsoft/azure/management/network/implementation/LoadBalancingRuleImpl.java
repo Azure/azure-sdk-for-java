@@ -127,6 +127,16 @@ class LoadBalancingRuleImpl
     }
 
     @Override
+    public LoadBalancingRuleImpl withFloatingIpEnabled() {
+        return withFloatingIp(true);
+    }
+
+    @Override
+    public LoadBalancingRuleImpl withFloatingIpDisabled() {
+        return withFloatingIp(false);
+    }
+
+    @Override
     public LoadBalancingRuleImpl withProtocol(TransportProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;

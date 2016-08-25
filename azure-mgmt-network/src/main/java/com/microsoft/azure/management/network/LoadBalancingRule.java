@@ -182,6 +182,18 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withFloatingIp(boolean enable);
+
+            /**
+             * Enables floating IP support.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIpEnabled();
+
+            /**
+             * Disables floating IP support.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIpDisabled();
         }
 
         /**
@@ -275,6 +287,18 @@ public interface LoadBalancingRule extends
              * @return the next stage of the update
              */
             Update withFloatingIp(boolean enable);
+
+            /**
+             * Enables floating IP support.
+             * @return the next stage of the update
+             */
+            Update withFloatingIpEnabled();
+
+            /**
+             * Disables floating IP support.
+             * @return the next stage of the update
+             */
+            Update withFloatingIpDisabled();
         }
 
         /**
@@ -418,6 +442,18 @@ public interface LoadBalancingRule extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withFloatingIp(boolean enable);
+
+            /**
+             * Enables floating IP support.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIpEnabled();
+
+            /**
+             * Disables floating IP support.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFloatingIpDisabled();
         }
 
         /**
