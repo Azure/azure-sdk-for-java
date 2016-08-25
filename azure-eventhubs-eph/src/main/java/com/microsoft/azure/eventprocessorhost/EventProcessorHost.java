@@ -498,8 +498,8 @@ public final class EventProcessorHost
     {
     	synchronized (EventProcessorHost.uuidSynchronizer)
     	{
-    		final String uuid = UUID.randomUUID().toString();
-        	return uuid;
+    		final UUID newUuid = UUID.randomUUID();
+        	return new String(newUuid.toString());
     	}
     }
 }
