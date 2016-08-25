@@ -25,6 +25,8 @@ public abstract class TestBase
 	final static String SAS_KEY_ENV_NAME = "SAS_KEY";
 	final static String SAS_KEY_NAME_ENV_NAME = "SAS_KEY_NAME";
 	
+	public final static int PARTITION_COUNT = 4;
+	
 	public static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test.trace");
 		
 	public static TestEventHubInfo checkoutTestEventHub()

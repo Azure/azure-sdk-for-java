@@ -58,8 +58,11 @@ public class ReceiverEpochTest extends ApiTestBase
 	public void testOldHighestEpochWins() throws ServiceBusException, InterruptedException, ExecutionException
 	{
 		Instant testStartTime = Instant.now();
-		long epoch = new Random().nextLong();
+		long epoch = Math.abs(new Random().nextLong());
 
+		if (epoch < 11L)
+			epoch += 11L;
+		
 		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, testStartTime, epoch);
 		receiver.setReceiveTimeout(Duration.ofSeconds(10));
 		ehClient.createEpochReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10);

@@ -33,15 +33,15 @@ public class EventHubClientTest extends ApiTestBase
 			boolean firstOne = true;
 			for (CompletableFuture<EventHubClient> createFuture: createFutures)
 			{
-				EventHubClient ehClient = createFuture.join();
+				final EventHubClient ehClient = createFuture.join();
 				if (firstOne)
 				{
-					TestBase.pushEventsToPartition(ehClient, partitionId, 10);
+					TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 					firstOne = false;
 				}
 				
-				PartitionReceiver receiver = ehClient.createReceiver(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
-				receiver.receive(100).get();
+				PartitionReceiver receiver = ehClient.createReceiverSync(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false);
+				Assert.assertTrue(receiver.receiveSync(100).iterator().hasNext());
 			}
 		}
 		finally

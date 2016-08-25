@@ -3,6 +3,7 @@ package com.microsoft.azure.eventhubs.concurrency;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -23,7 +24,7 @@ public class ConcurrentReceiversTest extends ApiTestBase
 {
 	TestEventHubInfo eventHubInfo;
 	ConnectionStringBuilder connStr;
-	int partitionCount = 4;
+	int partitionCount = TestBase.PARTITION_COUNT;
 	int eventSentPerPartition = 10;
 	EventHubClient sender;
 	Instant sendStartTime;
@@ -39,10 +40,14 @@ public class ConcurrentReceiversTest extends ApiTestBase
 
 		sender = EventHubClient.createFromConnectionString(connStr.toString()).get();
 
+		@SuppressWarnings("unchecked")
+		CompletableFuture<Void>[] sendFutures = new CompletableFuture[partitionCount];
 		for (int i=0; i < partitionCount; i++)
 		{
-			TestBase.pushEventsToPartition(sender, Integer.toString(i), eventSentPerPartition);
+			sendFutures[i] = TestBase.pushEventsToPartition(sender, Integer.toString(i), eventSentPerPartition);
 		}
+		
+		CompletableFuture.allOf(sendFutures).get();
 	}
 
 	@Test()
