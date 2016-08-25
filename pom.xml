@@ -12,9 +12,9 @@
 	<url>https://github.com/Azure/azure-event-hubs</url>
 	
 	<properties>
-		<proton-j-version>0.13.0</proton-j-version>
-	  	<junit-version>4.10</junit-version>
-		<client-current-version>0.7.7</client-current-version>
+		<proton-j-version>0.13.1</proton-j-version>
+	  	<junit-version>4.12</junit-version>
+		<client-current-version>0.8.1-SNAPSHOT</client-current-version>
 	</properties>
 	
 	<build>
@@ -43,7 +43,7 @@
 	 	<dependency>
 	 	    <groupId>org.bouncycastle</groupId> 
 	 	    <artifactId>bcpkix-jdk15on</artifactId> 
-	 	    <version>1.47</version> 
+	 	    <version>1.49</version> 
 	  	</dependency>   	
 		<dependency>
 	 	    <groupId>junit</groupId>

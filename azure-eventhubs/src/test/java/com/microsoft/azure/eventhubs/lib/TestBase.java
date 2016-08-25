@@ -1,15 +1,14 @@
 package com.microsoft.azure.eventhubs.lib;
 
-import static org.junit.Assert.*;
-
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
 /**
  * all tests derive from this base - provides common functionality 
@@ -18,62 +17,26 @@ import com.microsoft.azure.servicebus.*;
  */
 public abstract class TestBase 
 {
-	final static String NoSasKey = "---------SasKey-----------";
-	final static String SasKey = NoSasKey;
-	public final static String SasRuleName = "RootManageSharedAccessKey";
-	
 	public static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test.trace");
-	
-	public static TestEventHubInfo checkoutTestEventHub()
-	{
-		HashMap<String, String> sasRule = new HashMap<String, String>();
-		sasRule.put(TestBase.SasRuleName, SasKey);
-		
-		// fill - in eventHub details which has atleast 4 partitions
-		return new TestEventHubInfo("deviceeventstream", "FirstEHub-ns", null, sasRule);
-	}
-	
-	public static ConnectionStringBuilder getConnectionString(TestEventHubInfo eventHubInfo)
-	{
-		Map.Entry<String, String> sasRule = eventHubInfo.getSasRule();
-		return new ConnectionStringBuilder(eventHubInfo.getNamespaceName(), eventHubInfo.getName(), sasRule.getKey(), sasRule.getValue());
-	}
-	
-	public static boolean isServiceRun()
-	{
-		return !SasKey.equalsIgnoreCase(NoSasKey);
-	}
-
-	public static void checkinTestEventHub(String name)
-	{
-		// TODO: Implement Checkin-Checkout functionality	
-	}
 	
 	public static CompletableFuture<Void> pushEventsToPartition(final EventHubClient ehClient, final String partitionId, final int noOfEvents) 
 			throws ServiceBusException
 	{
 		return ehClient.createPartitionSender(partitionId)
-				.thenAcceptAsync(new Consumer<PartitionSender>()
+				.thenComposeAsync(new Function<PartitionSender, CompletableFuture<Void>>()
 				{
 					@Override
-					public void accept(PartitionSender pSender)
+					public CompletableFuture<Void> apply(PartitionSender pSender)
 					{
+						@SuppressWarnings("unchecked")
+						CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents]; 
 						for (int count = 0; count< noOfEvents; count++)
 						{
 							EventData sendEvent = new EventData("test string".getBytes());
-
-							try
-							{
-								// don't send-batch here - tests depend on an increasing timestamp on events
-								pSender.send(sendEvent);
-							} catch (ServiceBusException e)
-							{
-								e.printStackTrace();
-							} finally
-							{
-								// close sender
-							}
+							sends[count] = pSender.send(sendEvent);
 						}
+						
+						return CompletableFuture.allOf(sends);
 					}
 				});
 	}

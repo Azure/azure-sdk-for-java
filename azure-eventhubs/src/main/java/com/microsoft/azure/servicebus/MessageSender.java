@@ -464,7 +464,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			else
 			{
 				final Map.Entry<String, ReplayableWorkItem<Void>> pendingSendEntry = IteratorUtil.getFirst(this.pendingSendsData.entrySet());
-				if (pendingSendEntry != null & pendingSendEntry.getValue() != null)
+				if (pendingSendEntry != null && pendingSendEntry.getValue() != null)
 				{
 					final TimeoutTracker tracker = pendingSendEntry.getValue().getTimeoutTracker();
 					if (tracker != null)

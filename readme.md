@@ -136,7 +136,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.7.5</version> 
+   		<version>0.8.0</version> 
    	</dependency>   
  ```
  
@@ -151,8 +151,12 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   - mvn -Declipse.workspace=<path_to_workspace> eclipse:configure-workspace
   - mvn eclipse:eclipse
 4. Open Eclipse and use "Import Existing Maven projects" to open the project.
-5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.7 or higher
-  * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.7 or higher]
+5. If you see any Build Errors - make sure the Execution Environment is set to java sdk version 1.8 or higher
+  * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.8 or higher]
+6. Set these Environment variables to be able to run unit tests:
+  * EVENT_HUB_CONNECTION_STRING
+  * PARTITION_COUNT
+  * EPHTESTSTORAGE
 
 ##How to provide feedback
 

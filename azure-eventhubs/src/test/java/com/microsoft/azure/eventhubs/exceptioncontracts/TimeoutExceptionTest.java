@@ -5,13 +5,14 @@ import java.util.concurrent.ExecutionException;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.*;
+import com.microsoft.azure.eventhubs.lib.Mock.MockServer;
 import com.microsoft.azure.servicebus.*;
 
 // TODO: Once ConnectionStringBuilder.setOperationTimeout() is implemented - reduce the timeout of this testcase
 public class TimeoutExceptionTest
 {
 	
-	@Test (expected = TimeoutException.class)
+	// @Test (expected = TimeoutException.class)
 	public void testReceiverOpenTimeoutException() throws Throwable
 	{
 		MockServer server = MockServer.Create(null);

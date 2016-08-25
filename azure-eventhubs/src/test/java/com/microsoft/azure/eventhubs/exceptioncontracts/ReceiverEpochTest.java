@@ -1,80 +1,104 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.lib.*;
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.eventhubs.lib.TestContext;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.ReceiverDisconnectedException;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
-public class ReceiverEpochTest extends TestBase
+public class ReceiverEpochTest extends ApiTestBase
 {
+	static final String cgName = TestContext.getConsumerGroupName();
+	static final String partitionId = "0";
 
-	@Test (expected = ReceiverDisconnectedException.class)
-	public void testEpochReceiver() throws Throwable
+	static EventHubClient ehClient;
+	
+	PartitionReceiver receiver;
+	
+	@BeforeClass
+	public static void initializeEventHub() throws ServiceBusException, IOException
 	{
-		Assume.assumeTrue(TestBase.isServiceRun());
-
-		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		try 
-		{
-			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
-			EventHubClient ehClient = EventHubClient.createFromConnectionString(connectionString.toString()).get();		
-
-			try
-			{
-				String cgName = eventHubInfo.getRandomConsumerGroup();
-				String partitionId = "0";
-				long epoch = 345632;
-				PartitionReceiver receiver = ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch).get();
-				EventCounter counter = new EventCounter();
-				receiver.setReceiveHandler(counter);
-
-				try
-				{
-					ehClient.createEpochReceiver(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10).get();
-				}
-				catch(ExecutionException exp)
-				{
-					throw exp.getCause();
-				}
-
-				Assert.assertTrue(counter.count > 0);
-			}
-			finally
-			{
-				ehClient.close();
-			}
-		}
-		finally
-		{
-			TestBase.checkinTestEventHub(eventHubInfo.getName());
-		}
+		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+	}
+	
+	@Test (expected = ReceiverDisconnectedException.class)
+	public void testEpochReceiverWins() throws ServiceBusException, InterruptedException, ExecutionException
+	{
+		int sendEventCount = 10;
+		
+		PartitionReceiver receiverLowEpoch = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
+		receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
+		TestBase.pushEventsToPartition(ehClient, partitionId, sendEventCount).get();
+		receiverLowEpoch.receiveSync(20);
+		
+		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), Long.MAX_VALUE);
+		
+		for (int retryCount = 0; retryCount < 10; retryCount ++) // retry to flush all msgs in cache
+			receiverLowEpoch.receiveSync(10);
 	}
 
-	public static final class EventCounter extends PartitionReceiveHandler
+	@Test (expected = ReceiverDisconnectedException.class)
+	public void testOldHighestEpochWins() throws ServiceBusException, InterruptedException, ExecutionException
 	{
-		public long count;
+		Instant testStartTime = Instant.now();
+		long epoch = Math.abs(new Random().nextLong());
 
-		public EventCounter()
+		if (epoch < 11L)
+			epoch += 11L;
+		
+		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, testStartTime, epoch);
+		receiver.setReceiveTimeout(Duration.ofSeconds(10));
+		ehClient.createEpochReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, false, epoch - 10);
+		
+		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
+		Assert.assertTrue(receiver.receiveSync(10).iterator().hasNext());
+	}
+	
+	@Test (expected = ReceiverDisconnectedException.class)
+	public void testNewHighestEpochWins() throws ServiceBusException, InterruptedException, ExecutionException
+	{
+		int sendEventCount = 10;
+		long epoch = new Random().nextInt(Integer.MAX_VALUE);
+
+		PartitionReceiver receiverLowEpoch = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), epoch);
+		receiverLowEpoch.setReceiveTimeout(Duration.ofSeconds(2));
+		TestBase.pushEventsToPartition(ehClient, partitionId, sendEventCount).get();
+		receiverLowEpoch.receiveSync(20);
+		
+		receiver = ehClient.createEpochReceiverSync(cgName, partitionId, Instant.now(), Long.MAX_VALUE);
+		
+		for (int retryCount = 0; retryCount < 10; retryCount ++) // retry to flush all msgs in cache
+			receiverLowEpoch.receiveSync(10);
+	}
+	
+	@After
+	public void testCleanup() throws ServiceBusException
+	{
+		if (receiver != null)
 		{
-			super(50);
-			count = 0;
+			receiver.closeSync();
 		}
-
-		@Override
-		public void onReceive(Iterable<EventData> events)
-		{
-			count++;			
-		}
-
-		@Override
-		public void onError(Throwable error)
-		{			
-		}
-
+	}
+	
+	@AfterClass
+	public static void cleanup() throws ServiceBusException
+	{
+		ehClient.closeSync();
 	}
 }

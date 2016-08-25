@@ -9,22 +9,20 @@ import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.*;
 import com.microsoft.azure.servicebus.*;
 
-public class EventHubClientTest extends TestBase
+public class EventHubClientTest extends ApiTestBase
 {
 	
 	@Test()
 	public void testParallelEventHubClients() throws ServiceBusException, InterruptedException, ExecutionException, IOException
 	{
-		Assume.assumeTrue(TestBase.isServiceRun());
+		final String consumerGroupName = TestContext.getConsumerGroupName();
+		final String partitionId = "0";
 		
-		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
-		String partitionId = "0";
-		
+		@SuppressWarnings("unchecked")
 		CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[4];
 		try 
 		{
-			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
+			ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 			for (int i = 0; i < 4 ; i ++)
 			{
 			 createFutures[i] = EventHubClient.createFromConnectionString(connectionString.toString());		
@@ -34,15 +32,15 @@ public class EventHubClientTest extends TestBase
 			boolean firstOne = true;
 			for (CompletableFuture<EventHubClient> createFuture: createFutures)
 			{
-				EventHubClient ehClient = createFuture.join();
+				final EventHubClient ehClient = createFuture.join();
 				if (firstOne)
 				{
-					TestBase.pushEventsToPartition(ehClient, partitionId, 10);
+					TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 					firstOne = false;
 				}
 				
-				PartitionReceiver receiver = ehClient.createReceiver(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false).get();
-				receiver.receive(100).get();
+				PartitionReceiver receiver = ehClient.createReceiverSync(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false);
+				Assert.assertTrue(receiver.receiveSync(100).iterator().hasNext());
 			}
 		}
 		finally

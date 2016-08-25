@@ -12,7 +12,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.7.5</version> 
+   		<version>0.8.0</version> 
    	</dependency>   
  ```
  

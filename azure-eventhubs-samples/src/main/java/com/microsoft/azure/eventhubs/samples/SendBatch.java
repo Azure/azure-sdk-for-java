@@ -36,9 +36,7 @@ public class SendBatch
 				PayloadEvent payload = new PayloadEvent(count);
 				byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
 				EventData sendEvent = new EventData(payloadBytes);
-				Map<String, String> applicationProperties = new HashMap<String, String>();
-				applicationProperties.put("from", "javaClient");
-				sendEvent.setProperties(applicationProperties);
+				sendEvent.getProperties().put("from", "javaClient");
 				events.add(sendEvent);
 			}
 
