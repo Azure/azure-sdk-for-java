@@ -172,12 +172,13 @@ class PartitionManager
     	catch (ExceptionWithAction e)
     	{
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e.getCause());
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction());
+    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction(), ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
     	}
     	catch (Exception e)
     	{
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e);
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Partition Manager Main Loop");
+    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Partition Manager Main Loop",
+    				ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
     	}
     	
     	// Cleanup
@@ -199,7 +200,8 @@ class PartitionManager
     		catch (InterruptedException | ExecutionException e)
     		{
     			this.host.logWithHost(Level.SEVERE, "Failure during shutdown", e);
-    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
+    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP,
+    					ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
     			
     			// By convention, bail immediately on interrupt, even though we're just cleaning
     			// up on the way out. Fortunately, we ARE just cleaning up on the way out, so we're
@@ -308,11 +310,12 @@ class PartitionManager
             Iterable<Future<Lease>> gettingAllLeases = leaseManager.getAllLeases();
             ArrayList<Lease> leasesOwnedByOthers = new ArrayList<Lease>();
             int ourLeasesCount = 0;
-            for (Future<Lease> future : gettingAllLeases)
+            for (Future<Lease> leaseFuture : gettingAllLeases)
             {
+            	Lease possibleLease = null;
             	try
             	{
-                    Lease possibleLease = future.get();
+                    possibleLease = leaseFuture.get();
                     if (possibleLease.isExpired())
                     {
                     	if (leaseManager.acquireLease(possibleLease).get())
@@ -350,7 +353,8 @@ class PartitionManager
             	catch (ExecutionException e)
             	{
             		this.host.logWithHost(Level.WARNING, "Failure getting/acquiring/renewing lease, skipping", e);
-            		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CHECKING_LEASES);
+            		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CHECKING_LEASES,
+            				((possibleLease != null) ? possibleLease.getPartitionId() : ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION));
             	}
             }
             
@@ -378,7 +382,8 @@ class PartitionManager
 	            		catch (ExecutionException e)
 	            		{
 	            			this.host.logWithHost(Level.SEVERE, "Exception stealing lease for partition " + stealee.getPartitionId(), e);
-	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE);
+	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE,
+	            					stealee.getPartitionId());
 	            		}
 	            	}
 	            }

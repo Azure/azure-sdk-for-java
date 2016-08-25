@@ -57,7 +57,7 @@ abstract class PartitionPump
             	// Null it out so we don't try to operate on it further.
             	this.processor = null;
             	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failed " + action, e);
-            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, action);
+            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, action, this.lease.getPartitionId());
             	
             	this.pumpStatus = PartitionPumpStatus.PP_OPENFAILED;
             }
@@ -107,7 +107,7 @@ abstract class PartitionPump
             	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failure closing processor", e);
             	// If closing the processor has failed, the state of the processor is suspect.
             	// Report the failure to the general error handler instead.
-            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Closing Event Processor");
+            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Closing Event Processor", this.lease.getPartitionId());
             }
         }
         
