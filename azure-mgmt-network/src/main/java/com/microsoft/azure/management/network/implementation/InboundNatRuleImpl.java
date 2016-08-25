@@ -97,7 +97,12 @@ class InboundNatRuleImpl
     @Override
     public InboundNatRuleImpl withFrontendPort(int port) {
         this.inner().withFrontendPort(port);
-        return this;
+        if (this.backendPort() == 0) {
+            // By default, assume the same backend port
+            return this.withBackendPort(port);
+        } else {
+            return this;
+        }
     }
 
     @Override

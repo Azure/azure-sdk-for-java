@@ -51,7 +51,7 @@ public interface InboundNatRule extends
          * The first stage of the inbound NAT rule definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithFrontend<ParentT> {
         }
 
         /**
@@ -78,6 +78,8 @@ public interface InboundNatRule extends
         interface WithBackendPort<ParentT> {
             /**
              * Specifies the backend port for this inbound NAT rule.
+             * <p>
+             * If not specified, the same backend port number is assumed as that used by the frontend.
              * @param port a port number
              * @return the next stage of the definition
              */
@@ -119,7 +121,7 @@ public interface InboundNatRule extends
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withFrontend(String frontendName);
+            WithFrontendPort<ParentT> withFrontend(String frontendName);
         }
 
         /**
@@ -280,7 +282,7 @@ public interface InboundNatRule extends
          * The first stage of the inbound NAT rule definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithFrontend<ParentT> {
         }
 
         /**
@@ -307,6 +309,8 @@ public interface InboundNatRule extends
         interface WithBackendPort<ParentT> {
             /**
              * Specifies the backend port for this inbound NAT rule.
+             * <p>
+             * If not specified, the same backend port number is assumed as that used by the frontend.
              * @param port a port number
              * @return the next stage of the definition
              */
@@ -348,7 +352,7 @@ public interface InboundNatRule extends
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withFrontend(String frontendName);
+            WithFrontendPort<ParentT> withFrontend(String frontendName);
         }
 
         /**
