@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
@@ -172,6 +173,11 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .withLoadDistribution(LoadDistribution.SOURCE_IP)
                     .attach()
 
+                // Inbound NAT rules
+                .defineInboundNatRule("natrule1")
+                    .withFrontend("frontend1")
+                    .withFrontendPort(88)
+                    .attach()
                 .create();
 
         // Verify frontends
@@ -199,6 +205,13 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Assert.assertTrue(rule.frontend().name().equalsIgnoreCase("frontend1"));
         Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
+        // Verify inbound NAT rules
+        Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
+        Assert.assertTrue(lb.inboundNatRules().size() == 1);
+        InboundNatRule inboundNatRule = lb.inboundNatRules().get("natrule1");
+        Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase("frontend1"));
+        Assert.assertTrue(inboundNatRule.frontendPort() == 88);
+        Assert.assertTrue(inboundNatRule.backendPort() == 88);
         return lb;
     }
 
@@ -209,6 +222,7 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withoutFrontend("default")
                 .withoutBackend("default")
                 .withoutLoadBalancingRule("rule1")
+                .withoutInboundNatRule("natrule1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -302,6 +316,17 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
             if (frontend.isInternetFacing()) {
                 info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
             }
+        }
+        
+        // Show inbound NAT rules
+        info.append("\n\tInbound NAT rules:");
+        for (InboundNatRule natRule : resource.inboundNatRules().values()) {
+            info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
+                .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
+                .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
+                .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
+                .append("\n\t\t\tAssociated NIC IP config: ").append(natRule.networkInterfaceIpConfigurationId())
+                .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled());
         }
 
         System.out.println(info.toString());
