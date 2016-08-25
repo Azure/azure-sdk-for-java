@@ -15,15 +15,14 @@ public class EventHubClientTest extends ApiTestBase
 	@Test()
 	public void testParallelEventHubClients() throws ServiceBusException, InterruptedException, ExecutionException, IOException
 	{
-		TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
-		String partitionId = "0";
+		final String consumerGroupName = TestContext.getConsumerGroupName();
+		final String partitionId = "0";
 		
 		@SuppressWarnings("unchecked")
 		CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[4];
 		try 
 		{
-			ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
+			ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 			for (int i = 0; i < 4 ; i ++)
 			{
 			 createFutures[i] = EventHubClient.createFromConnectionString(connectionString.toString());		

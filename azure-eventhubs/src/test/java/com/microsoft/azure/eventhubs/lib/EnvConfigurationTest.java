@@ -9,7 +9,7 @@ public class EnvConfigurationTest
 	public void EnvironmentConfigurationTest() throws Throwable
 	{
 		Assert.assertTrue(
-				"Set the environment variables - EVENT_HUB_NAME, NAMESPACE_NAME, SAS_KEY & SAS_RULE_NAME - to run the CITs",
-				TestBase.isTestConfigurationSet());
+				String.format("Set the environment variables - %s & %s - to run EventHubs client CITs", TestContext.EVENT_HUB_CONNECTION_STRING_ENV_NAME, TestContext.PARTIION_COUNT_ENV_NAME),
+				TestContext.isTestConfigurationSet());
 	}
 }

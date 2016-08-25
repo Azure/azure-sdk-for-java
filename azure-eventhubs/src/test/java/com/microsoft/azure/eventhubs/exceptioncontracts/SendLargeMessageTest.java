@@ -16,14 +16,13 @@ import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.PayloadSizeExceededException;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SendLargeMessageTest extends ApiTestBase
 {
-	static TestEventHubInfo eventHubInfo;
 	static ConnectionStringBuilder connStr;
 	static String partitionId = "0";
 	
@@ -36,17 +35,13 @@ public class SendLargeMessageTest extends ApiTestBase
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
 	{
-		Assume.assumeTrue(TestBase.isTestConfigurationSet());
-		
-		eventHubInfo = TestBase.checkoutTestEventHub();
-		connStr = new ConnectionStringBuilder(
-				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
+		connStr = TestContext.getConnectionString();
 	
 		ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
 		sender = ehClient.createPartitionSender(partitionId).get();
 		
 		receiverHub = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		receiver = receiverHub.createReceiver(eventHubInfo.getRandomConsumerGroup(), partitionId, Instant.now()).get();
+		receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, Instant.now()).get();
 	}
 	
 	@Test()

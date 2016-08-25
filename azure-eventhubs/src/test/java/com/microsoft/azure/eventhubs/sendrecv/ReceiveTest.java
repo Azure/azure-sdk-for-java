@@ -16,15 +16,14 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 public class ReceiveTest extends ApiTestBase
 {
-	static final TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-	static final String cgName = eventHubInfo.getRandomConsumerGroup();
+	static final String cgName = TestContext.getConsumerGroupName();
 	static final String partitionId = "0";
 	
 	static EventHubClient ehClient;
@@ -35,7 +34,7 @@ public class ReceiveTest extends ApiTestBase
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
 	{
-		final ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
+		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
 		TestBase.pushEventsToPartition(ehClient, partitionId, 25).get();
 	}
@@ -163,8 +162,6 @@ public class ReceiveTest extends ApiTestBase
 	@AfterClass()
 	public static void cleanup() throws ServiceBusException
 	{
-		TestBase.checkinTestEventHub(eventHubInfo.getName());
-
 		if (ehClient != null)
 		{
 			ehClient.closeSync();

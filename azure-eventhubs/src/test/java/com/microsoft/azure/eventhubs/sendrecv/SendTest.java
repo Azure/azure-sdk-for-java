@@ -19,15 +19,13 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SendTest extends ApiTestBase
 {
-	static final TestEventHubInfo eventHubInfo = TestBase.checkoutTestEventHub();
-	static final String cgName = eventHubInfo.getRandomConsumerGroup();
+	static final String cgName = TestContext.getConsumerGroupName();
 	static final String partitionId = "0";
 	static final String ORDER_PROPERTY = "order";
 	static EventHubClient ehClient;
@@ -38,7 +36,7 @@ public class SendTest extends ApiTestBase
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
 	{
-		final ConnectionStringBuilder connectionString = TestBase.getConnectionString(eventHubInfo);
+		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
 	}
 	
@@ -120,7 +118,7 @@ public class SendTest extends ApiTestBase
 		@Override
 		public void onError(Throwable error)
 		{
-			
+			this.validateSignal.completeExceptionally(error);
 		}		
 	}
 }
