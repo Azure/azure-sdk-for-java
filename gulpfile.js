@@ -91,7 +91,7 @@ var mappings = {
 };
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--modeler <modeler name>]\n");
     console.log("--spec-root");
     console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
@@ -99,6 +99,7 @@ gulp.task('default', function() {
         console.log('\t' + i.magenta);
     });
     console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
+    console.log("--modeler\n\tSpecifies which modeler to use. Default is 'Swagger'");
 });
 
 var isWindows = (process.platform.lastIndexOf('win') === 0);
@@ -110,6 +111,10 @@ var projects = args['projects'];
 var autoRestVersion = '0.17.0-Nightly20160706'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
+}
+var modeler = 'Swagger'; // default
+if (args['modeler'] !== undefined) {
+	modeler = args['modeler'];
 }
 var autoRestExe;
 
@@ -157,8 +162,12 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
-    cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator ' + generator + ' -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
-            ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT_NO_CODEGEN';
+    cmd = autoRestExe + ' -Modeler ' + modeler + 
+                        ' -CodeGenerator ' + generator + 
+                        ' -Namespace ' + mappings[project].package + 
+                        ' -Input ' + specRoot + '/' + mappings[project].source + 
+                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
+                        ' -Header MICROSOFT_MIT_NO_CODEGEN';
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
     }
