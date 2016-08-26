@@ -10,17 +10,19 @@ package com.microsoft.azure.management.website.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.website.NameIdentifier;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -29,6 +31,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -58,23 +62,31 @@ public final class GlobalDomainRegistrationsInner {
     interface GlobalDomainRegistrationsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
-        Call<ResponseBody> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
-        Call<ResponseBody> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDomainControlCenterSsoRequest(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/validateDomainRegistrationInformation")
-        Call<ResponseBody> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInputInner domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> validateDomainPurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body DomainRegistrationInputInner domainRegistrationInput, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
-        Call<ResponseBody> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifier identifier, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkDomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NameIdentifierInner identifier, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
-        Call<ResponseBody> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listDomainRecommendations(@Path("subscriptionId") String subscriptionId, @Body DomainRecommendationSearchParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllDomainsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("{nextLink}")
+        Observable<Response<ResponseBody>> listDomainRecommendationsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -84,57 +96,82 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<DomainCollectionInner> getAllDomains() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllDomainsDelegate(call.execute());
+    public ServiceResponse<PagedList<DomainInner>> getAllDomains() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<DomainInner>> response = getAllDomainsSinglePageAsync().toBlocking().single();
+        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+            @Override
+            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<>(pagedList, response.getResponse());
     }
 
     /**
      * Lists all domains in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DomainCollectionInner> getAllDomainsAsync(final ServiceCallback<DomainCollectionInner> serviceCallback) {
+    public ServiceCall<Page<DomainInner>> getAllDomainsAsync(final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllDomainsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(String nextPageLink) {
+                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the observable to the List&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsAsync() {
+        return getAllDomainsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<DomainCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<DomainCollectionInner> clientResponse = getAllDomainsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DomainInner>> result = getAllDomainsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<DomainCollectionInner> getAllDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DomainCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DomainCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<DomainInner>> getAllDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -148,49 +185,43 @@ public final class GlobalDomainRegistrationsInner {
      * @return the DomainControlCenterSsoRequestInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequest() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDomainControlCenterSsoRequestDelegate(call.execute());
+        return getDomainControlCenterSsoRequestAsync().toBlocking().single();
     }
 
     /**
      * Generates a single sign on request for domain management portal.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
+        return ServiceCall.create(getDomainControlCenterSsoRequestAsync(), serviceCallback);
+    }
+
+    /**
+     * Generates a single sign on request for domain management portal.
+     *
+     * @return the observable to the DomainControlCenterSsoRequestInner object
+     */
+    public Observable<ServiceResponse<DomainControlCenterSsoRequestInner>> getDomainControlCenterSsoRequestAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<DomainControlCenterSsoRequestInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainControlCenterSsoRequestInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<DomainControlCenterSsoRequestInner> clientResponse = getDomainControlCenterSsoRequestDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getDomainControlCenterSsoRequest(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainControlCenterSsoRequestInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DomainControlCenterSsoRequestInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DomainControlCenterSsoRequestInner> clientResponse = getDomainControlCenterSsoRequestDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequestDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -210,18 +241,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> validateDomainPurchaseInformation(DomainRegistrationInputInner domainRegistrationInput) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (domainRegistrationInput == null) {
-            throw new IllegalArgumentException("Parameter domainRegistrationInput is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(domainRegistrationInput);
-        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return validateDomainPurchaseInformationDelegate(call.execute());
+        return validateDomainPurchaseInformationAsync(domainRegistrationInput).toBlocking().single();
     }
 
     /**
@@ -229,9 +249,19 @@ public final class GlobalDomainRegistrationsInner {
      *
      * @param domainRegistrationInput Domain registration information
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> validateDomainPurchaseInformationAsync(DomainRegistrationInputInner domainRegistrationInput, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(validateDomainPurchaseInformationAsync(domainRegistrationInput), serviceCallback);
+    }
+
+    /**
+     * Validates domain registration information.
+     *
+     * @param domainRegistrationInput Domain registration information
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> validateDomainPurchaseInformationAsync(DomainRegistrationInputInner domainRegistrationInput) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -242,26 +272,18 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(domainRegistrationInput);
-        Call<ResponseBody> call = service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = validateDomainPurchaseInformationDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.validateDomainPurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = validateDomainPurchaseInformationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> validateDomainPurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -280,26 +302,25 @@ public final class GlobalDomainRegistrationsInner {
      * @return the DomainAvailablilityCheckResultInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String name = null;
-        NameIdentifier identifier = new NameIdentifier();
-        identifier.withName(null);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
-        return checkDomainAvailabilityDelegate(call.execute());
+        return checkDomainAvailabilityAsync().toBlocking().single();
     }
 
     /**
      * Checks if a domain is available for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceCall.create(checkDomainAvailabilityAsync(), serviceCallback);
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @return the observable to the DomainAvailablilityCheckResultInner object
+     */
+    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -307,28 +328,20 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String name = null;
-        NameIdentifier identifier = new NameIdentifier();
+        NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(null);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
-        final ServiceCall<DomainAvailablilityCheckResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<DomainAvailablilityCheckResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainAvailablilityCheckResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DomainAvailablilityCheckResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -341,16 +354,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the DomainAvailablilityCheckResultInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        NameIdentifier identifier = new NameIdentifier();
-        identifier.withName(name);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
-        return checkDomainAvailabilityDelegate(call.execute());
+        return checkDomainAvailabilityAsync(name).toBlocking().single();
     }
 
     /**
@@ -358,37 +362,39 @@ public final class GlobalDomainRegistrationsInner {
      *
      * @param name Name of the object
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
+        return ServiceCall.create(checkDomainAvailabilityAsync(name), serviceCallback);
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @param name Name of the object
+     * @return the observable to the DomainAvailablilityCheckResultInner object
+     */
+    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        NameIdentifier identifier = new NameIdentifier();
+        NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(name);
-        Call<ResponseBody> call = service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent());
-        final ServiceCall<DomainAvailablilityCheckResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<DomainAvailablilityCheckResultInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<DomainAvailablilityCheckResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.checkDomainAvailability(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), identifier, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainAvailablilityCheckResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DomainAvailablilityCheckResultInner> clientResponse = checkDomainAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -405,21 +411,17 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NameIdentifierCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<NameIdentifierCollectionInner> listDomainRecommendations(DomainRecommendationSearchParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listDomainRecommendationsDelegate(call.execute());
+    public ServiceResponse<PagedList<NameIdentifierInner>> listDomainRecommendations(final DomainRecommendationSearchParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsSinglePageAsync(parameters).toBlocking().single();
+        PagedList<NameIdentifierInner> pagedList = new PagedList<NameIdentifierInner>(response.getBody()) {
+            @Override
+            public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<>(pagedList, response.getResponse());
     }
 
     /**
@@ -427,9 +429,44 @@ public final class GlobalDomainRegistrationsInner {
      *
      * @param parameters Domain recommendation search parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<NameIdentifierCollectionInner> listDomainRecommendationsAsync(DomainRecommendationSearchParametersInner parameters, final ServiceCallback<NameIdentifierCollectionInner> serviceCallback) {
+    public ServiceCall<Page<NameIdentifierInner>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listDomainRecommendationsSinglePageAsync(parameters),
+            new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(String nextPageLink) {
+                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters
+     * @return the observable to the List&lt;NameIdentifierInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters) {
+        return listDomainRecommendationsSinglePageAsync(parameters)
+            .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters
+     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsSinglePageAsync(final DomainRecommendationSearchParametersInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -440,31 +477,199 @@ public final class GlobalDomainRegistrationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<NameIdentifierCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<NameIdentifierCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<NameIdentifierCollectionInner> clientResponse = listDomainRecommendationsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.listDomainRecommendations(this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<NameIdentifierInner>> result = listDomainRecommendationsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<NameIdentifierCollectionInner> listDomainRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<NameIdentifierCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<NameIdentifierCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<NameIdentifierInner>> listDomainRecommendationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<DomainInner>> getAllDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<DomainInner>> response = getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+            @Override
+            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Page<DomainInner>> getAllDomainsNextAsync(final String nextPageLink, final ServiceCall<Page<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllDomainsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(String nextPageLink) {
+                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextAsync(final String nextPageLink) {
+        return getAllDomainsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllDomainsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DomainInner>> result = getAllDomainsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DomainInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DomainInner>> getAllDomainsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DomainInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DomainInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<NameIdentifierInner>> listDomainRecommendationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<NameIdentifierInner> pagedList = new PagedList<NameIdentifierInner>(response.getBody()) {
+            @Override
+            public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Page<NameIdentifierInner>> listDomainRecommendationsNextAsync(final String nextPageLink, final ServiceCall<Page<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listDomainRecommendationsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(String nextPageLink) {
+                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;NameIdentifierInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextAsync(final String nextPageLink) {
+        return listDomainRecommendationsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listDomainRecommendationsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<NameIdentifierInner>> result = listDomainRecommendationsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<NameIdentifierInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<NameIdentifierInner>> listDomainRecommendationsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<NameIdentifierInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<NameIdentifierInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

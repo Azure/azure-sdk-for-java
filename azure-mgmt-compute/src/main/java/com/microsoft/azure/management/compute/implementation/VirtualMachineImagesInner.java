@@ -15,17 +15,17 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -55,23 +55,23 @@ public final class VirtualMachineImagesInner {
     interface VirtualMachineImagesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
-        Call<ResponseBody> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("version") String version, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
-        Call<ResponseBody> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers")
-        Call<ResponseBody> listOffers(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listOffers(@Path("location") String location, @Path("publisherName") String publisherName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers")
-        Call<ResponseBody> listPublishers(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPublishers(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
-        Call<ResponseBody> listSkus(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSkus(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -89,29 +89,7 @@ public final class VirtualMachineImagesInner {
      * @return the VirtualMachineImageInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<VirtualMachineImageInner> get(String location, String publisherName, String offer, String skus, String version) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (publisherName == null) {
-            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
-        }
-        if (offer == null) {
-            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
-        }
-        if (skus == null) {
-            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
-        }
-        if (version == null) {
-            throw new IllegalArgumentException("Parameter version is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
+        return getAsync(location, publisherName, offer, skus, version).toBlocking().single();
     }
 
     /**
@@ -123,9 +101,23 @@ public final class VirtualMachineImagesInner {
      * @param skus the String value
      * @param version the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
+        return ServiceCall.create(getAsync(location, publisherName, offer, skus, version), serviceCallback);
+    }
+
+    /**
+     * Gets a virtual machine image.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param version the String value
+     * @return the observable to the VirtualMachineImageInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineImageInner>> getAsync(String location, String publisherName, String offer, String skus, String version) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -147,26 +139,18 @@ public final class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<VirtualMachineImageInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<VirtualMachineImageInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<VirtualMachineImageInner> clientResponse = getDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.get(location, publisherName, offer, skus, version, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineImageInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VirtualMachineImageInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VirtualMachineImageInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VirtualMachineImageInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -189,29 +173,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<VirtualMachineImageResourceInner>> list(String location, String publisherName, String offer, String skus) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (publisherName == null) {
-            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
-        }
-        if (offer == null) {
-            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
-        }
-        if (skus == null) {
-            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String filter = null;
-        final Integer top = null;
-        final String orderby = null;
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listDelegate(call.execute());
+        return listAsync(location, publisherName, offer, skus).toBlocking().single();
     }
 
     /**
@@ -222,9 +184,22 @@ public final class VirtualMachineImagesInner {
      * @param offer the String value
      * @param skus the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceCall.create(listAsync(location, publisherName, offer, skus), serviceCallback);
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listAsync(String location, String publisherName, String offer, String skus) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -246,26 +221,18 @@ public final class VirtualMachineImagesInner {
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -284,26 +251,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<VirtualMachineImageResourceInner>> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (publisherName == null) {
-            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
-        }
-        if (offer == null) {
-            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
-        }
-        if (skus == null) {
-            throw new IllegalArgumentException("Parameter skus is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listDelegate(call.execute());
+        return listAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single();
     }
 
     /**
@@ -317,9 +265,25 @@ public final class VirtualMachineImagesInner {
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceCall.create(listAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param filter The filter to apply on the operation.
+     * @param top the Integer value
+     * @param orderby the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -338,26 +302,18 @@ public final class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -378,20 +334,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<VirtualMachineImageResourceInner>> listOffers(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (publisherName == null) {
-            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listOffers(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listOffersDelegate(call.execute());
+        return listOffersAsync(location, publisherName).toBlocking().single();
     }
 
     /**
@@ -400,9 +343,20 @@ public final class VirtualMachineImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceCall.create(listOffersAsync(location, publisherName), serviceCallback);
+    }
+
+    /**
+     * Gets a list of virtual machine image offers.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listOffersAsync(String location, String publisherName) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -415,26 +369,18 @@ public final class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listOffers(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listOffersDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.listOffers(location, publisherName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listOffersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -454,17 +400,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<VirtualMachineImageResourceInner>> listPublishers(String location) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listPublishers(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listPublishersDelegate(call.execute());
+        return listPublishersAsync(location).toBlocking().single();
     }
 
     /**
@@ -472,9 +408,19 @@ public final class VirtualMachineImagesInner {
      *
      * @param location the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceCall.create(listPublishersAsync(location), serviceCallback);
+    }
+
+    /**
+     * Gets a list of virtual machine image publishers.
+     *
+     * @param location the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listPublishersAsync(String location) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -484,26 +430,18 @@ public final class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listPublishers(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listPublishersDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.listPublishers(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listPublishersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listPublishersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -525,23 +463,7 @@ public final class VirtualMachineImagesInner {
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<VirtualMachineImageResourceInner>> listSkus(String location, String publisherName, String offer) throws CloudException, IOException, IllegalArgumentException {
-        if (location == null) {
-            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
-        }
-        if (publisherName == null) {
-            throw new IllegalArgumentException("Parameter publisherName is required and cannot be null.");
-        }
-        if (offer == null) {
-            throw new IllegalArgumentException("Parameter offer is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listSkus(location, publisherName, offer, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listSkusDelegate(call.execute());
+        return listSkusAsync(location, publisherName, offer).toBlocking().single();
     }
 
     /**
@@ -551,9 +473,21 @@ public final class VirtualMachineImagesInner {
      * @param publisherName the String value
      * @param offer the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceCall.create(listSkusAsync(location, publisherName, offer), serviceCallback);
+    }
+
+    /**
+     * Gets a list of virtual machine image skus.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listSkusAsync(String location, String publisherName, String offer) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -569,26 +503,18 @@ public final class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listSkus(location, publisherName, offer, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<VirtualMachineImageResourceInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<VirtualMachineImageResourceInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listSkusDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.listSkus(location, publisherName, offer, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VirtualMachineImageResourceInner>> clientResponse = listSkusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VirtualMachineImageResourceInner>> listSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

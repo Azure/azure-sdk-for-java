@@ -83,7 +83,7 @@ var mappings = {
     },
     'keyvault': {
         'dir': 'azure-keyvault',
-        'source': 'keyvault\2015-06-01\swagger\keyvault.json',
+        'source': 'keyvault/2015-06-01/swagger/keyvault.json',
         'package': 'com.microsoft.azure.keyvault',
         'fluent': false,
         'args': '-FT 1'

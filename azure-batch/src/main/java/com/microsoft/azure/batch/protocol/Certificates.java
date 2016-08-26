@@ -22,14 +22,14 @@ import com.microsoft.azure.batch.protocol.models.CertificateGetOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateListHeaders;
 import com.microsoft.azure.batch.protocol.models.CertificateListNextOptions;
 import com.microsoft.azure.batch.protocol.models.CertificateListOptions;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
-import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -52,10 +52,9 @@ public interface Certificates {
      *
      * @param certificate The certificate to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback);
     /**
      * Adds a certificate to the specified account.
      *
@@ -74,10 +73,18 @@ public interface Certificates {
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @param certificateAddOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -93,10 +100,9 @@ public interface Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Page<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback);
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -113,10 +119,17 @@ public interface Certificates {
      *
      * @param certificateListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param certificateListOptions Additional parameters for the operation
+     * @return the observable to the List&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponse<Page<Certificate>>> listAsync(final CertificateListOptions certificateListOptions);
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
@@ -136,10 +149,9 @@ public interface Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback);
     /**
      * Cancels a failed deletion of a certificate from the specified account.
      *
@@ -160,10 +172,19 @@ public interface Certificates {
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions);
 
     /**
      * Deletes a certificate from the specified account.
@@ -183,10 +204,9 @@ public interface Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback);
     /**
      * Deletes a certificate from the specified account.
      *
@@ -207,10 +227,19 @@ public interface Certificates {
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a certificate from the specified account.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @param certificateDeleteOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions);
 
     /**
      * Gets information about the specified certificate.
@@ -230,10 +259,9 @@ public interface Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback);
     /**
      * Gets information about the specified certificate.
      *
@@ -254,10 +282,19 @@ public interface Certificates {
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback);
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @param certificateGetOptions Additional parameters for the operation
+     * @return the observable to the Certificate object
+     */
+    Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -268,7 +305,7 @@ public interface Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -276,10 +313,9 @@ public interface Certificates {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -290,7 +326,7 @@ public interface Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -299,9 +335,17 @@ public interface Certificates {
      * @param certificateListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
+     * @return the observable to the List&lt;Certificate&gt; object
+     */
+    Observable<ServiceResponse<Page<Certificate>>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
 
 }

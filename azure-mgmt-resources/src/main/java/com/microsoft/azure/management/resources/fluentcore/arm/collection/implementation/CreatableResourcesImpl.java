@@ -61,26 +61,13 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
-        final ServiceCall<CreatedResources<T>> serviceCall = new ServiceCall<>(null);
-        createAsync(creatables).subscribe(new Action1<CreatedResources<T>>() {
+        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
-            public void call(CreatedResources<T> fluentModelT) {
-                ServiceResponse<CreatedResources<T>> serviceResponse = new ServiceResponse<>(fluentModelT, null);
-                serviceCall.success(serviceResponse);
-                if (callback != null) {
-                    callback.success(serviceResponse);
-                }
+            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
+                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
+                return new ServiceResponse<>(ts, null);
             }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                serviceCall.failure(throwable);
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-            }
-        });
-        return serviceCall;
+        }), callback);
     }
 
     /**

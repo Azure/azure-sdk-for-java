@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 /**
- * Specfies the peering config.
+ * Specifies the peering config.
  */
 public class ExpressRouteCircuitPeeringConfig {
     /**

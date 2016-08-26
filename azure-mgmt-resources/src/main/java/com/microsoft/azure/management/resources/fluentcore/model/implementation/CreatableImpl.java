@@ -12,7 +12,6 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -123,25 +122,14 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     }
 
     protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable, final ServiceCallback<FluentModelT> callback) {
-        final ServiceCall<FluentModelT> serviceCall = new ServiceCall<>(null);
-        observable.subscribe(new Action1<FluentModelT>() {
-            @Override
-            public void call(FluentModelT fluentModelT) {
-                ServiceResponse<FluentModelT> serviceResponse = new ServiceResponse<>(fluentModelT, null);
-                serviceCall.success(serviceResponse);
-                if (callback != null) {
-                    callback.success(serviceResponse);
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                serviceCall.failure(throwable);
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-            }
-        });
-        return serviceCall;
+        return ServiceCall.create(
+                observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
+                    @Override
+                    public ServiceResponse<FluentModelT> call(FluentModelT fluentModelT) {
+                        // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map (and this method) can be removed
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
     }
 }
