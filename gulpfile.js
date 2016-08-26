@@ -44,6 +44,18 @@ var mappings = {
         'package': 'com.microsoft.azure.management.website',
         'args': '-FT 1'
     },
+    'graph.rbac': {
+        'dir': 'azure-mgmt-graph-rbac',
+        'source': 'arm-graphrbac/compositeGraphRbacManagementClient.json',
+        'package': 'com.microsoft.azure.management.graph.rbac',
+        'args': '-FT 1'
+    },
+    'redis': {
+        'dir': 'azure-mgmt-redis',
+        'source': 'arm-redis/2015-08-01/swagger/redis.json',
+        'package': 'com.microsoft.azure.management.redis',
+        'args': '-FT 1'
+    },
     'datalake.store.filesystem': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
@@ -85,13 +97,6 @@ var mappings = {
         'dir': 'azure-keyvault',
         'source': 'keyvault\2015-06-01\swagger\keyvault.json',
         'package': 'com.microsoft.azure.keyvault',
-        'fluent': false,
-        'args': '-FT 1'
-    },
-    'graph.rbac': {
-        'dir': 'azure-mgmt-graph-rbac',
-        'source': 'arm-graphrbac/compositeGraphRbacManagementClient.json',
-        'package': 'com.microsoft.azure.graph.rbac',
         'fluent': false,
         'args': '-FT 1'
     }
