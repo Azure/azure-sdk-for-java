@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.models.JsonWebKeyType;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
 /**
@@ -14,9 +16,9 @@ public final class CreateKeyRequest {
 
     private final String vaultBaseUrl;
     private final String keyName;
-    private final String keyType;
+    private final JsonWebKeyType keyType;
     private final Integer keySize;
-    private final List<String> keyOperations;
+    private final List<JsonWebKeyOperation> keyOperations;
     private final KeyAttributes keyAttributes;
     private final Map<String, String> tags;
 
@@ -28,11 +30,11 @@ public final class CreateKeyRequest {
         // Required parameters
         private final String vaultBaseUrl;
         private final String keyName;
-        private final String keyType;
+        private final JsonWebKeyType keyType;
 
         // Optional parameters
         private Integer keySize;
-        private List<String> keyOperations;
+        private List<JsonWebKeyOperation> keyOperations;
         private KeyAttributes attributes;
         private Map<String, String> tags;
 
@@ -47,7 +49,7 @@ public final class CreateKeyRequest {
          *            The type of key to create. Possible values include: 'EC',
          *            'RSA', 'RSA-HSM', 'oct'
          */
-        public Builder(String vaultBaseUrl, String keyName, String keyType) {
+        public Builder(String vaultBaseUrl, String keyName, JsonWebKeyType keyType) {
             this.vaultBaseUrl = vaultBaseUrl;
             this.keyName = keyName;
             this.keyType = keyType;
@@ -72,7 +74,7 @@ public final class CreateKeyRequest {
          *            the key operation list.
          * @return the Builder object itself.
          */
-        public Builder withKeyOperations(List<String> keyOperations) {
+        public Builder withKeyOperations(List<JsonWebKeyOperation> keyOperations) {
             this.keyOperations = keyOperations;
             return this;
         }
@@ -119,7 +121,7 @@ public final class CreateKeyRequest {
         keySize = builder.keySize;
 
         if (builder.keyOperations != null) {
-            keyOperations = new ArrayList<String>(builder.keyOperations);
+            keyOperations = new ArrayList<JsonWebKeyOperation>(builder.keyOperations);
         } else {
             keyOperations = null;
         }
@@ -155,7 +157,7 @@ public final class CreateKeyRequest {
     /**
      * @return the key type
      */
-    public String keyType() {
+    public JsonWebKeyType keyType() {
         return keyType;
     }
 
@@ -169,7 +171,7 @@ public final class CreateKeyRequest {
     /**
      * @return the key operations
      */
-    public List<String> keyOperations() {
+    public List<JsonWebKeyOperation> keyOperations() {
         return keyOperations;
     }
 
