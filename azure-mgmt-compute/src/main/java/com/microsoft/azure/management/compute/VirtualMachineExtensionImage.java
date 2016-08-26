@@ -5,6 +5,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
  * An immutable client-side representation of an Azure virtual machine extension image.
+ * <p>
+ * Note: Azure virtual machine extension image is also referred as virtual machine extension handler.
  */
 public interface VirtualMachineExtensionImage extends
         Wrapper<VirtualMachineExtensionImageInner> {
