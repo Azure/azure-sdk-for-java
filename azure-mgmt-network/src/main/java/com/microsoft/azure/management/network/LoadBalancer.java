@@ -62,6 +62,9 @@ public interface LoadBalancer extends
      */
     Map<String, LoadBalancingRule> loadBalancingRules();
 
+    /**
+     * @return inbound NAT pools, indexed by name
+     */
     Map<String, InboundNatPool> inboundNatPools();
 
     /**
