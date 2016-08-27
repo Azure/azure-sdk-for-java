@@ -45,7 +45,7 @@ If you save such service principal-based credentials as a file, or store them in
 
 >:warning: Note: exercise caution when saving credentials in a file. Anyone that gains access to that file will have the same access privileges to Azure as your application. In general, file-based authentication is not recommended in production scenarios and should only be used as a quick shortcut to getting started in dev/test scenarios.
 
-You can create a service principal and grant it access privileges for a given subscription by following these steps:
+You can create a service principal and grant it access privileges for a given subscription by following these steps (or through [Azure PowerShell/Xplat CLI](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/)):
 
 1. Log into [your Azure account](http://portal.azure.com).
 1. Select **Browse > Active Directory**.
