@@ -16,17 +16,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface InboundNatRule extends
     Wrapper<InboundNatRuleInner>,
-    ChildResource {
+    ChildResource,
+    InboundNatCommon {
 
     /**
      * @return the resource ID of the network interface IP configuration associated with this NAT rule
      */
     String networkInterfaceIpConfigurationId();
-
-    /**
-     * @return the backend port number associated with this NAT rule
-     */
-    int backendPort();
 
     /**
      * @return the frontend port number associated with this NAT rule
@@ -39,11 +35,6 @@ public interface InboundNatRule extends
     boolean floatingIpEnabled();
 
     /**
-     * @return the frontend IP configuration associated with this NAT rule
-     */
-    Frontend frontend();
-
-    /**
      * Grouping of inbound NAT rule definition stages.
      */
     interface DefinitionStages {
@@ -51,7 +42,7 @@ public interface InboundNatRule extends
          * The first stage of the inbound NAT rule definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithFrontend<ParentT> {
+        interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
@@ -65,25 +56,31 @@ public interface InboundNatRule extends
             Attachable.InDefinition<ParentT>,
             DefinitionStages.WithBackendPort<ParentT>,
             DefinitionStages.WithFloatingIp<ParentT>,
-            DefinitionStages.WithFrontendPort<ParentT>,
-            DefinitionStages.WithIdleTimeout<ParentT>,
-            DefinitionStages.WithProtocol<ParentT>,
-            DefinitionStages.WithFrontend<ParentT> {
+            DefinitionStages.WithIdleTimeout<ParentT> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the transport protocol.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithProtocol<ParentT> extends
+            InboundNatCommon.DefinitionStages.WithProtocol<WithFrontend<ParentT>> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify a frontend for the rule to apply to.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFrontend<ParentT> extends
+            InboundNatCommon.DefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**
          * The stage of an inbound NAT rule definition allowing to specify the backend port.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithBackendPort<ParentT> {
-            /**
-             * Specifies the backend port for this inbound NAT rule.
-             * <p>
-             * If not specified, the same backend port number is assumed as that used by the frontend.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBackendPort(int port);
+        interface WithBackendPort<ParentT> extends
+            InboundNatCommon.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
 
         /**
@@ -112,19 +109,6 @@ public interface InboundNatRule extends
         }
 
         /**
-         * The stage of an inbound NAT rule definition allowing to specify a frontend for the rule to apply to.
-         * @param <ParentT> the parent load balancer type
-         */
-        interface WithFrontend<ParentT> {
-            /**
-             * Specifies the frontend for the inbound NAT rule to apply to.
-             * @param frontendName an existing frontend name on this load balancer
-             * @return the next stage of the definition
-             */
-            WithFrontendPort<ParentT> withFrontend(String frontendName);
-        }
-
-        /**
          * The stage of an inbound NAT rule definition allowing to specify the frontend port.
          * @param <ParentT> the parent load balancer type
          */
@@ -149,26 +133,17 @@ public interface InboundNatRule extends
              */
             WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
         }
-
-        /**
-         * The stage of an inbound NAT rule definition allowing to specify the transport protocol for the rule to apply to.
-         * @param <ParentT> the patent load balancer type
-         */
-        interface WithProtocol<ParentT> {
-            /**
-             * Specifies the transport protocol for the inbound NAT rule to apply to.
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withProtocol(TransportProtocol protocol);
-        }
     }
 
-    /** The entirety of an inbound NAT rule definition.
+    /**
+     * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
+        DefinitionStages.WithProtocol<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>,
+        DefinitionStages.WithFrontendPort<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
     }
 
@@ -179,13 +154,22 @@ public interface InboundNatRule extends
         /**
          * The stage of an inbound NAT rule update allowing to specify the backend port.
          */
-        interface WithBackendPort {
-            /**
-             * Specifies the backend port for this inbound NAT rule.
-             * @param port a port number
-             * @return the next stage of the update
-             */
-            Update withBackendPort(int port);
+        interface WithBackendPort extends
+            InboundNatCommon.UpdateStages.WithBackendPort<Update> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify a frontend for the rule to apply to.
+         */
+        interface WithFrontend extends
+            InboundNatCommon.UpdateStages.WithFrontend<Update> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule update allowing to specify the transport protocol for the rule to apply to.
+         */
+        interface WithProtocol extends
+            InboundNatCommon.UpdateStages.WithProtocol<Update> {
         }
 
         /**
@@ -213,18 +197,6 @@ public interface InboundNatRule extends
         }
 
         /**
-         * The stage of an inbound NAT rule update allowing to specify a frontend for the rule to apply to.
-         */
-        interface WithFrontend {
-            /**
-             * Specifies the frontend for the inbound NAT rule to apply to.
-             * @param frontendName an existing frontend name on this load balancer
-             * @return the next stage of the update
-             */
-            Update withFrontend(String frontendName);
-        }
-
-        /**
          * The stage of an inbound NAT rule update allowing to specify the frontend port.
          */
         interface WithFrontendPort {
@@ -247,18 +219,6 @@ public interface InboundNatRule extends
              */
             Update withIdleTimeoutInMinutes(int minutes);
         }
-
-        /**
-         * The stage of an inbound NAT rule update allowing to specify the transport protocol for the rule to apply to.
-         */
-        interface WithProtocol {
-            /**
-             * Specifies the transport protocol for the inbound NAT rule to apply to.
-             * @param protocol a transport protocol
-             * @return the next stage of the update
-             */
-            Update withProtocol(TransportProtocol protocol);
-        }
     }
 
     /**
@@ -275,46 +235,52 @@ public interface InboundNatRule extends
     }
 
     /**
-     * Grouping of inbound NAT rule definition stages applicable as part of a load balancer update.
+     * Grouping of inbound NAT rule definition stages as part of a load balancer update.
      */
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithFrontend<ParentT> {
+        interface Blank<ParentT> extends WithProtocol<ParentT> {
         }
 
         /**
          * The final stage of the inbound NAT rule definition.
          * <p>
-         * At this stage, any remaining optional settings can be specified, or the inbound NAT rule
-         * definition can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * At this stage, any remaining optional settings can be specified, or the inbound NAT rule definition
+         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
             UpdateDefinitionStages.WithBackendPort<ParentT>,
             UpdateDefinitionStages.WithFloatingIp<ParentT>,
-            UpdateDefinitionStages.WithFrontend<ParentT>,
-            UpdateDefinitionStages.WithFrontendPort<ParentT>,
-            UpdateDefinitionStages.WithIdleTimeout<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT> {
+            UpdateDefinitionStages.WithIdleTimeout<ParentT> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify the transport protocol.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithProtocol<ParentT> extends
+            InboundNatCommon.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>> {
+        }
+
+        /**
+         * The stage of an inbound NAT rule definition allowing to specify a frontend for the rule to apply to.
+         * @param <ParentT> the parent load balancer type
+         */
+        interface WithFrontend<ParentT> extends
+            InboundNatCommon.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**
          * The stage of an inbound NAT rule definition allowing to specify the backend port.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithBackendPort<ParentT> {
-            /**
-             * Specifies the backend port for this inbound NAT rule.
-             * <p>
-             * If not specified, the same backend port number is assumed as that used by the frontend.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBackendPort(int port);
+        interface WithBackendPort<ParentT> extends
+            InboundNatCommon.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
 
         /**
@@ -343,19 +309,6 @@ public interface InboundNatRule extends
         }
 
         /**
-         * The stage of an inbound NAT rule definition allowing to specify a frontend for the rule to apply to.
-         * @param <ParentT> the parent load balancer type
-         */
-        interface WithFrontend<ParentT> {
-            /**
-             * Specifies the frontend for the inbound NAT rule to apply to.
-             * @param frontendName an existing frontend name on this load balancer
-             * @return the next stage of the definition
-             */
-            WithFrontendPort<ParentT> withFrontend(String frontendName);
-        }
-
-        /**
          * The stage of an inbound NAT rule definition allowing to specify the frontend port.
          * @param <ParentT> the parent load balancer type
          */
@@ -380,26 +333,17 @@ public interface InboundNatRule extends
              */
             WithAttach<ParentT> withIdleTimeoutInMinutes(int minutes);
         }
-
-        /**
-         * The stage of an inbound NAT rule definition allowing to specify the transport protocol for the rule to apply to.
-         * @param <ParentT> the patent load balancer type
-         */
-        interface WithProtocol<ParentT> {
-            /**
-             * Specifies the transport protocol for the inbound NAT rule to apply to.
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withProtocol(TransportProtocol protocol);
-        }
     }
 
-    /** The entirety of an inbound NAT rule definition as part of a load balancer update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+    /**
+     * The entirety of an inbound NAT rule definition.
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithFrontend<ParentT>,
+        UpdateDefinitionStages.WithFrontendPort<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

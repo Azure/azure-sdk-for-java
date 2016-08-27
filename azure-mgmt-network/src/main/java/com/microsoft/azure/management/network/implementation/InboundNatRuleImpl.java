@@ -54,6 +54,11 @@ class InboundNatRuleImpl
     }
 
     @Override
+    public TransportProtocol protocol() {
+        return this.inner().protocol();
+    }
+
+    @Override
     public int frontendPort() {
         if (this.inner().frontendPort() == null) {
             return 0;
