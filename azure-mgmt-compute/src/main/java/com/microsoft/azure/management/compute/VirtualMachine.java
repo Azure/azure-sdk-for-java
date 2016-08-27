@@ -813,6 +813,19 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to specify extensions.
+         */
+        interface WithExtension {
+            /**
+             * Specifies definition of an extension to be attached to the virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing configuration for the extension
+             */
+            VirtualMachineExtension.DefinitionStages.Blank<WithCreate> defineNewExtension(String name);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -826,7 +839,8 @@ public interface VirtualMachine extends
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithDataDisk,
                 DefinitionStages.WithAvailabilitySet,
-                DefinitionStages.WithSecondaryNetworkInterface {
+                DefinitionStages.WithSecondaryNetworkInterface,
+                DefinitionStages.WithExtension {
         }
     }
 
@@ -936,6 +950,29 @@ public interface VirtualMachine extends
              */
             Update withoutSecondaryNetworkInterface(String name);
         }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify extensions.
+         */
+        interface WithExtension {
+            /**
+             * Specifies definition of an extension to be attached to the virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing configuration for the extension
+             */
+            VirtualMachineExtension
+                    .UpdateDefinitionStages
+                    .Blank<Update> defineNewExtension(String name);
+
+            /**
+             * Begins the description of an update of an existing extension of this virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing updatable VM definition
+             */
+            VirtualMachineExtension.Update updateExtension(String name);
+        }
     }
 
     /**
@@ -948,7 +985,8 @@ public interface VirtualMachine extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithDataDisk,
-            UpdateStages.WithSecondaryNetworkInterface {
+            UpdateStages.WithSecondaryNetworkInterface,
+            UpdateStages.WithExtension {
         /**
          * Specifies the caching type for the Operating System disk.
          *

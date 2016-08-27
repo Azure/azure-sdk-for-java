@@ -105,6 +105,8 @@ class VirtualMachineImpl
     private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
     private List<VirtualMachineDataDisk> dataDisks;
+    // the extensions associated to the virtual machine
+    private List<VirtualMachineExtensionImpl> extensions;
     // Intermediate state of network interface definition to which private IP can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
@@ -136,6 +138,7 @@ class VirtualMachineImpl
             }
         };
         initializeDataDisks();
+        initializeExtensions();
     }
 
     // Verbs
@@ -632,6 +635,13 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine optional extension settings
+
+    @Override
+    public VirtualMachineExtensionImpl defineNewExtension(String name) {
+        return VirtualMachineExtensionImpl.newVirtualMachineExtension(name, this, null);
+    }
+
     // Virtual machine update only settings
 
     @Override
@@ -687,6 +697,16 @@ class VirtualMachineImpl
             }
         }
         return this;
+    }
+
+    @Override
+    public VirtualMachineExtensionImpl updateExtension(String name) {
+        for (VirtualMachineExtensionImpl extension : this.extensions) {
+            if (extension.name().equalsIgnoreCase(name)) {
+                return extension;
+            }
+        }
+        throw new RuntimeException("An extension with name  '" + name + "' not found");
     }
 
     /**************************************************
@@ -916,6 +936,11 @@ class VirtualMachineImpl
                 .add(dataDisk.inner());
         this.dataDisks
                 .add(dataDisk);
+        return this;
+    }
+
+    VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
+        // TODO
         return this;
     }
 
@@ -1197,6 +1222,16 @@ class VirtualMachineImpl
         this.dataDisks = new ArrayList<>();
         for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
             this.dataDisks().add(new DataDiskImpl(dataDiskInner, this));
+        }
+    }
+
+    private void initializeExtensions() {
+        this.extensions = new ArrayList<>();
+        if (this.inner().resources() != null) {
+            for (VirtualMachineExtensionInner innerExtension : this.resources()) {
+                this.extensions.add(new VirtualMachineExtensionImpl(innerExtension.name(), this, innerExtension, null));
+
+            }
         }
     }
 
