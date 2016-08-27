@@ -119,7 +119,7 @@ public interface Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceCall<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback);
     /**
      * Lists all of the tasks that are associated with the specified job.
      *
@@ -140,7 +140,7 @@ public interface Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceCall<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
@@ -503,7 +503,7 @@ public interface Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
     /**
      * Lists all of the tasks that are associated with the specified job.
      *
@@ -525,7 +525,7 @@ public interface Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<Page<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
+    ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback);
 
     /**
      * Lists all of the tasks that are associated with the specified job.

@@ -29,6 +29,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -102,7 +103,7 @@ public interface Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback);
+    ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback);
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -121,7 +122,7 @@ public interface Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback);
+    ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback);
 
     /**
      * Lists all of the certificates that have been added to the specified account.
@@ -315,7 +316,7 @@ public interface Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
@@ -337,7 +338,7 @@ public interface Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
+    ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback);
 
     /**
      * Lists all of the certificates that have been added to the specified account.

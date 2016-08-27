@@ -312,7 +312,7 @@ public final class TasksImpl implements Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) {
+    public ServiceCall<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobId),
             new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
@@ -417,7 +417,7 @@ public final class TasksImpl implements Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) {
+    public ServiceCall<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobId, taskListOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
@@ -1659,7 +1659,7 @@ public final class TasksImpl implements Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
+    public ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
@@ -1750,7 +1750,7 @@ public final class TasksImpl implements Tasks {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<Page<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
+    public ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, taskListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {

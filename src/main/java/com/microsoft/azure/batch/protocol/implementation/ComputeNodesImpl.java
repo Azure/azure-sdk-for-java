@@ -59,6 +59,7 @@ import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.Body;
@@ -1809,7 +1810,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) {
+    public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolId),
             new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
@@ -1913,7 +1914,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) {
+    public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolId, computeNodeListOptions),
             new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
@@ -2053,7 +2054,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
+    public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
@@ -2144,7 +2145,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<Page<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
+    public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {

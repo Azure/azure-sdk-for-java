@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -45,7 +46,7 @@ public interface Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback);
+    ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback);
     /**
      * Lists all of the applications available in the specified account.
      *
@@ -64,7 +65,7 @@ public interface Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback);
+    ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback);
 
     /**
      * Lists all of the applications available in the specified account.
@@ -143,7 +144,7 @@ public interface Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
+    ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
     /**
      * Lists all of the applications available in the specified account.
      *
@@ -165,7 +166,7 @@ public interface Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<Page<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
+    ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback);
 
     /**
      * Lists all of the applications available in the specified account.

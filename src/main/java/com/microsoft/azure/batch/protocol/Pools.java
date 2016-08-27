@@ -60,6 +60,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -83,7 +84,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+    ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback);
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      *
@@ -102,7 +103,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+    ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
@@ -228,7 +229,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback);
+    ServiceCall<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback);
     /**
      * Lists all of the pools in the specified account.
      *
@@ -247,7 +248,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback);
+    ServiceCall<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
      * Lists all of the pools in the specified account.
@@ -916,7 +917,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+    ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      *
@@ -938,7 +939,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall<Page<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
+    ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback);
 
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
@@ -968,7 +969,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
+    ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
     /**
      * Lists all of the pools in the specified account.
      *
@@ -990,7 +991,7 @@ public interface Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<Page<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
+    ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
      * Lists all of the pools in the specified account.

@@ -31,6 +31,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.GET;
@@ -107,7 +108,7 @@ public final class ApplicationsImpl implements Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
+    public ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
@@ -202,7 +203,7 @@ public final class ApplicationsImpl implements Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+    public ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(applicationListOptions),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
@@ -471,7 +472,7 @@ public final class ApplicationsImpl implements Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
@@ -562,7 +563,7 @@ public final class ApplicationsImpl implements Applications {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<Page<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
+    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, applicationListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {

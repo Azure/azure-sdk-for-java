@@ -41,6 +41,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -524,7 +525,7 @@ public interface JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback);
     /**
      * Lists all of the job schedules in the specified account.
      *
@@ -543,7 +544,7 @@ public interface JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.
@@ -572,7 +573,7 @@ public interface JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
     /**
      * Lists all of the job schedules in the specified account.
      *
@@ -594,7 +595,7 @@ public interface JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<Page<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
+    ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback);
 
     /**
      * Lists all of the job schedules in the specified account.

@@ -38,6 +38,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.Body;
@@ -273,7 +274,7 @@ public final class CertificatesImpl implements Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
+    public ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
@@ -370,7 +371,7 @@ public final class CertificatesImpl implements Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
+    public ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(certificateListOptions),
             new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
@@ -972,7 +973,7 @@ public final class CertificatesImpl implements Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
+    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
@@ -1063,7 +1064,7 @@ public final class CertificatesImpl implements Certificates {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<Page<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
+    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, certificateListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {

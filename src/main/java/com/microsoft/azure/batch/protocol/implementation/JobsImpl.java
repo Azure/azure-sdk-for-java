@@ -61,6 +61,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.Body;
@@ -1781,7 +1782,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -1879,7 +1880,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobListOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2017,7 +2018,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleSinglePageAsync(jobScheduleId),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2122,7 +2123,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2265,7 +2266,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusSinglePageAsync(jobId),
             new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
@@ -2369,7 +2370,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions),
             new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
@@ -2509,7 +2510,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2600,7 +2601,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, jobListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2707,7 +2708,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2798,7 +2799,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
+    public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
@@ -2905,7 +2906,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
@@ -2996,7 +2997,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
+    public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
