@@ -933,7 +933,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<StampCapacityInner>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+    public ServiceCall<List<StampCapacityInner>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
@@ -1098,7 +1098,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getHostingEnvironmentsAsync(final String resourceGroupName, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getHostingEnvironmentsAsync(final String resourceGroupName, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentsSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -1406,7 +1406,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -1505,7 +1505,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -1676,7 +1676,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -1772,7 +1772,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -1874,7 +1874,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -1982,7 +1982,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -2094,7 +2094,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -2200,7 +2200,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -2309,7 +2309,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -2411,7 +2411,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -2516,7 +2516,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
@@ -2618,7 +2618,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
@@ -2723,7 +2723,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -2819,7 +2819,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -2921,7 +2921,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -3021,7 +3021,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -3121,7 +3121,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<WorkerPoolInner>> getMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
         return AzureServiceCall.create(
             getMultiRolePoolsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
@@ -3424,7 +3424,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SkuInfoInner>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
         return AzureServiceCall.create(
             getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
@@ -3524,7 +3524,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<WorkerPoolInner>> getWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
         return AzureServiceCall.create(
             getWorkerPoolsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
@@ -3847,7 +3847,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SkuInfoInner>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
         return AzureServiceCall.create(
             getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
@@ -4407,7 +4407,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -4508,7 +4508,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -4610,7 +4610,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -4711,7 +4711,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -4811,7 +4811,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<StampCapacityInner>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink, final ServiceCall<Page<StampCapacityInner>> serviceCall, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+    public ServiceCall<List<StampCapacityInner>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink, final ServiceCall<List<StampCapacityInner>> serviceCall, final ListOperationCallback<StampCapacityInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
@@ -4899,7 +4899,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<Page<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -4987,7 +4987,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -5075,7 +5075,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink, final ServiceCall<Page<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -5163,7 +5163,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -5251,7 +5251,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -5339,7 +5339,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<Page<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -5427,7 +5427,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<Page<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -5515,7 +5515,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceCall<Page<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
@@ -5603,7 +5603,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceCall<Page<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
@@ -5691,7 +5691,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getHostingEnvironmentSitesNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -5779,7 +5779,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -5867,7 +5867,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -5955,7 +5955,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<WorkerPoolInner>> getMultiRolePoolsNextAsync(final String nextPageLink, final ServiceCall<Page<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getMultiRolePoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
         return AzureServiceCall.create(
             getMultiRolePoolsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
@@ -6043,7 +6043,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SkuInfoInner>> getMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceCall<Page<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
         return AzureServiceCall.create(
             getMultiRolePoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
@@ -6131,7 +6131,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<WorkerPoolInner>> getWorkerPoolsNextAsync(final String nextPageLink, final ServiceCall<Page<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getWorkerPoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
         return AzureServiceCall.create(
             getWorkerPoolsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
@@ -6219,7 +6219,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SkuInfoInner>> getWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceCall<Page<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
         return AzureServiceCall.create(
             getWorkerPoolSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
@@ -6308,7 +6308,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> suspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> suspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             suspendHostingEnvironmentNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -6397,7 +6397,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -6487,7 +6487,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> resumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> resumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             resumeHostingEnvironmentNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -6576,7 +6576,7 @@ public final class HostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {

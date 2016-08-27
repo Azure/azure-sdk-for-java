@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -507,7 +508,7 @@ public final class PublicIPAddressesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PublicIPAddressInner>> listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+    public ServiceCall<List<PublicIPAddressInner>> listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
@@ -595,7 +596,7 @@ public final class PublicIPAddressesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PublicIPAddressInner>> listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+    public ServiceCall<List<PublicIPAddressInner>> listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
@@ -689,7 +690,7 @@ public final class PublicIPAddressesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+    public ServiceCall<List<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
@@ -777,7 +778,7 @@ public final class PublicIPAddressesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PublicIPAddressInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+    public ServiceCall<List<PublicIPAddressInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {

@@ -20,6 +20,7 @@ import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -91,7 +92,7 @@ public final class ExpressRouteServiceProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ExpressRouteServiceProviderInner>> listAsync(final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
+    public ServiceCall<List<ExpressRouteServiceProviderInner>> listAsync(final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
@@ -180,7 +181,7 @@ public final class ExpressRouteServiceProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ExpressRouteServiceProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ExpressRouteServiceProviderInner>> serviceCall, final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
+    public ServiceCall<List<ExpressRouteServiceProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteServiceProviderInner>> serviceCall, final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {

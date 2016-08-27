@@ -45,6 +45,7 @@ import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.GET;
@@ -1276,7 +1277,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskSinglePageAsync(jobId, taskId),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1389,7 +1390,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1533,7 +1534,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeSinglePageAsync(poolId, nodeId),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1646,7 +1647,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1789,7 +1790,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1880,7 +1881,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -1987,7 +1988,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
@@ -2078,7 +2079,7 @@ public final class FilesImpl implements Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
+    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {

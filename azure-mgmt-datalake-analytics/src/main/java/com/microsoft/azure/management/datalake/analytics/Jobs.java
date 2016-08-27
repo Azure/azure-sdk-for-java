@@ -19,6 +19,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import rx.Observable;
 
@@ -234,7 +235,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceCall<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
@@ -271,7 +272,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -309,7 +310,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<Page<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceCall<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<List<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.

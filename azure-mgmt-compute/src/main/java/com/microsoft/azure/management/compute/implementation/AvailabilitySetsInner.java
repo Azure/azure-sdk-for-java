@@ -333,7 +333,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<AvailabilitySetInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<AvailabilitySetInner>> result = listDelegate(response);
-                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<AvailabilitySetInner>> clientResponse = new ServiceResponse<List<AvailabilitySetInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -401,7 +401,7 @@ public final class AvailabilitySetsInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

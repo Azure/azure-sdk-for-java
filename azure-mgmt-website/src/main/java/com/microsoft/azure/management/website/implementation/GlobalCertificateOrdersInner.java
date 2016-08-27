@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -99,7 +100,7 @@ public final class GlobalCertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderInner>> getAllCertificateOrdersAsync(final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderInner>> getAllCertificateOrdersAsync(final ListOperationCallback<CertificateOrderInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllCertificateOrdersSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
@@ -250,7 +251,7 @@ public final class GlobalCertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderInner>> getAllCertificateOrdersNextAsync(final String nextPageLink, final ServiceCall<Page<CertificateOrderInner>> serviceCall, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderInner>> getAllCertificateOrdersNextAsync(final String nextPageLink, final ServiceCall<List<CertificateOrderInner>> serviceCall, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllCertificateOrdersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {

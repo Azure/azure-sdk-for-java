@@ -883,7 +883,7 @@ public final class VirtualMachinesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
@@ -974,7 +974,7 @@ public final class VirtualMachinesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineInner>> listAllAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineInner>> listAllAsync(final ListOperationCallback<VirtualMachineInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
@@ -1087,7 +1087,7 @@ public final class VirtualMachinesInner {
                 public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<VirtualMachineSizeInner>> result = listAvailableSizesDelegate(response);
-                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<VirtualMachineSizeInner>> clientResponse = new ServiceResponse<List<VirtualMachineSizeInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1599,7 +1599,7 @@ public final class VirtualMachinesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
@@ -1687,7 +1687,7 @@ public final class VirtualMachinesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineInner>> serviceCall, final ListOperationCallback<VirtualMachineInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {

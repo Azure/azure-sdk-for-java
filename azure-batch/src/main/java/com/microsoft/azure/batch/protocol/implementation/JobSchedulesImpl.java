@@ -50,6 +50,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.Body;
@@ -1771,7 +1772,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
@@ -1869,7 +1870,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobScheduleListOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
@@ -2008,7 +2009,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
@@ -2099,7 +2100,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<Page<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
+    public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {

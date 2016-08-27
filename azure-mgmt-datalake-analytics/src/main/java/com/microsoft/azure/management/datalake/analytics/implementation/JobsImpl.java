@@ -28,6 +28,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -544,7 +545,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) {
+    public ServiceCall<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(accountName),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {
@@ -658,7 +659,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback) {
+    public ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(accountName, filter, top, skip, expand, select, orderby, count, search, format),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {
@@ -771,7 +772,7 @@ public final class JobsImpl implements Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<Page<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback) {
+    public ServiceCall<List<JobInformation>> listNextAsync(final String nextPageLink, final ServiceCall<List<JobInformation>> serviceCall, final ListOperationCallback<JobInformation> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<JobInformation>>>>() {

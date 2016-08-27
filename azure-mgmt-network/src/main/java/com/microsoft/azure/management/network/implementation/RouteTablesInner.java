@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -509,7 +510,7 @@ public final class RouteTablesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<RouteTableInner>> listAsync(final String resourceGroupName, final ListOperationCallback<RouteTableInner> serviceCallback) {
+    public ServiceCall<List<RouteTableInner>> listAsync(final String resourceGroupName, final ListOperationCallback<RouteTableInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
@@ -600,7 +601,7 @@ public final class RouteTablesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<RouteTableInner>> listAllAsync(final ListOperationCallback<RouteTableInner> serviceCallback) {
+    public ServiceCall<List<RouteTableInner>> listAllAsync(final ListOperationCallback<RouteTableInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
@@ -689,7 +690,7 @@ public final class RouteTablesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<RouteTableInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
+    public ServiceCall<List<RouteTableInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
@@ -777,7 +778,7 @@ public final class RouteTablesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<RouteTableInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
+    public ServiceCall<List<RouteTableInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<RouteTableInner>> serviceCall, final ListOperationCallback<RouteTableInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<RouteTableInner>>>>() {

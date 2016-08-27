@@ -136,7 +136,7 @@ public final class CertificatesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateInner>> getCertificatesAsync(final String resourceGroupName, final ListOperationCallback<CertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateInner>> getCertificatesAsync(final String resourceGroupName, final ListOperationCallback<CertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificatesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
@@ -855,7 +855,7 @@ public final class CertificatesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateInner>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<Page<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateInner>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {

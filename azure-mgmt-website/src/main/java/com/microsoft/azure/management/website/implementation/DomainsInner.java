@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -119,7 +120,7 @@ public final class DomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DomainInner>> getDomainsAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
+    public ServiceCall<List<DomainInner>> getDomainsAsync(final String resourceGroupName, final ListOperationCallback<DomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getDomainsSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
@@ -636,7 +637,7 @@ public final class DomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DomainInner>> getDomainsNextAsync(final String nextPageLink, final ServiceCall<Page<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
+    public ServiceCall<List<DomainInner>> getDomainsNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getDomainsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {

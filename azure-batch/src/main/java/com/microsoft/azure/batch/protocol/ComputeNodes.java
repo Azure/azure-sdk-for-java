@@ -47,6 +47,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -651,7 +652,7 @@ public interface ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback);
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback);
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -672,7 +673,7 @@ public interface ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback);
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback);
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -702,7 +703,7 @@ public interface ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -724,7 +725,7 @@ public interface ComputeNodes {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<Page<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
 
     /**
      * Lists the compute nodes in the specified pool.

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -507,7 +508,7 @@ public final class NetworkSecurityGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkSecurityGroupInner>> listAllAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceCall<List<NetworkSecurityGroupInner>> listAllAsync(final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
@@ -595,7 +596,7 @@ public final class NetworkSecurityGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceCall<List<NetworkSecurityGroupInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
@@ -689,7 +690,7 @@ public final class NetworkSecurityGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceCall<List<NetworkSecurityGroupInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
@@ -777,7 +778,7 @@ public final class NetworkSecurityGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkSecurityGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
+    public ServiceCall<List<NetworkSecurityGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<NetworkSecurityGroupInner>> serviceCall, final ListOperationCallback<NetworkSecurityGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {

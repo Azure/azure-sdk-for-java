@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -137,7 +138,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final ListOperationCallback<GenericResourceInner> serviceCallback) {
         return AzureServiceCall.create(
             listResourcesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
@@ -232,7 +233,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceCall<List<GenericResourceInner>> listResourcesAsync(final String resourceGroupName, final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
         return AzureServiceCall.create(
             listResourcesSinglePageAsync(resourceGroupName, filter, expand, top),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
@@ -763,7 +764,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+    public ServiceCall<List<ResourceGroupInner>> listAsync(final ListOperationCallback<ResourceGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
@@ -848,7 +849,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+    public ServiceCall<List<ResourceGroupInner>> listAsync(final String filter, final Integer top, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(filter, top),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {
@@ -941,7 +942,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink, final ServiceCall<Page<GenericResourceInner>> serviceCall, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceCall<List<GenericResourceInner>> listResourcesNextAsync(final String nextPageLink, final ServiceCall<List<GenericResourceInner>> serviceCall, final ListOperationCallback<GenericResourceInner> serviceCallback) {
         return AzureServiceCall.create(
             listResourcesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
@@ -1029,7 +1030,7 @@ public final class ResourceGroupsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceGroupInner>> serviceCall, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
+    public ServiceCall<List<ResourceGroupInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ResourceGroupInner>> serviceCall, final ListOperationCallback<ResourceGroupInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceGroupInner>>>>() {

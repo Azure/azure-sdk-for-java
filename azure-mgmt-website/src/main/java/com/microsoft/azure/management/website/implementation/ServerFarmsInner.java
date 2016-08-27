@@ -189,7 +189,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getServerFarmsAsync(final String resourceGroupName, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getServerFarmsAsync(final String resourceGroupName, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmsSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -683,7 +683,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -782,7 +782,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -886,7 +886,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getServerFarmMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getServerFarmMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmMetricDefintionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -1701,7 +1701,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmSitesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -1803,7 +1803,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmSitesSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -2185,7 +2185,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getServerFarmsNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -2273,7 +2273,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getServerFarmMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -2361,7 +2361,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getServerFarmMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<Page<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getServerFarmMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -2449,7 +2449,7 @@ public final class ServerFarmsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getServerFarmSitesNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getServerFarmSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getServerFarmSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {

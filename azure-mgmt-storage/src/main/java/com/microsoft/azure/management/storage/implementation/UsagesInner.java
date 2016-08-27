@@ -99,7 +99,7 @@ public final class UsagesInner {
                 public Observable<ServiceResponse<List<UsageInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
-                        ServiceResponse<List<UsageInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<UsageInner>> clientResponse = new ServiceResponse<List<UsageInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

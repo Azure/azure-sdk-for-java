@@ -41,6 +41,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -734,7 +735,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
         return AzureServiceCall.create(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
@@ -849,7 +850,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
         return AzureServiceCall.create(
             listExternalDataSourcesSinglePageAsync(accountName, databaseName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
@@ -1038,7 +1039,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) {
+    public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) {
         return AzureServiceCall.create(
             listCredentialsSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
@@ -1153,7 +1154,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) {
+    public ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) {
         return AzureServiceCall.create(
             listCredentialsSinglePageAsync(accountName, databaseName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
@@ -1350,7 +1351,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) {
+    public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) {
         return AzureServiceCall.create(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
@@ -1472,7 +1473,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) {
+    public ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) {
         return AzureServiceCall.create(
             listProceduresSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
@@ -1674,7 +1675,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) {
+    public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) {
         return AzureServiceCall.create(
             listTablesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
@@ -1796,7 +1797,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
+    public ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) {
         return AzureServiceCall.create(
             listTablesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
@@ -1998,7 +1999,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) {
+    public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) {
         return AzureServiceCall.create(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
@@ -2120,7 +2121,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) {
+    public ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) {
         return AzureServiceCall.create(
             listTableTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
@@ -2322,7 +2323,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) {
+    public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) {
         return AzureServiceCall.create(
             listViewsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
@@ -2444,7 +2445,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) {
+    public ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) {
         return AzureServiceCall.create(
             listViewsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
@@ -2654,7 +2655,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
         return AzureServiceCall.create(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
@@ -2783,7 +2784,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
         return AzureServiceCall.create(
             listTableStatisticsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
@@ -2998,7 +2999,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+    public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) {
         return AzureServiceCall.create(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
@@ -3127,7 +3128,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+    public ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) {
         return AzureServiceCall.create(
             listTablePartitionsSinglePageAsync(accountName, databaseName, schemaName, tableName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
@@ -3254,7 +3255,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) {
+    public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) {
         return AzureServiceCall.create(
             listTypesSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
@@ -3376,7 +3377,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) {
+    public ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) {
         return AzureServiceCall.create(
             listTypesSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
@@ -3578,7 +3579,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
         return AzureServiceCall.create(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
@@ -3700,7 +3701,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
         return AzureServiceCall.create(
             listTableValuedFunctionsSinglePageAsync(accountName, databaseName, schemaName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
@@ -3894,7 +3895,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+    public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
         return AzureServiceCall.create(
             listAssembliesSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
@@ -4009,7 +4010,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+    public ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
         return AzureServiceCall.create(
             listAssembliesSinglePageAsync(accountName, databaseName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
@@ -4198,7 +4199,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) {
+    public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) {
         return AzureServiceCall.create(
             listSchemasSinglePageAsync(accountName, databaseName),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
@@ -4313,7 +4314,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) {
+    public ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) {
         return AzureServiceCall.create(
             listSchemasSinglePageAsync(accountName, databaseName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
@@ -4494,7 +4495,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) {
+    public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) {
         return AzureServiceCall.create(
             listDatabasesSinglePageAsync(accountName),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
@@ -4602,7 +4603,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) {
+    public ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) {
         return AzureServiceCall.create(
             listDatabasesSinglePageAsync(accountName, filter, top, skip, expand, select, orderby, count),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {
@@ -4711,7 +4712,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
+    public ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) {
         return AzureServiceCall.create(
             listExternalDataSourcesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlExternalDataSource>>>>() {
@@ -4799,7 +4800,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<Page<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) {
+    public ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) {
         return AzureServiceCall.create(
             listCredentialsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlCredential>>>>() {
@@ -4887,7 +4888,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<Page<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) {
+    public ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) {
         return AzureServiceCall.create(
             listProceduresNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlProcedure>>>>() {
@@ -4975,7 +4976,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback) {
+    public ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback) {
         return AzureServiceCall.create(
             listTablesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTable>>>>() {
@@ -5063,7 +5064,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) {
+    public ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) {
         return AzureServiceCall.create(
             listTableTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableType>>>>() {
@@ -5151,7 +5152,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<Page<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback) {
+    public ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback) {
         return AzureServiceCall.create(
             listViewsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlView>>>>() {
@@ -5239,7 +5240,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<Page<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
+    public ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) {
         return AzureServiceCall.create(
             listTableStatisticsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableStatistics>>>>() {
@@ -5327,7 +5328,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<Page<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) {
+    public ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) {
         return AzureServiceCall.create(
             listTablePartitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTablePartition>>>>() {
@@ -5415,7 +5416,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback) {
+    public ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback) {
         return AzureServiceCall.create(
             listTypesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlType>>>>() {
@@ -5503,7 +5504,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<Page<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
+    public ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) {
         return AzureServiceCall.create(
             listTableValuedFunctionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlTableValuedFunction>>>>() {
@@ -5591,7 +5592,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
+    public ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) {
         return AzureServiceCall.create(
             listAssembliesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlAssemblyClr>>>>() {
@@ -5679,7 +5680,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<Page<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) {
+    public ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) {
         return AzureServiceCall.create(
             listSchemasNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlSchema>>>>() {
@@ -5767,7 +5768,7 @@ public final class CatalogsImpl implements Catalogs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<Page<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) {
+    public ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) {
         return AzureServiceCall.create(
             listDatabasesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<USqlDatabase>>>>() {

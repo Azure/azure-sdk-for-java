@@ -36,6 +36,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -429,7 +430,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback);
     /**
      * Lists the files in a task's directory on its compute node.
      *
@@ -454,7 +455,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
@@ -487,7 +488,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback);
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
@@ -512,7 +513,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
@@ -544,7 +545,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
     /**
      * Lists the files in a task's directory on its compute node.
      *
@@ -566,7 +567,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists the files in a task's directory on its compute node.
@@ -596,7 +597,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
@@ -618,7 +619,7 @@ public interface Files {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<Page<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
+    ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback);
 
     /**
      * Lists all of the files in task directories on the specified compute node.

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -550,7 +551,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -655,7 +656,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -906,7 +907,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listAllAsync(final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listAllAsync(final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -994,7 +995,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listAsync(final String resourceGroupName, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -1326,7 +1327,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(final String nextPageLink, final ServiceCall<List<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -1414,7 +1415,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesNextAsync(final String nextPageLink, final ServiceCall<List<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -1502,7 +1503,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
@@ -1590,7 +1591,7 @@ public final class NetworkInterfacesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NetworkInterfaceInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
+    public ServiceCall<List<NetworkInterfaceInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<NetworkInterfaceInner>> serviceCall, final ListOperationCallback<NetworkInterfaceInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -507,7 +508,7 @@ public final class LoadBalancersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LoadBalancerInner>> listAllAsync(final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+    public ServiceCall<List<LoadBalancerInner>> listAllAsync(final ListOperationCallback<LoadBalancerInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
@@ -595,7 +596,7 @@ public final class LoadBalancersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LoadBalancerInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+    public ServiceCall<List<LoadBalancerInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
@@ -689,7 +690,7 @@ public final class LoadBalancersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LoadBalancerInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+    public ServiceCall<List<LoadBalancerInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
@@ -777,7 +778,7 @@ public final class LoadBalancersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LoadBalancerInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
+    public ServiceCall<List<LoadBalancerInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<LoadBalancerInner>> serviceCall, final ListOperationCallback<LoadBalancerInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {

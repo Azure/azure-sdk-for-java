@@ -23,6 +23,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -231,7 +232,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<BlobContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<BlobContainer> serviceCallback);
+    ServiceCall<List<BlobContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<BlobContainer> serviceCallback);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -267,7 +268,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback);
+    ServiceCall<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -405,7 +406,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback);
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
@@ -444,7 +445,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -484,7 +485,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
@@ -523,7 +524,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -561,7 +562,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
@@ -598,7 +599,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -633,7 +634,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
@@ -668,7 +669,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -937,7 +938,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<BlobContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceCall<Page<BlobContainer>> serviceCall, final ListOperationCallback<BlobContainer> serviceCallback);
+    ServiceCall<List<BlobContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceCall<List<BlobContainer>> serviceCall, final ListOperationCallback<BlobContainer> serviceCallback);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -966,7 +967,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceCall<Page<SasTokenInfo>> serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback);
+    ServiceCall<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceCall<List<SasTokenInfo>> serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -995,7 +996,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<StorageAccountInfo>> listStorageAccountsNextAsync(final String nextPageLink, final ServiceCall<Page<StorageAccountInfo>> serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsNextAsync(final String nextPageLink, final ServiceCall<List<StorageAccountInfo>> serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -1024,7 +1025,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeStoreAccountInfo>> serviceCall, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccountInfo>> serviceCall, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -1053,7 +1054,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -1082,7 +1083,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+    ServiceCall<List<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.

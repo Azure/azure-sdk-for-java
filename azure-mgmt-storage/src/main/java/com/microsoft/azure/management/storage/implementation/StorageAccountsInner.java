@@ -547,7 +547,7 @@ public final class StorageAccountsInner {
                 public Observable<ServiceResponse<List<StorageAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StorageAccountInner>> result = listDelegate(response);
-                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -609,7 +609,7 @@ public final class StorageAccountsInner {
                 public Observable<ServiceResponse<List<StorageAccountInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<StorageAccountInner>> result = listByResourceGroupDelegate(response);
-                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<StorageAccountInner>> clientResponse = new ServiceResponse<List<StorageAccountInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);

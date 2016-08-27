@@ -119,7 +119,7 @@ public final class SubscriptionsInner {
                 public Observable<ServiceResponse<List<LocationInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<LocationInner>> result = listLocationsDelegate(response);
-                        ServiceResponse<List<LocationInner>> clientResponse = new ServiceResponse<>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<List<LocationInner>> clientResponse = new ServiceResponse<List<LocationInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -218,7 +218,7 @@ public final class SubscriptionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SubscriptionInner>> listAsync(final ListOperationCallback<SubscriptionInner> serviceCallback) {
+    public ServiceCall<List<SubscriptionInner>> listAsync(final ListOperationCallback<SubscriptionInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
@@ -304,7 +304,7 @@ public final class SubscriptionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SubscriptionInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<SubscriptionInner>> serviceCall, final ListOperationCallback<SubscriptionInner> serviceCallback) {
+    public ServiceCall<List<SubscriptionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SubscriptionInner>> serviceCall, final ListOperationCallback<SubscriptionInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {

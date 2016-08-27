@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -469,7 +470,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ExpressRouteCircuitPeeringInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
+    public ServiceCall<List<ExpressRouteCircuitPeeringInner>> listAsync(final String resourceGroupName, final String circuitName, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, circuitName),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>>>() {
@@ -568,7 +569,7 @@ public final class ExpressRouteCircuitPeeringsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ExpressRouteCircuitPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ExpressRouteCircuitPeeringInner>> serviceCall, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
+    public ServiceCall<List<ExpressRouteCircuitPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteCircuitPeeringInner>> serviceCall, final ListOperationCallback<ExpressRouteCircuitPeeringInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>>>() {

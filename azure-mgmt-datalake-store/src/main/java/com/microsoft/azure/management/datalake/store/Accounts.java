@@ -18,6 +18,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -113,7 +114,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback);
+    ServiceCall<List<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback);
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
@@ -411,7 +412,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
@@ -448,7 +449,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -483,7 +484,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
@@ -518,7 +519,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -555,7 +556,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink, final ServiceCall<Page<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback);
+    ServiceCall<List<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink, final ServiceCall<List<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback);
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
@@ -584,7 +585,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -613,7 +614,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.

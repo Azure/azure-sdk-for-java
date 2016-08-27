@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -525,7 +526,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkGatewayConnectionInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkGatewayConnectionInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {
@@ -1109,7 +1110,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkGatewayConnectionInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualNetworkGatewayConnectionInner>> serviceCall, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkGatewayConnectionInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkGatewayConnectionInner>> serviceCall, final ListOperationCallback<VirtualNetworkGatewayConnectionInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>>>() {

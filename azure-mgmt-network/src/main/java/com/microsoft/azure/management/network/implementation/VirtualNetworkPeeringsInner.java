@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -469,7 +470,7 @@ public final class VirtualNetworkPeeringsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, virtualNetworkName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
@@ -568,7 +569,7 @@ public final class VirtualNetworkPeeringsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualNetworkPeeringInner>> serviceCall, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkPeeringInner>> serviceCall, final ListOperationCallback<VirtualNetworkPeeringInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {

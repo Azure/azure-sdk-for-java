@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -115,7 +116,7 @@ public final class GlobalDomainRegistrationsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DomainInner>> getAllDomainsAsync(final ListOperationCallback<DomainInner> serviceCallback) {
+    public ServiceCall<List<DomainInner>> getAllDomainsAsync(final ListOperationCallback<DomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllDomainsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
@@ -431,7 +432,7 @@ public final class GlobalDomainRegistrationsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NameIdentifierInner>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+    public ServiceCall<List<NameIdentifierInner>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
         return AzureServiceCall.create(
             listDomainRecommendationsSinglePageAsync(parameters),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
@@ -526,7 +527,7 @@ public final class GlobalDomainRegistrationsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DomainInner>> getAllDomainsNextAsync(final String nextPageLink, final ServiceCall<Page<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
+    public ServiceCall<List<DomainInner>> getAllDomainsNextAsync(final String nextPageLink, final ServiceCall<List<DomainInner>> serviceCall, final ListOperationCallback<DomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllDomainsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DomainInner>>>>() {
@@ -614,7 +615,7 @@ public final class GlobalDomainRegistrationsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NameIdentifierInner>> listDomainRecommendationsNextAsync(final String nextPageLink, final ServiceCall<Page<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
+    public ServiceCall<List<NameIdentifierInner>> listDomainRecommendationsNextAsync(final String nextPageLink, final ServiceCall<List<NameIdentifierInner>> serviceCall, final ListOperationCallback<NameIdentifierInner> serviceCallback) {
         return AzureServiceCall.create(
             listDomainRecommendationsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {

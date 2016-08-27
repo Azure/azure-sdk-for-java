@@ -2090,7 +2090,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
@@ -2200,7 +2200,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
@@ -2746,7 +2746,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteSlotsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -2842,7 +2842,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteSlotsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -2942,7 +2942,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSitesAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSitesAsync(final String resourceGroupName, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSitesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -3037,7 +3037,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -4880,7 +4880,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+    public ServiceCall<List<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeletedSitesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
@@ -4972,7 +4972,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+    public ServiceCall<List<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeletedSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
@@ -5071,7 +5071,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getDeploymentsAsync(final String resourceGroupName, final String name, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeploymentsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -5173,7 +5173,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -5280,7 +5280,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -5389,7 +5389,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -6475,7 +6475,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInstanceInner>> getSiteInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+    public ServiceCall<List<SiteInstanceInner>> getSiteInstanceIdentifiersAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteInstanceIdentifiersSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
@@ -6577,7 +6577,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInstanceInner>> getSiteInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+    public ServiceCall<List<SiteInstanceInner>> getSiteInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
@@ -6682,7 +6682,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostNameBindingInner>> getSiteHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+    public ServiceCall<List<HostNameBindingInner>> getSiteHostNameBindingsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteHostNameBindingsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
@@ -6784,7 +6784,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostNameBindingInner>> getSiteHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+    public ServiceCall<List<HostNameBindingInner>> getSiteHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
@@ -11301,7 +11301,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<BackupItemInner>> listSiteBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
+    public ServiceCall<List<BackupItemInner>> listSiteBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
         return AzureServiceCall.create(
             listSiteBackupsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
@@ -11403,7 +11403,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<BackupItemInner>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
+    public ServiceCall<List<BackupItemInner>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
         return AzureServiceCall.create(
             listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
@@ -12278,7 +12278,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -12374,7 +12374,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesSinglePageAsync(resourceGroupName, name, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -12478,7 +12478,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -12581,7 +12581,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -12688,7 +12688,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -12787,7 +12787,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsSinglePageAsync(resourceGroupName, name, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -12893,7 +12893,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -12999,7 +12999,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -13110,7 +13110,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getSiteMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getSiteMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -13215,7 +13215,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getSiteMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getSiteMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricDefinitionsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -15888,7 +15888,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceCall<Page<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
@@ -15976,7 +15976,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceCall<Page<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
+    public ServiceCall<List<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink, final ServiceCall<List<SlotDifferenceInner>> serviceCall, final ListOperationCallback<SlotDifferenceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
@@ -16064,7 +16064,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSiteSlotsNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSiteSlotsNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteSlotsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -16152,7 +16152,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getSitesNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -16240,7 +16240,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeletedSiteInner>> getDeletedSitesNextAsync(final String nextPageLink, final ServiceCall<Page<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
+    public ServiceCall<List<DeletedSiteInner>> getDeletedSitesNextAsync(final String nextPageLink, final ServiceCall<List<DeletedSiteInner>> serviceCall, final ListOperationCallback<DeletedSiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeletedSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
@@ -16328,7 +16328,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getDeploymentsNextAsync(final String nextPageLink, final ServiceCall<Page<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -16416,7 +16416,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -16504,7 +16504,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceCall<Page<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getInstanceDeploymentsNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getInstanceDeploymentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -16592,7 +16592,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentInner>> getInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
+    public ServiceCall<List<DeploymentInner>> getInstanceDeploymentsSlotNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentInner>> serviceCall, final ListOperationCallback<DeploymentInner> serviceCallback) {
         return AzureServiceCall.create(
             getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
@@ -16680,7 +16680,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInstanceInner>> getSiteInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+    public ServiceCall<List<SiteInstanceInner>> getSiteInstanceIdentifiersNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
@@ -16768,7 +16768,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInstanceInner>> getSiteInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
+    public ServiceCall<List<SiteInstanceInner>> getSiteInstanceIdentifiersSlotNextAsync(final String nextPageLink, final ServiceCall<List<SiteInstanceInner>> serviceCall, final ListOperationCallback<SiteInstanceInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
@@ -16856,7 +16856,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostNameBindingInner>> getSiteHostNameBindingsNextAsync(final String nextPageLink, final ServiceCall<Page<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+    public ServiceCall<List<HostNameBindingInner>> getSiteHostNameBindingsNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteHostNameBindingsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
@@ -16944,7 +16944,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostNameBindingInner>> getSiteHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
+    public ServiceCall<List<HostNameBindingInner>> getSiteHostNameBindingsSlotNextAsync(final String nextPageLink, final ServiceCall<List<HostNameBindingInner>> serviceCall, final ListOperationCallback<HostNameBindingInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
@@ -17032,7 +17032,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<BackupItemInner>> listSiteBackupsNextAsync(final String nextPageLink, final ServiceCall<Page<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
+    public ServiceCall<List<BackupItemInner>> listSiteBackupsNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
         return AzureServiceCall.create(
             listSiteBackupsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
@@ -17120,7 +17120,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<BackupItemInner>> listSiteBackupsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
+    public ServiceCall<List<BackupItemInner>> listSiteBackupsSlotNextAsync(final String nextPageLink, final ServiceCall<List<BackupItemInner>> serviceCall, final ListOperationCallback<BackupItemInner> serviceCallback) {
         return AzureServiceCall.create(
             listSiteBackupsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
@@ -17208,7 +17208,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesNextAsync(final String nextPageLink, final ServiceCall<Page<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -17296,7 +17296,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CsmUsageQuotaInner>> getSiteUsagesSlotNextAsync(final String nextPageLink, final ServiceCall<Page<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getSiteUsagesSlotNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteUsagesSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
@@ -17384,7 +17384,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -17472,7 +17472,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ResourceMetricInner>> getSiteMetricsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getSiteMetricsSlotNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
@@ -17560,7 +17560,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getSiteMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceCall<Page<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getSiteMetricDefinitionsSlotNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
@@ -17648,7 +17648,7 @@ public final class SitesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<MetricDefinitionInner>> getSiteMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<Page<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getSiteMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {

@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -227,7 +228,7 @@ public final class ProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ProviderInner>> listAsync(final ListOperationCallback<ProviderInner> serviceCallback) {
+    public ServiceCall<List<ProviderInner>> listAsync(final ListOperationCallback<ProviderInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {
@@ -312,7 +313,7 @@ public final class ProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ProviderInner>> listAsync(final Integer top, final String expand, final ListOperationCallback<ProviderInner> serviceCallback) {
+    public ServiceCall<List<ProviderInner>> listAsync(final Integer top, final String expand, final ListOperationCallback<ProviderInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(top, expand),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {
@@ -524,7 +525,7 @@ public final class ProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ProviderInner>> serviceCall, final ListOperationCallback<ProviderInner> serviceCallback) {
+    public ServiceCall<List<ProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ProviderInner>> serviceCall, final ListOperationCallback<ProviderInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ProviderInner>>>>() {

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -107,7 +108,7 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TopLevelDomainInner>> getGetTopLevelDomainsAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+    public ServiceCall<List<TopLevelDomainInner>> getGetTopLevelDomainsAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getGetTopLevelDomainsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
@@ -256,7 +257,7 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
             listTopLevelDomainAgreementsSinglePageAsync(name),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
@@ -347,7 +348,7 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
             listTopLevelDomainAgreementsSinglePageAsync(name, includePrivacy),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
@@ -445,7 +446,7 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TopLevelDomainInner>> getGetTopLevelDomainsNextAsync(final String nextPageLink, final ServiceCall<Page<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+    public ServiceCall<List<TopLevelDomainInner>> getGetTopLevelDomainsNextAsync(final String nextPageLink, final ServiceCall<List<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
         return AzureServiceCall.create(
             getGetTopLevelDomainsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
@@ -533,7 +534,7 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsNextAsync(final String nextPageLink, final ServiceCall<Page<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsNextAsync(final String nextPageLink, final ServiceCall<List<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
             listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {

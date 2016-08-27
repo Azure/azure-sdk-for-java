@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -689,7 +690,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetVMInner>> listAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetVMInner>> listAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, virtualMachineScaleSetName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {
@@ -791,7 +792,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetVMInner>> listAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String filter, final String select, final String expand, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetVMInner>> listAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String filter, final String select, final String expand, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, filter, select, expand),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {
@@ -1283,7 +1284,7 @@ public final class VirtualMachineScaleSetVMsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetVMInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineScaleSetVMInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetVMInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineScaleSetVMInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetVMInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>>>() {

@@ -71,6 +71,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.Body;
@@ -212,7 +213,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+    public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
@@ -310,7 +311,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+    public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsSinglePageAsync(poolListPoolUsageMetricsOptions),
             new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
@@ -726,7 +727,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
+    public ServiceCall<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
@@ -824,7 +825,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
+    public ServiceCall<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolListOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
@@ -3110,7 +3111,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<Page<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+    public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
@@ -3201,7 +3202,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall<Page<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
+    public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
@@ -3308,7 +3309,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
+    public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
@@ -3399,7 +3400,7 @@ public final class PoolsImpl implements Pools {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<Page<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
+    public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, poolListNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {

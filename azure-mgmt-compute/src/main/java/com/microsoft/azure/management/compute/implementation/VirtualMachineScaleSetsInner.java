@@ -970,7 +970,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
@@ -1061,7 +1061,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetInner>> listAllAsync(final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetInner>> listAllAsync(final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
@@ -1151,7 +1151,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetSkuInner>> listSkusAsync(final String resourceGroupName, final String vmScaleSetName, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetSkuInner>> listSkusAsync(final String resourceGroupName, final String vmScaleSetName, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             listSkusSinglePageAsync(resourceGroupName, vmScaleSetName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>>>() {
@@ -2255,7 +2255,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineScaleSetInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineScaleSetInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
@@ -2343,7 +2343,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineScaleSetInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineScaleSetInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>>>() {
@@ -2431,7 +2431,7 @@ public final class VirtualMachineScaleSetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualMachineScaleSetSkuInner>> listSkusNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualMachineScaleSetSkuInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
+    public ServiceCall<List<VirtualMachineScaleSetSkuInner>> listSkusNextAsync(final String nextPageLink, final ServiceCall<List<VirtualMachineScaleSetSkuInner>> serviceCall, final ListOperationCallback<VirtualMachineScaleSetSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             listSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>>>() {

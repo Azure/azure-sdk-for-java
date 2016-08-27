@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -111,7 +112,7 @@ public final class ProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SourceControlInner>> getSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
+    public ServiceCall<List<SourceControlInner>> getSourceControlsAsync(final ListOperationCallback<SourceControlInner> serviceCallback) {
         return AzureServiceCall.create(
             getSourceControlsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
@@ -431,7 +432,7 @@ public final class ProvidersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SourceControlInner>> getSourceControlsNextAsync(final String nextPageLink, final ServiceCall<Page<SourceControlInner>> serviceCall, final ListOperationCallback<SourceControlInner> serviceCallback) {
+    public ServiceCall<List<SourceControlInner>> getSourceControlsNextAsync(final String nextPageLink, final ServiceCall<List<SourceControlInner>> serviceCall, final ListOperationCallback<SourceControlInner> serviceCallback) {
         return AzureServiceCall.create(
             getSourceControlsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlInner>>>>() {

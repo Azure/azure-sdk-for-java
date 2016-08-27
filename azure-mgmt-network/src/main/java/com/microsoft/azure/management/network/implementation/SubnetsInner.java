@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -539,7 +540,7 @@ public final class SubnetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<SubnetInner> serviceCallback) {
+    public ServiceCall<List<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName, final ListOperationCallback<SubnetInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, virtualNetworkName),
             new Func1<String, Observable<ServiceResponse<Page<SubnetInner>>>>() {
@@ -638,7 +639,7 @@ public final class SubnetsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SubnetInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<SubnetInner>> serviceCall, final ListOperationCallback<SubnetInner> serviceCallback) {
+    public ServiceCall<List<SubnetInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SubnetInner>> serviceCall, final ListOperationCallback<SubnetInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SubnetInner>>>>() {

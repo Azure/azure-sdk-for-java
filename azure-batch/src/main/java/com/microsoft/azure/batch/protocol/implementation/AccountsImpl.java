@@ -28,6 +28,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
 import retrofit2.http.GET;
@@ -100,7 +101,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeAgentSku>> listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) {
+    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
@@ -196,7 +197,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) {
+    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
@@ -327,7 +328,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall<Page<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
+    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
@@ -418,7 +419,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall<Page<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
+    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions),
             new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {

@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -368,7 +369,7 @@ public final class TagsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
+    public ServiceCall<List<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
@@ -457,7 +458,7 @@ public final class TagsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<TagDetailsInner>> serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) {
+    public ServiceCall<List<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TagDetailsInner>> serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -591,7 +592,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getManagedHostingEnvironmentsAsync(final String resourceGroupName, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getManagedHostingEnvironmentsAsync(final String resourceGroupName, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentsSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -829,7 +830,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -925,7 +926,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -1027,7 +1028,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -1127,7 +1128,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -1226,7 +1227,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getManagedHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<Page<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getManagedHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -1314,7 +1315,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getManagedHostingEnvironmentSitesNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getManagedHostingEnvironmentSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -1402,7 +1403,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -1490,7 +1491,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {

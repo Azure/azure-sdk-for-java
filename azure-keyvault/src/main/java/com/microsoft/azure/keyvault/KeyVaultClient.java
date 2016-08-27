@@ -6,14 +6,12 @@
 
 package com.microsoft.azure.keyvault;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.RestClient;
+import com.microsoft.azure.keyvault.implementation.KeyVaultClientImpl;
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
 import com.microsoft.azure.keyvault.models.CertificateBundle;
 import com.microsoft.azure.keyvault.models.CertificateIssuerItem;
@@ -29,7 +27,6 @@ import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.KeyVerifyResult;
-import com.microsoft.azure.keyvault.models.PageImpl;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.models.SecretItem;
 import com.microsoft.azure.keyvault.requests.CreateCertificateRequest;
@@ -45,14 +42,11 @@ import com.microsoft.azure.keyvault.requests.UpdateCertificatePolicyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateCertificateRequest;
 import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
-import com.microsoft.azure.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -61,6 +55,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Initializes a new instance of the KeyVaultClient class.

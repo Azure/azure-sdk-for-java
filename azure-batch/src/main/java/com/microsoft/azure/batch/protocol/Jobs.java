@@ -50,6 +50,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
+import java.util.List;
 import rx.Observable;
 
 /**
@@ -541,7 +542,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback);
     /**
      * Lists all of the jobs in the specified account.
      *
@@ -560,7 +561,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
@@ -588,7 +589,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback);
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
@@ -609,7 +610,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -638,7 +639,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
@@ -659,7 +660,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -689,7 +690,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
     /**
      * Lists all of the jobs in the specified account.
      *
@@ -711,7 +712,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists all of the jobs in the specified account.
@@ -741,7 +742,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
@@ -763,7 +764,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<Page<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
+    ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -793,7 +794,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
@@ -815,7 +816,7 @@ public interface Jobs {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<Page<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
+    ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.

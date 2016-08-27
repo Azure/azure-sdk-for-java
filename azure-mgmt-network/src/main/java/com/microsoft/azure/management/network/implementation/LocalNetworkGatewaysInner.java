@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -437,7 +438,7 @@ public final class LocalNetworkGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LocalNetworkGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
+    public ServiceCall<List<LocalNetworkGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
@@ -531,7 +532,7 @@ public final class LocalNetworkGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<LocalNetworkGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<LocalNetworkGatewayInner>> serviceCall, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
+    public ServiceCall<List<LocalNetworkGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<LocalNetworkGatewayInner>> serviceCall, final ListOperationCallback<LocalNetworkGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {

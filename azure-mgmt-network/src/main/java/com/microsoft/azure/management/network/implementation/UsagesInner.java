@@ -20,6 +20,7 @@ import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -93,7 +94,7 @@ public final class UsagesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> listAsync(final String location, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> listAsync(final String location, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(location),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
@@ -187,7 +188,7 @@ public final class UsagesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<UsageInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {

@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -469,7 +470,7 @@ public final class SecurityRulesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
+    public ServiceCall<List<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, networkSecurityGroupName),
             new Func1<String, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
@@ -568,7 +569,7 @@ public final class SecurityRulesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SecurityRuleInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<SecurityRuleInner>> serviceCall, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
+    public ServiceCall<List<SecurityRuleInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<SecurityRuleInner>> serviceCall, final ListOperationCallback<SecurityRuleInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {

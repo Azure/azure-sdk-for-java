@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -511,7 +512,7 @@ public final class VirtualNetworksInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkInner>> listAllAsync(final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkInner>> listAllAsync(final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
@@ -599,7 +600,7 @@ public final class VirtualNetworksInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkInner>> listAsync(final String resourceGroupName, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
@@ -824,7 +825,7 @@ public final class VirtualNetworksInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
@@ -912,7 +913,7 @@ public final class VirtualNetworksInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<VirtualNetworkInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
+    public ServiceCall<List<VirtualNetworkInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<VirtualNetworkInner>> serviceCall, final ListOperationCallback<VirtualNetworkInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {

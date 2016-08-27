@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -730,7 +731,7 @@ public final class DeploymentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
@@ -822,7 +823,7 @@ public final class DeploymentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+    public ServiceCall<List<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName, filter, top),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
@@ -920,7 +921,7 @@ public final class DeploymentsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DeploymentExtendedInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<DeploymentExtendedInner>> serviceCall, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
+    public ServiceCall<List<DeploymentExtendedInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<DeploymentExtendedInner>> serviceCall, final ListOperationCallback<DeploymentExtendedInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {

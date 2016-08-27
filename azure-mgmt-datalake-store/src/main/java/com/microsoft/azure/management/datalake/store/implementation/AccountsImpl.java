@@ -26,6 +26,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -307,7 +308,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback) {
+    public ServiceCall<List<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback) {
         return AzureServiceCall.create(
             listFirewallRulesSinglePageAsync(resourceGroupName, accountName),
             new Func1<String, Observable<ServiceResponse<Page<FirewallRule>>>>() {
@@ -938,7 +939,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listByResourceGroupSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
@@ -1051,7 +1052,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, expand, select, orderby, count, search, format),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
@@ -1160,7 +1161,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
@@ -1266,7 +1267,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(filter, top, skip, expand, select, orderby, count, search, format),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
@@ -1373,7 +1374,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink, final ServiceCall<Page<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback) {
+    public ServiceCall<List<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink, final ServiceCall<List<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback) {
         return AzureServiceCall.create(
             listFirewallRulesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FirewallRule>>>>() {
@@ -1461,7 +1462,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
@@ -1549,7 +1550,7 @@ public final class AccountsImpl implements Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceCall<Page<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceCall<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccount>> serviceCall, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {

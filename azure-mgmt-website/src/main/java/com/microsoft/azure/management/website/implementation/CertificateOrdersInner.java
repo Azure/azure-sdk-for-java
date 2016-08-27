@@ -753,7 +753,7 @@ public final class CertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderInner>> getCertificateOrdersAsync(final String resourceGroupName, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderInner>> getCertificateOrdersAsync(final String resourceGroupName, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificateOrdersSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
@@ -848,7 +848,7 @@ public final class CertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderCertificateInner>> getCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<CertificateOrderCertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderCertificateInner>> getCertificatesAsync(final String resourceGroupName, final String certificateOrderName, final ListOperationCallback<CertificateOrderCertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificatesSinglePageAsync(resourceGroupName, certificateOrderName),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>>>() {
@@ -1363,7 +1363,7 @@ public final class CertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderInner>> getCertificateOrdersNextAsync(final String nextPageLink, final ServiceCall<Page<CertificateOrderInner>> serviceCall, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderInner>> getCertificateOrdersNextAsync(final String nextPageLink, final ServiceCall<List<CertificateOrderInner>> serviceCall, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificateOrdersNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
@@ -1451,7 +1451,7 @@ public final class CertificateOrdersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateOrderCertificateInner>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<Page<CertificateOrderCertificateInner>> serviceCall, final ListOperationCallback<CertificateOrderCertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateOrderCertificateInner>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateOrderCertificateInner>> serviceCall, final ListOperationCallback<CertificateOrderCertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>>>() {

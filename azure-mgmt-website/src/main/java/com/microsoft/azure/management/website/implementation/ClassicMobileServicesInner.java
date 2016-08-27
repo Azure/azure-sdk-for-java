@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -103,7 +104,7 @@ public final class ClassicMobileServicesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ClassicMobileServiceInner>> getClassicMobileServicesAsync(final String resourceGroupName, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+    public ServiceCall<List<ClassicMobileServiceInner>> getClassicMobileServicesAsync(final String resourceGroupName, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
         return AzureServiceCall.create(
             getClassicMobileServicesSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
@@ -331,7 +332,7 @@ public final class ClassicMobileServicesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ClassicMobileServiceInner>> getClassicMobileServicesNextAsync(final String nextPageLink, final ServiceCall<Page<ClassicMobileServiceInner>> serviceCall, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+    public ServiceCall<List<ClassicMobileServiceInner>> getClassicMobileServicesNextAsync(final String nextPageLink, final ServiceCall<List<ClassicMobileServiceInner>> serviceCall, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
         return AzureServiceCall.create(
             getClassicMobileServicesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {

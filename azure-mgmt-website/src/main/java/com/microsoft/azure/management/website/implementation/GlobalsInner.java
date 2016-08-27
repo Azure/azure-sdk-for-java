@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -285,7 +286,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSubscriptionGeoRegionsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
@@ -367,7 +368,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final String sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final String sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSubscriptionGeoRegionsSinglePageAsync(sku),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
@@ -455,7 +456,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateInner>> getAllCertificatesAsync(final ListOperationCallback<CertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateInner>> getAllCertificatesAsync(final ListOperationCallback<CertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllCertificatesSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
@@ -541,7 +542,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllServerFarmsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -625,7 +626,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final Boolean detailed, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final Boolean detailed, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllServerFarmsSinglePageAsync(detailed),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -715,7 +716,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getAllSitesAsync(final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getAllSitesAsync(final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllSitesSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -801,7 +802,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getAllHostingEnvironmentsAsync(final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getAllHostingEnvironmentsAsync(final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllHostingEnvironmentsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -887,7 +888,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsAsync(final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsAsync(final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllManagedHostingEnvironmentsSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
@@ -973,7 +974,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ClassicMobileServiceInner>> getAllClassicMobileServicesAsync(final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+    public ServiceCall<List<ClassicMobileServiceInner>> getAllClassicMobileServicesAsync(final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllClassicMobileServicesSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
@@ -1301,7 +1302,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<GeoRegionInner>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<Page<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<List<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
         return AzureServiceCall.create(
             getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
@@ -1389,7 +1390,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<CertificateInner>> getAllCertificatesNextAsync(final String nextPageLink, final ServiceCall<Page<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
+    public ServiceCall<List<CertificateInner>> getAllCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllCertificatesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
@@ -1477,7 +1478,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsNextAsync(final String nextPageLink, final ServiceCall<Page<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllServerFarmsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
@@ -1565,7 +1566,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<SiteInner>> getAllSitesNextAsync(final String nextPageLink, final ServiceCall<Page<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getAllSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllSitesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
@@ -1653,7 +1654,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<HostingEnvironmentInner>> getAllHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<Page<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getAllHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
@@ -1741,7 +1742,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<Page<ManagedHostingEnvironmentInner>> serviceCall, final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
+    public ServiceCall<List<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<ManagedHostingEnvironmentInner>> serviceCall, final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
@@ -1829,7 +1830,7 @@ public final class GlobalsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ClassicMobileServiceInner>> getAllClassicMobileServicesNextAsync(final String nextPageLink, final ServiceCall<Page<ClassicMobileServiceInner>> serviceCall, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+    public ServiceCall<List<ClassicMobileServiceInner>> getAllClassicMobileServicesNextAsync(final String nextPageLink, final ServiceCall<List<ClassicMobileServiceInner>> serviceCall, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
         return AzureServiceCall.create(
             getAllClassicMobileServicesNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {

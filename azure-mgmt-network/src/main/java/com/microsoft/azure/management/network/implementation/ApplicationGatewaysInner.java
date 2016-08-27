@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -462,7 +463,7 @@ public final class ApplicationGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+    public ServiceCall<List<ApplicationGatewayInner>> listAsync(final String resourceGroupName, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceGroupName),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
@@ -553,7 +554,7 @@ public final class ApplicationGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+    public ServiceCall<List<ApplicationGatewayInner>> listAllAsync(final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
@@ -878,7 +879,7 @@ public final class ApplicationGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+    public ServiceCall<List<ApplicationGatewayInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
@@ -966,7 +967,7 @@ public final class ApplicationGatewaysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
+    public ServiceCall<List<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationGatewayInner>> serviceCall, final ListOperationCallback<ApplicationGatewayInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {

@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -109,7 +110,7 @@ public final class FeaturesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
+    public ServiceCall<List<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
@@ -197,7 +198,7 @@ public final class FeaturesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+    public ServiceCall<List<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
         return AzureServiceCall.create(
             listSinglePageAsync(resourceProviderNamespace),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
@@ -425,7 +426,7 @@ public final class FeaturesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<Page<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+    public ServiceCall<List<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
         return AzureServiceCall.create(
             listAllNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
@@ -513,7 +514,7 @@ public final class FeaturesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Page<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceCall<Page<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+    public ServiceCall<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
         return AzureServiceCall.create(
             listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
