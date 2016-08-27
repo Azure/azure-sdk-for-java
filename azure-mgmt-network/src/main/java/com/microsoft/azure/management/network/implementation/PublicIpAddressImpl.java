@@ -13,7 +13,6 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  *  Implementation for {@link PublicIpAddress} and its create and update interfaces.

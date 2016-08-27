@@ -25,7 +25,6 @@ import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.List;

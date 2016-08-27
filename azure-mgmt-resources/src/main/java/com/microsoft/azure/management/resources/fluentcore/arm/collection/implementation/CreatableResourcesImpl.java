@@ -3,14 +3,13 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection.imple
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.observables.BlockingObservable;
 

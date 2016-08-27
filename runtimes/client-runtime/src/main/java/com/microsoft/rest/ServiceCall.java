@@ -9,10 +9,8 @@ package com.microsoft.rest;
 
 import com.google.common.util.concurrent.AbstractFuture;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscription;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.

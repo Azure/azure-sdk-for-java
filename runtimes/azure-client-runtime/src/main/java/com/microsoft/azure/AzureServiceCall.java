@@ -9,13 +9,12 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
-
-import java.util.List;
-
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.
@@ -46,6 +45,16 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
         return serviceCall;
     }
 
+    /**
+     * Creates a ServiceCall from a paging operation that returns a header response.
+     *
+     * @param first the observable to the first page
+     * @param next the observable to poll subsequent pages
+     * @param callback the client-side callback
+     * @param <E> the element type
+     * @param <V> the header object type
+     * @return the future based ServiceCall
+     */
     public static <E, V> ServiceCall<List<E>> createWithHeaders(Observable<ServiceResponseWithHeaders<Page<E>, V>> first, final Func1<String, Observable<ServiceResponseWithHeaders<Page<E>, V>>> next, final ListOperationCallback<E> callback) {
         final AzureServiceCall<List<E>> serviceCall = new AzureServiceCall<>();
         final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, new Func1<String, Observable<ServiceResponse<Page<E>>>>() {
