@@ -107,7 +107,7 @@ public final class GlobalDomainRegistrationsInner {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -422,7 +422,7 @@ public final class GlobalDomainRegistrationsInner {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NameIdentifierInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -464,7 +464,7 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists domain recommendations based on keywords.
      *
-     * @param parameters Domain recommendation search parameters
+    ServiceResponse<PageImpl<NameIdentifierInner>> * @param parameters Domain recommendation search parameters
      * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsSinglePageAsync(final DomainRecommendationSearchParametersInner parameters) {
@@ -516,7 +516,7 @@ public final class GlobalDomainRegistrationsInner {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -559,7 +559,7 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextSinglePageAsync(final String nextPageLink) {
@@ -604,7 +604,7 @@ public final class GlobalDomainRegistrationsInner {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NameIdentifierInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -647,7 +647,7 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists domain recommendations based on keywords.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NameIdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextSinglePageAsync(final String nextPageLink) {

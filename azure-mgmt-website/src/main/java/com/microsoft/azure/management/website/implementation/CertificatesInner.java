@@ -126,7 +126,7 @@ public final class CertificatesInner {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -168,7 +168,7 @@ public final class CertificatesInner {
     /**
      * Get certificates for a subscription in the specified resource group.
      *
-     * @param resourceGroupName Name of the resource group
+    ServiceResponse<PageImpl<CertificateInner>> * @param resourceGroupName Name of the resource group
      * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateInner>>> getCertificatesSinglePageAsync(final String resourceGroupName) {
@@ -844,7 +844,7 @@ public final class CertificatesInner {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -887,7 +887,7 @@ public final class CertificatesInner {
     /**
      * Get certificates for a subscription in the specified resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateInner>>> getCertificatesNextSinglePageAsync(final String nextPageLink) {

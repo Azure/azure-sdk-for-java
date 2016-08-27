@@ -584,7 +584,7 @@ public final class AccountsImpl implements Accounts {
                 return listStorageContainersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BlobContainer>>(pagedList, response.getResponse());
     }
 
     /**
@@ -630,9 +630,9 @@ public final class AccountsImpl implements Accounts {
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
      *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
-     * @param storageAccountName The name of the Azure storage account from which to list blob containers.
+    ServiceResponse<PageImpl<BlobContainer>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+    ServiceResponse<PageImpl<BlobContainer>> * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
+    ServiceResponse<PageImpl<BlobContainer>> * @param storageAccountName The name of the Azure storage account from which to list blob containers.
      * @return the List&lt;BlobContainer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BlobContainer>>> listStorageContainersSinglePageAsync(final String resourceGroupName, final String accountName, final String storageAccountName) {
@@ -692,7 +692,7 @@ public final class AccountsImpl implements Accounts {
                 return listSasTokensNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SasTokenInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -740,10 +740,10 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
      *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which an Azure Storage account's SAS token is being requested.
-     * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
-     * @param containerName The name of the Azure storage container for which the SAS token is being requested.
+    ServiceResponse<PageImpl<SasTokenInfo>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+    ServiceResponse<PageImpl<SasTokenInfo>> * @param accountName The name of the Data Lake Analytics account from which an Azure Storage account's SAS token is being requested.
+    ServiceResponse<PageImpl<SasTokenInfo>> * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
+    ServiceResponse<PageImpl<SasTokenInfo>> * @param containerName The name of the Azure storage container for which the SAS token is being requested.
      * @return the List&lt;SasTokenInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SasTokenInfo>>> listSasTokensSinglePageAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName) {
@@ -1028,7 +1028,7 @@ public final class AccountsImpl implements Accounts {
                 return listStorageAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<StorageAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1139,7 +1139,7 @@ public final class AccountsImpl implements Accounts {
                 return listStorageAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<StorageAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1201,17 +1201,17 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
-     * @param filter The OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param filter The OData filter. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the List&lt;StorageAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StorageAccountInfo>>> listStorageAccountsSinglePageAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) {
@@ -1266,7 +1266,7 @@ public final class AccountsImpl implements Accounts {
                 return listDataLakeStoreAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeStoreAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1377,7 +1377,7 @@ public final class AccountsImpl implements Accounts {
                 return listDataLakeStoreAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeStoreAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1439,17 +1439,17 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account for which to list Data Lake Store accounts.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param accountName The name of the Data Lake Analytics account for which to list Data Lake Store accounts.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the List&lt;DataLakeStoreAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>> listDataLakeStoreAccountsSinglePageAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) {
@@ -1503,7 +1503,7 @@ public final class AccountsImpl implements Accounts {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1607,7 +1607,7 @@ public final class AccountsImpl implements Accounts {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1667,16 +1667,16 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) {
@@ -1726,7 +1726,7 @@ public final class AccountsImpl implements Accounts {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1823,7 +1823,7 @@ public final class AccountsImpl implements Accounts {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1881,15 +1881,15 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listSinglePageAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) {
@@ -2390,7 +2390,7 @@ public final class AccountsImpl implements Accounts {
                 return listStorageContainersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BlobContainer>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2433,7 +2433,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<BlobContainer>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;BlobContainer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BlobContainer>>> listStorageContainersNextSinglePageAsync(final String nextPageLink) {
@@ -2478,7 +2478,7 @@ public final class AccountsImpl implements Accounts {
                 return listSasTokensNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SasTokenInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2521,7 +2521,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SasTokenInfo>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SasTokenInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SasTokenInfo>>> listSasTokensNextSinglePageAsync(final String nextPageLink) {
@@ -2566,7 +2566,7 @@ public final class AccountsImpl implements Accounts {
                 return listStorageAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<StorageAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2609,7 +2609,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<StorageAccountInfo>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;StorageAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StorageAccountInfo>>> listStorageAccountsNextSinglePageAsync(final String nextPageLink) {
@@ -2654,7 +2654,7 @@ public final class AccountsImpl implements Accounts {
                 return listDataLakeStoreAccountsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeStoreAccountInfo>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2697,7 +2697,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DataLakeStoreAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>> listDataLakeStoreAccountsNextSinglePageAsync(final String nextPageLink) {
@@ -2742,7 +2742,7 @@ public final class AccountsImpl implements Accounts {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2785,7 +2785,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
@@ -2830,7 +2830,7 @@ public final class AccountsImpl implements Accounts {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DataLakeAnalyticsAccount>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2873,7 +2873,7 @@ public final class AccountsImpl implements Accounts {
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listNextSinglePageAsync(final String nextPageLink) {

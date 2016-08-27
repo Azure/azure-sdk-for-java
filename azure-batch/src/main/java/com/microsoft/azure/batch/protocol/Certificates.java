@@ -130,7 +130,7 @@ public interface Certificates {
      * @param certificateListOptions Additional parameters for the operation
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    Observable<ServiceResponse<Page<Certificate>>> listAsync(final CertificateListOptions certificateListOptions);
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listAsync(final CertificateListOptions certificateListOptions);
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
@@ -347,6 +347,6 @@ public interface Certificates {
      * @param certificateListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    Observable<ServiceResponse<Page<Certificate>>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions);
 
 }

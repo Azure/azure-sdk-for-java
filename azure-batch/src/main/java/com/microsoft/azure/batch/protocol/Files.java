@@ -466,7 +466,7 @@ public interface Files {
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    Observable<ServiceResponse<Page<NodeFile>>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
@@ -524,7 +524,7 @@ public interface Files {
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions);
 
     /**
      * Lists the files in a task's directory on its compute node.
@@ -576,7 +576,7 @@ public interface Files {
      * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    Observable<ServiceResponse<Page<NodeFile>>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions);
 
     /**
      * Lists all of the files in task directories on the specified compute node.
@@ -628,6 +628,6 @@ public interface Files {
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions);
 
 }

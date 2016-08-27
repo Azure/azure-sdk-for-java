@@ -873,7 +873,7 @@ public final class VirtualMachinesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -915,7 +915,7 @@ public final class VirtualMachinesInner {
     /**
      * The operation to list virtual machines under a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -965,7 +965,7 @@ public final class VirtualMachinesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1588,7 +1588,7 @@ public final class VirtualMachinesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1631,7 +1631,7 @@ public final class VirtualMachinesInner {
     /**
      * The operation to list virtual machines under a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -1676,7 +1676,7 @@ public final class VirtualMachinesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1719,7 +1719,7 @@ public final class VirtualMachinesInner {
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextSinglePageAsync(final String nextPageLink) {

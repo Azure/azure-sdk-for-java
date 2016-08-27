@@ -110,7 +110,7 @@ public final class DomainsInner {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -152,7 +152,7 @@ public final class DomainsInner {
     /**
      * Lists domains under a resource group.
      *
-     * @param resourceGroupName Name of the resource group
+    ServiceResponse<PageImpl<DomainInner>> * @param resourceGroupName Name of the resource group
      * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getDomainsSinglePageAsync(final String resourceGroupName) {
@@ -626,7 +626,7 @@ public final class DomainsInner {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -669,7 +669,7 @@ public final class DomainsInner {
     /**
      * Lists domains under a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getDomainsNextSinglePageAsync(final String nextPageLink) {

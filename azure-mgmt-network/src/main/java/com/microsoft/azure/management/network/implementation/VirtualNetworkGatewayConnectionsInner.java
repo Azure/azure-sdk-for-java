@@ -516,7 +516,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkGatewayConnectionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -558,7 +558,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;VirtualNetworkGatewayConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -1099,7 +1099,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkGatewayConnectionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1142,7 +1142,7 @@ public final class VirtualNetworkGatewayConnectionsInner {
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkGatewayConnectionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualNetworkGatewayConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>>> listNextSinglePageAsync(final String nextPageLink) {

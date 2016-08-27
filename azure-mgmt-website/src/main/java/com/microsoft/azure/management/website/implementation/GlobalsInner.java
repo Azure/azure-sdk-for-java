@@ -277,7 +277,7 @@ public final class GlobalsInner {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -358,7 +358,7 @@ public final class GlobalsInner {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -400,7 +400,7 @@ public final class GlobalsInner {
     /**
      * Gets list of available geo regions.
      *
-     * @param sku Filter only to regions that support this sku
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Filter only to regions that support this sku
      * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsSinglePageAsync(final String sku) {
@@ -447,7 +447,7 @@ public final class GlobalsInner {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -533,7 +533,7 @@ public final class GlobalsInner {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -615,7 +615,7 @@ public final class GlobalsInner {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -659,7 +659,7 @@ public final class GlobalsInner {
     /**
      * Gets all App Service Plans for a subcription.
      *
-     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -707,7 +707,7 @@ public final class GlobalsInner {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -793,7 +793,7 @@ public final class GlobalsInner {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -879,7 +879,7 @@ public final class GlobalsInner {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -965,7 +965,7 @@ public final class GlobalsInner {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1291,7 +1291,7 @@ public final class GlobalsInner {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1334,7 +1334,7 @@ public final class GlobalsInner {
     /**
      * Gets list of available geo regions.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextSinglePageAsync(final String nextPageLink) {
@@ -1379,7 +1379,7 @@ public final class GlobalsInner {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1422,7 +1422,7 @@ public final class GlobalsInner {
     /**
      * Get all certificates for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextSinglePageAsync(final String nextPageLink) {
@@ -1467,7 +1467,7 @@ public final class GlobalsInner {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1510,7 +1510,7 @@ public final class GlobalsInner {
     /**
      * Gets all App Service Plans for a subcription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextSinglePageAsync(final String nextPageLink) {
@@ -1555,7 +1555,7 @@ public final class GlobalsInner {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1598,7 +1598,7 @@ public final class GlobalsInner {
     /**
      * Gets all Web Apps for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextSinglePageAsync(final String nextPageLink) {
@@ -1643,7 +1643,7 @@ public final class GlobalsInner {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1686,7 +1686,7 @@ public final class GlobalsInner {
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
@@ -1731,7 +1731,7 @@ public final class GlobalsInner {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1774,7 +1774,7 @@ public final class GlobalsInner {
     /**
      * Gets all managed hosting environments for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
@@ -1819,7 +1819,7 @@ public final class GlobalsInner {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1862,7 +1862,7 @@ public final class GlobalsInner {
     /**
      * Gets all mobile services for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ClassicMobileServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextSinglePageAsync(final String nextPageLink) {

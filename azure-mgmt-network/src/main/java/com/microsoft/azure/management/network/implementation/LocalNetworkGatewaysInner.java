@@ -428,7 +428,7 @@ public final class LocalNetworkGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<LocalNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -470,7 +470,7 @@ public final class LocalNetworkGatewaysInner {
     /**
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -521,7 +521,7 @@ public final class LocalNetworkGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<LocalNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -564,7 +564,7 @@ public final class LocalNetworkGatewaysInner {
     /**
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {

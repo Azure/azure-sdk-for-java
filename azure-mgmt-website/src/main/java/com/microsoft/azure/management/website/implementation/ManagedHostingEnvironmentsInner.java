@@ -582,7 +582,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -624,7 +624,7 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all managed hosting environments in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param resourceGroupName Name of resource group
      * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsSinglePageAsync(final String resourceGroupName) {
@@ -819,7 +819,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -914,7 +914,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -960,9 +960,9 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all sites on the managed hosting environment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
-     * @param propertiesToInclude Comma separated list of site properties to include
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of managed hosting environment
+    ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of site properties to include
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -1017,7 +1017,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1061,8 +1061,8 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of managed hosting environment
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1117,7 +1117,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1161,8 +1161,8 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of managed hosting environment
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of managed hosting environment
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1216,7 +1216,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1259,7 +1259,7 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all managed hosting environments in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
@@ -1304,7 +1304,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1347,7 +1347,7 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all sites on the managed hosting environment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesNextSinglePageAsync(final String nextPageLink) {
@@ -1392,7 +1392,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1435,7 +1435,7 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(final String nextPageLink) {
@@ -1480,7 +1480,7 @@ public final class ManagedHostingEnvironmentsInner {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1523,7 +1523,7 @@ public final class ManagedHostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(final String nextPageLink) {

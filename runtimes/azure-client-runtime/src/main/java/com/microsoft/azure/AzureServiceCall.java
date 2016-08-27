@@ -12,6 +12,7 @@ import com.microsoft.rest.ServiceResponse;
 
 import java.util.List;
 
+import com.microsoft.rest.ServiceResponseWithHeaders;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
@@ -42,6 +43,26 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
         serviceCall.setSubscription(first
             .single()
             .subscribe(subscriber));
+        return serviceCall;
+    }
+
+    public static <E, V> ServiceCall<List<E>> createWithHeaders(Observable<ServiceResponseWithHeaders<Page<E>, V>> first, final Func1<String, Observable<ServiceResponseWithHeaders<Page<E>, V>>> next, final ListOperationCallback<E> callback) {
+        final AzureServiceCall<List<E>> serviceCall = new AzureServiceCall<>();
+        final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, new Func1<String, Observable<ServiceResponse<Page<E>>>>() {
+            @Override
+            public Observable<ServiceResponse<Page<E>>> call(String s) {
+                return next.call(s)
+                        .map(new Func1<ServiceResponseWithHeaders<Page<E>, V>, ServiceResponse<Page<E>>>() {
+                            @Override
+                            public ServiceResponse<Page<E>> call(ServiceResponseWithHeaders<Page<E>, V> pageVServiceResponseWithHeaders) {
+                                return pageVServiceResponseWithHeaders;
+                            }
+                        });
+            }
+        }, callback);
+        serviceCall.setSubscription(first
+                .single()
+                .subscribe(subscriber));
         return serviceCall;
     }
 

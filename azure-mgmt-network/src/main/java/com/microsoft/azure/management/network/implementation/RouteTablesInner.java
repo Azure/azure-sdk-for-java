@@ -500,7 +500,7 @@ public final class RouteTablesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -542,7 +542,7 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<RouteTableInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -592,7 +592,7 @@ public final class RouteTablesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -679,7 +679,7 @@ public final class RouteTablesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -722,7 +722,7 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -767,7 +767,7 @@ public final class RouteTablesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -810,7 +810,7 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listAllNextSinglePageAsync(final String nextPageLink) {

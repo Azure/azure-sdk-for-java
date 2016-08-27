@@ -459,7 +459,7 @@ public final class RoutesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -503,8 +503,8 @@ public final class RoutesInner {
     /**
      * The List network security rule operation retrieves all the routes in a route table.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeTableName The name of the route table.
+    ServiceResponse<PageImpl<RouteInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<RouteInner>> * @param routeTableName The name of the route table.
      * @return the List&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listSinglePageAsync(final String resourceGroupName, final String routeTableName) {
@@ -558,7 +558,7 @@ public final class RoutesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<RouteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -601,7 +601,7 @@ public final class RoutesInner {
     /**
      * The List network security rule operation retrieves all the routes in a route table.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<RouteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;RouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteInner>>> listNextSinglePageAsync(final String nextPageLink) {

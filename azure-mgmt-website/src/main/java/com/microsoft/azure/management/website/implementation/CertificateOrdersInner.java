@@ -743,7 +743,7 @@ public final class CertificateOrdersInner {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -785,7 +785,7 @@ public final class CertificateOrdersInner {
     /**
      * Get certificate orders in a resource group.
      *
-     * @param resourceGroupName Azure resource group name
+    ServiceResponse<PageImpl<CertificateOrderInner>> * @param resourceGroupName Azure resource group name
      * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersSinglePageAsync(final String resourceGroupName) {
@@ -837,7 +837,7 @@ public final class CertificateOrdersInner {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderCertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -881,8 +881,8 @@ public final class CertificateOrdersInner {
     /**
      * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
+    ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param resourceGroupName Azure resource group name
+    ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param certificateOrderName Certificate name
      * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesSinglePageAsync(final String resourceGroupName, final String certificateOrderName) {
@@ -1352,7 +1352,7 @@ public final class CertificateOrdersInner {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1395,7 +1395,7 @@ public final class CertificateOrdersInner {
     /**
      * Get certificate orders in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersNextSinglePageAsync(final String nextPageLink) {
@@ -1440,7 +1440,7 @@ public final class CertificateOrdersInner {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderCertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1483,7 +1483,7 @@ public final class CertificateOrdersInner {
     /**
      * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesNextSinglePageAsync(final String nextPageLink) {

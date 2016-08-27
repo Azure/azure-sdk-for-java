@@ -459,7 +459,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -503,8 +503,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param circuitName The name of the circuit.
      * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
@@ -558,7 +558,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -601,7 +601,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     /**
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextSinglePageAsync(final String nextPageLink) {

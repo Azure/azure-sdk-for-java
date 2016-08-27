@@ -84,15 +84,15 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeAgentSku>> listNodeAgentSkus() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeAgentSku>> response = listNodeAgentSkusSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusSinglePageAsync().toBlocking().single();
         PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
             public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -104,9 +104,9 @@ public final class AccountsImpl implements Accounts {
     public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -118,11 +118,11 @@ public final class AccountsImpl implements Accounts {
      *
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusAsync() {
         return listNodeAgentSkusSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<NodeAgentSku>>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(ServiceResponse<Page<NodeAgentSku>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
                 }
@@ -134,7 +134,7 @@ public final class AccountsImpl implements Accounts {
      *
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -150,12 +150,12 @@ public final class AccountsImpl implements Accounts {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeAgentSku>> result = listNodeAgentSkusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeAgentSku>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -172,8 +172,8 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeAgentSku>> listNodeAgentSkus(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeAgentSku>> response = listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions).toBlocking().single();
         PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
             public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
@@ -187,7 +187,7 @@ public final class AccountsImpl implements Accounts {
                 return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -200,9 +200,9 @@ public final class AccountsImpl implements Accounts {
     public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
                     AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
                     if (accountListNodeAgentSkusOptions != null) {
                         accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
@@ -222,11 +222,11 @@ public final class AccountsImpl implements Accounts {
      * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
         return listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeAgentSku>>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(ServiceResponse<Page<NodeAgentSku>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
                     if (accountListNodeAgentSkusOptions != null) {
@@ -243,10 +243,10 @@ public final class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusSinglePageAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -280,12 +280,12 @@ public final class AccountsImpl implements Accounts {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeAgentSku>> result = listNodeAgentSkusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeAgentSku>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -309,15 +309,15 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeAgentSku>> listNodeAgentSkusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeAgentSku>> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
             public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -331,9 +331,9 @@ public final class AccountsImpl implements Accounts {
     public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -346,11 +346,11 @@ public final class AccountsImpl implements Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextAsync(final String nextPageLink) {
         return listNodeAgentSkusNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<NodeAgentSku>>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(ServiceResponse<Page<NodeAgentSku>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
                 }
@@ -363,7 +363,7 @@ public final class AccountsImpl implements Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -376,12 +376,12 @@ public final class AccountsImpl implements Accounts {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeAgentSku>> result = listNodeAgentSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeAgentSku>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -399,15 +399,15 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeAgentSku>> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeAgentSku>> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single();
         PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
             @Override
             public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -422,9 +422,9 @@ public final class AccountsImpl implements Accounts {
     public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
                 }
             },
@@ -438,11 +438,11 @@ public final class AccountsImpl implements Accounts {
      * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
         return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeAgentSku>>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(ServiceResponse<Page<NodeAgentSku>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
                 }
@@ -452,11 +452,11 @@ public final class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -478,12 +478,12 @@ public final class AccountsImpl implements Accounts {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeAgentSku>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeAgentSku>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeAgentSku>> result = listNodeAgentSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeAgentSku>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

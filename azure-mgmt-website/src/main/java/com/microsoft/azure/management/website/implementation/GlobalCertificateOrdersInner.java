@@ -91,7 +91,7 @@ public final class GlobalCertificateOrdersInner {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -240,7 +240,7 @@ public final class GlobalCertificateOrdersInner {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -283,7 +283,7 @@ public final class GlobalCertificateOrdersInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextSinglePageAsync(final String nextPageLink) {

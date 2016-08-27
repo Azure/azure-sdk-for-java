@@ -499,7 +499,7 @@ public final class NetworkSecurityGroupsInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkSecurityGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -586,7 +586,7 @@ public final class NetworkSecurityGroupsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkSecurityGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -628,7 +628,7 @@ public final class NetworkSecurityGroupsInner {
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -679,7 +679,7 @@ public final class NetworkSecurityGroupsInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkSecurityGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -722,7 +722,7 @@ public final class NetworkSecurityGroupsInner {
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
@@ -767,7 +767,7 @@ public final class NetworkSecurityGroupsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkSecurityGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -810,7 +810,7 @@ public final class NetworkSecurityGroupsInner {
     /**
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> listNextSinglePageAsync(final String nextPageLink) {

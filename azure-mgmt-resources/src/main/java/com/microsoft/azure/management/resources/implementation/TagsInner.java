@@ -360,7 +360,7 @@ public final class TagsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TagDetailsInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -447,7 +447,7 @@ public final class TagsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TagDetailsInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -490,7 +490,7 @@ public final class TagsInner {
     /**
      * Get a list of subscription resource tags.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<TagDetailsInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextSinglePageAsync(final String nextPageLink) {

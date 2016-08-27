@@ -529,7 +529,7 @@ public final class SubnetsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SubnetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -573,8 +573,8 @@ public final class SubnetsInner {
     /**
      * The List subnets operation retrieves all the subnets in a virtual network.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
+    ServiceResponse<PageImpl<SubnetInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<SubnetInner>> * @param virtualNetworkName The name of the virtual network.
      * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
@@ -628,7 +628,7 @@ public final class SubnetsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SubnetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -671,7 +671,7 @@ public final class SubnetsInner {
     /**
      * The List subnets operation retrieves all the subnets in a virtual network.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SubnetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listNextSinglePageAsync(final String nextPageLink) {

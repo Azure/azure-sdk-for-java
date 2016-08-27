@@ -459,7 +459,7 @@ public final class VirtualNetworkPeeringsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkPeeringInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -503,8 +503,8 @@ public final class VirtualNetworkPeeringsInner {
     /**
      * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
+    ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param virtualNetworkName The name of the virtual network.
      * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
@@ -558,7 +558,7 @@ public final class VirtualNetworkPeeringsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkPeeringInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -601,7 +601,7 @@ public final class VirtualNetworkPeeringsInner {
     /**
      * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listNextSinglePageAsync(final String nextPageLink) {

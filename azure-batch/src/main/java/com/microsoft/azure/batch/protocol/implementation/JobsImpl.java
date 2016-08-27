@@ -1765,15 +1765,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> list() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listSinglePageAsync().toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1785,9 +1785,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listAsync(final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1799,11 +1799,11 @@ public final class JobsImpl implements Jobs {
      *
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1815,7 +1815,7 @@ public final class JobsImpl implements Jobs {
      *
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -1833,12 +1833,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1855,8 +1855,8 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> list(final JobListOptions jobListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listSinglePageAsync(jobListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> list(final JobListOptions jobListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listSinglePageAsync(jobListOptions).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
@@ -1870,7 +1870,7 @@ public final class JobsImpl implements Jobs {
                 return listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1883,9 +1883,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listAsync(final JobListOptions jobListOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
                     JobListNextOptions jobListNextOptions = null;
                     if (jobListOptions != null) {
                         jobListNextOptions = new JobListNextOptions();
@@ -1905,11 +1905,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listAsync(final JobListOptions jobListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listAsync(final JobListOptions jobListOptions) {
         return listSinglePageAsync(jobListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     JobListNextOptions jobListNextOptions = null;
                     if (jobListOptions != null) {
@@ -1926,10 +1926,10 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-     * @param jobListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListOptions Additional parameters for the operation
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listSinglePageAsync(final JobListOptions jobListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync(final JobListOptions jobListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -1971,12 +1971,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2000,15 +2000,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listFromJobSchedule(final String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listFromJobScheduleSinglePageAsync(jobScheduleId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobSchedule(final String jobScheduleId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleSinglePageAsync(jobScheduleId).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromJobScheduleNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2021,9 +2021,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleSinglePageAsync(jobScheduleId),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2036,11 +2036,11 @@ public final class JobsImpl implements Jobs {
      * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleAsync(final String jobScheduleId) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleAsync(final String jobScheduleId) {
         return listFromJobScheduleSinglePageAsync(jobScheduleId)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2053,7 +2053,7 @@ public final class JobsImpl implements Jobs {
      * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleSinglePageAsync(final String jobScheduleId) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2074,12 +2074,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listFromJobScheduleDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2097,8 +2097,8 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listFromJobSchedule(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobSchedule(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
@@ -2112,7 +2112,7 @@ public final class JobsImpl implements Jobs {
                 return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2126,9 +2126,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
                     JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
                     if (jobListFromJobScheduleOptions != null) {
                         jobListFromJobScheduleNextOptions = new JobListFromJobScheduleNextOptions();
@@ -2149,11 +2149,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
         return listFromJobScheduleSinglePageAsync(jobScheduleId, jobListFromJobScheduleOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions = null;
                     if (jobListFromJobScheduleOptions != null) {
@@ -2170,11 +2170,11 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
-     * @param jobListFromJobScheduleOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleSinglePageAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2219,12 +2219,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listFromJobScheduleDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2248,15 +2248,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatus(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatus(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId).toBlocking().single();
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> pagedList = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
             @Override
             public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2269,9 +2269,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusSinglePageAsync(jobId),
-            new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2284,11 +2284,11 @@ public final class JobsImpl implements Jobs {
      * @param jobId The id of the job.
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusAsync(final String jobId) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusAsync(final String jobId) {
         return listPreparationAndReleaseTaskStatusSinglePageAsync(jobId)
-            .concatMap(new Func1<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2301,7 +2301,7 @@ public final class JobsImpl implements Jobs {
      * @param jobId The id of the job.
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2321,12 +2321,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2344,8 +2344,8 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatus(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatus(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions).toBlocking().single();
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> pagedList = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
             @Override
             public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws RestException, IOException {
@@ -2359,7 +2359,7 @@ public final class JobsImpl implements Jobs {
                 return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2373,9 +2373,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions),
-            new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
                     JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
                     if (jobListPreparationAndReleaseTaskStatusOptions != null) {
                         jobListPreparationAndReleaseTaskStatusNextOptions = new JobListPreparationAndReleaseTaskStatusNextOptions();
@@ -2396,11 +2396,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
         return listPreparationAndReleaseTaskStatusSinglePageAsync(jobId, jobListPreparationAndReleaseTaskStatusOptions)
-            .concatMap(new Func1<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions = null;
                     if (jobListPreparationAndReleaseTaskStatusOptions != null) {
@@ -2417,11 +2417,11 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
-     * @param jobId The id of the job.
-     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobId The id of the job.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2462,12 +2462,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> result = listPreparationAndReleaseTaskStatusDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2491,15 +2491,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2513,9 +2513,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2528,11 +2528,11 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2545,7 +2545,7 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2558,12 +2558,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2581,15 +2581,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listNext(final String nextPageLink, final JobListNextOptions jobListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders> listNext(final String nextPageLink, final JobListNextOptions jobListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> response = listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, jobListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2604,9 +2604,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, jobListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, jobListNextOptions);
                 }
             },
@@ -2620,11 +2620,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, jobListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, jobListNextOptions);
                 }
@@ -2634,11 +2634,11 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListNextOptions Additional parameters for the operation
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listNextSinglePageAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextSinglePageAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2660,12 +2660,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2689,15 +2689,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listFromJobScheduleNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listFromJobScheduleNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromJobScheduleNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2711,9 +2711,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2726,11 +2726,11 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextAsync(final String nextPageLink) {
         return listFromJobScheduleNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2743,7 +2743,7 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2756,12 +2756,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listFromJobScheduleNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2779,15 +2779,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJob>> listFromJobScheduleNext(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJob>> response = listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders> listFromJobScheduleNext(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> response = listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single();
         PagedList<CloudJob> pagedList = new PagedList<CloudJob>(response.getBody()) {
             @Override
             public Page<CloudJob> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJob>, JobListFromJobScheduleHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2802,9 +2802,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<CloudJob>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions, final ServiceCall<List<CloudJob>> serviceCall, final ListOperationCallback<CloudJob> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(String nextPageLink) {
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions);
                 }
             },
@@ -2818,11 +2818,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
         return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJob>>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(ServiceResponse<Page<CloudJob>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromJobScheduleNextSinglePageAsync(nextPageLink, jobListFromJobScheduleNextOptions);
                 }
@@ -2832,11 +2832,11 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
      * @return the List&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextSinglePageAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2858,12 +2858,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromJobScheduleNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJob>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJob>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJob>> result = listFromJobScheduleNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJob>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> result = listFromJobScheduleNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2887,15 +2887,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> pagedList = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
             @Override
             public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2909,9 +2909,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2924,11 +2924,11 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink) {
         return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2941,7 +2941,7 @@ public final class JobsImpl implements Jobs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2954,12 +2954,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2977,15 +2977,15 @@ public final class JobsImpl implements Jobs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNext(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> listPreparationAndReleaseTaskStatusNext(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> response = listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single();
         PagedList<JobPreparationAndReleaseTaskExecutionInformation> pagedList = new PagedList<JobPreparationAndReleaseTaskExecutionInformation>(response.getBody()) {
             @Override
             public Page<JobPreparationAndReleaseTaskExecutionInformation> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -3000,9 +3000,9 @@ public final class JobsImpl implements Jobs {
     public ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions, final ServiceCall<List<JobPreparationAndReleaseTaskExecutionInformation>> serviceCall, final ListOperationCallback<JobPreparationAndReleaseTaskExecutionInformation> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(String nextPageLink) {
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions);
                 }
             },
@@ -3016,11 +3016,11 @@ public final class JobsImpl implements Jobs {
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
         return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPreparationAndReleaseTaskStatusNextSinglePageAsync(nextPageLink, jobListPreparationAndReleaseTaskStatusNextOptions);
                 }
@@ -3030,11 +3030,11 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
      * @return the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextSinglePageAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3056,12 +3056,12 @@ public final class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPreparationAndReleaseTaskStatusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> result = listPreparationAndReleaseTaskStatusNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

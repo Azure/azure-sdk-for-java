@@ -724,7 +724,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlExternalDataSource>>(pagedList, response.getResponse());
     }
 
     /**
@@ -832,7 +832,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlExternalDataSource>>(pagedList, response.getResponse());
     }
 
     /**
@@ -890,15 +890,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the external data sources.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param databaseName The name of the database containing the external data sources.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlExternalDataSource>>> listExternalDataSourcesSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -1028,7 +1028,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlCredential>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1136,7 +1136,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlCredential>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1194,15 +1194,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the schema.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlCredential>> * @param databaseName The name of the database containing the schema.
+    ServiceResponse<PageImpl<USqlCredential>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlCredential>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlCredential>>> listCredentialsSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -1339,7 +1339,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlProcedure>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1454,7 +1454,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlProcedure>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1514,16 +1514,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the procedures.
-     * @param schemaName The name of the schema containing the procedures.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param databaseName The name of the database containing the procedures.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param schemaName The name of the schema containing the procedures.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlProcedure>>> listProceduresSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -1663,7 +1663,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTable>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1778,7 +1778,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTable>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1838,16 +1838,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the tables.
-     * @param schemaName The name of the schema containing the tables.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlTable>> * @param databaseName The name of the database containing the tables.
+    ServiceResponse<PageImpl<USqlTable>> * @param schemaName The name of the schema containing the tables.
+    ServiceResponse<PageImpl<USqlTable>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlTable>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTable>>> listTablesSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -1987,7 +1987,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2102,7 +2102,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2162,16 +2162,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the table types.
-     * @param schemaName The name of the schema containing the table types.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlTableType>> * @param databaseName The name of the database containing the table types.
+    ServiceResponse<PageImpl<USqlTableType>> * @param schemaName The name of the schema containing the table types.
+    ServiceResponse<PageImpl<USqlTableType>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlTableType>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableType>>> listTableTypesSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -2311,7 +2311,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlView>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2426,7 +2426,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlView>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2486,16 +2486,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the views.
-     * @param schemaName The name of the schema containing the views.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlView>> * @param databaseName The name of the database containing the views.
+    ServiceResponse<PageImpl<USqlView>> * @param schemaName The name of the schema containing the views.
+    ServiceResponse<PageImpl<USqlView>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlView>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlView>>> listViewsSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -2642,7 +2642,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableStatistics>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2764,7 +2764,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableStatistics>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2826,17 +2826,17 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the statistics.
-     * @param schemaName The name of the schema containing the statistics.
-     * @param tableName The name of the table containing the statistics.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param databaseName The name of the database containing the statistics.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param schemaName The name of the schema containing the statistics.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param tableName The name of the table containing the statistics.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableStatistics>>> listTableStatisticsSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -2986,7 +2986,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTablePartition>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3108,7 +3108,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTablePartition>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3170,17 +3170,17 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the partitions.
-     * @param schemaName The name of the schema containing the partitions.
-     * @param tableName The name of the table containing the partitions.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param databaseName The name of the database containing the partitions.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param schemaName The name of the schema containing the partitions.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param tableName The name of the table containing the partitions.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlTablePartition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTablePartition>>> listTablePartitionsSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -3243,7 +3243,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3358,7 +3358,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3418,16 +3418,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the types.
-     * @param schemaName The name of the schema containing the types.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlType>> * @param databaseName The name of the database containing the types.
+    ServiceResponse<PageImpl<USqlType>> * @param schemaName The name of the schema containing the types.
+    ServiceResponse<PageImpl<USqlType>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlType>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlType>>> listTypesSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -3567,7 +3567,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableValuedFunction>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3682,7 +3682,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableValuedFunction>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3742,16 +3742,16 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the table valued functions.
-     * @param schemaName The name of the schema containing the table valued functions.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param databaseName The name of the database containing the table valued functions.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param schemaName The name of the schema containing the table valued functions.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> listTableValuedFunctionsSinglePageAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -3884,7 +3884,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlAssemblyClr>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3992,7 +3992,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlAssemblyClr>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4050,15 +4050,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the assembly.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param databaseName The name of the database containing the assembly.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlAssemblyClr>>> listAssembliesSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -4188,7 +4188,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlSchema>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4296,7 +4296,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlSchema>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4354,15 +4354,15 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param databaseName The name of the database containing the schema.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlSchema>> * @param databaseName The name of the database containing the schema.
+    ServiceResponse<PageImpl<USqlSchema>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlSchema>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlSchema>>> listSchemasSinglePageAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -4485,7 +4485,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlDatabase>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4586,7 +4586,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlDatabase>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4642,14 +4642,14 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @return the List&lt;USqlDatabase&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlDatabase>>> listDatabasesSinglePageAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count) {
@@ -4701,7 +4701,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listExternalDataSourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlExternalDataSource>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4744,7 +4744,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlExternalDataSource>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlExternalDataSource>>> listExternalDataSourcesNextSinglePageAsync(final String nextPageLink) {
@@ -4789,7 +4789,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listCredentialsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlCredential>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4832,7 +4832,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlCredential>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlCredential>>> listCredentialsNextSinglePageAsync(final String nextPageLink) {
@@ -4877,7 +4877,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listProceduresNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlProcedure>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4920,7 +4920,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlProcedure>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlProcedure>>> listProceduresNextSinglePageAsync(final String nextPageLink) {
@@ -4965,7 +4965,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTable>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5008,7 +5008,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlTable>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTable>>> listTablesNextSinglePageAsync(final String nextPageLink) {
@@ -5053,7 +5053,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5096,7 +5096,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlTableType>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableType>>> listTableTypesNextSinglePageAsync(final String nextPageLink) {
@@ -5141,7 +5141,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listViewsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlView>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5184,7 +5184,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlView>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlView>>> listViewsNextSinglePageAsync(final String nextPageLink) {
@@ -5229,7 +5229,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableStatisticsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableStatistics>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5272,7 +5272,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlTableStatistics>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableStatistics>>> listTableStatisticsNextSinglePageAsync(final String nextPageLink) {
@@ -5317,7 +5317,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTablePartitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTablePartition>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5360,7 +5360,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlTablePartition>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlTablePartition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTablePartition>>> listTablePartitionsNextSinglePageAsync(final String nextPageLink) {
@@ -5405,7 +5405,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTypesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlType>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5448,7 +5448,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlType>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlType>>> listTypesNextSinglePageAsync(final String nextPageLink) {
@@ -5493,7 +5493,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listTableValuedFunctionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlTableValuedFunction>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5536,7 +5536,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlTableValuedFunction>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlTableValuedFunction>>> listTableValuedFunctionsNextSinglePageAsync(final String nextPageLink) {
@@ -5581,7 +5581,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listAssembliesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlAssemblyClr>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5624,7 +5624,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlAssemblyClr>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlAssemblyClr>>> listAssembliesNextSinglePageAsync(final String nextPageLink) {
@@ -5669,7 +5669,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listSchemasNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlSchema>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5712,7 +5712,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlSchema>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlSchema>>> listSchemasNextSinglePageAsync(final String nextPageLink) {
@@ -5757,7 +5757,7 @@ public final class CatalogsImpl implements Catalogs {
                 return listDatabasesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<USqlDatabase>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5800,7 +5800,7 @@ public final class CatalogsImpl implements Catalogs {
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<USqlDatabase>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;USqlDatabase&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<USqlDatabase>>> listDatabasesNextSinglePageAsync(final String nextPageLink) {

@@ -2078,7 +2078,7 @@ public final class SitesInner {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2124,9 +2124,9 @@ public final class SitesInner {
     /**
      * Get the difference in configuration settings between two web app slots.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slotSwapEntity Request body that contains the target slot name
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity Request body that contains the target slot name
      * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionSinglePageAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
@@ -2187,7 +2187,7 @@ public final class SitesInner {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2235,10 +2235,10 @@ public final class SitesInner {
     /**
      * Get the difference in configuration settings between two web app slots.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of the source slot
-     * @param slotSwapEntity Request body that contains the target slot name
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slot Name of the source slot
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity Request body that contains the target slot name
      * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
@@ -2735,7 +2735,7 @@ public final class SitesInner {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2830,7 +2830,7 @@ public final class SitesInner {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2876,9 +2876,9 @@ public final class SitesInner {
     /**
      * Gets all the slots for a web apps.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param propertiesToInclude List of app properties to include in the response
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude List of app properties to include in the response
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -2932,7 +2932,7 @@ public final class SitesInner {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3024,7 +3024,7 @@ public final class SitesInner {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3072,10 +3072,10 @@ public final class SitesInner {
     /**
      * Gets the web apps for a subscription in the specified resource group.
      *
-     * @param resourceGroupName Name of resource group
-     * @param propertiesToInclude Additional web app properties included in the response
-     * @param includeSiteTypes Types of apps included in the response
-     * @param includeSlots Whether or not to include deployments slots in results
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Additional web app properties included in the response
+    ServiceResponse<PageImpl<SiteInner>> * @param includeSiteTypes Types of apps included in the response
+    ServiceResponse<PageImpl<SiteInner>> * @param includeSlots Whether or not to include deployments slots in results
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSitesSinglePageAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
@@ -4870,7 +4870,7 @@ public final class SitesInner {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4960,7 +4960,7 @@ public final class SitesInner {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5006,9 +5006,9 @@ public final class SitesInner {
     /**
      * Gets deleted web apps in subscription.
      *
-     * @param resourceGroupName Name of resource group
-     * @param propertiesToInclude Additional web app properties included in the response
-     * @param includeSiteTypes Types of apps included in the response
+    ServiceResponse<PageImpl<DeletedSiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<DeletedSiteInner>> * @param propertiesToInclude Additional web app properties included in the response
+    ServiceResponse<PageImpl<DeletedSiteInner>> * @param includeSiteTypes Types of apps included in the response
      * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesSinglePageAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
@@ -5060,7 +5060,7 @@ public final class SitesInner {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5104,8 +5104,8 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
+    ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -5161,7 +5161,7 @@ public final class SitesInner {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5207,9 +5207,9 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -5268,7 +5268,7 @@ public final class SitesInner {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5314,9 +5314,9 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param instanceId Id of web app instance
+    ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId Id of web app instance
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSinglePageAsync(final String resourceGroupName, final String name, final String instanceId) {
@@ -5376,7 +5376,7 @@ public final class SitesInner {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5424,10 +5424,10 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param instanceId Id of web app instance
+    ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId Id of web app instance
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
@@ -6464,7 +6464,7 @@ public final class SitesInner {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6508,8 +6508,8 @@ public final class SitesInner {
     /**
      * Gets all instance of a web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of web app
      * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSinglePageAsync(final String resourceGroupName, final String name) {
@@ -6565,7 +6565,7 @@ public final class SitesInner {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6611,9 +6611,9 @@ public final class SitesInner {
     /**
      * Gets all instance of a web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -6671,7 +6671,7 @@ public final class SitesInner {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6715,8 +6715,8 @@ public final class SitesInner {
     /**
      * Get web app hostname bindings.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of web app
      * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -6772,7 +6772,7 @@ public final class SitesInner {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6818,9 +6818,9 @@ public final class SitesInner {
     /**
      * Get web app hostname bindings.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -11290,7 +11290,7 @@ public final class SitesInner {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -11334,8 +11334,8 @@ public final class SitesInner {
     /**
      * Lists all available backups for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
+    ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of web app
      * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -11391,7 +11391,7 @@ public final class SitesInner {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -11437,9 +11437,9 @@ public final class SitesInner {
     /**
      * Lists all available backups for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<BackupItemInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -12267,7 +12267,7 @@ public final class SitesInner {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12362,7 +12362,7 @@ public final class SitesInner {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12408,9 +12408,9 @@ public final class SitesInner {
     /**
      * Gets the quota usage numbers for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
@@ -12466,7 +12466,7 @@ public final class SitesInner {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12568,7 +12568,7 @@ public final class SitesInner {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12616,10 +12616,10 @@ public final class SitesInner {
     /**
      * Gets the quota usage numbers for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
@@ -12677,7 +12677,7 @@ public final class SitesInner {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12774,7 +12774,7 @@ public final class SitesInner {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12822,10 +12822,10 @@ public final class SitesInner {
     /**
      * Gets metrics for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param details If true, metric details are included in response
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metric details are included in response
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -12881,7 +12881,7 @@ public final class SitesInner {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12985,7 +12985,7 @@ public final class SitesInner {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13035,11 +13035,11 @@ public final class SitesInner {
     /**
      * Gets metrics for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @param details If true, metric details are included in response
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metric details are included in response
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
@@ -13098,7 +13098,7 @@ public final class SitesInner {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13144,9 +13144,9 @@ public final class SitesInner {
     /**
      * Gets metric definitions for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
-     * @param slot Name of web app slot. If not specified then will default to production slot.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of web app
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
@@ -13204,7 +13204,7 @@ public final class SitesInner {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13248,8 +13248,8 @@ public final class SitesInner {
     /**
      * Gets metric definitions for web app.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of web app
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of web app
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -15877,7 +15877,7 @@ public final class SitesInner {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -15920,7 +15920,7 @@ public final class SitesInner {
     /**
      * Get the difference in configuration settings between two web app slots.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextSinglePageAsync(final String nextPageLink) {
@@ -15965,7 +15965,7 @@ public final class SitesInner {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16008,7 +16008,7 @@ public final class SitesInner {
     /**
      * Get the difference in configuration settings between two web app slots.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextSinglePageAsync(final String nextPageLink) {
@@ -16053,7 +16053,7 @@ public final class SitesInner {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16096,7 +16096,7 @@ public final class SitesInner {
     /**
      * Gets all the slots for a web apps.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsNextSinglePageAsync(final String nextPageLink) {
@@ -16141,7 +16141,7 @@ public final class SitesInner {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16184,7 +16184,7 @@ public final class SitesInner {
     /**
      * Gets the web apps for a subscription in the specified resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSitesNextSinglePageAsync(final String nextPageLink) {
@@ -16229,7 +16229,7 @@ public final class SitesInner {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16272,7 +16272,7 @@ public final class SitesInner {
     /**
      * Gets deleted web apps in subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeletedSiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesNextSinglePageAsync(final String nextPageLink) {
@@ -16317,7 +16317,7 @@ public final class SitesInner {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16360,7 +16360,7 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsNextSinglePageAsync(final String nextPageLink) {
@@ -16405,7 +16405,7 @@ public final class SitesInner {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16448,7 +16448,7 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -16493,7 +16493,7 @@ public final class SitesInner {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16536,7 +16536,7 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsNextSinglePageAsync(final String nextPageLink) {
@@ -16581,7 +16581,7 @@ public final class SitesInner {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16624,7 +16624,7 @@ public final class SitesInner {
     /**
      * List deployments.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -16669,7 +16669,7 @@ public final class SitesInner {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16712,7 +16712,7 @@ public final class SitesInner {
     /**
      * Gets all instance of a web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersNextSinglePageAsync(final String nextPageLink) {
@@ -16757,7 +16757,7 @@ public final class SitesInner {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16800,7 +16800,7 @@ public final class SitesInner {
     /**
      * Gets all instance of a web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotNextSinglePageAsync(final String nextPageLink) {
@@ -16845,7 +16845,7 @@ public final class SitesInner {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16888,7 +16888,7 @@ public final class SitesInner {
     /**
      * Get web app hostname bindings.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsNextSinglePageAsync(final String nextPageLink) {
@@ -16933,7 +16933,7 @@ public final class SitesInner {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16976,7 +16976,7 @@ public final class SitesInner {
     /**
      * Get web app hostname bindings.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -17021,7 +17021,7 @@ public final class SitesInner {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17064,7 +17064,7 @@ public final class SitesInner {
     /**
      * Lists all available backups for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextSinglePageAsync(final String nextPageLink) {
@@ -17109,7 +17109,7 @@ public final class SitesInner {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17152,7 +17152,7 @@ public final class SitesInner {
     /**
      * Lists all available backups for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -17197,7 +17197,7 @@ public final class SitesInner {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17240,7 +17240,7 @@ public final class SitesInner {
     /**
      * Gets the quota usage numbers for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesNextSinglePageAsync(final String nextPageLink) {
@@ -17285,7 +17285,7 @@ public final class SitesInner {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17328,7 +17328,7 @@ public final class SitesInner {
     /**
      * Gets the quota usage numbers for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotNextSinglePageAsync(final String nextPageLink) {
@@ -17373,7 +17373,7 @@ public final class SitesInner {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17416,7 +17416,7 @@ public final class SitesInner {
     /**
      * Gets metrics for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -17461,7 +17461,7 @@ public final class SitesInner {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17504,7 +17504,7 @@ public final class SitesInner {
     /**
      * Gets metrics for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -17549,7 +17549,7 @@ public final class SitesInner {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17592,7 +17592,7 @@ public final class SitesInner {
     /**
      * Gets metric definitions for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotNextSinglePageAsync(final String nextPageLink) {
@@ -17637,7 +17637,7 @@ public final class SitesInner {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17680,7 +17680,7 @@ public final class SitesInner {
     /**
      * Gets metric definitions for web app.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {

@@ -83,7 +83,7 @@ public final class TenantsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TenantIdDescriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -167,7 +167,7 @@ public final class TenantsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TenantIdDescriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -210,7 +210,7 @@ public final class TenantsInner {
     /**
      * Gets a list of the tenantIds.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listNextSinglePageAsync(final String nextPageLink) {

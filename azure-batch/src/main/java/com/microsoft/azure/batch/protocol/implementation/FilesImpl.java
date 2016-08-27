@@ -1258,15 +1258,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromTask(final String jobId, final String taskId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromTaskSinglePageAsync(jobId, taskId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTask(final String jobId, final String taskId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskSinglePageAsync(jobId, taskId).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromTaskNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1280,9 +1280,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskSinglePageAsync(jobId, taskId),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
                     return listFromTaskNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1296,11 +1296,11 @@ public final class FilesImpl implements Files {
      * @param taskId The id of the task whose files you want to list.
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskAsync(final String jobId, final String taskId) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskAsync(final String jobId, final String taskId) {
         return listFromTaskSinglePageAsync(jobId, taskId)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromTaskNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1314,7 +1314,7 @@ public final class FilesImpl implements Files {
      * @param taskId The id of the task whose files you want to list.
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskSinglePageAsync(final String jobId, final String taskId) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskSinglePageAsync(final String jobId, final String taskId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1337,12 +1337,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromTaskDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1362,8 +1362,8 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromTask(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTask(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
@@ -1377,7 +1377,7 @@ public final class FilesImpl implements Files {
                 return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1393,9 +1393,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
                     FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
                     if (fileListFromTaskOptions != null) {
                         fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
@@ -1418,11 +1418,11 @@ public final class FilesImpl implements Files {
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
         return listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
                     if (fileListFromTaskOptions != null) {
@@ -1439,13 +1439,13 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory.
-     * @param fileListFromTaskOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param jobId The id of the job that contains the task.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param taskId The id of the task whose files you want to list.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param recursive Whether to list children of a directory.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskOptions Additional parameters for the operation
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskSinglePageAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskSinglePageAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1485,12 +1485,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromTaskDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1515,15 +1515,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromComputeNode(final String poolId, final String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromComputeNodeSinglePageAsync(poolId, nodeId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNode(final String poolId, final String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeSinglePageAsync(poolId, nodeId).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromComputeNodeNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1537,9 +1537,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeSinglePageAsync(poolId, nodeId),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1553,11 +1553,11 @@ public final class FilesImpl implements Files {
      * @param nodeId The id of the compute node whose files you want to list.
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeAsync(final String poolId, final String nodeId) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeAsync(final String poolId, final String nodeId) {
         return listFromComputeNodeSinglePageAsync(poolId, nodeId)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1571,7 +1571,7 @@ public final class FilesImpl implements Files {
      * @param nodeId The id of the compute node whose files you want to list.
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1594,12 +1594,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromComputeNodeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1619,8 +1619,8 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromComputeNode(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNode(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
@@ -1634,7 +1634,7 @@ public final class FilesImpl implements Files {
                 return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1650,9 +1650,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
                     FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
                     if (fileListFromComputeNodeOptions != null) {
                         fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
@@ -1675,11 +1675,11 @@ public final class FilesImpl implements Files {
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
         return listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
                     if (fileListFromComputeNodeOptions != null) {
@@ -1696,13 +1696,13 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node whose files you want to list.
-     * @param recursive Whether to list children of a directory.
-     * @param fileListFromComputeNodeOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param poolId The id of the pool that contains the compute node.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nodeId The id of the compute node whose files you want to list.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param recursive Whether to list children of a directory.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1742,12 +1742,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromComputeNodeDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1771,15 +1771,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromTaskNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromTaskNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTaskNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromTaskNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1793,9 +1793,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
                     return listFromTaskNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1808,11 +1808,11 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextAsync(final String nextPageLink) {
         return listFromTaskNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromTaskNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1825,7 +1825,7 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1838,12 +1838,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromTaskNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1861,15 +1861,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromTaskNext(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTaskNext(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1884,9 +1884,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
                     return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions);
                 }
             },
@@ -1900,11 +1900,11 @@ public final class FilesImpl implements Files {
      * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
         return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions);
                 }
@@ -1914,11 +1914,11 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromTaskNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromTaskNextSinglePageAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextSinglePageAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1940,12 +1940,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromTaskNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1969,15 +1969,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromComputeNodeNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromComputeNodeNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromComputeNodeNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1991,9 +1991,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2006,11 +2006,11 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextAsync(final String nextPageLink) {
         return listFromComputeNodeNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2023,7 +2023,7 @@ public final class FilesImpl implements Files {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2036,12 +2036,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromComputeNodeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2059,15 +2059,15 @@ public final class FilesImpl implements Files {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<NodeFile>> listFromComputeNodeNext(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<NodeFile>> response = listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNext(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single();
         PagedList<NodeFile> pagedList = new PagedList<NodeFile>(response.getBody()) {
             @Override
             public Page<NodeFile> nextPage(String nextPageLink) throws RestException, IOException {
                 return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2082,9 +2082,9 @@ public final class FilesImpl implements Files {
     public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions);
                 }
             },
@@ -2098,11 +2098,11 @@ public final class FilesImpl implements Files {
      * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeFile&gt; object
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
         return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<NodeFile>>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(ServiceResponse<Page<NodeFile>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions);
                 }
@@ -2112,11 +2112,11 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<NodeFile>>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2138,12 +2138,12 @@ public final class FilesImpl implements Files {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NodeFile>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NodeFile>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<NodeFile>> result = listFromComputeNodeNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<NodeFile>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

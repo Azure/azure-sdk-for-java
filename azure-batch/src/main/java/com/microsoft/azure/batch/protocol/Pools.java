@@ -111,7 +111,7 @@ public interface Pools {
      * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions);
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions);
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
@@ -256,7 +256,7 @@ public interface Pools {
      * @param poolListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    Observable<ServiceResponse<Page<CloudPool>>> listAsync(final PoolListOptions poolListOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listAsync(final PoolListOptions poolListOptions);
 
     /**
      * Deletes a pool from the specified account.
@@ -948,7 +948,7 @@ public interface Pools {
      * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions);
 
     /**
      * Lists all of the pools in the specified account.
@@ -1000,6 +1000,6 @@ public interface Pools {
      * @param poolListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    Observable<ServiceResponse<Page<CloudPool>>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
 
 }

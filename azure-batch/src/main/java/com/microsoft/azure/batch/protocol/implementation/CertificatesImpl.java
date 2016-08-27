@@ -257,15 +257,15 @@ public final class CertificatesImpl implements Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<Certificate>> list() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<Certificate>> response = listSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listSinglePageAsync().toBlocking().single();
         PagedList<Certificate> pagedList = new PagedList<Certificate>(response.getBody()) {
             @Override
             public Page<Certificate> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -277,9 +277,9 @@ public final class CertificatesImpl implements Certificates {
     public ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -291,11 +291,11 @@ public final class CertificatesImpl implements Certificates {
      *
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<Certificate>>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(ServiceResponse<Page<Certificate>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -307,7 +307,7 @@ public final class CertificatesImpl implements Certificates {
      *
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -324,12 +324,12 @@ public final class CertificatesImpl implements Certificates {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<Certificate>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Certificate>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -346,8 +346,8 @@ public final class CertificatesImpl implements Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<Certificate>> list(final CertificateListOptions certificateListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<Certificate>> response = listSinglePageAsync(certificateListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list(final CertificateListOptions certificateListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listSinglePageAsync(certificateListOptions).toBlocking().single();
         PagedList<Certificate> pagedList = new PagedList<Certificate>(response.getBody()) {
             @Override
             public Page<Certificate> nextPage(String nextPageLink) throws RestException, IOException {
@@ -361,7 +361,7 @@ public final class CertificatesImpl implements Certificates {
                 return listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -374,9 +374,9 @@ public final class CertificatesImpl implements Certificates {
     public ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(certificateListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
                     CertificateListNextOptions certificateListNextOptions = null;
                     if (certificateListOptions != null) {
                         certificateListNextOptions = new CertificateListNextOptions();
@@ -396,11 +396,11 @@ public final class CertificatesImpl implements Certificates {
      * @param certificateListOptions Additional parameters for the operation
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listAsync(final CertificateListOptions certificateListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listAsync(final CertificateListOptions certificateListOptions) {
         return listSinglePageAsync(certificateListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<Certificate>>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(ServiceResponse<Page<Certificate>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     CertificateListNextOptions certificateListNextOptions = null;
                     if (certificateListOptions != null) {
@@ -417,10 +417,10 @@ public final class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @param certificateListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListOptions Additional parameters for the operation
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listSinglePageAsync(final CertificateListOptions certificateListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync(final CertificateListOptions certificateListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -458,12 +458,12 @@ public final class CertificatesImpl implements Certificates {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<Certificate>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Certificate>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -954,15 +954,15 @@ public final class CertificatesImpl implements Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<Certificate>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<Certificate>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<Certificate> pagedList = new PagedList<Certificate>(response.getBody()) {
             @Override
             public Page<Certificate> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -976,9 +976,9 @@ public final class CertificatesImpl implements Certificates {
     public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -991,11 +991,11 @@ public final class CertificatesImpl implements Certificates {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<Certificate>>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(ServiceResponse<Page<Certificate>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1008,7 +1008,7 @@ public final class CertificatesImpl implements Certificates {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1021,12 +1021,12 @@ public final class CertificatesImpl implements Certificates {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<Certificate>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Certificate>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1044,15 +1044,15 @@ public final class CertificatesImpl implements Certificates {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<Certificate>> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<Certificate>> response = listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single();
         PagedList<Certificate> pagedList = new PagedList<Certificate>(response.getBody()) {
             @Override
             public Page<Certificate> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1067,9 +1067,9 @@ public final class CertificatesImpl implements Certificates {
     public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, certificateListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<Certificate>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, certificateListNextOptions);
                 }
             },
@@ -1083,11 +1083,11 @@ public final class CertificatesImpl implements Certificates {
      * @param certificateListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;Certificate&gt; object
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, certificateListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<Certificate>>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(ServiceResponse<Page<Certificate>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, certificateListNextOptions);
                 }
@@ -1097,11 +1097,11 @@ public final class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListNextOptions Additional parameters for the operation
      * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<Certificate>>> listNextSinglePageAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1123,12 +1123,12 @@ public final class CertificatesImpl implements Certificates {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<Certificate>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<Certificate>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<Certificate>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<Certificate>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

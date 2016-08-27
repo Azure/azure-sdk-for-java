@@ -70,7 +70,7 @@ public interface Accounts {
      * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions);
 
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
@@ -122,6 +122,6 @@ public interface Accounts {
      * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;NodeAgentSku&gt; object
      */
-    Observable<ServiceResponse<Page<NodeAgentSku>>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions);
 
 }

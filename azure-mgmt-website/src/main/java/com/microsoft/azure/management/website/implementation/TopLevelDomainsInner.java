@@ -99,7 +99,7 @@ public final class TopLevelDomainsInner {
                 return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TopLevelDomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -247,7 +247,7 @@ public final class TopLevelDomainsInner {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TldLegalAgreementInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -337,7 +337,7 @@ public final class TopLevelDomainsInner {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TldLegalAgreementInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -381,8 +381,8 @@ public final class TopLevelDomainsInner {
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
-     * @param name Name of the top level domain
-     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top level domain
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @return the List&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
@@ -435,7 +435,7 @@ public final class TopLevelDomainsInner {
                 return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TopLevelDomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -478,7 +478,7 @@ public final class TopLevelDomainsInner {
     /**
      * Lists all top level domains supported for registration.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<TopLevelDomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TopLevelDomainInner>>> getGetTopLevelDomainsNextSinglePageAsync(final String nextPageLink) {
@@ -523,7 +523,7 @@ public final class TopLevelDomainsInner {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<TldLegalAgreementInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -566,7 +566,7 @@ public final class TopLevelDomainsInner {
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsNextSinglePageAsync(final String nextPageLink) {

@@ -128,7 +128,7 @@ public final class ResourceGroupsInner {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GenericResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -220,7 +220,7 @@ public final class ResourceGroupsInner {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GenericResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -268,10 +268,10 @@ public final class ResourceGroupsInner {
     /**
      * Get all of the resources under a subscription.
      *
-     * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
-     * @param filter The filter to apply on the operation.
-     * @param expand The $expand query parameter
-     * @param top Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param expand The $expand query parameter
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param top Query parameters. If null is passed returns all resource groups.
      * @return the List&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesSinglePageAsync(final String resourceGroupName, final String filter, final String expand, final Integer top) {
@@ -755,7 +755,7 @@ public final class ResourceGroupsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -838,7 +838,7 @@ public final class ResourceGroupsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -882,8 +882,8 @@ public final class ResourceGroupsInner {
     /**
      * Gets a collection of resource groups.
      *
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all resource groups.
+    ServiceResponse<PageImpl<ResourceGroupInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<ResourceGroupInner>> * @param top Query parameters. If null is passed returns all resource groups.
      * @return the List&lt;ResourceGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listSinglePageAsync(final String filter, final Integer top) {
@@ -931,7 +931,7 @@ public final class ResourceGroupsInner {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<GenericResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -974,7 +974,7 @@ public final class ResourceGroupsInner {
     /**
      * Get all of the resources under a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<GenericResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GenericResourceInner>>> listResourcesNextSinglePageAsync(final String nextPageLink) {
@@ -1019,7 +1019,7 @@ public final class ResourceGroupsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceGroupInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1062,7 +1062,7 @@ public final class ResourceGroupsInner {
     /**
      * Gets a collection of resource groups.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceGroupInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -922,7 +922,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -966,8 +966,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1088,7 +1088,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1130,7 +1130,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param resourceGroupName Name of resource group
      * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsSinglePageAsync(final String resourceGroupName) {
@@ -1395,7 +1395,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1492,7 +1492,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1540,10 +1540,10 @@ public final class HostingEnvironmentsInner {
     /**
      * Get global metrics of hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param details Include instance details
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -1665,7 +1665,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1760,7 +1760,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1806,9 +1806,9 @@ public final class HostingEnvironmentsInner {
     /**
      * Get global usages of hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
@@ -1863,7 +1863,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1966,7 +1966,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2020,13 +2020,13 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param startTime Beginning time of metrics query
-     * @param endTime End time of metrics query
-     * @param timeGrain Time granularity of metrics query
-     * @param details Include instance details
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param startTime Beginning time of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param endTime End time of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param timeGrain Time granularity of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
@@ -2082,7 +2082,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2186,7 +2186,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2236,11 +2236,11 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
-     * @param details Include instance details
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param workerPoolName Name of worker pool
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
@@ -2298,7 +2298,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2342,8 +2342,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2399,7 +2399,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2445,9 +2445,9 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param workerPoolName Name of worker pool
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -2505,7 +2505,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2549,8 +2549,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2606,7 +2606,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2652,9 +2652,9 @@ public final class HostingEnvironmentsInner {
     /**
      * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
+    ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<UsageInner>> * @param workerPoolName Name of worker pool
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -2712,7 +2712,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2807,7 +2807,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2853,9 +2853,9 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all sites on the hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param propertiesToInclude Comma separated list of site properties to include
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of site properties to include
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
@@ -2910,7 +2910,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2954,8 +2954,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3010,7 +3010,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3054,8 +3054,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3110,7 +3110,7 @@ public final class HostingEnvironmentsInner {
                 return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3154,8 +3154,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all multi role pools.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3413,7 +3413,7 @@ public final class HostingEnvironmentsInner {
                 return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3457,8 +3457,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get available skus for scaling a multiRole pool.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3513,7 +3513,7 @@ public final class HostingEnvironmentsInner {
                 return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3557,8 +3557,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all worker pools.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -3835,7 +3835,7 @@ public final class HostingEnvironmentsInner {
                 return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3881,9 +3881,9 @@ public final class HostingEnvironmentsInner {
     /**
      * Get available skus for scaling a worker pool.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param workerPoolName Name of worker pool
      * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
@@ -4396,7 +4396,7 @@ public final class HostingEnvironmentsInner {
                 return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4440,8 +4440,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Suspends the hostingEnvironment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4497,7 +4497,7 @@ public final class HostingEnvironmentsInner {
                 return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4541,8 +4541,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Suspends the hostingEnvironment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4599,7 +4599,7 @@ public final class HostingEnvironmentsInner {
                 return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4643,8 +4643,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Resumes the hostingEnvironment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4700,7 +4700,7 @@ public final class HostingEnvironmentsInner {
                 return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4744,8 +4744,8 @@ public final class HostingEnvironmentsInner {
     /**
      * Resumes the hostingEnvironment.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
@@ -4800,7 +4800,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4843,7 +4843,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextSinglePageAsync(final String nextPageLink) {
@@ -4888,7 +4888,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4931,7 +4931,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
@@ -4976,7 +4976,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5019,7 +5019,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get global metrics of hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -5064,7 +5064,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5107,7 +5107,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get global usages of hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextSinglePageAsync(final String nextPageLink) {
@@ -5152,7 +5152,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5195,7 +5195,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -5240,7 +5240,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5283,7 +5283,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -5328,7 +5328,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5371,7 +5371,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
@@ -5416,7 +5416,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5459,7 +5459,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
@@ -5504,7 +5504,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5547,7 +5547,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(final String nextPageLink) {
@@ -5592,7 +5592,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5635,7 +5635,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(final String nextPageLink) {
@@ -5680,7 +5680,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5723,7 +5723,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all sites on the hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextSinglePageAsync(final String nextPageLink) {
@@ -5768,7 +5768,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5811,7 +5811,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextSinglePageAsync(final String nextPageLink) {
@@ -5856,7 +5856,7 @@ public final class HostingEnvironmentsInner {
                 return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5899,7 +5899,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextSinglePageAsync(final String nextPageLink) {
@@ -5944,7 +5944,7 @@ public final class HostingEnvironmentsInner {
                 return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5987,7 +5987,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all multi role pools.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
@@ -6032,7 +6032,7 @@ public final class HostingEnvironmentsInner {
                 return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6075,7 +6075,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get available skus for scaling a multiRole pool.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextSinglePageAsync(final String nextPageLink) {
@@ -6120,7 +6120,7 @@ public final class HostingEnvironmentsInner {
                 return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6163,7 +6163,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get all worker pools.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
@@ -6208,7 +6208,7 @@ public final class HostingEnvironmentsInner {
                 return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6251,7 +6251,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Get available skus for scaling a worker pool.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextSinglePageAsync(final String nextPageLink) {
@@ -6297,7 +6297,7 @@ public final class HostingEnvironmentsInner {
                 return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6340,7 +6340,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Suspends the hostingEnvironment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
@@ -6386,7 +6386,7 @@ public final class HostingEnvironmentsInner {
                 return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6429,7 +6429,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Suspends the hostingEnvironment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
@@ -6476,7 +6476,7 @@ public final class HostingEnvironmentsInner {
                 return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6519,7 +6519,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Resumes the hostingEnvironment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
@@ -6565,7 +6565,7 @@ public final class HostingEnvironmentsInner {
                 return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6608,7 +6608,7 @@ public final class HostingEnvironmentsInner {
     /**
      * Resumes the hostingEnvironment.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {

@@ -91,15 +91,15 @@ public final class ApplicationsImpl implements Applications {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ApplicationSummary>> list() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ApplicationSummary>> response = listSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listSinglePageAsync().toBlocking().single();
         PagedList<ApplicationSummary> pagedList = new PagedList<ApplicationSummary>(response.getBody()) {
             @Override
             public Page<ApplicationSummary> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -111,9 +111,9 @@ public final class ApplicationsImpl implements Applications {
     public ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -125,11 +125,11 @@ public final class ApplicationsImpl implements Applications {
      *
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationSummary>>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(ServiceResponse<Page<ApplicationSummary>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -141,7 +141,7 @@ public final class ApplicationsImpl implements Applications {
      *
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -156,12 +156,12 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ApplicationSummary>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationSummary>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -178,8 +178,8 @@ public final class ApplicationsImpl implements Applications {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ApplicationSummary>> list(final ApplicationListOptions applicationListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ApplicationSummary>> response = listSinglePageAsync(applicationListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list(final ApplicationListOptions applicationListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listSinglePageAsync(applicationListOptions).toBlocking().single();
         PagedList<ApplicationSummary> pagedList = new PagedList<ApplicationSummary>(response.getBody()) {
             @Override
             public Page<ApplicationSummary> nextPage(String nextPageLink) throws RestException, IOException {
@@ -193,7 +193,7 @@ public final class ApplicationsImpl implements Applications {
                 return listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -206,9 +206,9 @@ public final class ApplicationsImpl implements Applications {
     public ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(applicationListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
                     ApplicationListNextOptions applicationListNextOptions = null;
                     if (applicationListOptions != null) {
                         applicationListNextOptions = new ApplicationListNextOptions();
@@ -228,11 +228,11 @@ public final class ApplicationsImpl implements Applications {
      * @param applicationListOptions Additional parameters for the operation
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listAsync(final ApplicationListOptions applicationListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listAsync(final ApplicationListOptions applicationListOptions) {
         return listSinglePageAsync(applicationListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationSummary>>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(ServiceResponse<Page<ApplicationSummary>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     ApplicationListNextOptions applicationListNextOptions = null;
                     if (applicationListOptions != null) {
@@ -249,10 +249,10 @@ public final class ApplicationsImpl implements Applications {
     /**
      * Lists all of the applications available in the specified account.
      *
-     * @param applicationListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListOptions Additional parameters for the operation
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listSinglePageAsync(final ApplicationListOptions applicationListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync(final ApplicationListOptions applicationListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -282,12 +282,12 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ApplicationSummary>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationSummary>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -453,15 +453,15 @@ public final class ApplicationsImpl implements Applications {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ApplicationSummary>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ApplicationSummary>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<ApplicationSummary> pagedList = new PagedList<ApplicationSummary>(response.getBody()) {
             @Override
             public Page<ApplicationSummary> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -475,9 +475,9 @@ public final class ApplicationsImpl implements Applications {
     public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -490,11 +490,11 @@ public final class ApplicationsImpl implements Applications {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationSummary>>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(ServiceResponse<Page<ApplicationSummary>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -507,7 +507,7 @@ public final class ApplicationsImpl implements Applications {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -520,12 +520,12 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ApplicationSummary>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationSummary>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -543,15 +543,15 @@ public final class ApplicationsImpl implements Applications {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ApplicationSummary>> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ApplicationSummary>> response = listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single();
         PagedList<ApplicationSummary> pagedList = new PagedList<ApplicationSummary>(response.getBody()) {
             @Override
             public Page<ApplicationSummary> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -566,9 +566,9 @@ public final class ApplicationsImpl implements Applications {
     public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, applicationListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, applicationListNextOptions);
                 }
             },
@@ -582,11 +582,11 @@ public final class ApplicationsImpl implements Applications {
      * @param applicationListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, applicationListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationSummary>>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(ServiceResponse<Page<ApplicationSummary>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, applicationListNextOptions);
                 }
@@ -596,11 +596,11 @@ public final class ApplicationsImpl implements Applications {
     /**
      * Lists all of the applications available in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListNextOptions Additional parameters for the operation
      * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ApplicationSummary>>> listNextSinglePageAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -622,12 +622,12 @@ public final class ApplicationsImpl implements Applications {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationSummary>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationSummary>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ApplicationSummary>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ApplicationSummary>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

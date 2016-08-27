@@ -459,7 +459,7 @@ public final class SecurityRulesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SecurityRuleInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -503,8 +503,8 @@ public final class SecurityRulesInner {
     /**
      * The List network security rule operation retrieves all the security rules in a network security group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
+    ServiceResponse<PageImpl<SecurityRuleInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<SecurityRuleInner>> * @param networkSecurityGroupName The name of the network security group.
      * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listSinglePageAsync(final String resourceGroupName, final String networkSecurityGroupName) {
@@ -558,7 +558,7 @@ public final class SecurityRulesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SecurityRuleInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -601,7 +601,7 @@ public final class SecurityRulesInner {
     /**
      * The List network security rule operation retrieves all the security rules in a network security group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SecurityRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -535,7 +535,7 @@ public final class JobsImpl implements Jobs {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<JobInformation>>(pagedList, response.getResponse());
     }
 
     /**
@@ -640,7 +640,7 @@ public final class JobsImpl implements Jobs {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<JobInformation>>(pagedList, response.getResponse());
     }
 
     /**
@@ -700,16 +700,16 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
-     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @param filter OData filter. Optional.
-     * @param top The number of items to return. Optional.
-     * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
-     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+    ServiceResponse<PageImpl<JobInformation>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+    ServiceResponse<PageImpl<JobInformation>> * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the List&lt;JobInformation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<JobInformation>>> listSinglePageAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) {
@@ -761,7 +761,7 @@ public final class JobsImpl implements Jobs {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<JobInformation>>(pagedList, response.getResponse());
     }
 
     /**
@@ -804,7 +804,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<JobInformation>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;JobInformation&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<JobInformation>>> listNextSinglePageAsync(final String nextPageLink) {

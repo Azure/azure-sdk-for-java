@@ -84,7 +84,7 @@ public final class UsagesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -126,7 +126,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The location upon which resource usage is queried.
+    ServiceResponse<PageImpl<UsageInner>> * @param location The location upon which resource usage is queried.
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listSinglePageAsync(final String location) {
@@ -177,7 +177,7 @@ public final class UsagesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -220,7 +220,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listNextSinglePageAsync(final String nextPageLink) {

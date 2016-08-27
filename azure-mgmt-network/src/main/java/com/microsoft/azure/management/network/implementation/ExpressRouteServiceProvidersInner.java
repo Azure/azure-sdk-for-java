@@ -83,7 +83,7 @@ public final class ExpressRouteServiceProvidersInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ExpressRouteServiceProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -170,7 +170,7 @@ public final class ExpressRouteServiceProvidersInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ExpressRouteServiceProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -213,7 +213,7 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {

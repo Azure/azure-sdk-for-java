@@ -679,7 +679,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetVMInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -778,7 +778,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetVMInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -828,11 +828,11 @@ public final class VirtualMachineScaleSetVMsInner {
     /**
      * Lists all virtual machines in a VM scale sets.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param filter The filter to apply on the operation.
-     * @param select The list parameters.
-     * @param expand The expand expression to apply on the operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param select The list parameters.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param expand The expand expression to apply on the operation.
      * @return the List&lt;VirtualMachineScaleSetVMInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String filter, final String select, final String expand) {
@@ -1273,7 +1273,7 @@ public final class VirtualMachineScaleSetVMsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetVMInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1316,7 +1316,7 @@ public final class VirtualMachineScaleSetVMsInner {
     /**
      * Lists all virtual machines in a VM scale sets.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetVMInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineScaleSetVMInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetVMInner>>> listNextSinglePageAsync(final String nextPageLink) {

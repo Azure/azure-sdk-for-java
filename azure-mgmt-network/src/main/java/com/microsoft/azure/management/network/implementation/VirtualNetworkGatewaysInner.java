@@ -443,7 +443,7 @@ public final class VirtualNetworkGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -485,7 +485,7 @@ public final class VirtualNetworkGatewaysInner {
     /**
      * The List VirtualNetworkGateways operation retrieves all the virtual network gateways stored.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;VirtualNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -804,7 +804,7 @@ public final class VirtualNetworkGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -847,7 +847,7 @@ public final class VirtualNetworkGatewaysInner {
     /**
      * The List VirtualNetworkGateways operation retrieves all the virtual network gateways stored.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {

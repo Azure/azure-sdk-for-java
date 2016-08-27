@@ -503,7 +503,7 @@ public final class VirtualNetworksInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -590,7 +590,7 @@ public final class VirtualNetworksInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -632,7 +632,7 @@ public final class VirtualNetworksInner {
     /**
      * The list VirtualNetwork returns all Virtual Networks in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<VirtualNetworkInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -814,7 +814,7 @@ public final class VirtualNetworksInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -857,7 +857,7 @@ public final class VirtualNetworksInner {
     /**
      * The list VirtualNetwork returns all Virtual Networks in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
@@ -902,7 +902,7 @@ public final class VirtualNetworksInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualNetworkInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -945,7 +945,7 @@ public final class VirtualNetworksInner {
     /**
      * The list VirtualNetwork returns all Virtual Networks in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkInner>>> listNextSinglePageAsync(final String nextPageLink) {

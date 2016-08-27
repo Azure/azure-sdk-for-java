@@ -103,7 +103,7 @@ public final class ProvidersInner {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SourceControlInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -421,7 +421,7 @@ public final class ProvidersInner {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SourceControlInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -464,7 +464,7 @@ public final class ProvidersInner {
     /**
      * Gets the source controls available for Azure websites.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SourceControlInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsNextSinglePageAsync(final String nextPageLink) {

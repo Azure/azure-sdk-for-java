@@ -960,7 +960,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1002,7 +1002,7 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Lists all virtual machine scale sets under a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -1052,7 +1052,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1140,7 +1140,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1184,8 +1184,8 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the virtual machine scale set.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param vmScaleSetName The name of the virtual machine scale set.
      * @return the List&lt;VirtualMachineScaleSetSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusSinglePageAsync(final String resourceGroupName, final String vmScaleSetName) {
@@ -2244,7 +2244,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2287,7 +2287,7 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Lists all virtual machine scale sets under a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -2332,7 +2332,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2375,7 +2375,7 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineScaleSetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
@@ -2420,7 +2420,7 @@ public final class VirtualMachineScaleSetsInner {
                 return listSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<VirtualMachineScaleSetSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2463,7 +2463,7 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<VirtualMachineScaleSetSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;VirtualMachineScaleSetSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineScaleSetSkuInner>>> listSkusNextSinglePageAsync(final String nextPageLink) {

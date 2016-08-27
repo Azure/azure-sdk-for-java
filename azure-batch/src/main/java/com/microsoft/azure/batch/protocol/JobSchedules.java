@@ -552,7 +552,7 @@ public interface JobSchedules {
      * @param jobScheduleListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJobSchedule>>> listAsync(final JobScheduleListOptions jobScheduleListOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listAsync(final JobScheduleListOptions jobScheduleListOptions);
 
     /**
      * Lists all of the job schedules in the specified account.
@@ -604,6 +604,6 @@ public interface JobSchedules {
      * @param jobScheduleListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJobSchedule>>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions);
 
 }

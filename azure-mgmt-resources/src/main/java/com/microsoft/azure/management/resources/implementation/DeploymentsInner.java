@@ -721,7 +721,7 @@ public final class DeploymentsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -811,7 +811,7 @@ public final class DeploymentsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -857,9 +857,9 @@ public final class DeploymentsInner {
     /**
      * Get a list of deployments.
      *
-     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @param filter The filter to apply on the operation.
-     * @param top Query parameters. If null is passed returns all deployments.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param top Query parameters. If null is passed returns all deployments.
      * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listSinglePageAsync(final String resourceGroupName, final String filter, final Integer top) {
@@ -910,7 +910,7 @@ public final class DeploymentsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -953,7 +953,7 @@ public final class DeploymentsInner {
     /**
      * Get a list of deployments.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextSinglePageAsync(final String nextPageLink) {

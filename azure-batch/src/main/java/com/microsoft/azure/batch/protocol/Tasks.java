@@ -149,7 +149,7 @@ public interface Tasks {
      * @param taskListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    Observable<ServiceResponse<Page<CloudTask>>> listAsync(final String jobId, final TaskListOptions taskListOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listAsync(final String jobId, final TaskListOptions taskListOptions);
 
     /**
      * Adds a collection of tasks to the specified job.
@@ -534,6 +534,6 @@ public interface Tasks {
      * @param taskListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    Observable<ServiceResponse<Page<CloudTask>>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions);
 
 }

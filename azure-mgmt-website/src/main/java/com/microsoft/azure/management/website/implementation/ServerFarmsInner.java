@@ -179,7 +179,7 @@ public final class ServerFarmsInner {
                 return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -221,7 +221,7 @@ public final class ServerFarmsInner {
     /**
      * Gets collection of App Service Plans in a resource group for a given subscription.
      *
-     * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsSinglePageAsync(final String resourceGroupName) {
@@ -672,7 +672,7 @@ public final class ServerFarmsInner {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -769,7 +769,7 @@ public final class ServerFarmsInner {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -817,10 +817,10 @@ public final class ServerFarmsInner {
     /**
      * Queries for App Serice Plan metrics.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param details If true, metrics are broken down per App Service Plan instance
-     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of App Service Plan
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metrics are broken down per App Service Plan instance
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
@@ -875,7 +875,7 @@ public final class ServerFarmsInner {
                 return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -919,8 +919,8 @@ public final class ServerFarmsInner {
     /**
      * List of metrics that can be queried for an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of App Service Plan
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1690,7 +1690,7 @@ public final class ServerFarmsInner {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1789,7 +1789,7 @@ public final class ServerFarmsInner {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1839,11 +1839,11 @@ public final class ServerFarmsInner {
     /**
      * Gets list of Apps associated with an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
-     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
-     * @param top List page size. If specified, results are paged.
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of App Service Plan
+    ServiceResponse<PageImpl<SiteInner>> * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+    ServiceResponse<PageImpl<SiteInner>> * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
+    ServiceResponse<PageImpl<SiteInner>> * @param top List page size. If specified, results are paged.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesSinglePageAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
@@ -2174,7 +2174,7 @@ public final class ServerFarmsInner {
                 return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2217,7 +2217,7 @@ public final class ServerFarmsInner {
     /**
      * Gets collection of App Service Plans in a resource group for a given subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsNextSinglePageAsync(final String nextPageLink) {
@@ -2262,7 +2262,7 @@ public final class ServerFarmsInner {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2305,7 +2305,7 @@ public final class ServerFarmsInner {
     /**
      * Queries for App Serice Plan metrics.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsNextSinglePageAsync(final String nextPageLink) {
@@ -2350,7 +2350,7 @@ public final class ServerFarmsInner {
                 return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2393,7 +2393,7 @@ public final class ServerFarmsInner {
     /**
      * List of metrics that can be queried for an App Service Plan.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsNextSinglePageAsync(final String nextPageLink) {
@@ -2438,7 +2438,7 @@ public final class ServerFarmsInner {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2481,7 +2481,7 @@ public final class ServerFarmsInner {
     /**
      * Gets list of Apps associated with an App Service Plan.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesNextSinglePageAsync(final String nextPageLink) {

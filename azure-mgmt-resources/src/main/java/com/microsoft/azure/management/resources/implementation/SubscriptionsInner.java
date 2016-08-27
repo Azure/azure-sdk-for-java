@@ -209,7 +209,7 @@ public final class SubscriptionsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SubscriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -293,7 +293,7 @@ public final class SubscriptionsInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<SubscriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -336,7 +336,7 @@ public final class SubscriptionsInner {
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextSinglePageAsync(final String nextPageLink) {

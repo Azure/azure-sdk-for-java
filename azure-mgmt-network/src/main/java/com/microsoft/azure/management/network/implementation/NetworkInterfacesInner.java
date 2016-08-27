@@ -539,7 +539,7 @@ public final class NetworkInterfacesInner {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -585,9 +585,9 @@ public final class NetworkInterfacesInner {
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param virtualmachineIndex The virtual machine index.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualmachineIndex The virtual machine index.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
@@ -645,7 +645,7 @@ public final class NetworkInterfacesInner {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -689,8 +689,8 @@ public final class NetworkInterfacesInner {
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
@@ -898,7 +898,7 @@ public final class NetworkInterfacesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -985,7 +985,7 @@ public final class NetworkInterfacesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1027,7 +1027,7 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -1316,7 +1316,7 @@ public final class NetworkInterfacesInner {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1359,7 +1359,7 @@ public final class NetworkInterfacesInner {
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(final String nextPageLink) {
@@ -1404,7 +1404,7 @@ public final class NetworkInterfacesInner {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1447,7 +1447,7 @@ public final class NetworkInterfacesInner {
     /**
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(final String nextPageLink) {
@@ -1492,7 +1492,7 @@ public final class NetworkInterfacesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1535,7 +1535,7 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
@@ -1580,7 +1580,7 @@ public final class NetworkInterfacesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1623,7 +1623,7 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listNextSinglePageAsync(final String nextPageLink) {

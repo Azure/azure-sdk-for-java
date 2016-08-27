@@ -101,7 +101,7 @@ public final class FeaturesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -188,7 +188,7 @@ public final class FeaturesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -230,7 +230,7 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features of a resource provider.
      *
-     * @param resourceProviderNamespace The namespace of the resource provider.
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider.
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listSinglePageAsync(final String resourceProviderNamespace) {
@@ -415,7 +415,7 @@ public final class FeaturesInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -458,7 +458,7 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
@@ -503,7 +503,7 @@ public final class FeaturesInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -546,7 +546,7 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features of a resource provider.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextSinglePageAsync(final String nextPageLink) {

@@ -219,7 +219,7 @@ public final class ProvidersInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -302,7 +302,7 @@ public final class ProvidersInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -346,8 +346,8 @@ public final class ProvidersInner {
     /**
      * Gets a list of resource providers.
      *
-     * @param top Query parameters. If null is passed returns all deployments.
-     * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
+    ServiceResponse<PageImpl<ProviderInner>> * @param top Query parameters. If null is passed returns all deployments.
+    ServiceResponse<PageImpl<ProviderInner>> * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
      * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listSinglePageAsync(final Integer top, final String expand) {
@@ -514,7 +514,7 @@ public final class ProvidersInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -557,7 +557,7 @@ public final class ProvidersInner {
     /**
      * Gets a list of resource providers.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {

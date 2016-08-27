@@ -453,7 +453,7 @@ public final class ApplicationGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -495,7 +495,7 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
@@ -545,7 +545,7 @@ public final class ApplicationGatewaysInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -868,7 +868,7 @@ public final class ApplicationGatewaysInner {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -911,7 +911,7 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {
@@ -956,7 +956,7 @@ public final class ApplicationGatewaysInner {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -999,7 +999,7 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
