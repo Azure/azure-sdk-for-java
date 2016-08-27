@@ -73,7 +73,7 @@ public interface Applications {
      * @param applicationListOptions Additional parameters for the operation
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    Observable<ServiceResponse<Page<ApplicationSummary>>> listAsync(final ApplicationListOptions applicationListOptions);
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listAsync(final ApplicationListOptions applicationListOptions);
 
     /**
      * Gets information about the specified application.
@@ -175,6 +175,6 @@ public interface Applications {
      * @param applicationListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;ApplicationSummary&gt; object
      */
-    Observable<ServiceResponse<Page<ApplicationSummary>>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions);
 
 }

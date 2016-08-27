@@ -1792,15 +1792,15 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ComputeNode>> list(final String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ComputeNode>> response = listSinglePageAsync(poolId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> list(final String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listSinglePageAsync(poolId).toBlocking().single();
         PagedList<ComputeNode> pagedList = new PagedList<ComputeNode>(response.getBody()) {
             @Override
             public Page<ComputeNode> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1813,9 +1813,9 @@ public final class ComputeNodesImpl implements ComputeNodes {
     public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolId),
-            new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1828,11 +1828,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool from which you want to list nodes.
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listAsync(final String poolId) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listAsync(final String poolId) {
         return listSinglePageAsync(poolId)
-            .concatMap(new Func1<ServiceResponse<Page<ComputeNode>>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(ServiceResponse<Page<ComputeNode>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1845,7 +1845,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param poolId The id of the pool from which you want to list nodes.
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listSinglePageAsync(final String poolId) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listSinglePageAsync(final String poolId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1865,12 +1865,12 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ComputeNode>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ComputeNode>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1888,8 +1888,8 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ComputeNode>> list(final String poolId, final ComputeNodeListOptions computeNodeListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ComputeNode>> response = listSinglePageAsync(poolId, computeNodeListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> list(final String poolId, final ComputeNodeListOptions computeNodeListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listSinglePageAsync(poolId, computeNodeListOptions).toBlocking().single();
         PagedList<ComputeNode> pagedList = new PagedList<ComputeNode>(response.getBody()) {
             @Override
             public Page<ComputeNode> nextPage(String nextPageLink) throws RestException, IOException {
@@ -1903,7 +1903,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
                 return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1917,9 +1917,9 @@ public final class ComputeNodesImpl implements ComputeNodes {
     public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolId, computeNodeListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
                     ComputeNodeListNextOptions computeNodeListNextOptions = null;
                     if (computeNodeListOptions != null) {
                         computeNodeListNextOptions = new ComputeNodeListNextOptions();
@@ -1940,11 +1940,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param computeNodeListOptions Additional parameters for the operation
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
         return listSinglePageAsync(poolId, computeNodeListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<ComputeNode>>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(ServiceResponse<Page<ComputeNode>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     ComputeNodeListNextOptions computeNodeListNextOptions = null;
                     if (computeNodeListOptions != null) {
@@ -1961,11 +1961,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
-     * @param computeNodeListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param poolId The id of the pool from which you want to list nodes.
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListOptions Additional parameters for the operation
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listSinglePageAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listSinglePageAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2006,12 +2006,12 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ComputeNode>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ComputeNode>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2035,15 +2035,15 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ComputeNode>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ComputeNode>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<ComputeNode> pagedList = new PagedList<ComputeNode>(response.getBody()) {
             @Override
             public Page<ComputeNode> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2057,9 +2057,9 @@ public final class ComputeNodesImpl implements ComputeNodes {
     public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2072,11 +2072,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ComputeNode>>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(ServiceResponse<Page<ComputeNode>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2089,7 +2089,7 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2102,12 +2102,12 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ComputeNode>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ComputeNode>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2125,15 +2125,15 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<ComputeNode>> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<ComputeNode>> response = listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single();
         PagedList<ComputeNode> pagedList = new PagedList<ComputeNode>(response.getBody()) {
             @Override
             public Page<ComputeNode> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2148,9 +2148,9 @@ public final class ComputeNodesImpl implements ComputeNodes {
     public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions);
                 }
             },
@@ -2164,11 +2164,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * @param computeNodeListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<ComputeNode>>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(ServiceResponse<Page<ComputeNode>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions);
                 }
@@ -2178,11 +2178,11 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param computeNodeListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListNextOptions Additional parameters for the operation
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<ComputeNode>>> listNextSinglePageAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextSinglePageAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2204,12 +2204,12 @@ public final class ComputeNodesImpl implements ComputeNodes {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ComputeNode>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ComputeNode>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ComputeNode>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ComputeNode>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

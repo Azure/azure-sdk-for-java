@@ -294,15 +294,15 @@ public final class TasksImpl implements Tasks {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudTask>> list(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudTask>> response = listSinglePageAsync(jobId).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> list(final String jobId) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> response = listSinglePageAsync(jobId).toBlocking().single();
         PagedList<CloudTask> pagedList = new PagedList<CloudTask>(response.getBody()) {
             @Override
             public Page<CloudTask> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -315,9 +315,9 @@ public final class TasksImpl implements Tasks {
     public ServiceCall<List<CloudTask>> listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobId),
-            new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -330,11 +330,11 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job.
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listAsync(final String jobId) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listAsync(final String jobId) {
         return listSinglePageAsync(jobId)
-            .concatMap(new Func1<ServiceResponse<Page<CloudTask>>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(ServiceResponse<Page<CloudTask>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -347,7 +347,7 @@ public final class TasksImpl implements Tasks {
      * @param jobId The id of the job.
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listSinglePageAsync(final String jobId) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listSinglePageAsync(final String jobId) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -368,12 +368,12 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudTask>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudTask>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -391,8 +391,8 @@ public final class TasksImpl implements Tasks {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudTask>> list(final String jobId, final TaskListOptions taskListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudTask>> response = listSinglePageAsync(jobId, taskListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> list(final String jobId, final TaskListOptions taskListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> response = listSinglePageAsync(jobId, taskListOptions).toBlocking().single();
         PagedList<CloudTask> pagedList = new PagedList<CloudTask>(response.getBody()) {
             @Override
             public Page<CloudTask> nextPage(String nextPageLink) throws RestException, IOException {
@@ -406,7 +406,7 @@ public final class TasksImpl implements Tasks {
                 return listNextSinglePageAsync(nextPageLink, taskListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -420,9 +420,9 @@ public final class TasksImpl implements Tasks {
     public ServiceCall<List<CloudTask>> listAsync(final String jobId, final TaskListOptions taskListOptions, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobId, taskListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(String nextPageLink) {
                     TaskListNextOptions taskListNextOptions = null;
                     if (taskListOptions != null) {
                         taskListNextOptions = new TaskListNextOptions();
@@ -443,11 +443,11 @@ public final class TasksImpl implements Tasks {
      * @param taskListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listAsync(final String jobId, final TaskListOptions taskListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listAsync(final String jobId, final TaskListOptions taskListOptions) {
         return listSinglePageAsync(jobId, taskListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudTask>>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(ServiceResponse<Page<CloudTask>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     TaskListNextOptions taskListNextOptions = null;
                     if (taskListOptions != null) {
@@ -464,11 +464,11 @@ public final class TasksImpl implements Tasks {
     /**
      * Lists all of the tasks that are associated with the specified job.
      *
-     * @param jobId The id of the job.
-     * @param taskListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param jobId The id of the job.
+    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param taskListOptions Additional parameters for the operation
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listSinglePageAsync(final String jobId, final TaskListOptions taskListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listSinglePageAsync(final String jobId, final TaskListOptions taskListOptions) {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -513,12 +513,12 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudTask>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudTask>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1640,15 +1640,15 @@ public final class TasksImpl implements Tasks {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudTask>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudTask>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<CloudTask> pagedList = new PagedList<CloudTask>(response.getBody()) {
             @Override
             public Page<CloudTask> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1662,9 +1662,9 @@ public final class TasksImpl implements Tasks {
     public ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1677,11 +1677,11 @@ public final class TasksImpl implements Tasks {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CloudTask>>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(ServiceResponse<Page<CloudTask>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1694,7 +1694,7 @@ public final class TasksImpl implements Tasks {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1707,12 +1707,12 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudTask>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudTask>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1730,15 +1730,15 @@ public final class TasksImpl implements Tasks {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudTask>> listNext(final String nextPageLink, final TaskListNextOptions taskListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudTask>> response = listNextSinglePageAsync(nextPageLink, taskListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> listNext(final String nextPageLink, final TaskListNextOptions taskListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> response = listNextSinglePageAsync(nextPageLink, taskListNextOptions).toBlocking().single();
         PagedList<CloudTask> pagedList = new PagedList<CloudTask>(response.getBody()) {
             @Override
             public Page<CloudTask> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, taskListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1753,9 +1753,9 @@ public final class TasksImpl implements Tasks {
     public ServiceCall<List<CloudTask>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions, final ServiceCall<List<CloudTask>> serviceCall, final ListOperationCallback<CloudTask> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, taskListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, taskListNextOptions);
                 }
             },
@@ -1769,11 +1769,11 @@ public final class TasksImpl implements Tasks {
      * @param taskListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudTask&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, taskListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudTask>>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(ServiceResponse<Page<CloudTask>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, taskListNextOptions);
                 }
@@ -1783,11 +1783,11 @@ public final class TasksImpl implements Tasks {
     /**
      * Lists all of the tasks that are associated with the specified job.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param taskListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param taskListNextOptions Additional parameters for the operation
      * @return the List&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudTask>>> listNextSinglePageAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> listNextSinglePageAsync(final String nextPageLink, final TaskListNextOptions taskListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1809,12 +1809,12 @@ public final class TasksImpl implements Tasks {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudTask>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudTask>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudTask>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudTask>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudTask>, TaskListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

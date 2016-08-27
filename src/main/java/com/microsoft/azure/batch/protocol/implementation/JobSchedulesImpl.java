@@ -1755,15 +1755,15 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJobSchedule>> list() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJobSchedule>> response = listSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listSinglePageAsync().toBlocking().single();
         PagedList<CloudJobSchedule> pagedList = new PagedList<CloudJobSchedule>(response.getBody()) {
             @Override
             public Page<CloudJobSchedule> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1775,9 +1775,9 @@ public final class JobSchedulesImpl implements JobSchedules {
     public ServiceCall<List<CloudJobSchedule>> listAsync(final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -1789,11 +1789,11 @@ public final class JobSchedulesImpl implements JobSchedules {
      *
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<CloudJobSchedule>>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(ServiceResponse<Page<CloudJobSchedule>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -1805,7 +1805,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      *
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -1823,12 +1823,12 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJobSchedule>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJobSchedule>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1845,8 +1845,8 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJobSchedule>> list(final JobScheduleListOptions jobScheduleListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJobSchedule>> response = listSinglePageAsync(jobScheduleListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> list(final JobScheduleListOptions jobScheduleListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listSinglePageAsync(jobScheduleListOptions).toBlocking().single();
         PagedList<CloudJobSchedule> pagedList = new PagedList<CloudJobSchedule>(response.getBody()) {
             @Override
             public Page<CloudJobSchedule> nextPage(String nextPageLink) throws RestException, IOException {
@@ -1860,7 +1860,7 @@ public final class JobSchedulesImpl implements JobSchedules {
                 return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1873,9 +1873,9 @@ public final class JobSchedulesImpl implements JobSchedules {
     public ServiceCall<List<CloudJobSchedule>> listAsync(final JobScheduleListOptions jobScheduleListOptions, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(jobScheduleListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
                     JobScheduleListNextOptions jobScheduleListNextOptions = null;
                     if (jobScheduleListOptions != null) {
                         jobScheduleListNextOptions = new JobScheduleListNextOptions();
@@ -1895,11 +1895,11 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param jobScheduleListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listAsync(final JobScheduleListOptions jobScheduleListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listAsync(final JobScheduleListOptions jobScheduleListOptions) {
         return listSinglePageAsync(jobScheduleListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJobSchedule>>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(ServiceResponse<Page<CloudJobSchedule>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     JobScheduleListNextOptions jobScheduleListNextOptions = null;
                     if (jobScheduleListOptions != null) {
@@ -1916,10 +1916,10 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
-     * @param jobScheduleListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListOptions Additional parameters for the operation
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listSinglePageAsync(final JobScheduleListOptions jobScheduleListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listSinglePageAsync(final JobScheduleListOptions jobScheduleListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -1961,12 +1961,12 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJobSchedule>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJobSchedule>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1990,15 +1990,15 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJobSchedule>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJobSchedule>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<CloudJobSchedule> pagedList = new PagedList<CloudJobSchedule>(response.getBody()) {
             @Override
             public Page<CloudJobSchedule> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2012,9 +2012,9 @@ public final class JobSchedulesImpl implements JobSchedules {
     public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -2027,11 +2027,11 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJobSchedule>>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(ServiceResponse<Page<CloudJobSchedule>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -2044,7 +2044,7 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2057,12 +2057,12 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJobSchedule>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJobSchedule>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2080,15 +2080,15 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudJobSchedule>> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudJobSchedule>> response = listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders> listNext(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> response = listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single();
         PagedList<CloudJobSchedule> pagedList = new PagedList<CloudJobSchedule>(response.getBody()) {
             @Override
             public Page<CloudJobSchedule> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudJobSchedule>, JobScheduleListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -2103,9 +2103,9 @@ public final class JobSchedulesImpl implements JobSchedules {
     public ServiceCall<List<CloudJobSchedule>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions, final ServiceCall<List<CloudJobSchedule>> serviceCall, final ListOperationCallback<CloudJobSchedule> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions);
                 }
             },
@@ -2119,11 +2119,11 @@ public final class JobSchedulesImpl implements JobSchedules {
      * @param jobScheduleListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJobSchedule&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudJobSchedule>>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(ServiceResponse<Page<CloudJobSchedule>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, jobScheduleListNextOptions);
                 }
@@ -2133,11 +2133,11 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobScheduleListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListNextOptions Additional parameters for the operation
      * @return the List&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudJobSchedule>>> listNextSinglePageAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> listNextSinglePageAsync(final String nextPageLink, final JobScheduleListNextOptions jobScheduleListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2159,12 +2159,12 @@ public final class JobSchedulesImpl implements JobSchedules {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudJobSchedule>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudJobSchedule>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudJobSchedule>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudJobSchedule>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudJobSchedule>, JobScheduleListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

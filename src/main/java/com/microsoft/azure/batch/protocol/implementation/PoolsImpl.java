@@ -196,15 +196,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<PoolUsageMetrics>> listPoolUsageMetrics() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<PoolUsageMetrics>> response = listPoolUsageMetricsSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsSinglePageAsync().toBlocking().single();
         PagedList<PoolUsageMetrics> pagedList = new PagedList<PoolUsageMetrics>(response.getBody()) {
             @Override
             public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -216,9 +216,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(String nextPageLink) {
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -230,11 +230,11 @@ public final class PoolsImpl implements Pools {
      *
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsAsync() {
         return listPoolUsageMetricsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<PoolUsageMetrics>>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(ServiceResponse<Page<PoolUsageMetrics>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null);
                 }
@@ -246,7 +246,7 @@ public final class PoolsImpl implements Pools {
      *
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -264,12 +264,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PoolUsageMetrics>> result = listPoolUsageMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PoolUsageMetrics>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -286,8 +286,8 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<PoolUsageMetrics>> listPoolUsageMetrics(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<PoolUsageMetrics>> response = listPoolUsageMetricsSinglePageAsync(poolListPoolUsageMetricsOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetrics(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsSinglePageAsync(poolListPoolUsageMetricsOptions).toBlocking().single();
         PagedList<PoolUsageMetrics> pagedList = new PagedList<PoolUsageMetrics>(response.getBody()) {
             @Override
             public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws RestException, IOException {
@@ -301,7 +301,7 @@ public final class PoolsImpl implements Pools {
                 return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -314,9 +314,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsSinglePageAsync(poolListPoolUsageMetricsOptions),
-            new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(String nextPageLink) {
                     PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
                     if (poolListPoolUsageMetricsOptions != null) {
                         poolListPoolUsageMetricsNextOptions = new PoolListPoolUsageMetricsNextOptions();
@@ -336,11 +336,11 @@ public final class PoolsImpl implements Pools {
      * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) {
         return listPoolUsageMetricsSinglePageAsync(poolListPoolUsageMetricsOptions)
-            .concatMap(new Func1<ServiceResponse<Page<PoolUsageMetrics>>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(ServiceResponse<Page<PoolUsageMetrics>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions = null;
                     if (poolListPoolUsageMetricsOptions != null) {
@@ -357,10 +357,10 @@ public final class PoolsImpl implements Pools {
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      *
-     * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> * @param poolListPoolUsageMetricsOptions Additional parameters for the operation
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsSinglePageAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsSinglePageAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -402,12 +402,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPoolUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PoolUsageMetrics>> result = listPoolUsageMetricsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PoolUsageMetrics>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -710,15 +710,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudPool>> list() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudPool>> response = listSinglePageAsync().toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listSinglePageAsync().toBlocking().single();
         PagedList<CloudPool> pagedList = new PagedList<CloudPool>(response.getBody()) {
             @Override
             public Page<CloudPool> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -730,9 +730,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -744,11 +744,11 @@ public final class PoolsImpl implements Pools {
      *
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<CloudPool>>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(ServiceResponse<Page<CloudPool>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -760,7 +760,7 @@ public final class PoolsImpl implements Pools {
      *
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listSinglePageAsync() {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -778,12 +778,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudPool>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudPool>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -800,8 +800,8 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudPool>> list(final PoolListOptions poolListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudPool>> response = listSinglePageAsync(poolListOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> list(final PoolListOptions poolListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listSinglePageAsync(poolListOptions).toBlocking().single();
         PagedList<CloudPool> pagedList = new PagedList<CloudPool>(response.getBody()) {
             @Override
             public Page<CloudPool> nextPage(String nextPageLink) throws RestException, IOException {
@@ -815,7 +815,7 @@ public final class PoolsImpl implements Pools {
                 return listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -828,9 +828,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listSinglePageAsync(poolListOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
                     PoolListNextOptions poolListNextOptions = null;
                     if (poolListOptions != null) {
                         poolListNextOptions = new PoolListNextOptions();
@@ -850,11 +850,11 @@ public final class PoolsImpl implements Pools {
      * @param poolListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listAsync(final PoolListOptions poolListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listAsync(final PoolListOptions poolListOptions) {
         return listSinglePageAsync(poolListOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudPool>>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(ServiceResponse<Page<CloudPool>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     PoolListNextOptions poolListNextOptions = null;
                     if (poolListOptions != null) {
@@ -871,10 +871,10 @@ public final class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-     * @param poolListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listSinglePageAsync(final PoolListOptions poolListOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync(final PoolListOptions poolListOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -916,12 +916,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudPool>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudPool>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3092,15 +3092,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<PoolUsageMetrics>> listPoolUsageMetricsNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<PoolUsageMetrics>> response = listPoolUsageMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<PoolUsageMetrics> pagedList = new PagedList<PoolUsageMetrics>(response.getBody()) {
             @Override
             public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -3114,9 +3114,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(String nextPageLink) {
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -3129,11 +3129,11 @@ public final class PoolsImpl implements Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsNextAsync(final String nextPageLink) {
         return listPoolUsageMetricsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<PoolUsageMetrics>>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(ServiceResponse<Page<PoolUsageMetrics>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, null);
                 }
@@ -3146,7 +3146,7 @@ public final class PoolsImpl implements Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3159,12 +3159,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PoolUsageMetrics>> result = listPoolUsageMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PoolUsageMetrics>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3182,15 +3182,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<PoolUsageMetrics>> listPoolUsageMetricsNext(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<PoolUsageMetrics>> response = listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> listPoolUsageMetricsNext(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> response = listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions).toBlocking().single();
         PagedList<PoolUsageMetrics> pagedList = new PagedList<PoolUsageMetrics>(response.getBody()) {
             @Override
             public Page<PoolUsageMetrics> nextPage(String nextPageLink) throws RestException, IOException {
                 return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -3205,9 +3205,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<PoolUsageMetrics>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions, final ServiceCall<List<PoolUsageMetrics>> serviceCall, final ListOperationCallback<PoolUsageMetrics> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(String nextPageLink) {
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions);
                 }
             },
@@ -3221,11 +3221,11 @@ public final class PoolsImpl implements Pools {
      * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;PoolUsageMetrics&gt; object
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsNextAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) {
         return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<PoolUsageMetrics>>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(ServiceResponse<Page<PoolUsageMetrics>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listPoolUsageMetricsNextSinglePageAsync(nextPageLink, poolListPoolUsageMetricsNextOptions);
                 }
@@ -3235,11 +3235,11 @@ public final class PoolsImpl implements Pools {
     /**
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> * @param poolListPoolUsageMetricsNextOptions Additional parameters for the operation
      * @return the List&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<PoolUsageMetrics>>> listPoolUsageMetricsNextSinglePageAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> listPoolUsageMetricsNextSinglePageAsync(final String nextPageLink, final PoolListPoolUsageMetricsNextOptions poolListPoolUsageMetricsNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3261,12 +3261,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listPoolUsageMetricsNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PoolUsageMetrics>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PoolUsageMetrics>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<PoolUsageMetrics>> result = listPoolUsageMetricsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PoolUsageMetrics>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders> result = listPoolUsageMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListPoolUsageMetricsHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3290,15 +3290,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudPool>> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudPool>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         PagedList<CloudPool> pagedList = new PagedList<CloudPool>(response.getBody()) {
             @Override
             public Page<CloudPool> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -3312,9 +3312,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
             },
@@ -3327,11 +3327,11 @@ public final class PoolsImpl implements Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listNextAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<CloudPool>>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(ServiceResponse<Page<CloudPool>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, null);
                 }
@@ -3344,7 +3344,7 @@ public final class PoolsImpl implements Pools {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3357,12 +3357,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudPool>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudPool>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3380,15 +3380,15 @@ public final class PoolsImpl implements Pools {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponse<PagedList<CloudPool>> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponse<Page<CloudPool>> response = listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single();
+    public ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> response = listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single();
         PagedList<CloudPool> pagedList = new PagedList<CloudPool>(response.getBody()) {
             @Override
             public Page<CloudPool> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink, poolListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(pagedList, response.getResponse());
+        return new ServiceResponseWithHeaders<PagedList<CloudPool>, PoolListHeaders>(pagedList, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -3403,9 +3403,9 @@ public final class PoolsImpl implements Pools {
     public ServiceCall<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceCall<List<CloudPool>> serviceCall, final ListOperationCallback<CloudPool> serviceCallback) {
         return AzureServiceCall.createWithHeaders(
             listNextSinglePageAsync(nextPageLink, poolListNextOptions),
-            new Func1<String, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(String nextPageLink) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink, poolListNextOptions);
                 }
             },
@@ -3419,11 +3419,11 @@ public final class PoolsImpl implements Pools {
      * @param poolListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudPool&gt; object
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
         return listNextSinglePageAsync(nextPageLink, poolListNextOptions)
-            .concatMap(new Func1<ServiceResponse<Page<CloudPool>>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(ServiceResponse<Page<CloudPool>> page) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     return listNextSinglePageAsync(nextPageLink, poolListNextOptions);
                 }
@@ -3433,11 +3433,11 @@ public final class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation
      * @return the List&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponse<Page<CloudPool>>> listNextSinglePageAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
+    public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextSinglePageAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -3459,12 +3459,12 @@ public final class PoolsImpl implements Pools {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CloudPool>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CloudPool>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<CloudPool>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<CloudPool>>(result.getBody(), result.getResponse()));
+                        ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }

@@ -569,7 +569,7 @@ public interface Jobs {
      * @param jobListOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJob>>> listAsync(final JobListOptions jobListOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listAsync(final JobListOptions jobListOptions);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -619,7 +619,7 @@ public interface Jobs {
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -669,7 +669,7 @@ public interface Jobs {
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions);
+    Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions);
 
     /**
      * Lists all of the jobs in the specified account.
@@ -721,7 +721,7 @@ public interface Jobs {
      * @param jobListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJob>>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listNextAsync(final String nextPageLink, final JobListNextOptions jobListNextOptions);
 
     /**
      * Lists the jobs that have been created under the specified job schedule.
@@ -773,7 +773,7 @@ public interface Jobs {
      * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;CloudJob&gt; object
      */
-    Observable<ServiceResponse<Page<CloudJob>>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleNextAsync(final String nextPageLink, final JobListFromJobScheduleNextOptions jobListFromJobScheduleNextOptions);
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
@@ -825,6 +825,6 @@ public interface Jobs {
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object
      */
-    Observable<ServiceResponse<Page<JobPreparationAndReleaseTaskExecutionInformation>>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusNextAsync(final String nextPageLink, final JobListPreparationAndReleaseTaskStatusNextOptions jobListPreparationAndReleaseTaskStatusNextOptions);
 
 }

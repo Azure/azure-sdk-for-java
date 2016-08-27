@@ -682,7 +682,7 @@ public interface ComputeNodes {
      * @param computeNodeListOptions Additional parameters for the operation
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    Observable<ServiceResponse<Page<ComputeNode>>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions);
+    Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions);
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -734,6 +734,6 @@ public interface ComputeNodes {
      * @param computeNodeListNextOptions Additional parameters for the operation
      * @return the observable to the List&lt;ComputeNode&gt; object
      */
-    Observable<ServiceResponse<Page<ComputeNode>>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions);
+    Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions);
 
 }
