@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -174,9 +175,18 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                     .attach()
 
                 // Inbound NAT rules
-                .defineInboundNatRule("natrule1")
+                /*.defineInboundNatRule("natrule1")
+                    .withProtocol(TransportProtocol.TCP)
                     .withFrontend("frontend1")
                     .withFrontendPort(88)
+                    .attach()*/
+
+                // Inbound NAT pools
+                .defineInboundNatPool("natpool1")
+                    .withProtocol(TransportProtocol.TCP)
+                    .withFrontend("frontend1")
+                    .withFrontendPortRange(2000, 2001)
+                    .withBackendPort(8080)
                     .attach()
                 .create();
 
@@ -206,12 +216,22 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         Assert.assertTrue(rule.probe().name().equalsIgnoreCase("tcpProbe1"));
 
         // Verify inbound NAT rules
-        Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
+        /*Assert.assertTrue(lb.inboundNatRules().containsKey("natrule1"));
         Assert.assertTrue(lb.inboundNatRules().size() == 1);
         InboundNatRule inboundNatRule = lb.inboundNatRules().get("natrule1");
         Assert.assertTrue(inboundNatRule.frontend().name().equalsIgnoreCase("frontend1"));
         Assert.assertTrue(inboundNatRule.frontendPort() == 88);
-        Assert.assertTrue(inboundNatRule.backendPort() == 88);
+        Assert.assertTrue(inboundNatRule.backendPort() == 88);*/
+
+        // Verify inbound NAT pools
+        Assert.assertTrue(lb.inboundNatPools().containsKey("natpool1"));
+        Assert.assertTrue(lb.inboundNatPools().size() == 1);
+        InboundNatPool inboundNatPool = lb.inboundNatPools().get("natpool1");
+        Assert.assertTrue(inboundNatPool.frontend().name().equalsIgnoreCase("frontend1"));
+        Assert.assertTrue(inboundNatPool.frontendPortRangeStart() == 2000);
+        Assert.assertTrue(inboundNatPool.frontendPortRangeEnd() == 2001);
+        Assert.assertTrue(inboundNatPool.backendPort() == 8080);
+
         return lb;
     }
 
@@ -222,7 +242,8 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
                 .withoutFrontend("default")
                 .withoutBackend("default")
                 .withoutLoadBalancingRule("rule1")
-                .withoutInboundNatRule("natrule1")
+                //.withoutInboundNatRule("natrule1")
+                .withoutInboundNatPool("natpool1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
                 .apply();
@@ -322,12 +343,26 @@ public class TestLoadBalancer extends TestTemplate<LoadBalancer, LoadBalancers> 
         info.append("\n\tInbound NAT rules:");
         for (InboundNatRule natRule : resource.inboundNatRules().values()) {
             info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
+                .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
                 .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
                 .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                 .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                 .append("\n\t\t\tAssociated NIC IP config: ").append(natRule.networkInterfaceIpConfigurationId())
                 .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled());
         }
+
+        // Show inbound NAT pools
+        info.append("\n\tInbound NAT pools:");
+        for (InboundNatPool natPool: resource.inboundNatPools().values()) {
+            info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
+                .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
+                .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())
+                .append("\n\t\t\tFrontend port range: ")
+                    .append(natPool.frontendPortRangeStart())
+                    .append("-")
+                    .append(natPool.frontendPortRangeEnd())
+                .append("\n\t\t\tBackend port: ").append(natPool.backendPort());
+            }
 
         System.out.println(info.toString());
     }

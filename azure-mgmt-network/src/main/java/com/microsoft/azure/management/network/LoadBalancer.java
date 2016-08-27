@@ -62,6 +62,8 @@ public interface LoadBalancer extends
      */
     Map<String, LoadBalancingRule> loadBalancingRules();
 
+    Map<String, InboundNatPool> inboundNatPools();
+
     /**
      * The entirety of the load balancer definition.
      */
@@ -310,7 +312,8 @@ public interface LoadBalancer extends
         interface WithCreate extends
             Creatable<LoadBalancer>,
             Resource.DefinitionWithTags<WithCreate>,
-            DefinitionStages.WithInboundNatRule {
+            DefinitionStages.WithInboundNatRule,
+            DefinitionStages.WithInboundNatPool {
         }
 
         /**
@@ -325,6 +328,20 @@ public interface LoadBalancer extends
              * @return the first stage of the new inbound NAT rule definition
              */
             InboundNatRule.DefinitionStages.Blank<WithCreate> defineInboundNatRule(String name);
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create a new inbound NAT pool for a virtual machine scale set.
+         */
+        interface WithInboundNatPool {
+            /**
+             * Begins the definition of a new inbount NAT pool to add to the load balancer.
+             * <p>
+             * The definition must be completed with a call to {@link InboundNatPool.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the inbound NAT pool
+             * @return the first stage of the new inbound NAT pool definition
+             */
+            InboundNatPool.DefinitionStages.Blank<WithCreate> defineInboundNatPool(String name);
         }
     }
 
@@ -509,7 +526,7 @@ public interface LoadBalancer extends
             Update withoutInboundNatRule(String name);
 
             /**
-             * Begins the update of a new inbound NAT rule.
+             * Begins the definition of a new inbound NAT rule.
              * <p>
              * The definition must be completed with a call to {@link InboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name for the inbound NAT rule
@@ -523,6 +540,32 @@ public interface LoadBalancer extends
              * @return the first stage of the inbound NAT rule update
              */
             InboundNatRule.Update updateInboundNatRule(String name);
+        }
+
+        /**
+         * The stage of a load balancer update allowing to create a new inbound NAT pool for a virtual machine scale set.
+         */
+        interface WithInboundNatPool {
+            /**
+             * Removes the specified inbound NAT pool from the load balancer.
+             * @param name the name of an existing inbound NAT pool on this load balancer
+             * @return the next stage of the update
+             */
+            Update withoutInboundNatPool(String name);
+
+            /**
+             * Begins the definition of a new inbound NAT pool.
+             * @param name the name of the inbound NAT pool
+             * @return the first stage of the new inbound NAT pool definition
+             */
+            InboundNatPool.UpdateDefinitionStages.Blank<Update> defineInboundNatPool(String name);
+
+            /**
+             * Begins the description of an update to an existing inbound NAT pool.
+             * @param name the name of the inbound NAT pool to update
+             * @return the first stage of the inbound NAT pool update
+             */
+            InboundNatPool.Update updateInboundNatPool(String name);
         }
     }
 
@@ -539,6 +582,7 @@ public interface LoadBalancer extends
         UpdateStages.WithBackend,
         UpdateStages.WithLoadBalancingRule,
         UpdateStages.WithInternetFrontend,
-        UpdateStages.WithInboundNatRule {
+        UpdateStages.WithInboundNatRule,
+        UpdateStages.WithInboundNatPool {
     }
 }

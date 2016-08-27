@@ -18,6 +18,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -64,6 +65,7 @@ class LoadBalancerImpl
     private final TreeMap<String, LoadBalancingRule> loadBalancingRules = new TreeMap<>();
     private final TreeMap<String, Frontend> frontends = new TreeMap<>();
     private final TreeMap<String, InboundNatRule> inboundNatRules = new TreeMap<>();
+    private final TreeMap<String, InboundNatPool> inboundNatPools = new TreeMap<>();
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -76,6 +78,7 @@ class LoadBalancerImpl
         initializeBackendsFromInner();
         initializeLoadBalancingRulesFromInner();
         initializeInboundNatRulesFromInner();
+        initializeInboundNatPoolsFromInner();
     }
 
     // Verbs
@@ -90,6 +93,7 @@ class LoadBalancerImpl
         initializeBackendsFromInner();
         initializeLoadBalancingRulesFromInner();
         initializeInboundNatRulesFromInner();
+        initializeInboundNatPoolsFromInner();
         return this;
     }
 
@@ -168,6 +172,17 @@ class LoadBalancerImpl
             if (frontendRef != null
                     && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
                 natRule.inner().withFrontendIPConfiguration(null);
+            }
+        }
+
+        // Reset and update inbound NAT pools
+        this.inner().withInboundNatPools(innersFromWrappers(this.inboundNatPools.values()));
+        for (InboundNatPool natPool : this.inboundNatPools.values()) {
+            // Clear deleted frontend references
+            SubResource frontendRef = natPool.inner().frontendIPConfiguration();
+            if (frontendRef != null
+                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
+                natPool.inner().withFrontendIPConfiguration(null);
             }
         }
 
@@ -265,6 +280,17 @@ class LoadBalancerImpl
         }
     }
 
+    private void initializeInboundNatPoolsFromInner() {
+        this.inboundNatPools.clear();
+        List<InboundNatPoolInner> inners = this.inner().inboundNatPools();
+        if (inners != null) {
+            for (InboundNatPoolInner inner : inners) {
+                InboundNatPoolImpl wrapper = new InboundNatPoolImpl(inner, this);
+                this.inboundNatPools.put(wrapper.name(), wrapper);
+            }
+        }
+    }
+
     private void initializeInboundNatRulesFromInner() {
         this.inboundNatRules.clear();
         List<InboundNatRuleInner> rulesInner = this.inner().inboundNatRules();
@@ -308,6 +334,11 @@ class LoadBalancerImpl
 
     LoadBalancerImpl withInboundNatRule(InboundNatRuleImpl inboundNatRule) {
         this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
+        return this;
+    }
+
+    LoadBalancerImpl withInboundNatPool(InboundNatPoolImpl inboundNatPool) {
+        this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
         return this;
     }
 
@@ -473,6 +504,18 @@ class LoadBalancerImpl
     }
 
     @Override
+    public InboundNatPoolImpl defineInboundNatPool(String name) {
+        InboundNatPool natPool = this.inboundNatPools.get(name);
+        if (natPool == null) {
+            InboundNatPoolInner inner = new InboundNatPoolInner()
+                    .withName(name);
+            return new InboundNatPoolImpl(inner, this);
+        } else {
+            return (InboundNatPoolImpl) natPool;
+        }
+    }
+
+    @Override
     public FrontendImpl defineInternetFrontend(String name) {
         Frontend frontend = this.frontends.get(name);
         if (frontend == null) {
@@ -564,6 +607,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public InboundNatPoolImpl updateInboundNatPool(String name) {
+        return (InboundNatPoolImpl) this.inboundNatPools.get(name);
+    }
+
+    @Override
     public ProbeImpl updateHttpProbe(String name) {
         return (ProbeImpl) this.httpProbes.get(name);
     }
@@ -591,11 +639,22 @@ class LoadBalancerImpl
         return this;
     }
 
+    @Override
+    public Update withoutInboundNatPool(String name) {
+        this.inboundNatPools.remove(name);
+        return this;
+    }
+
     // Getters
 
     @Override
     public Map<String, Backend> backends() {
         return Collections.unmodifiableMap(this.backends);
+    }
+
+    @Override
+    public Map<String, InboundNatPool> inboundNatPools() {
+        return Collections.unmodifiableMap(this.inboundNatPools);
     }
 
     @Override
