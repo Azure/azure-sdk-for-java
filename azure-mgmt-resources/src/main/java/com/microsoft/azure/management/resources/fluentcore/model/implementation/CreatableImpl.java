@@ -111,11 +111,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
         return this.creatorTaskGroup;
     }
 
-    protected Func1<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
-        return new Func1<InnerModelT, FluentModelT>() {
+    protected Func1<ServiceResponse<InnerModelT>, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
+        return new Func1<ServiceResponse<InnerModelT>, FluentModelT>() {
             @Override
-            public FluentModelT call(InnerModelT innerModelT) {
-                fluentModelImplT.setInner(innerModelT);
+            public FluentModelT call(ServiceResponse<InnerModelT> innerModelT) {
+                fluentModelImplT.setInner(innerModelT.getBody());
                 return (FluentModelT) fluentModelImplT;
             }
         };

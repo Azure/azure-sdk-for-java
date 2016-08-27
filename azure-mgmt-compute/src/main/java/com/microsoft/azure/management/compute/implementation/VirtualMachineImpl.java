@@ -895,12 +895,11 @@ class VirtualMachineImpl
                     public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
                         handleNetworkSettings();
                         handleAvailabilitySettings();
-                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), null)
-                                .observable()
-                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
+                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                                .map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachine>() {
                                     @Override
-                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
-                                        self.setInner(virtualMachineInner);
+                                    public VirtualMachine call(ServiceResponse<VirtualMachineInner> virtualMachineInner) {
+                                        self.setInner(virtualMachineInner.getBody());
                                         clearCachedRelatedResources();
                                         initializeDataDisks();
                                         return self;

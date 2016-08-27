@@ -235,13 +235,11 @@ class LoadBalancerImpl
     public Observable<LoadBalancer> createResourceAsync()  {
         final LoadBalancer self = this;
         ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<LoadBalancerInner, Observable<LoadBalancer>>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
                     @Override
-                    public Observable<LoadBalancer> call(LoadBalancerInner loadBalancerInner) {
-                        setInner(loadBalancerInner);
+                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
+                        setInner(loadBalancerInner.getBody());
                         try {
                             runPostCreationTasks();
                             return Observable.just(self);

@@ -203,13 +203,11 @@ class NetworkImpl
     public Observable<Network> createResourceAsync() {
         final  NetworkImpl self = this;
         ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .map(new Func1<VirtualNetworkInner, Network>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
                     @Override
-                    public Network call(VirtualNetworkInner virtualNetworkInner) {
-                        setInner(virtualNetworkInner);
+                    public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
+                        setInner(virtualNetworkInner.getBody());
                         initializeSubnetsFromInner();
                         return self;
                     }

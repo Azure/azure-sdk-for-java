@@ -155,8 +155,7 @@ class ResourceGroupImpl extends
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        return client.createOrUpdateAsync(this.name(), params, null)
-                .observable()
+        return client.createOrUpdateAsync(this.name(), params)
                 .map(innerToFluentMap(this));
     }
 }

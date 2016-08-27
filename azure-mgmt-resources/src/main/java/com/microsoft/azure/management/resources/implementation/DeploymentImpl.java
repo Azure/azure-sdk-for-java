@@ -341,9 +341,7 @@ final class DeploymentImpl extends
         inner.properties().withTemplateLink(templateLink());
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner, null)
-                .observable()
-                .subscribeOn(Schedulers.io())
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner)
                 .map(innerToFluentMap(this));
     }
 

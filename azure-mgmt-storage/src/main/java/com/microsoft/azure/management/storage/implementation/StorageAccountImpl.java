@@ -204,9 +204,7 @@ class StorageAccountImpl
 
     @Override
     public Observable<StorageAccount> applyAsync() {
-        return client.updateAsync(resourceGroupName(), name(), updateParameters, null)
-                .observable()
-                .subscribeOn(Schedulers.io())
+        return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
     }
 
@@ -273,12 +271,11 @@ class StorageAccountImpl
     public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters, null)
-                .observable()
-                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters)
+                .flatMap(new Func1<ServiceResponse<StorageAccountInner>, Observable<ServiceResponse<StorageAccountInner>>>() {
                     @Override
-                    public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
-                        return client.getPropertiesAsync(resourceGroupName(), name(), null).observable();
+                    public Observable<ServiceResponse<StorageAccountInner>> call(ServiceResponse<StorageAccountInner> storageAccountInner) {
+                        return client.getPropertiesAsync(resourceGroupName(), name());
                     }
                 })
                 .map(innerToFluentMap(this))

@@ -387,14 +387,11 @@ class NetworkInterfaceImpl
 
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
-                this.inner(),
-                null)
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .map(new Func1<NetworkInterfaceInner, NetworkInterface>() {
+                this.inner())
+                .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
                     @Override
-                    public NetworkInterface call(NetworkInterfaceInner networkInterfaceInner) {
-                        self.setInner(networkInterfaceInner);
+                    public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
+                        self.setInner(networkInterfaceInner.getBody());
                         clearCachedRelatedResources();
                         initializeNicIpConfigurations();
                         return self;

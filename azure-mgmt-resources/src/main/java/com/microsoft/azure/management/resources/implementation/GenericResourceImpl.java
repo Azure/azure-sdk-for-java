@@ -174,9 +174,7 @@ final class GenericResourceImpl
                 resourceType,
                 name(),
                 apiVersion,
-                inner(),
-                null)
-                .observable()
+                inner())
                 .subscribeOn(Schedulers.io())
                 .map(innerToFluentMap(this));
     }

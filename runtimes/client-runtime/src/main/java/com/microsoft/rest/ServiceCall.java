@@ -132,31 +132,6 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
     }
 
     /**
-     * Get an RxJava Observable object for the response.
-     *
-     * @return the Observable
-     */
-    public Observable<T> observable() {
-        return Observable.from(this)
-                .map(new Func1<ServiceResponse<T>, T>() {
-                    @Override
-                    public T call(ServiceResponse<T> tServiceResponse) {
-                        return tServiceResponse.getBody();
-                    }
-                });
-    }
-
-    /**
-     * Get an RxJava Observable object for the response bound on a scheduler.
-     *
-     * @param scheduler the scheduler to bind to
-     * @return the Observable
-     */
-    public Observable<T> observable(Scheduler scheduler) {
-        return observable().subscribeOn(scheduler);
-    }
-
-    /**
      * Invoke this method to report completed, allowing
      * {@link AbstractFuture#get()} to be unblocked.
      *

@@ -169,12 +169,11 @@ class NetworkSecurityGroupImpl
     @Override
     public Observable<NetworkSecurityGroup> createResourceAsync() {
         final NetworkSecurityGroupImpl self = this;
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
-                .observable()
-                .map(new Func1<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
                     @Override
-                    public NetworkSecurityGroup call(NetworkSecurityGroupInner networkSecurityGroupInner) {
-                        self.setInner(networkSecurityGroupInner);
+                    public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
+                        self.setInner(networkSecurityGroupInner.getBody());
                         initializeRulesFromInner();
                         return self;
                     }

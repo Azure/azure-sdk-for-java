@@ -176,9 +176,7 @@ class PublicIpAddressImpl
             }
         }
 
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), null)
-                .observable()
-                .subscribeOn(Schedulers.io())
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
     }
 }

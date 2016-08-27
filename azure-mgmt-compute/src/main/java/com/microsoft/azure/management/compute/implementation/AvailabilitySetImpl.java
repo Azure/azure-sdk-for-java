@@ -121,13 +121,11 @@ class AvailabilitySetImpl
     @Override
     public Observable<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
-        return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner(), null)
-                .observable()
-                .subscribeOn(Schedulers.io())
-                .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
+        return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySet>() {
                     @Override
-                    public AvailabilitySet call(AvailabilitySetInner availabilitySetInner) {
-                        self.setInner(availabilitySetInner);
+                    public AvailabilitySet call(ServiceResponse<AvailabilitySetInner> availabilitySetInner) {
+                        self.setInner(availabilitySetInner.getBody());
                         idOfVMsInSet = null;
                         return self;
                     }
