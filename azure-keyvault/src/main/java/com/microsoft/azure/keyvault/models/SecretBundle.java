@@ -8,6 +8,12 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.keyvault.SecretIdentifier;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -164,4 +170,28 @@ public class SecretBundle {
         return this;
     }
 
+    /**
+     * the secret identifier.
+     * @return The Identifier value
+     */
+    public SecretIdentifier secretIdentifier() {
+        if (id() == null || id().length() == 0) {
+            return null;
+        }
+        return new SecretIdentifier(id());
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonGenerationException e) {
+            throw new IllegalStateException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

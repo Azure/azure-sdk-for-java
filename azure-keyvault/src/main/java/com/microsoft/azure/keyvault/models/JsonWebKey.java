@@ -8,9 +8,26 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import java.util.List;
-import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.rest.Base64Url;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -32,7 +49,7 @@ public class JsonWebKey {
      * The keyOps property.
      */
     @JsonProperty(value = "key_ops")
-    private List<String> keyOps;
+    private List<JsonWebKeyOperation> keyOps;
 
     /**
      * RSA modulus.
@@ -131,7 +148,7 @@ public class JsonWebKey {
      *
      * @return the keyOps value
      */
-    public List<String> keyOps() {
+    public List<JsonWebKeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -141,7 +158,7 @@ public class JsonWebKey {
      * @param keyOps the keyOps value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey withKeyOps(List<String> keyOps) {
+    public JsonWebKey withKeyOps(List<JsonWebKeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -416,4 +433,169 @@ public class JsonWebKey {
         return this;
     }
 
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonGenerationException e) {
+            throw new IllegalStateException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Get the RSA public key spec value.
+     *
+     * @return the RSA public key spec value
+     */
+    private RSAPublicKeySpec getRSAPublicKeySpec() {
+
+        return new RSAPublicKeySpec(toBigInteger(n()), toBigInteger(e()));
+    }
+
+    /**
+     * Get the RSA private key spec value.
+     *
+     * @return the RSA private key spec value
+     */
+    private RSAPrivateKeySpec getRSAPrivateKeySpec() {
+
+        return new RSAPrivateCrtKeySpec(toBigInteger(n()), toBigInteger(e()), toBigInteger(d()), toBigInteger(p()),
+                toBigInteger(q()), toBigInteger(dp()), toBigInteger(dq()), toBigInteger(qi()));
+    }
+
+    /**
+     * Get the RSA public key value.
+     *
+     * @return the RSA public key value
+     */
+    private PublicKey getRSAPublicKey() {
+
+        try {
+            RSAPublicKeySpec publicKeySpec = getRSAPublicKeySpec();
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+
+            return factory.generatePublic(publicKeySpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Get the RSA private key value.
+     *
+     * @return the RSA private key value
+     */
+    private PrivateKey getRSAPrivateKey() {
+
+        try {
+            RSAPrivateKeySpec privateKeySpec = getRSAPrivateKeySpec();
+            KeyFactory factory = KeyFactory.getInstance("RSA");
+
+            return factory.generatePrivate(privateKeySpec);
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Verifies if the key is an RSA key.
+     */
+    private void checkRSACompatible() {
+        if (!JsonWebKeyType.RSA.equals(kty()) && !JsonWebKeyType.RSA_HSM.equals(kty())) {
+            throw new UnsupportedOperationException("Not an RSA key");
+        }
+    }
+
+    private static byte[] toByteArray(BigInteger n) {
+        byte[] result = n.toByteArray();
+        if (result[0] == 0) {
+            // The leading zero is used to let the number positive. Since RSA
+            // parameters are always positive, we remove it.
+            return Arrays.copyOfRange(result, 1, result.length);
+        }
+        return result;
+    }
+
+    private static BigInteger toBigInteger(byte[] b) {
+        if (b[0] < 0) {
+            // RSA parameters are always positive numbers, so if the first byte
+            // is negative, we need to add a leading zero
+            // to make the entire BigInteger positive.
+            byte[] temp = new byte[1 + b.length];
+            System.arraycopy(b, 0, temp, 1, b.length);
+            b = temp;
+        }
+        return new BigInteger(b);
+    }
+
+    /**
+     * Converts RSA key pair to JSON web key.
+     * @param keyPair RSA key pair
+     * @return the JSON web key, converted from RSA key pair.
+     */
+    public static JsonWebKey fromRSA(KeyPair keyPair) {
+
+        RSAPrivateCrtKey privateKey = (RSAPrivateCrtKey) keyPair.getPrivate();
+        JsonWebKey key = null;
+
+        if (privateKey != null) {
+
+            key = new JsonWebKey()
+                    .withKty(JsonWebKeyType.RSA)
+                    .withN(toByteArray(privateKey.getModulus()))
+                    .withE(toByteArray(privateKey.getPublicExponent()))
+                    .withD(toByteArray(privateKey.getPrivateExponent()))
+                    .withP(toByteArray(privateKey.getPrimeP()))
+                    .withQ(toByteArray(privateKey.getPrimeQ()))
+                    .withDp(toByteArray(privateKey.getPrimeExponentP()))
+                    .withDq(toByteArray(privateKey.getPrimeExponentQ()))
+                    .withQi(toByteArray(privateKey.getCrtCoefficient()));
+        } else {
+
+            RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+
+            key = new JsonWebKey()
+                    .withKty(JsonWebKeyType.RSA)
+                    .withN(toByteArray(publicKey.getModulus()))
+                    .withE(toByteArray(publicKey.getPublicExponent()))
+                    .withD(null)
+                    .withP(null)
+                    .withQ(null)
+                    .withDp(null)
+                    .withDq(null)
+                    .withQi(null);
+        }
+
+        return key;
+    }
+
+    /**
+     * Converts JSON web key to RSA key pair.
+     * @return RSA key pair
+     */
+    public KeyPair toRSA() {
+        return this.toRSA(false);
+    }
+
+    /**
+     * Converts JSON web key to RSA key pair and include the private key if set to true.
+     * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
+     * @return RSA key pair
+     */
+    public KeyPair toRSA(boolean includePrivateParameters) {
+
+        // Must be RSA
+        checkRSACompatible();
+
+        if (includePrivateParameters) {
+            return new KeyPair(getRSAPublicKey(), getRSAPrivateKey());
+        } else {
+            return new KeyPair(getRSAPublicKey(), null);
+        }
+    }
 }

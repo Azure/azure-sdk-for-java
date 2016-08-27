@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutionException;
 import javax.crypto.Cipher;
 
+import com.microsoft.azure.keyvault.models.JsonWebKeyType;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -79,7 +80,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
     {
         try {
             // Create a key on a vault.
-            CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, "RSA").build();
+            CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build();
             KeyBundle         keyBundle = keyVaultClient.createKey(request).getBody();
             
             try

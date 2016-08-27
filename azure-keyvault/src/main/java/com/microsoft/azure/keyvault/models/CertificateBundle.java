@@ -8,7 +8,15 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.keyvault.CertificateIdentifier;
+import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.rest.Base64Url;
+
+import java.io.IOException;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -194,4 +202,50 @@ public class CertificateBundle {
         return this;
     }
 
+    /**
+     * The certificate identifier.
+     * @return certificate identifier
+     */
+    public CertificateIdentifier certificateIdentifier() {
+        if (id() == null || id().isEmpty()) {
+            return null;
+        }
+        return new CertificateIdentifier(id());
+    }
+
+    /**
+     * The secret identifier.
+     * @return secret identifier
+     */
+    public SecretIdentifier secretIdentifier() {
+        if (sid() == null || sid().isEmpty()) {
+            return null;
+        }
+        return new SecretIdentifier(sid());
+    }
+
+    /**
+     * The key identifier.
+     * @return key identifier
+     */
+    public KeyIdentifier keyIdentifier() {
+        if (kid() == null || kid().isEmpty()) {
+            return null;
+        }
+        return new KeyIdentifier(kid());
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonGenerationException e) {
+            throw new IllegalStateException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

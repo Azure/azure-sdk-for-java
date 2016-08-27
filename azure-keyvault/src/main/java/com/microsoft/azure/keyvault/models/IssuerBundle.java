@@ -9,6 +9,12 @@
 package com.microsoft.azure.keyvault.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.keyvault.IssuerIdentifier;
+
+import java.io.IOException;
 
 /**
  * The issuer for Key Vault certificate.
@@ -130,4 +136,28 @@ public class IssuerBundle {
         return this;
     }
 
+    /**
+     * The issuer identifier.
+     * @return identifier for issuer
+     */
+    public IssuerIdentifier issuerIdentifier() {
+        if (id() == null || id().isEmpty()) {
+            return null;
+        }
+        return new IssuerIdentifier(id());
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonGenerationException e) {
+            throw new IllegalStateException(e);
+        } catch (JsonMappingException e) {
+            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
