@@ -244,6 +244,6 @@ public class AzureTests {
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertSame(storageAccount.name(), "mystg123");
+        Assert.assertEquals(storageAccount.name(), "mystg123");
     }
 }

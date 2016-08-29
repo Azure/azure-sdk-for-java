@@ -35,20 +35,10 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .createAsync()
-                .subscribe(new Subscriber<VirtualMachine>() {
+                .subscribe(new Action1<VirtualMachine>() {
                     @Override
-                    public void onCompleted() {
-                        future.set(null);
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        future.setException(throwable);
-                    }
-
-                    @Override
-                    public void onNext(VirtualMachine virtualMachine) {
-                        System.out.println(virtualMachine);
+                    public void call(VirtualMachine virtualMachine) {
+                        future.set(virtualMachine);
                     }
                 });
         vms[0] = future.get();
@@ -57,7 +47,11 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        return null;
+        resource = resource.update()
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withNewDataDisk(100)
+                .apply();
+        return resource;
     }
 
     @Override
