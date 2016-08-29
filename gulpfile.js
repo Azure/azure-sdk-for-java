@@ -52,7 +52,7 @@ var mappings = {
     },
     'redis': {
         'dir': 'azure-mgmt-redis',
-        'source': 'arm-redis/2015-08-01/swagger/redis.json',
+        'source': 'arm-redis/2016-04-01/swagger/redis.json',
         'package': 'com.microsoft.azure.management.redis',
         'args': '-FT 1'
     },
