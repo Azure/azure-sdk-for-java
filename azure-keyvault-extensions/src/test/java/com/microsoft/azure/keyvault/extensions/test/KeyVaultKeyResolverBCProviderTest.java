@@ -24,7 +24,6 @@ import java.security.Provider;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import com.microsoft.azure.keyvault.models.JsonWebKeyType;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -80,7 +79,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
     {
         try {
             // Create a key on a vault.
-            CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build();
+            CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, "RSA").build();
             ServiceResponse<KeyBundle> response = keyVaultClient.createKey(request);
             KeyBundle                  bundle   = response != null ? response.getBody() : null;
     
@@ -126,7 +125,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
          try {
 
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle = keyVaultClient.setSecret(request).getBody();
+             SecretBundle     secretBundle = keyVaultClient.setSecret( request ).getBody();
     
              if ( secretBundle != null )
              {
