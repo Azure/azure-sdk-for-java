@@ -18,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayIPConfigurationInner extends SubResource {
     /**
-     * Reference of the subnet resource. A subnet from where appliation
+     * Reference of the subnet resource. A subnet from where application
      * gateway gets its private address.
      */
     @JsonProperty(value = "properties.subnet")

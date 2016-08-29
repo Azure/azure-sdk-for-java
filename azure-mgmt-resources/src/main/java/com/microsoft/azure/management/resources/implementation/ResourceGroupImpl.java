@@ -11,12 +11,11 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import java.util.Map;
  * The implementation for {@link ResourceGroup} and its create and update interfaces.
  */
 class ResourceGroupImpl extends
-        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl, Resource>
+        CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
         implements
         ResourceGroup,
         ResourceGroup.Definition,
@@ -126,6 +125,11 @@ class ResourceGroupImpl extends
     }
 
     @Override
+    public Observable<ResourceGroup> applyAsync() {
+        return createAsync();
+    }
+
+    @Override
     public ServiceCall<ResourceGroup> applyAsync(ServiceCallback<ResourceGroup> callback) {
         return createAsync(callback);
     }
@@ -137,7 +141,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public Resource createResource() throws Exception {
+    public ResourceGroup createResource() throws Exception {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
@@ -147,12 +151,11 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<ResourceGroup> createResourceAsync() {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        ResourceServiceCall<ResourceGroup, ResourceGroupInner, ResourceGroupImpl> serviceCall = new ResourceServiceCall<>(this);
-        client.createOrUpdateAsync(this.name(), params, serviceCall.wrapCallBack(callback));
-        return serviceCall;
+        return client.createOrUpdateAsync(this.name(), params)
+                .map(innerToFluentMap(this));
     }
 }

@@ -6,44 +6,42 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.PowerState;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.DiskEncryptionSettings;
+import com.microsoft.azure.management.compute.HardwareProfile;
+import com.microsoft.azure.management.compute.ImageReference;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
-import com.microsoft.azure.management.compute.Plan;
-import com.microsoft.azure.management.compute.HardwareProfile;
-import com.microsoft.azure.management.compute.StorageProfile;
-import com.microsoft.azure.management.compute.OSProfile;
-import com.microsoft.azure.management.compute.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.ImageReference;
-import com.microsoft.azure.management.compute.WinRMListener;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.VirtualHardDisk;
-import com.microsoft.azure.management.compute.OSDisk;
-import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.LinuxConfiguration;
-import com.microsoft.azure.management.compute.WindowsConfiguration;
-import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.OSDisk;
+import com.microsoft.azure.management.compute.OSProfile;
+import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.Plan;
+import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.StorageProfile;
+import com.microsoft.azure.management.compute.VirtualHardDisk;
+import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.WinRMListener;
+import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
@@ -53,6 +51,8 @@ import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,6 +153,11 @@ class VirtualMachineImpl
     @Override
     public VirtualMachine apply() throws Exception {
         return this.create();
+    }
+
+    @Override
+    public Observable<VirtualMachine> applyAsync() {
+        return this.createAsync();
     }
 
     @Override
@@ -858,7 +863,7 @@ class VirtualMachineImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public VirtualMachine createResource() throws Exception {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
@@ -877,34 +882,31 @@ class VirtualMachineImpl
     }
 
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-        final ResourceServiceCall<VirtualMachine, VirtualMachineInner, VirtualMachineImpl> serviceCall = new ResourceServiceCall<>(this);
-        handleStorageSettingsAsync(new ServiceCallback<Void>() {
-            @Override
-            public void failure(Throwable t) {
-                serviceCall.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<Void> result) {
-                handleNetworkSettings();
-                handleAvailabilitySettings();
-                serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualMachineInner>() {
+        final VirtualMachineImpl self = this;
+        return handleStorageSettingsAsync()
+                .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
                     @Override
-                    public void success(ServiceResponse<VirtualMachineInner> response) {
-                        clearCachedRelatedResources();
-                        initializeDataDisks();
+                    public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
+                        handleNetworkSettings();
+                        handleAvailabilitySettings();
+                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                                .map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(ServiceResponse<VirtualMachineInner> virtualMachineInner) {
+                                        self.setInner(virtualMachineInner.getBody());
+                                        clearCachedRelatedResources();
+                                        initializeDataDisks();
+                                        return self;
+                                    }
+                                });
                     }
                 });
-                client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), serviceCall.wrapCallBack(callback));
-            }
-        });
-        return serviceCall;
     }
 
     // Helpers
@@ -1004,59 +1006,46 @@ class VirtualMachineImpl
         }
     }
 
-    private void handleStorageSettingsAsync(final ServiceCallback<Void> callback) {
-        final ServiceCallback<StorageAccount> storageAccountServiceCallback = new ServiceCallback<StorageAccount>() {
+    private Observable<StorageAccount> handleStorageSettingsAsync() {
+        final Func1<StorageAccount, StorageAccount> storageAccountFunc = new Func1<StorageAccount, StorageAccount>() {
             @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<StorageAccount> result) {
+            public StorageAccount call(StorageAccount storageAccount) {
                 if (isInCreateMode()) {
                     if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
                         String uri = inner()
                                 .storageProfile()
                                 .osDisk().vhd().uri()
-                                .replaceFirst("\\{storage-base-url}", result.getBody().endPoints().primary().blob());
+                                .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                         inner().storageProfile().osDisk().vhd().withUri(uri);
                     }
-                    DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                 } else {
-                    if (result.getBody() != null) {
-                        DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    if (storageAccount != null) {
+                        DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                     } else {
                         DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
                     }
                 }
-                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+                return storageAccount;
             }
         };
+
         if (this.creatableStorageAccountKey != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    (StorageAccount) this.createdResource(this.creatableStorageAccountKey), null));
+            return Observable.just((StorageAccount) this.createdResource(this.creatableStorageAccountKey))
+                    .map(storageAccountFunc);
         } else if (this.existingStorageAccountToAssociate != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    this.existingStorageAccountToAssociate, null));
+            return Observable.just(this.existingStorageAccountToAssociate)
+                    .map(storageAccountFunc);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
-            this.storageManager.storageAccounts()
+            return this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync(new ServiceCallback<StorageAccount>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            callback.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<StorageAccount> result) {
-                            storageAccountServiceCallback.success(result);
-                        }
-                    });
+                    .createAsync()
+                    .map(storageAccountFunc);
         }
-
+        return Observable.just(null);
     }
 
     private void handleNetworkSettings() {

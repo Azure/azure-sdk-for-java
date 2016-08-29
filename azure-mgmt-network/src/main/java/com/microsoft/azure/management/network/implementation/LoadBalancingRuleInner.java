@@ -66,7 +66,7 @@ public class LoadBalancingRuleInner extends SubResource {
      * Gets or sets a port used for internal connections on the endpoint. The
      * localPort attribute maps the eternal port of the endpoint to an
      * internal port on a role. This is useful in scenarios where a role must
-     * communicate to an internal compotnent on a port that is different from
+     * communicate to an internal component on a port that is different from
      * the one that is exposed externally. If not specified, the value of
      * localPort is the same as the port attribute. Set the value of
      * localPort to '*' to automatically assign an unallocated port that is
@@ -78,7 +78,7 @@ public class LoadBalancingRuleInner extends SubResource {
     /**
      * Gets or sets the timeout for the Tcp idle connection. The value can be
      * set between 4 and 30 minutes. The default value is 4 minutes. This
-     * emlement is only used when the protocol is set to Tcp.
+     * element is only used when the protocol is set to Tcp.
      */
     @JsonProperty(value = "properties.idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;

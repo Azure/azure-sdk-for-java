@@ -16,12 +16,10 @@ import com.microsoft.azure.management.redis.RedisPatchSchedulesRequest;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -31,6 +29,8 @@ import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -60,15 +60,15 @@ public final class PatchSchedulesInner {
     interface PatchSchedulesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/default")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisPatchSchedulesRequest parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisPatchSchedulesRequest parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/default", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/default")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -84,26 +84,7 @@ public final class PatchSchedulesInner {
      * @return the RedisPatchSchedulesResponseInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<RedisPatchSchedulesResponseInner> createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (scheduleEntries == null) {
-            throw new IllegalArgumentException("Parameter scheduleEntries is required and cannot be null.");
-        }
-        Validator.validate(scheduleEntries);
-        RedisPatchSchedulesRequest parameters = new RedisPatchSchedulesRequest();
-        parameters.withScheduleEntries(scheduleEntries);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        return createOrUpdateDelegate(call.execute());
+        return createOrUpdateAsync(resourceGroupName, name, scheduleEntries).toBlocking().single();
     }
 
     /**
@@ -113,9 +94,21 @@ public final class PatchSchedulesInner {
      * @param name The name of the redis cache.
      * @param scheduleEntries List of patch schedules for redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisPatchSchedulesResponseInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries, final ServiceCallback<RedisPatchSchedulesResponseInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, name, scheduleEntries), serviceCallback);
+    }
+
+    /**
+     * Create or replace the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param scheduleEntries List of patch schedules for redis cache.
+     * @return the observable to the RedisPatchSchedulesResponseInner object
+     */
+    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -134,26 +127,18 @@ public final class PatchSchedulesInner {
         Validator.validate(scheduleEntries);
         RedisPatchSchedulesRequest parameters = new RedisPatchSchedulesRequest();
         parameters.withScheduleEntries(scheduleEntries);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        final ServiceCall<RedisPatchSchedulesResponseInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RedisPatchSchedulesResponseInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<RedisPatchSchedulesResponseInner> clientResponse = createOrUpdateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchSchedulesResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RedisPatchSchedulesResponseInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<RedisPatchSchedulesResponseInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -174,20 +159,7 @@ public final class PatchSchedulesInner {
      * @return the {@link ServiceResponse} object if successful.
      */
     public ServiceResponse<Void> delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.delete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteDelegate(call.execute());
+        return deleteAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -196,9 +168,20 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Deletes the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -211,26 +194,18 @@ public final class PatchSchedulesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Void> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.delete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -250,20 +225,7 @@ public final class PatchSchedulesInner {
      * @return the RedisPatchSchedulesResponseInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<RedisPatchSchedulesResponseInner> get(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.get(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
+        return getAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -272,9 +234,20 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisPatchSchedulesResponseInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisPatchSchedulesResponseInner> serviceCallback) {
+        return ServiceCall.create(getAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @return the observable to the RedisPatchSchedulesResponseInner object
+     */
+    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> getAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -287,26 +260,18 @@ public final class PatchSchedulesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<RedisPatchSchedulesResponseInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<RedisPatchSchedulesResponseInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<RedisPatchSchedulesResponseInner> clientResponse = getDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.get(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisPatchSchedulesResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RedisPatchSchedulesResponseInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<RedisPatchSchedulesResponseInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

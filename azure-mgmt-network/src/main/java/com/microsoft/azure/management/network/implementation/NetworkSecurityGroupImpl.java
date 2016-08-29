@@ -7,12 +7,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,6 +97,11 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
+    public Observable<NetworkSecurityGroup> applyAsync() {
+        return createAsync();
+    }
+
+    @Override
     public ServiceCall<NetworkSecurityGroup> applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
         return createAsync(callback);
     }
@@ -153,7 +158,7 @@ class NetworkSecurityGroupImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public NetworkSecurityGroup createResource() throws Exception {
         ServiceResponse<NetworkSecurityGroupInner> response =
                 this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
@@ -162,19 +167,16 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ResourceServiceCall<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkSecurityGroupInner>() {
-            @Override
-            public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
-                initializeRulesFromInner();
-            }
-        });
-
-        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(),
-                this.name(),
-                this.inner(),
-                serviceCall.wrapCallBack(callback));
-        return serviceCall;
+    public Observable<NetworkSecurityGroup> createResourceAsync() {
+        final NetworkSecurityGroupImpl self = this;
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
+                    @Override
+                    public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
+                        self.setInner(networkSecurityGroupInner.getBody());
+                        initializeRulesFromInner();
+                        return self;
+                    }
+                });
     }
  }

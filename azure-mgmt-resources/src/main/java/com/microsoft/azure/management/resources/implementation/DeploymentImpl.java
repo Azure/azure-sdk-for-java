@@ -8,25 +8,27 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.resources.Dependency;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentExportResult;
+import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.DeploymentOperations;
+import com.microsoft.azure.management.resources.DeploymentProperties;
+import com.microsoft.azure.management.resources.DeploymentPropertiesExtended;
+import com.microsoft.azure.management.resources.ParametersLink;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.TemplateLink;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.Dependency;
-import com.microsoft.azure.management.resources.DeploymentMode;
-import com.microsoft.azure.management.resources.DeploymentProperties;
-import com.microsoft.azure.management.resources.DeploymentPropertiesExtended;
-import com.microsoft.azure.management.resources.ParametersLink;
-import com.microsoft.azure.management.resources.TemplateLink;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ import java.util.List;
  * The implementation of {@link Deployment} and its nested interfaces.
  */
 final class DeploymentImpl extends
-        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl, Deployment>
+        CreatableUpdatableImpl<Deployment, DeploymentExtendedInner, DeploymentImpl>
         implements
         Deployment,
         Deployment.Definition,
@@ -291,48 +293,25 @@ final class DeploymentImpl extends
 
     @Override
     public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
-        final Deployment self = this;
+        return observableToFuture(createAsync(), callback);
+    }
+
+    @Override
+    public Observable<Deployment> createAsync() {
+        Observable<Deployment> observable;
         if (this.creatableResourceGroup != null) {
-            final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
-            serviceCall.newCall(this.creatableResourceGroup.createAsync(new ServiceCallback<ResourceGroup>() {
-                @Override
-                public void failure(Throwable t) {
-                    callback.failure(t);
-                    serviceCall.failure(t);
-                }
-
-                @Override
-                public void success(ServiceResponse<ResourceGroup> result) {
-                    serviceCall.newCall(createResourceAsync(new ServiceCallback<Deployment>() {
+            observable = this.creatableResourceGroup.createAsync()
+                    .subscribeOn(Schedulers.io())
+                    .flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
                         @Override
-                        public void failure(Throwable t) {
-                            callback.failure(t);
-                            serviceCall.failure(t);
+                        public Observable<Deployment> call(ResourceGroup resourceGroup) {
+                            return createResourceAsync();
                         }
-
-                        @Override
-                        public void success(ServiceResponse<Deployment> result) {
-                            ServiceResponse<Deployment> serviceResponse = new ServiceResponse<>(self, result.getResponse());
-                            callback.success(serviceResponse);
-                            serviceCall.success(serviceResponse);
-                        }
-                    }).getCall());
-                }
-            }).getCall());
-            return serviceCall;
+                    });
         } else {
-            return createResourceAsync(new ServiceCallback<Deployment>() {
-                @Override
-                public void failure(Throwable t) {
-                    callback.failure(t);
-                }
-
-                @Override
-                public void success(ServiceResponse<Deployment> result) {
-                    callback.success(new ServiceResponse<>(self, result.getResponse()));
-                }
-            });
+            observable = createResourceAsync();
         }
+        return observable;
     }
 
     @Override
@@ -354,7 +333,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall<Deployment> createResourceAsync(final ServiceCallback<Deployment> callback) {
+    public Observable<Deployment> createResourceAsync() {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -362,22 +341,8 @@ final class DeploymentImpl extends
         inner.properties().withTemplateLink(templateLink());
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
-        final ServiceCall<Deployment> serviceCall = new ServiceCall<>(null);
-        serviceCall.newCall(client.createOrUpdateAsync(resourceGroupName(), name(), inner, new ServiceCallback<DeploymentExtendedInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-                serviceCall.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<DeploymentExtendedInner> response) {
-                ServiceResponse<Deployment> serviceResponse = new ServiceResponse<>(response.getHeadResponse());
-                callback.success(serviceResponse);
-                serviceCall.success(serviceResponse);
-            }
-        }).getCall());
-        return serviceCall;
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner)
+                .map(innerToFluentMap(this));
     }
 
     @Override
@@ -392,7 +357,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall<Deployment> applyAsync(ServiceCallback<Deployment> callback) {
+    public Observable<Deployment> applyAsync() {
         try {
             if (this.templateLink() != null && this.template() != null) {
                 this.withTemplate(null);
@@ -401,8 +366,12 @@ final class DeploymentImpl extends
                 this.withParameters(null);
             }
         } catch (IOException e) {
-            callback.failure(e);
+            return Observable.error(e);
         }
-        return this.createAsync(callback);
+        return this.createAsync();
+    }
+
+    public ServiceCall<Deployment> applyAsync(ServiceCallback<Deployment> callback) {
+        return observableToFuture(applyAsync(), callback);
     }
 }
