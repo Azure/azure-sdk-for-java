@@ -138,6 +138,7 @@ public class RsaKeyTest {
     	byte[] crossPlatformHash      = Base64.decodeBase64(CrossPlatformHash);
     	byte[] crossPlatformSignature = Base64.decodeBase64(CrossPlatformSignature);
     	
+    	// Check the hash
     	assertNotNull( hash );
     	assertEquals(  32, hash.length );
     	assertArrayEquals(hash, crossPlatformHash);
@@ -145,9 +146,9 @@ public class RsaKeyTest {
     	Pair<byte[], String> signature = key.signAsync(hash, "RS256").get();
     	boolean              result    = key.verifyAsync(hash, signature.getLeft(), "RS256").get();
 
+    	// Check the signature
         assertTrue(result);
-        
-        //assertArrayEquals(crossPlatformSignature, signature.getLeft());
+        assertArrayEquals(crossPlatformSignature, signature.getLeft());
         
         // Now prove we can verify the cross platform signature
         result = key.verifyAsync(hash, Base64.decodeBase64(CrossPlatformSignature), "RS256").get();

@@ -12,8 +12,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
-
 import com.microsoft.azure.keyvault.cryptography.AsymmetricSignatureAlgorithm;
 import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
 import com.microsoft.azure.keyvault.cryptography.Strings;
