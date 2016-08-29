@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.KeyIdentifier;
-import com.microsoft.azure.keyvault.models.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 
 /**
@@ -17,7 +16,7 @@ public final class UpdateKeyRequest {
     private final String vaultBaseUrl;
     private final String keyName;
     private final String keyVersion;
-    private final List<JsonWebKeyOperation> keyOperations;
+    private final List<String> keyOperations;
     private final KeyAttributes keyAttributes;
     private final Map<String, String> tags;
 
@@ -32,7 +31,7 @@ public final class UpdateKeyRequest {
 
         // Optional parameters
         private String keyVersion;
-        private List<JsonWebKeyOperation> keyOperations;
+        private List<String> keyOperations;
         private KeyAttributes attributes;
         private Map<String, String> tags;
 
@@ -83,7 +82,7 @@ public final class UpdateKeyRequest {
          *            the key operation list
          * @return the Builder object itself.
          */
-        public Builder withKeyOperations(List<JsonWebKeyOperation> keyOperations) {
+        public Builder withKeyOperations(List<String> keyOperations) {
             this.keyOperations = keyOperations;
             return this;
         }
@@ -129,7 +128,7 @@ public final class UpdateKeyRequest {
         keyVersion = builder.keyVersion == null ? "" : builder.keyVersion;
 
         if (builder.keyOperations != null) {
-            keyOperations = new ArrayList<JsonWebKeyOperation>(builder.keyOperations);
+            keyOperations = new ArrayList<String>(builder.keyOperations);
         } else {
             keyOperations = null;
         }
@@ -172,7 +171,7 @@ public final class UpdateKeyRequest {
     /**
      * @return the key operations
      */
-    public List<JsonWebKeyOperation> keyOperations() {
+    public List<String> keyOperations() {
         return keyOperations;
     }
 

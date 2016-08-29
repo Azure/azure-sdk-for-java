@@ -6,4 +6,4 @@
  * This package contains the classes for KeyVaultClient. Performs cryptographic
  * key operations and vault operations against the Key Vault service.
  */
-package com.microsoft.azure.keyvault.authentication;
+package com.microsoft.azure.keyvault.webkey;
