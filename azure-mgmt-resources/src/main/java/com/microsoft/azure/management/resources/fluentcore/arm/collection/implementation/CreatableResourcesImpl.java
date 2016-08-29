@@ -38,8 +38,9 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     @Override
+    @SafeVarargs
     public final CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
-        return BlockingObservable.from(createAsync(creatables)).first();
+        return BlockingObservable.from(createAsync(creatables)).single();
     }
 
     @Override
