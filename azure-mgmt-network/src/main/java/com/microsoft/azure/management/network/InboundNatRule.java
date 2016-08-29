@@ -20,9 +20,14 @@ public interface InboundNatRule extends
     InboundNatCommon {
 
     /**
-     * @return the resource ID of the network interface IP configuration associated with this NAT rule
+     * @return the name of the IP configuration within the network interface associated with this NAT rule
      */
-    String networkInterfaceIpConfigurationId();
+    String backendNicIpConfigurationName();
+
+    /**
+     * @return the resource ID of the network interface assigned as the backend of this inbound NAT rule
+     */
+    String backendNetworkInterfaceId();
 
     /**
      * @return the frontend port number associated with this NAT rule
@@ -33,6 +38,11 @@ public interface InboundNatRule extends
      * @return the state of the floating IP enablement
      */
     boolean floatingIpEnabled();
+
+    /**
+     * @return the number of minutes before an idle connection is closed
+     */
+    int idleTimeoutInMinutes();
 
     /**
      * Grouping of inbound NAT rule definition stages.

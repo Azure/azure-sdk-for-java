@@ -36,11 +36,11 @@ class InboundNatRuleImpl
     }
 
     @Override
-    public String networkInterfaceIpConfigurationId() {
+    public String backendNicIpConfigurationName() {
         if (this.inner().backendIPConfiguration() == null) {
             return null;
         } else {
-            return this.inner().backendIPConfiguration().id();
+            return ResourceUtils.nameFromResourceId(this.inner().backendIPConfiguration().id());
         }
     }
 
@@ -50,6 +50,15 @@ class InboundNatRuleImpl
             return 0;
         } else {
             return this.inner().backendPort().intValue();
+        }
+    }
+
+    @Override
+    public String backendNetworkInterfaceId() {
+        if (this.inner().backendIPConfiguration() == null) {
+            return null;
+        } else {
+            return ResourceUtils.parentResourcePathFromResourceId(this.inner().backendIPConfiguration().id());
         }
     }
 
@@ -77,6 +86,11 @@ class InboundNatRuleImpl
         return this.parent().frontends().get(
                 ResourceUtils.nameFromResourceId(
                         this.inner().frontendIPConfiguration().id()));
+    }
+
+    @Override
+    public int idleTimeoutInMinutes() {
+        return this.inner().idleTimeoutInMinutes();
     }
 
     // Fluent setters

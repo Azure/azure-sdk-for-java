@@ -146,8 +146,8 @@ public class AzureTests {
     }
 
     @Test
-    public void testLoadBalancers() throws Exception {
-        new TestLoadBalancer(
+    public void testLoadBalancersNatRules() throws Exception {
+        new TestLoadBalancer.InternetWithNatRule(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())
@@ -155,8 +155,17 @@ public class AzureTests {
     }
 
     @Test
+    public void testLoadBalancersNatPools() throws Exception {
+        new TestLoadBalancer.InternetWithNatPool(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
-        new TestLoadBalancerInternetMinimum(
+        new TestLoadBalancer.InternetMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())
