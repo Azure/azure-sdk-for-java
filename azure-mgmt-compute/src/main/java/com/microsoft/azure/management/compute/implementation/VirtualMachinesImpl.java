@@ -31,22 +31,25 @@ import java.util.ArrayList;
  */
 class VirtualMachinesImpl
         extends GroupableResourcesImpl<
-            VirtualMachine,
-            VirtualMachineImpl,
-            VirtualMachineInner,
-            VirtualMachinesInner,
-            ComputeManager>
+        VirtualMachine,
+        VirtualMachineImpl,
+        VirtualMachineInner,
+        VirtualMachinesInner,
+        ComputeManager>
         implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final VirtualMachineSizesImpl vmSizes;
+    private final VirtualMachineExtensionsInner virtualMachineExtensionsClient;
 
     VirtualMachinesImpl(VirtualMachinesInner client,
+                        VirtualMachineExtensionsInner virtualMachineExtensionsClient,
                         VirtualMachineSizesInner virtualMachineSizesClient,
                         ComputeManager computeManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         super(client, computeManager);
+        this.virtualMachineExtensionsClient = virtualMachineExtensionsClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
@@ -141,18 +144,19 @@ class VirtualMachinesImpl
     protected VirtualMachineImpl wrapModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
         inner.withStorageProfile(new StorageProfile()
-            .withOsDisk(new OSDisk())
-            .withDataDisks(new ArrayList<DataDisk>()));
+                .withOsDisk(new OSDisk())
+                .withDataDisks(new ArrayList<DataDisk>()));
         inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
         inner.withNetworkProfile(new NetworkProfile()
                 .withNetworkInterfaces(new ArrayList<NetworkInterfaceReferenceInner>()));
         return new VirtualMachineImpl(name,
-            inner,
-            this.innerCollection,
-            super.myManager,
-            this.storageManager,
-            this.networkManager);
+                inner,
+                this.innerCollection,
+                this.virtualMachineExtensionsClient,
+                super.myManager,
+                this.storageManager,
+                this.networkManager);
     }
 
     @Override
@@ -160,6 +164,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,
+                this.virtualMachineExtensionsClient,
                 super.myManager,
                 this.storageManager,
                 this.networkManager);

@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -19,6 +18,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure virtual machine.
@@ -192,9 +192,10 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return the resources value
+     * @return the extensions attached to the Azure Virtual Machine
+     * @throws Exception exceptions thrown from the cloud or from serialization/deserialization.
      */
-    List<VirtualMachineExtensionInner> resources();
+    Map<String, VirtualMachineExtension> extensions() throws Exception;
 
     /**
      * @return the plan value
@@ -813,6 +814,19 @@ public interface VirtualMachine extends
         }
 
         /**
+         * The stage of the virtual machine definition allowing to specify extensions.
+         */
+        interface WithExtension {
+            /**
+             * Specifies definition of an extension to be attached to the virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing configuration for the extension
+             */
+            VirtualMachineExtension.DefinitionStages.Blank<WithCreate> defineNewExtension(String name);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -826,7 +840,8 @@ public interface VirtualMachine extends
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithDataDisk,
                 DefinitionStages.WithAvailabilitySet,
-                DefinitionStages.WithSecondaryNetworkInterface {
+                DefinitionStages.WithSecondaryNetworkInterface,
+                DefinitionStages.WithExtension {
         }
     }
 
@@ -936,6 +951,37 @@ public interface VirtualMachine extends
              */
             Update withoutSecondaryNetworkInterface(String name);
         }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify extensions.
+         */
+        interface WithExtension {
+            /**
+             * Specifies definition of an extension to be attached to the virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing configuration for the extension
+             */
+            VirtualMachineExtension
+                    .UpdateDefinitionStages
+                    .Blank<Update> defineNewExtension(String name);
+
+            /**
+             * Begins the description of an update of an existing extension of this virtual machine.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing updatable VM definition
+             */
+            VirtualMachineExtension.Update updateExtension(String name);
+
+            /**
+             * Detaches an extension with the given name from the virtual machine.
+             *
+             * @param name the reference name for the extension to be removed/uninstalled
+             * @return the stage representing updatable VM definition
+             */
+            Update withoutExtension(String name);
+        }
     }
 
     /**
@@ -948,7 +994,8 @@ public interface VirtualMachine extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithDataDisk,
-            UpdateStages.WithSecondaryNetworkInterface {
+            UpdateStages.WithSecondaryNetworkInterface,
+            UpdateStages.WithExtension {
         /**
          * Specifies the caching type for the Operating System disk.
          *
