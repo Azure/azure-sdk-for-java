@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.core.EncryptionAgent;
 import com.microsoft.azure.storage.core.EncryptionData;
 import com.microsoft.azure.storage.core.JsonUtilities;
@@ -66,7 +67,7 @@ class BlobEncryptionData extends EncryptionData {
             generator.writeStartObject();
             
             // write the encryption mode
-            generator.writeStringField("EncryptionMode", "FullBlob");
+            generator.writeStringField(Constants.EncryptionConstants.ENCRYPTION_MODE, Constants.EncryptionConstants.FULL_BLOB);
             
             // write the encryption data
             this.serialize(generator);
@@ -98,17 +99,23 @@ class BlobEncryptionData extends EncryptionData {
                 String name = parser.getCurrentName();
                 parser.nextToken();
                 
-                if (name.equals("EncryptionMode")) {
+                if (name.equals(Constants.EncryptionConstants.ENCRYPTION_MODE)) {
                     data.setEncryptionMode(parser.getValueAsString());
                 }
-                else if (name.equals("WrappedContentKey")) {
+                else if (name.equals(Constants.EncryptionConstants.WRAPPED_CONTENT_KEY)) {
                     data.setWrappedContentKey(WrappedContentKey.deserialize(parser));
                 } 
-                else if (name.equals("EncryptionAgent")) {
+                else if (name.equals(Constants.EncryptionConstants.ENCRYPTION_AGENT)) {
                     data.setEncryptionAgent(EncryptionAgent.deserialize(parser));
                 }
-                else if (name.equals("ContentEncryptionIV")) {
+                else if (name.equals(Constants.EncryptionConstants.CONTENT_ENCRYPTION_IV)) {
                     data.setContentEncryptionIV(parser.getBinaryValue());
+                }
+                else if (name.equals(Constants.EncryptionConstants.KEY_WRAPPING_METADATA)) {
+                    data.setKeyWrappingMetadata(deserializeKeyWrappingMetadata(parser));
+                }
+                else {
+                    consumeJsonObject(parser);
                 }
                 parser.nextToken();
             }

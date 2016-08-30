@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -52,6 +54,16 @@ import com.microsoft.azure.storage.table.CloudTableClient;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class GenericTests {
+
+    @Before
+    public void genericTestMethodSetUp() {
+        OperationContext.setDefaultProxy(Proxy.NO_PROXY);
+    }
+
+    @After
+    public void genericTestMethodTearDown() {
+        OperationContext.setDefaultProxy(Proxy.NO_PROXY);
+    }
 
     /**
      * ReadTimeout must always be explicitly set on HttpUrlConnection to avoid a bug in JDK 6. In certain cases this
