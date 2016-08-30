@@ -183,7 +183,7 @@ public final class PartitionReceiver extends ClientEntity
 	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
 	 * <p>By default the value is 300
 	 * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
-	 * @throws ServiceBusException 
+	 * @throws ServiceBusException if setting prefetchCount encounters error
 	 */
 	public final void setPrefetchCount(final int prefetchCount) throws ServiceBusException
 	{

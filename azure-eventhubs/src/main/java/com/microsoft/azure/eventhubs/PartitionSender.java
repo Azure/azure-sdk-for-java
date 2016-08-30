@@ -61,7 +61,8 @@ public final class PartitionSender extends ClientEntity
 	/**
 	 * Synchronous version of {@link #send(EventData)} Api. 
 	 * @param data the {@link EventData} to be sent.
-	 * @throws ServiceBusException if Service Bus service encountered problems during the operation.
+	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
+	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 */
 	public final void sendSync(final EventData data) 
 			throws ServiceBusException
@@ -115,8 +116,6 @@ public final class PartitionSender extends ClientEntity
 	 * 
 	 * @param data the {@link EventData} to be sent.
 	 * @return     a CompletableFuture that can be completed when the send operations is done..
-	 * @throws PayloadSizeExceededException    if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-	 * @throws ServiceBusException             if Service Bus service encountered problems during the operation.
 	 */
 	public final CompletableFuture<Void> send(EventData data)
 	{
