@@ -292,11 +292,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
-        return observableToFuture(createAsync(), callback);
-    }
-
-    @Override
     public Observable<Deployment> createAsync() {
         Observable<Deployment> observable;
         if (this.creatableResourceGroup != null) {
@@ -333,17 +328,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment apply() throws Exception {
-        if (this.templateLink() != null && this.template() != null) {
-            this.withTemplate(null);
-        }
-        if (this.parametersLink() != null && this.parameters() != null) {
-            this.withParameters(null);
-        }
-        return this.create();
-    }
-
-    @Override
     public Observable<Deployment> applyAsync() {
         try {
             if (this.templateLink() != null && this.template() != null) {
@@ -356,9 +340,5 @@ final class DeploymentImpl extends
             return Observable.error(e);
         }
         return this.createAsync();
-    }
-
-    public ServiceCall<Deployment> applyAsync(ServiceCallback<Deployment> callback) {
-        return observableToFuture(applyAsync(), callback);
     }
 }

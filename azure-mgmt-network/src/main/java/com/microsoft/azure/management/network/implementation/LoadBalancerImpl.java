@@ -61,18 +61,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancer apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<LoadBalancer> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<LoadBalancer> applyAsync(ServiceCallback<LoadBalancer> callback) {
-        return createAsync(callback);
     }
 
     // Helpers

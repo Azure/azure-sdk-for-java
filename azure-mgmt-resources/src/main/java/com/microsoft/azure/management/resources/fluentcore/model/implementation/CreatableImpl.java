@@ -71,12 +71,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
      */
     @SuppressWarnings("unchecked")
     public FluentModelT create() throws Exception {
-        if (creatorTaskGroup.isPreparer()) {
-            creatorTaskGroup.prepare();
-            creatorTaskGroup.execute();
-            return (FluentModelT) this;
-        }
-        throw new IllegalStateException("Internal Error: create can be called only on preparer");
+        return createAsync().toBlocking().single();
     }
 
     /**
@@ -99,7 +94,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     public Observable<FluentModelT> createAsync() {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
-            return creatorTaskGroup.executeAsync();
+            return creatorTaskGroup.executeAsync().last();
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }

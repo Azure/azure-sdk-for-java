@@ -9,8 +9,6 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -94,17 +92,8 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySet apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<AvailabilitySet> applyAsync() {
         return this.createAsync();
-    }
-
-    public ServiceCall<AvailabilitySet> applyAsync(ServiceCallback<AvailabilitySet> callback) {
-        return this.createAsync(callback);
     }
 
     // CreatorTaskGroup.ResourceCreator implementation

@@ -92,18 +92,8 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroup apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<NetworkSecurityGroup> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<NetworkSecurityGroup> applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
-        return createAsync(callback);
     }
 
     // Setters (fluent)

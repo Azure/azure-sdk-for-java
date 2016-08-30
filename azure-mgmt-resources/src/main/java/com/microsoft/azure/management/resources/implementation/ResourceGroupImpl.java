@@ -119,18 +119,8 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroup apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<ResourceGroup> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<ResourceGroup> applyAsync(ServiceCallback<ResourceGroup> callback) {
-        return createAsync(callback);
     }
 
     @Override

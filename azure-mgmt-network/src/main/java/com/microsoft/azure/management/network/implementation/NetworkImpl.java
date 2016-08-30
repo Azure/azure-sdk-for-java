@@ -67,18 +67,8 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<Network> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<Network> applyAsync(ServiceCallback<Network> callback) {
-        return createAsync(callback);
     }
 
     // Helpers

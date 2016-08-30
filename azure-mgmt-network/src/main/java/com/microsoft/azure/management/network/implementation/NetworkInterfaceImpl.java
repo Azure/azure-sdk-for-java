@@ -88,18 +88,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterface apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<NetworkInterface> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<NetworkInterface> applyAsync(ServiceCallback<NetworkInterface> callback) {
-        return createAsync(callback);
     }
 
     // Setters (fluent)

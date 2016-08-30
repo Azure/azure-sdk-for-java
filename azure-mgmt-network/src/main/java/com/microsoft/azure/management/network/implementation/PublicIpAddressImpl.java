@@ -41,18 +41,8 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddress apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<PublicIpAddress> applyAsync() {
         return this.createAsync();
-    }
-
-    @Override
-    public ServiceCall<PublicIpAddress> applyAsync(ServiceCallback<PublicIpAddress> callback) {
-        return this.createAsync(callback);
     }
 
     @Override
