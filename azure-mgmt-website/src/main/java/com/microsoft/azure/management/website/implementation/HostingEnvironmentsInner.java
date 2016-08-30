@@ -10,18 +10,20 @@ package com.microsoft.azure.management.website.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -32,6 +34,8 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -61,175 +65,259 @@ public final class HostingEnvironmentsInner {
     interface HostingEnvironmentsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Call<ResponseBody> getHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Call<ResponseBody> createOrUpdateHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body HostingEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body HostingEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
-        Call<ResponseBody> beginCreateOrUpdateHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body HostingEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body HostingEnvironmentInner hostingEnvironmentEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDeleteHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDeleteHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("forceDelete") Boolean forceDelete, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics")
-        Call<ResponseBody> getHostingEnvironmentDiagnostics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentDiagnostics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
-        Call<ResponseBody> getHostingEnvironmentDiagnosticsItem(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("diagnosticsName") String diagnosticsName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentDiagnosticsItem(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("diagnosticsName") String diagnosticsName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/compute")
-        Call<ResponseBody> getHostingEnvironmentCapacities(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentCapacities(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/virtualip")
-        Call<ResponseBody> getHostingEnvironmentVips(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentVips(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments")
-        Call<ResponseBody> getHostingEnvironments(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironments(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/reboot")
-        Call<ResponseBody> rebootHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> rebootHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations")
-        Call<ResponseBody> getHostingEnvironmentOperations(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentOperations(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations/{operationId}")
-        Call<ResponseBody> getHostingEnvironmentOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/metrics")
-        Call<ResponseBody> getHostingEnvironmentMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/metricdefinitions")
-        Call<ResponseBody> getHostingEnvironmentMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/usages")
-        Call<ResponseBody> getHostingEnvironmentUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metrics")
-        Call<ResponseBody> getHostingEnvironmentMultiRoleMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("timeGrain") String timeGrain, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("timeGrain") String timeGrain, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metrics")
-        Call<ResponseBody> getHostingEnvironmentWebWorkerMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
-        Call<ResponseBody> getHostingEnvironmentMultiRoleMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
-        Call<ResponseBody> getHostingEnvironmentWebWorkerMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/usages")
-        Call<ResponseBody> getHostingEnvironmentMultiRoleUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
-        Call<ResponseBody> getHostingEnvironmentWebWorkerUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerUsages(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/sites")
-        Call<ResponseBody> getHostingEnvironmentSites(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentSites(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("propertiesToInclude") String propertiesToInclude, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/webhostingplans")
-        Call<ResponseBody> getHostingEnvironmentWebHostingPlans(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebHostingPlans(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/serverfarms")
-        Call<ResponseBody> getHostingEnvironmentServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHostingEnvironmentServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools")
-        Call<ResponseBody> getMultiRolePools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMultiRolePools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Call<ResponseBody> getMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Call<ResponseBody> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
-        Call<ResponseBody> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateMultiRolePool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner multiRolePoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/skus")
-        Call<ResponseBody> getMultiRolePoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMultiRolePoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools")
-        Call<ResponseBody> getWorkerPools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getWorkerPools(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Call<ResponseBody> getWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Call<ResponseBody> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
-        Call<ResponseBody> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateWorkerPool(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Body WorkerPoolInner workerPoolEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
-        Call<ResponseBody> getWorkerPoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getWorkerPoolSkus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metrics")
-        Call<ResponseBody> getWorkerPoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getWorkerPoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
-        Call<ResponseBody> getWorkerPoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getWorkerPoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerPoolName") String workerPoolName, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metrics")
-        Call<ResponseBody> getMultiRolePoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMultiRolePoolInstanceMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
-        Call<ResponseBody> getMultiRolePoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMultiRolePoolInstanceMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("instance") String instance, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend")
-        Call<ResponseBody> suspendHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> suspendHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend")
-        Call<ResponseBody> beginSuspendHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginSuspendHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume")
-        Call<ResponseBody> resumeHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> resumeHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume")
-        Call<ResponseBody> beginResumeHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginResumeHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentCapacitiesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerMetricDefinitionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentMultiRoleUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebWorkerUsagesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentSitesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentWebHostingPlansNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getHostingEnvironmentServerFarmsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getMultiRolePoolsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getMultiRolePoolSkusNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getWorkerPoolsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getWorkerPoolSkusNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("{nextLink}")
+        Observable<Response<ResponseBody>> suspendHostingEnvironmentNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("{nextLink}")
+        Observable<Response<ResponseBody>> beginSuspendHostingEnvironmentNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("{nextLink}")
+        Observable<Response<ResponseBody>> resumeHostingEnvironmentNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("{nextLink}")
+        Observable<Response<ResponseBody>> beginResumeHostingEnvironmentNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -244,20 +332,7 @@ public final class HostingEnvironmentsInner {
      * @return the HostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<HostingEnvironmentInner> getHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentDelegate(call.execute());
+        return getHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -266,9 +341,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> getHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get properties of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the HostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> getHostingEnvironmentAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -281,26 +367,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<HostingEnvironmentInner> clientResponse = getHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostingEnvironmentInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostingEnvironmentInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostingEnvironmentInner> clientResponse = getHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<HostingEnvironmentInner> getHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -323,6 +401,31 @@ public final class HostingEnvironmentsInner {
      * @return the HostingEnvironmentInner object wrapped in ServiceResponse if successful.
      */
     public ServiceResponse<HostingEnvironmentInner> createOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last();
+    }
+
+    /**
+     * Create or update a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<HostingEnvironmentInner> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -339,53 +442,8 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(hostingEnvironmentEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<HostingEnvironmentInner>() { }.getType());
-    }
-
-    /**
-     * Create or update a hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<HostingEnvironmentInner> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter hostingEnvironmentEnvelope is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(hostingEnvironmentEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<HostingEnvironmentInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<HostingEnvironmentInner>() { }.getType());
     }
 
     /**
@@ -400,24 +458,7 @@ public final class HostingEnvironmentsInner {
      * @return the HostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (hostingEnvironmentEnvelope == null) {
-            throw new IllegalArgumentException("Parameter hostingEnvironmentEnvelope is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(hostingEnvironmentEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateHostingEnvironmentDelegate(call.execute());
+        return beginCreateOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single();
     }
 
     /**
@@ -427,9 +468,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
+     * @return the observable to the HostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> beginCreateOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -446,26 +499,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(hostingEnvironmentEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<HostingEnvironmentInner> clientResponse = beginCreateOrUpdateHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginCreateOrUpdateHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), hostingEnvironmentEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostingEnvironmentInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostingEnvironmentInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostingEnvironmentInner> clientResponse = beginCreateOrUpdateHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -491,6 +536,29 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in ServiceResponse if successful.
      */
     public ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteHostingEnvironmentAsync(resourceGroupName, name).toBlocking().last();
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(deleteHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -504,49 +572,8 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean forceDelete = null;
-        Response<ResponseBody> result = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
-    }
-
-    /**
-     * Delete a hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        final Boolean forceDelete = null;
-        Call<ResponseBody> call = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+        Observable<Response<ResponseBody>> observable = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
     /**
      * Delete a hostingEnvironment (App Service Environment).
@@ -561,6 +588,31 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in ServiceResponse if successful.
      */
     public ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().last();
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(deleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -573,49 +625,8 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Object>() { }.getType());
-    }
-
-    /**
-     * Delete a hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Call<ResponseBody> call = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Object>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+        Observable<Response<ResponseBody>> observable = service.deleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
 
     /**
@@ -629,21 +640,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean forceDelete = null;
-        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginDeleteHostingEnvironmentDelegate(call.execute());
+        return beginDeleteHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -652,9 +649,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(beginDeleteHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -668,26 +676,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean forceDelete = null;
-        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = beginDeleteHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginDeleteHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -702,20 +702,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginDeleteHostingEnvironmentDelegate(call.execute());
+        return beginDeleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().single();
     }
 
     /**
@@ -725,9 +712,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(beginDeleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -740,26 +739,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = beginDeleteHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginDeleteHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), forceDelete, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = beginDeleteHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> beginDeleteHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -784,20 +775,7 @@ public final class HostingEnvironmentsInner {
      * @return the List&lt;HostingEnvironmentDiagnosticsInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnostics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentDiagnostics(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentDiagnosticsDelegate(call.execute());
+        return getHostingEnvironmentDiagnosticsAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -806,9 +784,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentDiagnosticsAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get diagnostic information for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;HostingEnvironmentDiagnosticsInner&gt; object
+     */
+    public Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>> getHostingEnvironmentDiagnosticsAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -821,26 +810,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentDiagnostics(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<HostingEnvironmentDiagnosticsInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<HostingEnvironmentDiagnosticsInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> clientResponse = getHostingEnvironmentDiagnosticsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentDiagnostics(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> clientResponse = getHostingEnvironmentDiagnosticsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -862,23 +843,7 @@ public final class HostingEnvironmentsInner {
      * @return the HostingEnvironmentDiagnosticsInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItem(String resourceGroupName, String name, String diagnosticsName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (diagnosticsName == null) {
-            throw new IllegalArgumentException("Parameter diagnosticsName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentDiagnosticsItem(resourceGroupName, name, diagnosticsName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentDiagnosticsItemDelegate(call.execute());
+        return getHostingEnvironmentDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName).toBlocking().single();
     }
 
     /**
@@ -888,9 +853,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param diagnosticsName Name of the diagnostics
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
+    }
+
+    /**
+     * Get diagnostic information for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param diagnosticsName Name of the diagnostics
+     * @return the observable to the HostingEnvironmentDiagnosticsInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -906,26 +883,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentDiagnosticsItem(resourceGroupName, name, diagnosticsName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentDiagnosticsInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentDiagnosticsInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<HostingEnvironmentDiagnosticsInner> clientResponse = getHostingEnvironmentDiagnosticsItemDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentDiagnosticsItem(resourceGroupName, name, diagnosticsName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostingEnvironmentDiagnosticsInner> clientResponse = getHostingEnvironmentDiagnosticsItemDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItemDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -943,23 +912,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StampCapacityCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<StampCapacityCollectionInner> getHostingEnvironmentCapacities(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentCapacities(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentCapacitiesDelegate(call.execute());
+    public ServiceResponse<PagedList<StampCapacityInner>> getHostingEnvironmentCapacities(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<StampCapacityInner>> response = getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<StampCapacityInner> pagedList = new PagedList<StampCapacityInner>(response.getBody()) {
+            @Override
+            public Page<StampCapacityInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -968,9 +931,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<StampCapacityCollectionInner> getHostingEnvironmentCapacitiesAsync(String resourceGroupName, String name, final ServiceCallback<StampCapacityCollectionInner> serviceCallback) {
+    public ServiceCall<List<StampCapacityInner>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;StampCapacityInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -983,31 +983,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentCapacities(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<StampCapacityCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<StampCapacityCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<StampCapacityCollectionInner> clientResponse = getHostingEnvironmentCapacitiesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentCapacities(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<StampCapacityInner>> result = getHostingEnvironmentCapacitiesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<StampCapacityCollectionInner> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<StampCapacityCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<StampCapacityCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<StampCapacityInner>> getHostingEnvironmentCapacitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<StampCapacityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<StampCapacityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1023,20 +1015,7 @@ public final class HostingEnvironmentsInner {
      * @return the AddressResponseInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<AddressResponseInner> getHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentVips(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentVipsDelegate(call.execute());
+        return getHostingEnvironmentVipsAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -1045,9 +1024,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<AddressResponseInner> getHostingEnvironmentVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentVipsAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get IP addresses assigned to the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the AddressResponseInner object
+     */
+    public Observable<ServiceResponse<AddressResponseInner>> getHostingEnvironmentVipsAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1060,26 +1050,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentVips(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<AddressResponseInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<AddressResponseInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<AddressResponseInner> clientResponse = getHostingEnvironmentVipsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentVips(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AddressResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AddressResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AddressResponseInner> clientResponse = getHostingEnvironmentVipsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<AddressResponseInner> getHostingEnvironmentVipsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1096,20 +1078,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<HostingEnvironmentCollectionInner> getHostingEnvironments(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironments(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentsDelegate(call.execute());
+    public ServiceResponse<PagedList<HostingEnvironmentInner>> getHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<HostingEnvironmentInner>> response = getHostingEnvironmentsSinglePageAsync(resourceGroupName).toBlocking().single();
+        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1117,9 +1096,44 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<HostingEnvironmentCollectionInner> getHostingEnvironmentsAsync(String resourceGroupName, final ServiceCallback<HostingEnvironmentCollectionInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getHostingEnvironmentsAsync(final String resourceGroupName, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentsSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsAsync(final String resourceGroupName) {
+        return getHostingEnvironmentsSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param resourceGroupName Name of resource group
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1129,31 +1143,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironments(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<HostingEnvironmentCollectionInner> clientResponse = getHostingEnvironmentsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironments(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<HostingEnvironmentInner>> result = getHostingEnvironmentsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<HostingEnvironmentCollectionInner> getHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<HostingEnvironmentCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<HostingEnvironmentInner>> getHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HostingEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1169,20 +1175,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> rebootHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.rebootHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return rebootHostingEnvironmentDelegate(call.execute());
+        return rebootHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -1191,9 +1184,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> rebootHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(rebootHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Reboots all machines in a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> rebootHostingEnvironmentAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1206,26 +1210,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.rebootHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = rebootHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.rebootHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = rebootHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> rebootHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1249,20 +1245,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getHostingEnvironmentOperations(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentOperations(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentOperationsDelegate(call.execute());
+        return getHostingEnvironmentOperationsAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -1271,9 +1254,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getHostingEnvironmentOperationsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentOperationsAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * List all currently running operations on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationsAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1286,26 +1280,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentOperations(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getHostingEnvironmentOperationsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentOperations(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getHostingEnvironmentOperationsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1327,23 +1313,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (operationId == null) {
-            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentOperationDelegate(call.execute());
+        return getHostingEnvironmentOperationAsync(resourceGroupName, name, operationId).toBlocking().single();
     }
 
     /**
@@ -1353,9 +1323,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param operationId operation identifier GUID
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentOperationAsync(resourceGroupName, name, operationId), serviceCallback);
+    }
+
+    /**
+     * Get status of an operation on a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param operationId operation identifier GUID
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1371,26 +1353,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getHostingEnvironmentOperationDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getHostingEnvironmentOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getHostingEnvironmentOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1411,25 +1385,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMetricsDelegate(call.execute());
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1438,9 +1404,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1455,26 +1458,18 @@ public final class HostingEnvironmentsInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1487,23 +1482,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMetrics(String resourceGroupName, String name, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMetricsDelegate(call.execute());
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1514,9 +1503,50 @@ public final class HostingEnvironmentsInner {
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        return getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1529,31 +1559,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1569,20 +1591,7 @@ public final class HostingEnvironmentsInner {
      * @return the MetricDefinitionInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<MetricDefinitionInner> getHostingEnvironmentMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMetricDefinitionsDelegate(call.execute());
+        return getHostingEnvironmentMetricDefinitionsAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -1591,9 +1600,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<MetricDefinitionInner> getHostingEnvironmentMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
+        return ServiceCall.create(getHostingEnvironmentMetricDefinitionsAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get global metric definitions of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the MetricDefinitionInner object
+     */
+    public Observable<ServiceResponse<MetricDefinitionInner>> getHostingEnvironmentMetricDefinitionsAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1606,26 +1626,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<MetricDefinitionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<MetricDefinitionInner> clientResponse = getHostingEnvironmentMetricDefinitionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetricDefinitionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<MetricDefinitionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<MetricDefinitionInner> clientResponse = getHostingEnvironmentMetricDefinitionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<MetricDefinitionInner> getHostingEnvironmentMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1643,24 +1655,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CsmUsageQuotaCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentUsagesDelegate(call.execute());
+    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+            @Override
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1669,9 +1674,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsagesAsync(String resourceGroupName, String name, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1685,26 +1727,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getHostingEnvironmentUsagesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = getHostingEnvironmentUsagesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1716,23 +1750,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CsmUsageQuotaCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsages(String resourceGroupName, String name, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentUsagesDelegate(call.execute());
+    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
+        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+            @Override
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1742,9 +1770,48 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsagesAsync(String resourceGroupName, String name, String filter, final ServiceCallback<CsmUsageQuotaCollectionInner> serviceCallback) {
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter),
+            new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter) {
+        return getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1757,31 +1824,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<CsmUsageQuotaCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CsmUsageQuotaCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CsmUsageQuotaCollectionInner> clientResponse = getHostingEnvironmentUsagesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentUsages(resourceGroupName, name, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = getHostingEnvironmentUsagesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<CsmUsageQuotaCollectionInner> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CsmUsageQuotaCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<CsmUsageQuotaCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<CsmUsageQuotaInner>> getHostingEnvironmentUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1794,9 +1853,65 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1814,56 +1929,18 @@ public final class HostingEnvironmentsInner {
         final String timeGrain = null;
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute());
-    }
-
-    /**
-     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
-     */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String startTime = null;
-        final String endTime = null;
-        final String timeGrain = null;
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentMultiRoleMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMultiRoleMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1879,23 +1956,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetrics(String resourceGroupName, String name, String startTime, String endTime, String timeGrain, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMultiRoleMetricsDelegate(call.execute());
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1909,9 +1980,56 @@ public final class HostingEnvironmentsInner {
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetricsAsync(String resourceGroupName, String name, String startTime, String endTime, String timeGrain, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param startTime Beginning time of metrics query
+     * @param endTime End time of metrics query
+     * @param timeGrain Time granularity of metrics query
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
+        return getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param startTime Beginning time of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param endTime End time of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param timeGrain Time granularity of metrics query
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1924,31 +2042,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentMultiRoleMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMultiRoleMetrics(resourceGroupName, name, this.client.subscriptionId(), startTime, endTime, timeGrain, details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMultiRoleMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1962,9 +2072,68 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetrics(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1982,57 +2151,18 @@ public final class HostingEnvironmentsInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute());
-    }
-
-    /**
-     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
-     */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetricsAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentWebWorkerMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentWebWorkerMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2046,26 +2176,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetrics(String resourceGroupName, String name, String workerPoolName, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentWebWorkerMetricsDelegate(call.execute());
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2077,9 +2198,52 @@ public final class HostingEnvironmentsInner {
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetricsAsync(String resourceGroupName, String name, String workerPoolName, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
+        return getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param workerPoolName Name of worker pool
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2095,31 +2259,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceMetricCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceMetricCollectionInner> clientResponse = getHostingEnvironmentWebWorkerMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentWebWorkerMetrics(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentWebWorkerMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ResourceMetricCollectionInner> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2132,23 +2288,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the MetricDefinitionCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentMultiRoleMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(call.execute());
+    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2157,9 +2307,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<MetricDefinitionCollectionInner> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2172,31 +2359,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<MetricDefinitionCollectionInner> clientResponse = getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMultiRoleMetricDefinitions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2210,26 +2389,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the MetricDefinitionCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentWebWorkerMetricDefinitions(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(call.execute());
+    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitions(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
+        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2239,9 +2409,48 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<MetricDefinitionCollectionInner> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) {
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param workerPoolName Name of worker pool
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2257,31 +2466,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<MetricDefinitionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<MetricDefinitionCollectionInner> clientResponse = getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentWebWorkerMetricDefinitions(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<MetricDefinitionCollectionInner> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2294,23 +2495,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UsageCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<UsageCollectionInner> getHostingEnvironmentMultiRoleUsages(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleUsages(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentMultiRoleUsagesDelegate(call.execute());
+    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentMultiRoleUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+            @Override
+            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2319,9 +2514,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<UsageCollectionInner> getHostingEnvironmentMultiRoleUsagesAsync(String resourceGroupName, String name, final ServiceCallback<UsageCollectionInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2334,31 +2566,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentMultiRoleUsages(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<UsageCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UsageCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<UsageCollectionInner> clientResponse = getHostingEnvironmentMultiRoleUsagesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentMultiRoleUsages(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<UsageInner>> result = getHostingEnvironmentMultiRoleUsagesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<UsageCollectionInner> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<UsageCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> getHostingEnvironmentMultiRoleUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2372,26 +2596,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UsageCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<UsageCollectionInner> getHostingEnvironmentWebWorkerUsages(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerUsages(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentWebWorkerUsagesDelegate(call.execute());
+    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentWebWorkerUsages(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
+        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+            @Override
+            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2401,9 +2616,48 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<UsageCollectionInner> getHostingEnvironmentWebWorkerUsagesAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<UsageCollectionInner> serviceCallback) {
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName),
+            new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the List&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<UsageInner>> * @param workerPoolName Name of worker pool
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2419,31 +2673,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebWorkerUsages(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<UsageCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UsageCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<UsageCollectionInner> clientResponse = getHostingEnvironmentWebWorkerUsagesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentWebWorkerUsages(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<UsageInner>> result = getHostingEnvironmentWebWorkerUsagesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<UsageCollectionInner> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UsageCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<UsageCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<UsageInner>> getHostingEnvironmentWebWorkerUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2456,9 +2702,65 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> getHostingEnvironmentSites(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2472,52 +2774,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentSitesDelegate(call.execute());
-    }
-
-    /**
-     * Get all sites on the hostingEnvironment (App Service Environment).
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
-     */
-    public ServiceCall<SiteCollectionInner> getHostingEnvironmentSitesAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String propertiesToInclude = null;
-        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SiteCollectionInner> clientResponse = getHostingEnvironmentSitesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getHostingEnvironmentSitesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2529,23 +2797,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> getHostingEnvironmentSites(String resourceGroupName, String name, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentSitesDelegate(call.execute());
+    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2555,9 +2817,48 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param propertiesToInclude Comma separated list of site properties to include
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SiteCollectionInner> getHostingEnvironmentSitesAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteCollectionInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param propertiesToInclude Comma separated list of site properties to include
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+        return getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of site properties to include
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2570,31 +2871,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SiteCollectionInner> clientResponse = getHostingEnvironmentSitesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentSites(resourceGroupName, name, this.client.subscriptionId(), propertiesToInclude, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getHostingEnvironmentSitesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SiteCollectionInner> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SiteInner>> getHostingEnvironmentSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2607,23 +2900,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentWebHostingPlans(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentWebHostingPlansDelegate(call.execute());
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2632,9 +2919,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerFarmCollectionInner> getHostingEnvironmentWebHostingPlansAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollectionInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2647,31 +2971,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ServerFarmCollectionInner> clientResponse = getHostingEnvironmentWebHostingPlansDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentWebHostingPlans(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getHostingEnvironmentWebHostingPlansDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2684,23 +3000,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentServerFarms(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getHostingEnvironmentServerFarms(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getHostingEnvironmentServerFarmsDelegate(call.execute());
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2709,9 +3019,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerFarmCollectionInner> getHostingEnvironmentServerFarmsAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmCollectionInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2724,31 +3071,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getHostingEnvironmentServerFarms(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ServerFarmCollectionInner> clientResponse = getHostingEnvironmentServerFarmsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getHostingEnvironmentServerFarms(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getHostingEnvironmentServerFarmsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ServerFarmCollectionInner> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2761,23 +3100,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<WorkerPoolCollectionInner> getMultiRolePools(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getMultiRolePools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolsDelegate(call.execute());
+    public ServiceResponse<PagedList<WorkerPoolInner>> getMultiRolePools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<WorkerPoolInner>> response = getMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+            @Override
+            public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2786,9 +3119,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<WorkerPoolCollectionInner> getMultiRolePoolsAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolCollectionInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getMultiRolePoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getMultiRolePoolsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsAsync(final String resourceGroupName, final String name) {
+        return getMultiRolePoolsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2801,31 +3171,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getMultiRolePools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolCollectionInner> clientResponse = getMultiRolePoolsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<WorkerPoolInner>> result = getMultiRolePoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<WorkerPoolCollectionInner> getMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolInner>> getMultiRolePoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2841,20 +3203,7 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<WorkerPoolInner> getMultiRolePool(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolDelegate(call.execute());
+        return getMultiRolePoolAsync(resourceGroupName, name).toBlocking().single();
     }
 
     /**
@@ -2863,9 +3212,20 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(getMultiRolePoolAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get properties of a multiRool pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> getMultiRolePoolAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2878,26 +3238,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolInner> clientResponse = getMultiRolePoolDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkerPoolInner> clientResponse = getMultiRolePoolDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<WorkerPoolInner> getMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -2920,6 +3272,31 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in ServiceResponse if successful.
      */
     public ServiceResponse<WorkerPoolInner> createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last();
+    }
+
+    /**
+     * Create or update a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param multiRolePoolEnvelope Properties of multiRole pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param multiRolePoolEnvelope Properties of multiRole pool
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2936,53 +3313,8 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(multiRolePoolEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<WorkerPoolInner>() { }.getType());
-    }
-
-    /**
-     * Create or update a multiRole pool.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param multiRolePoolEnvelope Properties of multiRole pool
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (multiRolePoolEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(multiRolePoolEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<WorkerPoolInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
     }
 
     /**
@@ -2997,24 +3329,7 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (multiRolePoolEnvelope == null) {
-            throw new IllegalArgumentException("Parameter multiRolePoolEnvelope is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(multiRolePoolEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateMultiRolePoolDelegate(call.execute());
+        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single();
     }
 
     /**
@@ -3024,9 +3339,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param multiRolePoolEnvelope Properties of multiRole pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param multiRolePoolEnvelope Properties of multiRole pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3043,26 +3370,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(multiRolePoolEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginCreateOrUpdateMultiRolePool(resourceGroupName, name, this.client.subscriptionId(), multiRolePoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateMultiRolePoolDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -3084,23 +3403,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SkuInfoCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SkuInfoCollectionInner> getMultiRolePoolSkus(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getMultiRolePoolSkus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolSkusDelegate(call.execute());
+    public ServiceResponse<PagedList<SkuInfoInner>> getMultiRolePoolSkus(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SkuInfoInner>> response = getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+            @Override
+            public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3109,9 +3422,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SkuInfoCollectionInner> getMultiRolePoolSkusAsync(String resourceGroupName, String name, final ServiceCallback<SkuInfoCollectionInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(String nextPageLink) {
+                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name) {
+        return getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3124,31 +3474,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getMultiRolePoolSkus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SkuInfoCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SkuInfoCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SkuInfoCollectionInner> clientResponse = getMultiRolePoolSkusDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePoolSkus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SkuInfoInner>> result = getMultiRolePoolSkusDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SkuInfoCollectionInner> getMultiRolePoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SkuInfoCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SkuInfoInner>> getMultiRolePoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3161,23 +3503,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<WorkerPoolCollectionInner> getWorkerPools(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getWorkerPools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolsDelegate(call.execute());
+    public ServiceResponse<PagedList<WorkerPoolInner>> getWorkerPools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<WorkerPoolInner>> response = getWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+            @Override
+            public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3186,9 +3522,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<WorkerPoolCollectionInner> getWorkerPoolsAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolCollectionInner> serviceCallback) {
+    public ServiceCall<List<WorkerPoolInner>> getWorkerPoolsAsync(final String resourceGroupName, final String name, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getWorkerPoolsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsAsync(final String resourceGroupName, final String name) {
+        return getWorkerPoolsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all worker pools.
+     *
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3201,31 +3574,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getWorkerPools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolCollectionInner> clientResponse = getWorkerPoolsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPools(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<WorkerPoolInner>> result = getWorkerPoolsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<WorkerPoolCollectionInner> getWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<WorkerPoolCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<WorkerPoolCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<WorkerPoolInner>> getWorkerPoolsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3242,23 +3607,7 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<WorkerPoolInner> getWorkerPool(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolDelegate(call.execute());
+        return getWorkerPoolAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
     }
 
     /**
@@ -3268,9 +3617,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(getWorkerPoolAsync(resourceGroupName, name, workerPoolName), serviceCallback);
+    }
+
+    /**
+     * Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3286,26 +3647,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolInner> clientResponse = getWorkerPoolDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkerPoolInner> clientResponse = getWorkerPoolDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<WorkerPoolInner> getWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -3329,6 +3682,33 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in ServiceResponse if successful.
      */
     public ServiceResponse<WorkerPoolInner> createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last();
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param workerPoolEnvelope Properties of worker pool
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param workerPoolEnvelope Properties of worker pool
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3348,57 +3728,8 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(workerPoolEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<WorkerPoolInner>() { }.getType());
-    }
-
-    /**
-     * Create or update a worker pool.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param workerPoolName Name of worker pool
-     * @param workerPoolEnvelope Properties of worker pool
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workerPoolName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter workerPoolName is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (workerPoolEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(workerPoolEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<WorkerPoolInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<WorkerPoolInner>() { }.getType());
     }
 
     /**
@@ -3414,27 +3745,7 @@ public final class HostingEnvironmentsInner {
      * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (workerPoolEnvelope == null) {
-            throw new IllegalArgumentException("Parameter workerPoolEnvelope is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(workerPoolEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateWorkerPoolDelegate(call.execute());
+        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single();
     }
 
     /**
@@ -3445,9 +3756,22 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param workerPoolEnvelope Properties of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param workerPoolEnvelope Properties of worker pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3467,26 +3791,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(workerPoolEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<WorkerPoolInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<WorkerPoolInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginCreateOrUpdateWorkerPool(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), workerPoolEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkerPoolInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkerPoolInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkerPoolInner> clientResponse = beginCreateOrUpdateWorkerPoolDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -3509,26 +3825,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SkuInfoCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SkuInfoCollectionInner> getWorkerPoolSkus(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getWorkerPoolSkus(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolSkusDelegate(call.execute());
+    public ServiceResponse<PagedList<SkuInfoInner>> getWorkerPoolSkus(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SkuInfoInner>> response = getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
+        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+            @Override
+            public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3538,9 +3845,48 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SkuInfoCollectionInner> getWorkerPoolSkusAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<SkuInfoCollectionInner> serviceCallback) {
+    public ServiceCall<List<SkuInfoInner>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName),
+            new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(String nextPageLink) {
+                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param workerPoolName Name of worker pool
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3556,31 +3902,23 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getWorkerPoolSkus(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SkuInfoCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SkuInfoCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SkuInfoCollectionInner> clientResponse = getWorkerPoolSkusDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPoolSkus(resourceGroupName, name, workerPoolName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SkuInfoInner>> result = getWorkerPoolSkusDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SkuInfoCollectionInner> getWorkerPoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SkuInfoCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SkuInfoCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SkuInfoInner>> getWorkerPoolSkusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -3598,28 +3936,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolInstanceMetricsDelegate(call.execute());
+        return getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
     }
 
     /**
@@ -3630,9 +3947,22 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param instance Name of instance in the worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3653,26 +3983,18 @@ public final class HostingEnvironmentsInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3690,26 +4012,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolInstanceMetricsDelegate(call.execute());
+        return getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance, details, filter).toBlocking().single();
     }
 
     /**
@@ -3722,9 +4025,24 @@ public final class HostingEnvironmentsInner {
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance, details, filter), serviceCallback);
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3743,26 +4061,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPoolInstanceMetrics(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -3785,26 +4095,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitions(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (workerPoolName == null) {
-            throw new IllegalArgumentException("Parameter workerPoolName is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetricDefinitions(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getWorkerPoolInstanceMetricDefinitionsDelegate(call.execute());
+        return getWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
     }
 
     /**
@@ -3815,9 +4106,22 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param instance Name of instance in the worker pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3836,26 +4140,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getWorkerPoolInstanceMetricDefinitions(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricDefinitionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getWorkerPoolInstanceMetricDefinitions(resourceGroupName, name, workerPoolName, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getWorkerPoolInstanceMetricDefinitionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -3877,24 +4173,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean details = null;
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolInstanceMetricsDelegate(call.execute());
+        return getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance).toBlocking().single();
     }
 
     /**
@@ -3904,9 +4183,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param instance Name of instance in the multiRole pool
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance), serviceCallback);
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3923,26 +4214,18 @@ public final class HostingEnvironmentsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean details = null;
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3958,23 +4241,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance, Boolean details) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolInstanceMetricsDelegate(call.execute());
+        return getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance, details).toBlocking().single();
     }
 
     /**
@@ -3985,9 +4252,22 @@ public final class HostingEnvironmentsInner {
      * @param instance Name of instance in the multiRole pool
      * @param details Include instance details
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, Boolean details, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance, details), serviceCallback);
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @param details Include instance details
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, Boolean details) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4003,26 +4283,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePoolInstanceMetrics(resourceGroupName, name, instance, this.client.subscriptionId(), details, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -4044,23 +4316,7 @@ public final class HostingEnvironmentsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitions(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (instance == null) {
-            throw new IllegalArgumentException("Parameter instance is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetricDefinitions(resourceGroupName, name, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getMultiRolePoolInstanceMetricDefinitionsDelegate(call.execute());
+        return getMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance).toBlocking().single();
     }
 
     /**
@@ -4070,9 +4326,21 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param instance Name of instance in the multiRole pool&amp;gt;
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(getMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance), serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool&amp;gt;
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4088,26 +4356,18 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getMultiRolePoolInstanceMetricDefinitions(resourceGroupName, name, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricDefinitionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getMultiRolePoolInstanceMetricDefinitions(resourceGroupName, name, instance, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = getMultiRolePoolInstanceMetricDefinitionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -4126,9 +4386,65 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteCollectionInner object wrapped in ServiceResponse if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> suspendHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<PagedList<SiteInner>> suspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        ServiceResponse<Page<SiteInner>> response = suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4141,48 +4457,26 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.suspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<SiteCollectionInner>() { }.getType());
+        return service.suspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = suspendHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
-    /**
-     * Suspends the hostingEnvironment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<SiteCollectionInner> suspendHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Call<ResponseBody> call = service.suspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<SiteCollectionInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    private ServiceResponse<PageImpl<SiteInner>> suspendHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -4193,23 +4487,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> beginSuspendHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.beginSuspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginSuspendHostingEnvironmentDelegate(call.execute());
+    public ServiceResponse<PagedList<SiteInner>> beginSuspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4218,9 +4506,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SiteCollectionInner> beginSuspendHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4233,32 +4558,24 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginSuspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SiteCollectionInner> clientResponse = beginSuspendHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginSuspendHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = beginSuspendHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SiteCollectionInner> beginSuspendHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
-                .register(202, new TypeToken<SiteCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SiteInner>> beginSuspendHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -4272,9 +4589,65 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteCollectionInner object wrapped in ServiceResponse if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> resumeHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServiceResponse<PagedList<SiteInner>> resumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        ServiceResponse<Page<SiteInner>> response = resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4287,48 +4660,26 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Response<ResponseBody> result = service.resumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<SiteCollectionInner>() { }.getType());
+        return service.resumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = resumeHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
-    /**
-     * Resumes the hostingEnvironment.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of hostingEnvironment (App Service Environment)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<SiteCollectionInner> resumeHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Call<ResponseBody> call = service.resumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<SiteCollectionInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    private ServiceResponse<PageImpl<SiteInner>> resumeHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -4339,23 +4690,17 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> beginResumeHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.beginResumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginResumeHostingEnvironmentDelegate(call.execute());
+    public ServiceResponse<PagedList<SiteInner>> beginResumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4364,9 +4709,46 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SiteCollectionInner> beginResumeHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<SiteCollectionInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4379,32 +4761,1878 @@ public final class HostingEnvironmentsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginResumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SiteCollectionInner> clientResponse = beginResumeHostingEnvironmentDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.beginResumeHostingEnvironment(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = beginResumeHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SiteCollectionInner> beginResumeHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
-                .register(202, new TypeToken<SiteCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SiteInner>> beginResumeHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<StampCapacityInner>> getHostingEnvironmentCapacitiesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<StampCapacityInner>> response = getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<StampCapacityInner> pagedList = new PagedList<StampCapacityInner>(response.getBody()) {
+            @Override
+            public Page<StampCapacityInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<StampCapacityInner>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink, final ServiceCall<List<StampCapacityInner>> serviceCall, final ListOperationCallback<StampCapacityInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;StampCapacityInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<StampCapacityInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentCapacitiesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<StampCapacityInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<StampCapacityInner>> result = getHostingEnvironmentCapacitiesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<StampCapacityInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<StampCapacityInner>> getHostingEnvironmentCapacitiesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<StampCapacityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<StampCapacityInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<HostingEnvironmentInner>> getHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<HostingEnvironmentInner>> response = getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<HostingEnvironmentInner>> getHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<HostingEnvironmentInner>> result = getHostingEnvironmentsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<HostingEnvironmentInner>> getHostingEnvironmentsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HostingEnvironmentInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+            @Override
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink, final ServiceCall<List<CsmUsageQuotaInner>> serviceCall, final ListOperationCallback<CsmUsageQuotaInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CsmUsageQuotaInner>> result = getHostingEnvironmentUsagesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CsmUsageQuotaInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CsmUsageQuotaInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CsmUsageQuotaInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentMultiRoleMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentMultiRoleMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentWebWorkerMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getHostingEnvironmentWebWorkerMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentMultiRoleMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getHostingEnvironmentMultiRoleMetricDefinitionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentWebWorkerMetricDefinitionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getHostingEnvironmentWebWorkerMetricDefinitionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentMultiRoleUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+            @Override
+            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentMultiRoleUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<UsageInner>> result = getHostingEnvironmentMultiRoleUsagesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<UsageInner>> getHostingEnvironmentMultiRoleUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentWebWorkerUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+            @Override
+            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<UsageInner>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink, final ServiceCall<List<UsageInner>> serviceCall, final ListOperationCallback<UsageInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentWebWorkerUsagesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<UsageInner>> result = getHostingEnvironmentWebWorkerUsagesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UsageInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<UsageInner>> getHostingEnvironmentWebWorkerUsagesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<UsageInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> getHostingEnvironmentSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentSitesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getHostingEnvironmentSitesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> getHostingEnvironmentSitesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentWebHostingPlansNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getHostingEnvironmentWebHostingPlansNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getHostingEnvironmentServerFarmsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getHostingEnvironmentServerFarmsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<WorkerPoolInner>> getMultiRolePoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<WorkerPoolInner>> response = getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+            @Override
+            public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<WorkerPoolInner>> getMultiRolePoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getMultiRolePoolsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextAsync(final String nextPageLink) {
+        return getMultiRolePoolsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getMultiRolePoolsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<WorkerPoolInner>> result = getMultiRolePoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<WorkerPoolInner>> getMultiRolePoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SkuInfoInner>> getMultiRolePoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SkuInfoInner>> response = getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+            @Override
+            public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SkuInfoInner>> getMultiRolePoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getMultiRolePoolSkusNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(String nextPageLink) {
+                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextAsync(final String nextPageLink) {
+        return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getMultiRolePoolSkusNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SkuInfoInner>> result = getMultiRolePoolSkusNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SkuInfoInner>> getMultiRolePoolSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<WorkerPoolInner>> getWorkerPoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<WorkerPoolInner>> response = getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+            @Override
+            public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<WorkerPoolInner>> getWorkerPoolsNextAsync(final String nextPageLink, final ServiceCall<List<WorkerPoolInner>> serviceCall, final ListOperationCallback<WorkerPoolInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getWorkerPoolsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(String nextPageLink) {
+                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextAsync(final String nextPageLink) {
+        return getWorkerPoolsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all worker pools.
+     *
+    ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getWorkerPoolsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<WorkerPoolInner>> result = getWorkerPoolsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<WorkerPoolInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<WorkerPoolInner>> getWorkerPoolsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<WorkerPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<WorkerPoolInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SkuInfoInner>> getWorkerPoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SkuInfoInner>> response = getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+            @Override
+            public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SkuInfoInner>> getWorkerPoolSkusNextAsync(final String nextPageLink, final ServiceCall<List<SkuInfoInner>> serviceCall, final ListOperationCallback<SkuInfoInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getWorkerPoolSkusNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(String nextPageLink) {
+                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextAsync(final String nextPageLink) {
+        return getWorkerPoolSkusNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+    ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getWorkerPoolSkusNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SkuInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SkuInfoInner>> result = getWorkerPoolSkusNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SkuInfoInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SkuInfoInner>> getWorkerPoolSkusNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SkuInfoInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SkuInfoInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> suspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        ServiceResponse<Page<SiteInner>> response = suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> suspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            suspendHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextAsync(final String nextPageLink) {
+        return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.suspendHostingEnvironmentNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = suspendHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> suspendHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> beginSuspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink) {
+        return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.beginSuspendHostingEnvironmentNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = beginSuspendHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> beginSuspendHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> resumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        ServiceResponse<Page<SiteInner>> response = resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> resumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            resumeHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextAsync(final String nextPageLink) {
+        return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.resumeHostingEnvironmentNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = resumeHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> resumeHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> beginResumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink) {
+        return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.beginResumeHostingEnvironmentNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = beginResumeHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> beginResumeHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .register(202, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

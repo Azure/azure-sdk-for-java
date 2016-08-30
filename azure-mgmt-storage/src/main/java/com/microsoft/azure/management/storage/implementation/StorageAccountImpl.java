@@ -7,22 +7,24 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.storage.PublicEndpoints;
-import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.AccessTier;
 import com.microsoft.azure.management.storage.CustomDomain;
 import com.microsoft.azure.management.storage.Encryption;
 import com.microsoft.azure.management.storage.Kind;
 import com.microsoft.azure.management.storage.ProvisioningState;
+import com.microsoft.azure.management.storage.PublicEndpoints;
 import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
+import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.List;
@@ -194,26 +196,20 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl apply() throws Exception {
+    public StorageAccount apply() throws Exception {
         this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
         return this;
     }
 
     @Override
-    public ServiceCall applyAsync(final ServiceCallback<StorageAccount> callback) {
-        final StorageAccountImpl self = this;
-        return client.updateAsync(resourceGroupName(), name(), updateParameters, new ServiceCallback<StorageAccountInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
+    public Observable<StorageAccount> applyAsync() {
+        return client.updateAsync(resourceGroupName(), name(), updateParameters)
+                .map(innerToFluentMap(this));
+    }
 
-            @Override
-            public void success(ServiceResponse<StorageAccountInner> result) {
-                setInner(result.getBody());
-                callback.success(new ServiceResponse<StorageAccount>(self, result.getResponse()));
-            }
-        });
+    @Override
+    public ServiceCall<StorageAccount> applyAsync(final ServiceCallback<StorageAccount> callback) {
+        return observableToFuture(applyAsync(), callback);
     }
 
     @Override
@@ -257,7 +253,7 @@ class StorageAccountImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public StorageAccount createResource() throws Exception {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         this.client.create(this.resourceGroupName(), this.name(), createParameters);
@@ -271,33 +267,21 @@ class StorageAccountImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
-        final StorageAccountImpl self = this;
+    public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
-        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters,
-                new ServiceCallback<StorageAccountInner>() {
+        return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters)
+                .flatMap(new Func1<ServiceResponse<StorageAccountInner>, Observable<ServiceResponse<StorageAccountInner>>>() {
                     @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
+                    public Observable<ServiceResponse<StorageAccountInner>> call(ServiceResponse<StorageAccountInner> storageAccountInner) {
+                        return client.getPropertiesAsync(resourceGroupName(), name());
                     }
-
+                })
+                .map(innerToFluentMap(this))
+                .doOnNext(new Action1<StorageAccount>() {
                     @Override
-                    public void success(ServiceResponse<StorageAccountInner> result) {
-                        client.getPropertiesAsync(resourceGroupName(), name(),
-                                new ServiceCallback<StorageAccountInner>() {
-                                    @Override
-                                    public void failure(Throwable t) {
-                                        callback.failure(t);
-                                    }
-
-                                    @Override
-                                    public void success(ServiceResponse<StorageAccountInner> response) {
-                                        self.setInner(response.getBody());
-                                        clearWrapperProperties();
-                                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                                    }
-                                });
+                    public void call(StorageAccount storageAccount) {
+                        clearWrapperProperties();
                     }
                 });
     }

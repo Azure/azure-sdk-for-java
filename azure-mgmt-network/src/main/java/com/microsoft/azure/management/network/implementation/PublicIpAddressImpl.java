@@ -5,14 +5,14 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
 
 /**
  *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
@@ -41,12 +41,17 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddressImpl apply() throws Exception {
+    public PublicIpAddress apply() throws Exception {
         return this.create();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<PublicIpAddress> callback) {
+    public Observable<PublicIpAddress> applyAsync() {
+        return this.createAsync();
+    }
+
+    @Override
+    public ServiceCall<PublicIpAddress> applyAsync(ServiceCallback<PublicIpAddress> callback) {
         return this.createAsync(callback);
     }
 
@@ -141,7 +146,7 @@ class PublicIpAddressImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public PublicIpAddress createResource() throws Exception {
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -159,8 +164,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
-        final PublicIpAddressImpl self = this;
+    public Observable<PublicIpAddress> createResourceAsync() {
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -171,18 +175,7 @@ class PublicIpAddressImpl
             }
         }
 
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<PublicIPAddressInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<PublicIPAddressInner> response) {
-                        self.setInner(response.getBody());
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
-                    }
-                });
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(innerToFluentMap(this));
     }
 }

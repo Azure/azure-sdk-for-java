@@ -1,9 +1,8 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.TaskItem;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Represents a task that creates a resource when executed.
@@ -38,19 +37,13 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public ServiceCall executeAsync(final ServiceCallback<ResourceT> callback) {
-        final CreatorTaskItem<ResourceT> self = this;
-        return (this.resourceCreator).createResourceAsync(new ServiceCallback<ResourceT>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<ResourceT> result) {
-                self.created = result.getBody();
-                callback.success(result);
-            }
-        });
+    public Observable<ResourceT> executeAsync() {
+        return this.resourceCreator.createResourceAsync()
+                .doOnNext(new Action1<ResourceT>() {
+                    @Override
+                    public void call(ResourceT resourceT) {
+                        created = resourceT;
+                    }
+                });
     }
 }

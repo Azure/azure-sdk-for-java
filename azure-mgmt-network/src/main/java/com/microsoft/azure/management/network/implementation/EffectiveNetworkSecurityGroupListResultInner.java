@@ -12,7 +12,7 @@ import java.util.List;
 import com.microsoft.azure.management.network.EffectiveNetworkSecurityGroup;
 
 /**
- * Response for list effective network security groups api servive call.
+ * Response for list effective network security groups api service call.
  */
 public class EffectiveNetworkSecurityGroupListResultInner {
     /**

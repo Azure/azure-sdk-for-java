@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Outbound NAT pool of the loadbalancer.
+ * Outbound NAT pool of the load balancer.
  */
 @JsonFlatten
 public class OutboundNatRuleInner extends SubResource {

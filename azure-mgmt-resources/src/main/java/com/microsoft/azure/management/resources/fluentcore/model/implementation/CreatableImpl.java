@@ -5,9 +5,14 @@
  */
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
+
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The base class for all creatable resource.
@@ -15,11 +20,10 @@ import com.microsoft.rest.ServiceCallback;
  * @param <FluentModelT> the fluent model type representing the creatable resource
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
- * @param <ResourceT> the fluent model or one of the base interface of fluent model
  */
-public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT, FluentModelImplT, ResourceT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements CreatorTaskGroup.ResourceCreator<ResourceT> {
+        implements CreatorTaskGroup.ResourceCreator<FluentModelT> {
     /**
      * The name of the creatable resource.
      */
@@ -28,7 +32,7 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     /**
      * The group of tasks to create this resource and it's dependencies.
      */
-    private CreatorTaskGroup<ResourceT> creatorTaskGroup;
+    private CreatorTaskGroup<FluentModelT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(innerObject);
@@ -42,14 +46,14 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
      * @param creatableResource the creatable dependency.
      */
     @SuppressWarnings("unchecked")
-    protected void addCreatableDependency(Creatable<? extends ResourceT> creatableResource) {
-        CreatorTaskGroup<ResourceT> childGroup =
-                ((CreatorTaskGroup.ResourceCreator<ResourceT>) creatableResource).creatorTaskGroup();
+    protected void addCreatableDependency(Creatable<? extends Resource> creatableResource) {
+        CreatorTaskGroup<FluentModelT> childGroup =
+                ((CreatorTaskGroup.ResourceCreator<FluentModelT>) creatableResource).creatorTaskGroup();
         childGroup.merge(this.creatorTaskGroup);
     }
 
-    protected ResourceT createdResource(String key) {
-        return this.creatorTaskGroup.createdResource(key);
+    protected Resource createdResource(String key) {
+        return (Resource) this.creatorTaskGroup.createdResource(key);
     }
 
     /**
@@ -66,26 +70,36 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelImplT create() throws Exception {
+    public FluentModelT create() throws Exception {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
             creatorTaskGroup.execute();
-            return (FluentModelImplT) this;
+            return (FluentModelT) this;
         }
         throw new IllegalStateException("Internal Error: create can be called only on preparer");
     }
 
     /**
+     * Puts the request into the queue and allow the HTTP client to execute
+     * it when system resources are available.
+     *
+     * @param callback the callback to handle success and failure
+     * @return a handle to cancel the request
+     */
+    public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        return observableToFuture(createAsync(), callback);
+    }
+
+    /**
      * Default implementation of createAsync().
      *
-     * @param callback the callback to call on success or failure
      * @return the handle to the create REST call
      */
     @SuppressWarnings("unchecked")
-    public ServiceCall<FluentModelT> createAsync(ServiceCallback<FluentModelT> callback) {
+    public Observable<FluentModelT> createAsync() {
         if (creatorTaskGroup.isPreparer()) {
             creatorTaskGroup.prepare();
-            return (ServiceCall<FluentModelT>) creatorTaskGroup.executeAsync((ServiceCallback<ResourceT>) callback);
+            return creatorTaskGroup.executeAsync();
         }
         throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }
@@ -93,7 +107,29 @@ public abstract class CreatableImpl<FluentModelT extends ResourceT, InnerModelT,
     /**
      * @return the task group associated with this creatable.
      */
-    public CreatorTaskGroup creatorTaskGroup() {
+    public CreatorTaskGroup<FluentModelT> creatorTaskGroup() {
         return this.creatorTaskGroup;
+    }
+
+    protected Func1<ServiceResponse<InnerModelT>, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
+        return new Func1<ServiceResponse<InnerModelT>, FluentModelT>() {
+            @Override
+            public FluentModelT call(ServiceResponse<InnerModelT> innerModelT) {
+                fluentModelImplT.setInner(innerModelT.getBody());
+                return (FluentModelT) fluentModelImplT;
+            }
+        };
+    }
+
+    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable, final ServiceCallback<FluentModelT> callback) {
+        return ServiceCall.create(
+                observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
+                    @Override
+                    public ServiceResponse<FluentModelT> call(FluentModelT fluentModelT) {
+                        // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map (and this method) can be removed
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
     }
 }

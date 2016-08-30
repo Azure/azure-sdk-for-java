@@ -7,11 +7,13 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,12 +67,17 @@ class NetworkImpl
     }
 
     @Override
-    public NetworkImpl apply() throws Exception {
+    public Network apply() throws Exception {
         return this.create();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<Network> callback) {
+    public Observable<Network> applyAsync() {
+        return createAsync();
+    }
+
+    @Override
+    public ServiceCall<Network> applyAsync(ServiceCallback<Network> callback) {
         return createAsync(callback);
     }
 
@@ -181,7 +188,7 @@ class NetworkImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public Network createResource() throws Exception {
         ensureCreationPrerequisites();
 
         ServiceResponse<VirtualNetworkInner> response =
@@ -192,21 +199,16 @@ class NetworkImpl
     }
 
     @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<Network> createResourceAsync() {
         final  NetworkImpl self = this;
         ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                new ServiceCallback<VirtualNetworkInner>() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
                     @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<VirtualNetworkInner> response) {
-                        self.setInner(response.getBody());
+                    public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
+                        setInner(virtualNetworkInner.getBody());
                         initializeSubnetsFromInner();
-                        callback.success(new ServiceResponse<Resource>(self, response.getResponse()));
+                        return self;
                     }
                 });
     }

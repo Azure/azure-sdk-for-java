@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Pool of backend IP addresseses.
+ * Pool of backend IP addresses.
  */
 @JsonFlatten
 public class BackendAddressPoolInner extends SubResource {

@@ -33,7 +33,7 @@ public class GenericResourceInner extends Resource {
     private String kind;
 
     /**
-     * The managedBy property of the resource.
+     * Id of the resource that manages this resource.
      */
     private String managedBy;
 

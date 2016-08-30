@@ -25,13 +25,13 @@ public class LoadBalancerInner extends Resource {
     private List<FrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Gets or sets Pools of backend IP addresseses.
+     * Gets or sets Pools of backend IP addresses.
      */
     @JsonProperty(value = "properties.backendAddressPools")
     private List<BackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Gets or sets loadbalancing rules.
+     * Gets or sets load balancing rules.
      */
     @JsonProperty(value = "properties.loadBalancingRules")
     private List<LoadBalancingRuleInner> loadBalancingRules;
