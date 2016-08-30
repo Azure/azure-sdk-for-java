@@ -15,6 +15,8 @@ import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 
@@ -74,22 +76,24 @@ class UsersImpl
 
     @Override
     public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
-        final ServiceCall<User> serviceCall = new ServiceCall<>(null);
-        serviceCall.newCall(innerCollection.getAsync(upn, new ServiceCallback<UserInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-                serviceCall.failure(t);
-            }
+        return ServiceCall.create(
+                getByUserPrincipalNameAsync(upn).map(new Func1<User, ServiceResponse<User>>() {
+                    @Override
+                    public ServiceResponse<User> call(User fluentModelT) {
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
+    }
 
-            @Override
-            public void success(ServiceResponse<UserInner> result) {
-                User user = new UserImpl(result.getBody(), innerCollection);
-                ServiceResponse<User> clientResponse = new ServiceResponse<User>(user, result.getResponse());
-                callback.success(clientResponse);
-                serviceCall.success(clientResponse);
-            }
-        }).getCall());
-        return serviceCall;
+    @Override
+    public Observable<User> getByUserPrincipalNameAsync(String upn) {
+        return innerCollection.getAsync(upn)
+                .map(new Func1<ServiceResponse<UserInner>, User>() {
+                    @Override
+                    public User call(ServiceResponse<UserInner> userInnerServiceResponse) {
+                        return new UserImpl(userInnerServiceResponse.getBody(), innerCollection);
+                    }
+                });
     }
 }

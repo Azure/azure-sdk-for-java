@@ -12,6 +12,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation for StorageAccount and its parent interfaces.
@@ -84,20 +86,22 @@ class UserImpl
     }
 
     @Override
-    public ServiceCall createAsync(final ServiceCallback<User> callback) {
+    public ServiceCall<User> createAsync(final ServiceCallback<User> callback) {
         final UserImpl self = this;
-        return client.createAsync(createParameters, new ServiceCallback<UserInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
+        return obser
+    }
 
-            @Override
-            public void success(ServiceResponse<UserInner> result) {
-                setInner(result.getBody());
-                callback.success(new ServiceResponse<User>(self, result.getResponse()));
-            }
-        });
+    @Override
+    public Observable<User> createAsync() {
+        final UserImpl self = this;
+        return client.createAsync(createParameters)
+                .map(new Func1<ServiceResponse<UserInner>, User>() {
+                    @Override
+                    public User call(ServiceResponse<UserInner> userInnerServiceResponse) {
+                        setInner(userInnerServiceResponse.getBody());
+                        return self;
+                    }
+                });
     }
 
     @Override

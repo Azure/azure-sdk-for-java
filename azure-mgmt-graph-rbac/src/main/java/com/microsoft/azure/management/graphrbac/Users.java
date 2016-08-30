@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
 import java.io.IOException;
 
@@ -49,4 +50,12 @@ public interface Users extends
      * @return an Future based service call
      */
     ServiceCall<User> getByUserPrincipalNameAsync(String upn, ServiceCallback<User> callback);
+
+    /**
+     * Gets the information about a user.
+     *
+     * @param upn the user principal name
+     * @return an Future based service call
+     */
+    Observable<User> getByUserPrincipalNameAsync(String upn);
 }

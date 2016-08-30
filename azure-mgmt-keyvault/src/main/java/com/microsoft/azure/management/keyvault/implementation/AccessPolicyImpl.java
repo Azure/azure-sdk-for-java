@@ -209,9 +209,4 @@ class AccessPolicyImpl
         inner().permissions().secrets().removeAll(permissions);
         return this;
     }
-
-    @Override
-    public String key() {
-        return objectId().toString();
-    }
 }
