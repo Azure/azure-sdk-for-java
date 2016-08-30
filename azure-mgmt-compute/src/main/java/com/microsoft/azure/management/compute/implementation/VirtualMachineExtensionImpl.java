@@ -28,9 +28,9 @@ class VirtualMachineExtensionImpl
         VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,
         VirtualMachineExtension.Update {
     private final VirtualMachineExtensionsInner client;
-    private boolean requireCreateOrUpdate = false;
     private HashMap<String, Object> publicSettings;
     private HashMap<String, Object> protectedSettings;
+    private State state = State.None;
 
     VirtualMachineExtensionImpl(String name,
                                 VirtualMachineImpl parent,
@@ -55,7 +55,11 @@ class VirtualMachineExtensionImpl
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(String name,
                                                                             VirtualMachineImpl parent,
                                                                             VirtualMachineExtensionsInner client) {
-        return new VirtualMachineExtensionImpl(name, parent, new VirtualMachineExtensionInner(), client);
+        VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl(name,
+                parent,
+                new VirtualMachineExtensionInner(),
+                client);
+        return extension;
     }
 
     @Override
@@ -191,7 +195,6 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineImpl parent() {
-        this.requireCreateOrUpdate = true;
         if (this.publicSettings.size() == 0) {
             this.inner().withSettings(null);
         }
@@ -206,10 +209,21 @@ class VirtualMachineExtensionImpl
         return this.parent().withExtension(this);
     }
 
+    protected State state() {
+        return this.state;
+    }
+
+    protected void setState(State newState) {
+        this.state = newState;
+    }
+
     /**
-     * @return true if this child resource needs to be created or updated.
+     * The possible state of an extension in-memory.
      */
-    protected boolean requireCreateOrUpdate() {
-        return this.requireCreateOrUpdate;
+    enum State {
+        None,
+        ToBeCreated,
+        ToBeUpdated,
+        ToBeRemoved
     }
 }

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
@@ -56,8 +57,13 @@ import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -107,8 +113,8 @@ class VirtualMachineImpl
     private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
     private List<VirtualMachineDataDisk> dataDisks;
-    // the extensions associated to the virtual machine
-    private List<VirtualMachineExtensionImpl> extensions;
+    // The extensions associated to the virtual machine
+    private ConcurrentMap<String, VirtualMachineExtensionImpl> extensions;
     // Intermediate state of network interface definition to which private IP can be associated
     private NetworkInterface.DefinitionStages.WithPrimaryPrivateIp nicDefinitionWithPrivateIp;
     // Intermediate state of network interface definition to which subnet can be associated
@@ -154,6 +160,7 @@ class VirtualMachineImpl
         this.setInner(response.getBody());
         clearCachedRelatedResources();
         initializeDataDisks();
+        initializeExtensions();
         return this;
     }
 
@@ -643,7 +650,13 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineExtensionImpl defineNewExtension(String name) {
-        return VirtualMachineExtensionImpl.newVirtualMachineExtension(name, this, this.extensionsClient);
+        if (findExtension(name) != null) {
+            throw new RuntimeException("An extension with name  '" + name + "' already exists");
+        }
+        VirtualMachineExtensionImpl extension = VirtualMachineExtensionImpl.newVirtualMachineExtension(name,
+                this, this.extensionsClient);
+        extension.setState(VirtualMachineExtensionImpl.State.ToBeCreated);
+        return extension;
     }
 
     // Virtual machine update only settings
@@ -705,12 +718,27 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineExtensionImpl updateExtension(String name) {
-        for (VirtualMachineExtensionImpl extension : this.extensions) {
-            if (extension.name().equalsIgnoreCase(name)) {
-                return extension;
-            }
+        VirtualMachineExtensionImpl extension = findExtension(name);
+        if (extension == null
+            || extension.state() == VirtualMachineExtensionImpl.State.ToBeCreated) {
+            throw new RuntimeException("An extension with name  '" + name + "' not found");
         }
-        throw new RuntimeException("An extension with name  '" + name + "' not found");
+        if (extension.state() == VirtualMachineExtensionImpl.State.ToBeRemoved) {
+            throw new RuntimeException("An extension with name  '" + name + "' is marked for deletion");
+        }
+        extension.setState(VirtualMachineExtensionImpl.State.ToBeUpdated);
+        return extension;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutExtension(String name) {
+        VirtualMachineExtensionImpl extension = findExtension(name);
+        if (extension == null
+            || extension.state() == VirtualMachineExtensionImpl.State.ToBeCreated) {
+            throw new RuntimeException("An extension with name  '" + name + "' not found");
+        }
+        extension.setState(VirtualMachineExtensionImpl.State.ToBeRemoved);
+        return this;
     }
 
     /**************************************************
@@ -832,8 +860,16 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineExtensionInner> resources() {
-        return inner().resources();
+    public Map<String, VirtualMachineExtension> extensions() throws Exception {
+        if (this.extensions.size() == 0) {
+            this.refresh();
+        }
+
+        Map<String, VirtualMachineExtension> result = new HashMap<>();
+        for (Map.Entry<String, VirtualMachineExtensionImpl> extensionEntry : this.extensions.entrySet()) {
+            result.put(extensionEntry.getKey(), extensionEntry.getValue());
+        }
+        return Collections.unmodifiableMap(result);
     }
 
     @Override
@@ -906,13 +942,13 @@ class VirtualMachineImpl
         //
         final ResourceServiceCall<VirtualMachine,
                 VirtualMachineInner,
-                VirtualMachineImpl> createServiceCall = new ResourceServiceCall<>(this);
-        final ServiceCallback<VirtualMachineInner> createVMCallBackWrapped = createServiceCall.wrapCallBack(callback, false, false);
+                VirtualMachineImpl> setVMServiceCall = new ResourceServiceCall<>(this);
+        final ServiceCallback<VirtualMachineInner> setVMCallBackWrapped = setVMServiceCall.wrapCallBack(callback, false, false);
 
         final ResourceServiceCall<VirtualMachine,
                 VirtualMachineInner,
-                VirtualMachineImpl> afterCreateServiceCall = new ResourceServiceCall<>(this);
-        final ServiceCallback<VirtualMachineInner> afterCreateVMCallBackWrapped = afterCreateServiceCall.wrapCallBack(callback);
+                VirtualMachineImpl> afterVMSetServiceCall = new ResourceServiceCall<>(this);
+        final ServiceCallback<VirtualMachineInner> afterSetVMCallBackWrapped = afterVMSetServiceCall.wrapCallBack(callback);
 
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
@@ -921,19 +957,17 @@ class VirtualMachineImpl
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
         // Register success handler for create so that after VM creation extensions can be created/deleted
         //
-        createServiceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualMachineInner>() {
+        setVMServiceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualMachineInner>() {
             @Override
             public void success(final ServiceResponse<VirtualMachineInner> response) {
                 clearCachedRelatedResources();
                 initializeDataDisks();
-                createExtensionsAsync(response, afterCreateVMCallBackWrapped);
+                deleteAndSetExtensionsAsync(response, afterSetVMCallBackWrapped);
             }
-        });
-
-        createServiceCall.withFailureHandler(new ResourceServiceCall.FailureHandler() {
+        }).withFailureHandler(new ResourceServiceCall.FailureHandler() {
             @Override
             public void failure(Throwable t) {
-                afterCreateServiceCall.failure(t);
+                afterVMSetServiceCall.failure(t);
             }
         });
 
@@ -942,46 +976,73 @@ class VirtualMachineImpl
         handleStorageSettingsAsync(new ServiceCallback<Void>() {
             @Override
             public void failure(Throwable t) {
-                createServiceCall.failure(t);
+                setVMServiceCall.failure(t);
             }
 
             @Override
             public void success(ServiceResponse<Void> result) {
                 handleNetworkSettings();
                 handleAvailabilitySettings();
-                client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), createVMCallBackWrapped);
+                client.createOrUpdateAsync(resourceGroupName(), vmName, inner(), setVMCallBackWrapped);
             }
         });
-        return afterCreateServiceCall;
+        return afterVMSetServiceCall;
     }
 
-    private void createExtensionsAsync(final ServiceResponse<VirtualMachineInner> response,
-                                                      final ServiceCallback<VirtualMachineInner> callback) {
-        int updateCount = 0;
-        for (VirtualMachineExtensionImpl extension : this.extensions) {
-            if (extension.requireCreateOrUpdate()) {
-                updateCount++;
+    /**
+     * Commit delete, update and create operations on extensions of this virtual machine.
+     *
+     * @param response
+     * @param callback the callback
+     */
+    private void deleteAndSetExtensionsAsync(final ServiceResponse<VirtualMachineInner> response,
+                                             final ServiceCallback<VirtualMachineInner> callback) {
+        final VirtualMachineImpl self = this;
+        int count = 0;
+        for (VirtualMachineExtensionImpl extension : this.extensions.values()) {
+            if (extension.state() != VirtualMachineExtensionImpl.State.None) {
+                count++;
             }
         }
-        if (updateCount == 0) {
-            if (callback != null) {
-                callback.success(response);
-            }
+        if (count == 0) {
+            callback.success(response);
             return;
         }
 
-        final AtomicInteger atomicInteger = new AtomicInteger(updateCount);
-        for (VirtualMachineExtensionImpl extension : this.extensions) {
-            if (extension.requireCreateOrUpdate()) {
+        final AtomicInteger operationCount = new AtomicInteger(count);
+        for (final VirtualMachineExtensionImpl extension : this.extensions.values()) {
+            if (extension.state() == VirtualMachineExtensionImpl.State.None) {
+                continue;
+            }
+
+            if (extension.state() == VirtualMachineExtensionImpl.State.ToBeRemoved) {
+                this.extensionsClient.deleteAsync(self.resourceGroupName(), self.name(), extension.name(), new ServiceCallback<Void>() {
+                    @Override
+                    public void failure(Throwable t) {
+                        self.extensions.clear();
+                        callback.failure(t);
+                    }
+
+                    @Override
+                    public void success(ServiceResponse<Void> result) {
+                        self.extensions.remove(extension.name());
+                        if (operationCount.decrementAndGet() == 0) {
+                            callback.success(response);
+                        }
+                    }
+                });
+            } else {
                 extension.createResourceAsync(new ServiceCallback<Resource>() {
                     @Override
                     public void failure(Throwable t) {
+                        self.extensions.clear();
                         callback.failure(t);
                     }
 
                     @Override
                     public void success(ServiceResponse<Resource> result) {
-                        if (atomicInteger.decrementAndGet() == 0) {
+                        extension.setState(VirtualMachineExtensionImpl.State.None);
+                        if (operationCount.decrementAndGet() == 0) {
                             callback.success(response);
                         }
                     }
@@ -1004,8 +1065,17 @@ class VirtualMachineImpl
     }
 
     VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
-        // TODO
+        this.extensions.put(extension.name(), extension);
         return this;
+    }
+
+    private VirtualMachineExtensionImpl findExtension(String name) {
+        for (Map.Entry<String, VirtualMachineExtensionImpl> extensionEntry : this.extensions.entrySet()) {
+            if (extensionEntry.getKey().equalsIgnoreCase(name)) {
+                return extensionEntry.getValue();
+            }
+        }
+        return null;
     }
 
     private void setOSDiskAndOSProfileDefaults() {
@@ -1290,11 +1360,11 @@ class VirtualMachineImpl
     }
 
     private void initializeExtensions() {
-        this.extensions = new ArrayList<>();
+        this.extensions = new ConcurrentHashMap<>();
         if (this.inner().resources() != null) {
-            for (VirtualMachineExtensionInner innerExtension : this.resources()) {
-                this.extensions.add(new VirtualMachineExtensionImpl(innerExtension.name(), this, innerExtension, this.extensionsClient));
-
+            for (VirtualMachineExtensionInner innerExtension : this.inner().resources()) {
+                this.extensions.put(innerExtension.name(),
+                        new VirtualMachineExtensionImpl(innerExtension.name(), this, innerExtension, this.extensionsClient));
             }
         }
     }

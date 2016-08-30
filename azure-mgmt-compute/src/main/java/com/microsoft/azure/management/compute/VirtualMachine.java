@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
-import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -19,6 +18,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure virtual machine.
@@ -192,9 +192,10 @@ public interface VirtualMachine extends
     String licenseType();
 
     /**
-     * @return the resources value
+     * @return the extensions attached to the Azure Virtual Machine
+     * @throws Exception exceptions thrown from the cloud or from serialization/deserialization.
      */
-    List<VirtualMachineExtensionInner> resources();
+    Map<String, VirtualMachineExtension> extensions() throws Exception;
 
     /**
      * @return the plan value
@@ -972,6 +973,14 @@ public interface VirtualMachine extends
              * @return the stage representing updatable VM definition
              */
             VirtualMachineExtension.Update updateExtension(String name);
+
+            /**
+             * Detaches an extension with the given name from the virtual machine.
+             *
+             * @param name the reference name for the extension to be removed/uninstalled
+             * @return the stage representing updatable VM definition
+             */
+            Update withoutExtension(String name);
         }
     }
 
