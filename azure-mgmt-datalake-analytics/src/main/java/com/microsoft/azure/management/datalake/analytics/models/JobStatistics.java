@@ -23,6 +23,12 @@ public class JobStatistics {
     private DateTime lastUpdateTimeUtc;
 
     /**
+     * the job finalizing start time.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime finalizingTimeUtc;
+
+    /**
      * the list of stages for the job.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -35,6 +41,15 @@ public class JobStatistics {
      */
     public DateTime lastUpdateTimeUtc() {
         return this.lastUpdateTimeUtc;
+    }
+
+    /**
+     * Get the finalizingTimeUtc value.
+     *
+     * @return the finalizingTimeUtc value
+     */
+    public DateTime finalizingTimeUtc() {
+        return this.finalizingTimeUtc;
     }
 
     /**

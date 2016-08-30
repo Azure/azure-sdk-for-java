@@ -39,8 +39,8 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUser;
 import com.microsoft.azure.batch.protocol.models.DisableComputeNodeSchedulingOption;
 import com.microsoft.azure.batch.protocol.models.NodeUpdateUserParameter;
-import com.microsoft.azure.batch.protocol.models.PageImpl;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -48,6 +48,7 @@ import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -74,10 +75,9 @@ public interface ComputeNodes {
      * @param nodeId The id of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback);
     /**
      * Adds a user account to the specified compute node.
      *
@@ -100,10 +100,20 @@ public interface ComputeNodes {
      * @param user The user account to be created.
      * @param computeNodeAddUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Adds a user account to the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @param computeNodeAddUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions);
 
     /**
      * Deletes a user account from the specified compute node.
@@ -125,10 +135,9 @@ public interface ComputeNodes {
      * @param nodeId The id of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback);
     /**
      * Deletes a user account from the specified compute node.
      *
@@ -151,10 +160,20 @@ public interface ComputeNodes {
      * @param userName The name of the user account to delete.
      * @param computeNodeDeleteUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes a user account from the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @param computeNodeDeleteUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions);
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
@@ -178,10 +197,9 @@ public interface ComputeNodes {
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback);
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
      *
@@ -206,10 +224,21 @@ public interface ComputeNodes {
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param computeNodeUpdateUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param computeNodeUpdateUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions);
 
     /**
      * Gets information about the specified compute node.
@@ -229,10 +258,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback);
     /**
      * Gets information about the specified compute node.
      *
@@ -253,10 +281,19 @@ public interface ComputeNodes {
      * @param nodeId The id of the compute node that you want to get information about.
      * @param computeNodeGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback);
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node that you want to get information about.
+     * @param computeNodeGetOptions Additional parameters for the operation
+     * @return the observable to the ComputeNode object
+     */
+    Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions);
 
     /**
      * Restarts the specified compute node.
@@ -276,10 +313,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
     /**
      * Restarts the specified compute node.
      *
@@ -302,10 +338,20 @@ public interface ComputeNodes {
      * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Restarts the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node that you want to restart.
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeRebootOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions);
 
     /**
      * Reinstalls the operating system on the specified compute node.
@@ -325,10 +371,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
     /**
      * Reinstalls the operating system on the specified compute node.
      *
@@ -351,10 +396,20 @@ public interface ComputeNodes {
      * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node that you want to restart.
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeReimageOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions);
 
     /**
      * Disables task scheduling on the specified compute node.
@@ -374,10 +429,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node on which you want to disable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
     /**
      * Disables task scheduling on the specified compute node.
      *
@@ -400,10 +454,20 @@ public interface ComputeNodes {
      * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions);
 
     /**
      * Enables task scheduling on the specified compute node.
@@ -423,10 +487,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
     /**
      * Enables task scheduling on the specified compute node.
      *
@@ -447,10 +510,19 @@ public interface ComputeNodes {
      * @param nodeId The id of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions);
 
     /**
      * Gets the settings required for remote login to a compute node.
@@ -470,10 +542,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node for which to obtain the remote login settings.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback);
     /**
      * Gets the settings required for remote login to a compute node.
      *
@@ -494,10 +565,19 @@ public interface ComputeNodes {
      * @param nodeId The id of the compute node for which to obtain the remote login settings.
      * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback);
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
+     */
+    Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions);
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
@@ -517,10 +597,9 @@ public interface ComputeNodes {
      * @param poolId The id of the pool that contains the compute node.
      * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback);
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
      *
@@ -541,10 +620,19 @@ public interface ComputeNodes {
      * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback);
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     *
+     * @param poolId The id of the pool that contains the compute node.
+     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
+     * @return the observable to the InputStream object
+     */
+    Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions);
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -562,10 +650,9 @@ public interface ComputeNodes {
      *
      * @param poolId The id of the pool from which you want to list nodes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback);
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -584,10 +671,18 @@ public interface ComputeNodes {
      * @param poolId The id of the pool from which you want to list nodes.
      * @param computeNodeListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback);
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The id of the pool from which you want to list nodes.
+     * @param computeNodeListOptions Additional parameters for the operation
+     * @return the observable to the List&lt;ComputeNode&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions);
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -598,7 +693,7 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -606,10 +701,9 @@ public interface ComputeNodes {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
     /**
      * Lists the compute nodes in the specified pool.
      *
@@ -620,7 +714,7 @@ public interface ComputeNodes {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+    ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
      * Lists the compute nodes in the specified pool.
@@ -629,9 +723,17 @@ public interface ComputeNodes {
      * @param computeNodeListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback);
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param computeNodeListNextOptions Additional parameters for the operation
+     * @return the observable to the List&lt;ComputeNode&gt; object
+     */
+    Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions);
 
 }

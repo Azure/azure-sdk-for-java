@@ -8,12 +8,13 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -98,6 +99,10 @@ class AvailabilitySetImpl
     }
 
     @Override
+    public Observable<AvailabilitySet> applyAsync() {
+        return this.createAsync();
+    }
+
     public ServiceCall<AvailabilitySet> applyAsync(ServiceCallback<AvailabilitySet> callback) {
         return this.createAsync(callback);
     }
@@ -105,7 +110,7 @@ class AvailabilitySetImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public AvailabilitySet createResource() throws Exception {
         ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
         this.setInner(response.getBody());
         this.idOfVMsInSet = null;
@@ -113,18 +118,16 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ResourceServiceCall<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<AvailabilitySetInner>() {
-            @Override
-            public void success(ServiceResponse<AvailabilitySetInner> response) {
-                idOfVMsInSet = null;
-            }
-        });
-        this.client.createOrUpdateAsync(this.resourceGroupName(),
-                this.name(),
-                this.inner(),
-                serviceCall.wrapCallBack(callback));
-        return serviceCall;
+    public Observable<AvailabilitySet> createResourceAsync() {
+        final AvailabilitySetImpl self = this;
+        return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySet>() {
+                    @Override
+                    public AvailabilitySet call(ServiceResponse<AvailabilitySetInner> availabilitySetInner) {
+                        self.setInner(availabilitySetInner.getBody());
+                        idOfVMsInSet = null;
+                        return self;
+                    }
+                });
     }
 }

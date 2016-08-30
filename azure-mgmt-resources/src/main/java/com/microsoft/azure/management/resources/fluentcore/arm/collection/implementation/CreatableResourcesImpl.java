@@ -3,12 +3,15 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection.imple
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.observables.BlockingObservable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,21 +40,34 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     @Override
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
-        ServiceCall<CreatedResources<T>> serviceCall = createAsync(null, creatables);
-        return serviceCall.get().getBody();
+        return BlockingObservable.from(createAsync(creatables)).single();
     }
 
     @Override
     @SafeVarargs
-    public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback,
-                                                        Creatable<T> ... creatables) {
+    public final Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
         CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
 
-        final CreateResourcesServiceCall createResourcesServiceCall = new CreateResourcesServiceCall();
-        ServiceCall<CreatableResourcesRoot<T>> serviceCall = rootResource.createAsync(createResourcesServiceCall.wrapCallback(callback));
-        createResourcesServiceCall.setInnerServiceCall(serviceCall);
-        return createResourcesServiceCall;
+        return rootResource.createAsync()
+                .map(new Func1<CreatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableResourcesRoot<T> tCreatableResourcesRoot) {
+                        return new CreatedResourcesImpl<T>(tCreatableResourcesRoot);
+                    }
+                });
+    }
+
+    @Override
+    @SafeVarargs
+    public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
+        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+            @Override
+            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
+                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
+                return new ServiceResponse<>(ts, null);
+            }
+        }), callback);
     }
 
     /**
@@ -205,7 +221,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatableResourcesRootImpl<ResourceT extends Resource>
-            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl, Resource>
+            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl<ResourceT>>
             implements CreatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.
@@ -239,13 +255,12 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public ServiceCall<Resource> createResourceAsync(ServiceCallback<Resource> serviceCallback) {
-            serviceCallback.success(new ServiceResponse<Resource>(this, null));
-            return null;
+        public Observable<CreatableResourcesRoot<ResourceT>> createResourceAsync() {
+            return Observable.just((CreatableResourcesRoot<ResourceT>) this);
         }
 
         @Override
-        public Resource createResource() throws Exception {
+        public CreatableResourcesRoot<ResourceT> createResource() throws Exception {
             return this;
         }
 
@@ -281,64 +296,6 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         @Override
         public Map<String, String> tags() {
             return null;
-        }
-    }
-
-    /**
-     * Represents a collection of in-progress Create service calls in the batch.
-     */
-    private class CreateResourcesServiceCall extends ServiceCall<CreatedResources<T>> {
-        private ServiceCall<CreatableResourcesRoot<T>> innerServiceCall;
-
-        /**
-         * Creates CreateResourcesServiceCall.
-         */
-        CreateResourcesServiceCall() {
-            super(null);
-        }
-
-        /**
-         * Sets the inner service call.
-         *
-         * @param inner the service call to wrap
-         */
-        public void setInnerServiceCall(ServiceCall<CreatableResourcesRoot<T>> inner) {
-            this.innerServiceCall = inner;
-        }
-
-        /**
-         * Cancels all the service calls currently executing.
-         */
-        public void cancel() {
-            this.innerServiceCall.cancel(true);
-        }
-
-        /**
-         * @return true if the call has been canceled; false otherwise.
-         */
-        public boolean isCancelled() {
-            return this.innerServiceCall.isCancelled();
-        }
-
-        ServiceCallback<CreatableResourcesRoot<T>> wrapCallback(final ServiceCallback<CreatedResources<T>> innerCallback) {
-            final CreateResourcesServiceCall self = this;
-            return new ServiceCallback<CreatableResourcesRoot<T>>() {
-                @Override
-                public void failure(Throwable t) {
-                    if (innerCallback != null) {
-                        innerCallback.failure((t));
-                    }
-                    self.failure(t); // Signal Future
-                }
-
-                @Override
-                public void success(ServiceResponse<CreatableResourcesRoot<T>> result) {
-                    if (innerCallback != null) {
-                        innerCallback.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null));
-                    }
-                    self.success(new ServiceResponse<CreatedResources<T>>(new CreatedResourcesImpl<>(result.getBody()), null)); // Signal Future
-                }
-            };
         }
     }
 }

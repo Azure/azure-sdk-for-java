@@ -14,10 +14,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
  * @param <FluentModelT> the fluent model type representing the resource
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the implementation type of the fluent model
- * @param <ResourceT> the fluent model or one of the base interface of fluent model
  */
-public abstract class CreatableUpdatableImpl<FluentModelT extends ResourceT, InnerModelT, FluentModelImplT, ResourceT>
-        extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT, ResourceT> {
+public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+        extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT> {
 
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);

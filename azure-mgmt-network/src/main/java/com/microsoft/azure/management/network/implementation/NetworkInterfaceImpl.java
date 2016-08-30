@@ -19,12 +19,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -89,6 +90,11 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterface apply() throws Exception {
         return this.create();
+    }
+
+    @Override
+    public Observable<NetworkInterface> applyAsync() {
+        return createAsync();
     }
 
     @Override
@@ -361,7 +367,7 @@ class NetworkInterfaceImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public Resource createResource() throws Exception {
+    public NetworkInterface createResource() throws Exception {
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
@@ -384,22 +390,22 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
+    public Observable<NetworkInterface> createResourceAsync() {
+        final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ResourceServiceCall<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkInterfaceInner>() {
-            @Override
-            public void success(ServiceResponse<NetworkInterfaceInner> response) {
-                clearCachedRelatedResources();
-                initializeNicIpConfigurations();
-            }
-        });
 
-        this.client.createOrUpdateAsync(this.resourceGroupName(),
+        return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
-                this.inner(),
-                serviceCall.wrapCallBack((callback)));
-        return serviceCall;
+                this.inner())
+                .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
+                    @Override
+                    public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
+                        self.setInner(networkInterfaceInner.getBody());
+                        clearCachedRelatedResources();
+                        initializeNicIpConfigurations();
+                        return self;
+                    }
+                });
     }
 
     /**************************************************.

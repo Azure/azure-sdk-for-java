@@ -10,24 +10,26 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -57,11 +59,11 @@ public final class ExpressRouteServiceProvidersInner {
     interface ExpressRouteServiceProvidersService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
-        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -74,62 +76,74 @@ public final class ExpressRouteServiceProvidersInner {
      * @return the List&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<ExpressRouteServiceProviderInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> response = listDelegate(call.execute());
-        PagedList<ExpressRouteServiceProviderInner> result = new PagedList<ExpressRouteServiceProviderInner>(response.getBody()) {
+        ServiceResponse<Page<ExpressRouteServiceProviderInner>> response = listSinglePageAsync().toBlocking().single();
+        PagedList<ExpressRouteServiceProviderInner> pagedList = new PagedList<ExpressRouteServiceProviderInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
+            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<ExpressRouteServiceProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
      * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteServiceProviderInner>> listAsync(final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+     *
+     * @return the observable to the List&lt;ExpressRouteServiceProviderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ExpressRouteServiceProviderInner>>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(ServiceResponse<Page<ExpressRouteServiceProviderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+     *
+     * @return the List&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<ExpressRouteServiceProviderInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteServiceProviderInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> result = listDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteServiceProviderInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -148,12 +162,15 @@ public final class ExpressRouteServiceProvidersInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listNextDelegate(call.execute());
+    public ServiceResponse<PagedList<ExpressRouteServiceProviderInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ExpressRouteServiceProviderInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ExpressRouteServiceProviderInner> pagedList = new PagedList<ExpressRouteServiceProviderInner>(response.getBody()) {
+            @Override
+            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ExpressRouteServiceProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -162,35 +179,59 @@ public final class ExpressRouteServiceProvidersInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<ExpressRouteServiceProviderInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<ExpressRouteServiceProviderInner>> serviceCall, final ListOperationCallback<ExpressRouteServiceProviderInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ExpressRouteServiceProviderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listNextAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ExpressRouteServiceProviderInner>>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(ServiceResponse<Page<ExpressRouteServiceProviderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
+     *
+    ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ExpressRouteServiceProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ExpressRouteServiceProviderInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ExpressRouteServiceProviderInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ExpressRouteServiceProviderInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<ExpressRouteServiceProviderInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

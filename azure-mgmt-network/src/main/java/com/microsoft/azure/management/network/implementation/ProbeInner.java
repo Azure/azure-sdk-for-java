@@ -26,7 +26,7 @@ public class ProbeInner extends SubResource {
     private List<SubResource> loadBalancingRules;
 
     /**
-     * Gets or sets the protocol of the end point. Possible values are http pr
+     * Gets or sets the protocol of the end point. Possible values are http or
      * Tcp. If Tcp is specified, a received ACK is required for the probe to
      * be successful. If http is specified,a 200 OK response from the
      * specifies URI is required for the probe to be successful. Possible
@@ -55,7 +55,7 @@ public class ProbeInner extends SubResource {
     /**
      * Gets or sets the number of probes where if no response, will result in
      * stopping further traffic from being delivered to the endpoint. This
-     * values allows endponints to be taken out of rotation faster or slower
+     * values allows endpoints to be taken out of rotation faster or slower
      * than the typical times used in Azure.
      */
     @JsonProperty(value = "properties.numberOfProbes")

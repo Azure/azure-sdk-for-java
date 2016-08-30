@@ -105,7 +105,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .apply();
 
         Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 2);
-        return null;
+        return virtualMachine;
     }
 
     @Override

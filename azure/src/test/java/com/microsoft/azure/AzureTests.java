@@ -258,12 +258,12 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
+        StorageAccount storageAccount = azure.storageAccounts().define("mystg123")
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertSame(storageAccount.name(), "my-stg1");
+        Assert.assertEquals(storageAccount.name(), "mystg123");
     }
 }

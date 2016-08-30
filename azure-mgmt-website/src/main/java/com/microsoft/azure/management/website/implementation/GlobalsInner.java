@@ -10,16 +10,20 @@ package com.microsoft.azure.management.website.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -29,6 +33,8 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -58,55 +64,83 @@ public final class GlobalsInner {
     interface GlobalsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Web/publishingCredentials")
-        Call<ResponseBody> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSubscriptionPublishingCredentials(@Path("subscriptionId") String subscriptionId, @Body UserInner requestMessage, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions")
-        Call<ResponseBody> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") String sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSubscriptionGeoRegions(@Path("subscriptionId") String subscriptionId, @Query("sku") String sku, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
-        Call<ResponseBody> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllCertificates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
-        Call<ResponseBody> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllServerFarms(@Path("subscriptionId") String subscriptionId, @Query("detailed") Boolean detailed, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/sites")
-        Call<ResponseBody> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllSites(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
-        Call<ResponseBody> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/managedHostingEnvironments")
-        Call<ResponseBody> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllManagedHostingEnvironments(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/classicMobileServices")
-        Call<ResponseBody> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllClassicMobileServices(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers")
-        Call<ResponseBody> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPremierAddOnOffers(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable")
-        Call<ResponseBody> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> isHostingEnvironmentNameAvailable(@Path("subscriptionId") String subscriptionId, @Query("name") String name, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/ishostingenvironmentnameavailable/{name}")
-        Call<ResponseBody> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> isHostingEnvironmentWithLegacyNameAvailable(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/checknameavailability")
-        Call<ResponseBody> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Body ResourceNameAvailabilityRequestInner request, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getSubscriptionGeoRegionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllCertificatesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllServerFarmsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllSitesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllHostingEnvironmentsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllManagedHostingEnvironmentsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllClassicMobileServicesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -119,49 +153,43 @@ public final class GlobalsInner {
      * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<UserInner> getSubscriptionPublishingCredentials() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getSubscriptionPublishingCredentialsDelegate(call.execute());
+        return getSubscriptionPublishingCredentialsAsync().toBlocking().single();
     }
 
     /**
      * Gets publishing credentials for the subscription owner.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getSubscriptionPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceCall.create(getSubscriptionPublishingCredentialsAsync(), serviceCallback);
+    }
+
+    /**
+     * Gets publishing credentials for the subscription owner.
+     *
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> getSubscriptionPublishingCredentialsAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<UserInner> clientResponse = getSubscriptionPublishingCredentialsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getSubscriptionPublishingCredentials(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
+                @Override
+                public Observable<ServiceResponse<UserInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<UserInner> clientResponse = getSubscriptionPublishingCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<UserInner> getSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -181,18 +209,7 @@ public final class GlobalsInner {
      * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<UserInner> updateSubscriptionPublishingCredentials(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (requestMessage == null) {
-            throw new IllegalArgumentException("Parameter requestMessage is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(requestMessage);
-        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return updateSubscriptionPublishingCredentialsDelegate(call.execute());
+        return updateSubscriptionPublishingCredentialsAsync(requestMessage).toBlocking().single();
     }
 
     /**
@@ -200,9 +217,19 @@ public final class GlobalsInner {
      *
      * @param requestMessage requestMessage with new publishing credentials
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> updateSubscriptionPublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceCall.create(updateSubscriptionPublishingCredentialsAsync(requestMessage), serviceCallback);
+    }
+
+    /**
+     * Updates publishing credentials for the subscription owner.
+     *
+     * @param requestMessage requestMessage with new publishing credentials
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> updateSubscriptionPublishingCredentialsAsync(UserInner requestMessage) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -213,26 +240,18 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(requestMessage);
-        Call<ResponseBody> call = service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<UserInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<UserInner> clientResponse = updateSubscriptionPublishingCredentialsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateSubscriptionPublishingCredentials(this.client.subscriptionId(), requestMessage, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
+                @Override
+                public Observable<ServiceResponse<UserInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<UserInner> clientResponse = updateSubscriptionPublishingCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<UserInner> updateSubscriptionPublishingCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -248,27 +267,59 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the GeoRegionCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<GeoRegionCollectionInner> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final String sku = null;
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getSubscriptionGeoRegionsDelegate(call.execute());
+    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync().toBlocking().single();
+        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+            @Override
+            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets list of available geo regions.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<GeoRegionCollectionInner> getSubscriptionGeoRegionsAsync(final ServiceCallback<GeoRegionCollectionInner> serviceCallback) {
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getSubscriptionGeoRegionsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(String nextPageLink) {
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsAsync() {
+        return getSubscriptionGeoRegionsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -276,26 +327,18 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String sku = null;
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<GeoRegionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<GeoRegionCollectionInner> clientResponse = getSubscriptionGeoRegionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<GeoRegionInner>> result = getSubscriptionGeoRegionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -305,17 +348,17 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the GeoRegionCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<GeoRegionCollectionInner> getSubscriptionGeoRegions(String sku) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getSubscriptionGeoRegionsDelegate(call.execute());
+    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegions(final String sku) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync(sku).toBlocking().single();
+        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+            @Override
+            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -323,40 +366,67 @@ public final class GlobalsInner {
      *
      * @param sku Filter only to regions that support this sku
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<GeoRegionCollectionInner> getSubscriptionGeoRegionsAsync(String sku, final ServiceCallback<GeoRegionCollectionInner> serviceCallback) {
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final String sku, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getSubscriptionGeoRegionsSinglePageAsync(sku),
+            new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(String nextPageLink) {
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param sku Filter only to regions that support this sku
+     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsAsync(final String sku) {
+        return getSubscriptionGeoRegionsSinglePageAsync(sku)
+            .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Filter only to regions that support this sku
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsSinglePageAsync(final String sku) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<GeoRegionCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<GeoRegionCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<GeoRegionCollectionInner> clientResponse = getSubscriptionGeoRegionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getSubscriptionGeoRegions(this.client.subscriptionId(), sku, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<GeoRegionInner>> result = getSubscriptionGeoRegionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<GeoRegionCollectionInner> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GeoRegionCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<GeoRegionCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<GeoRegionInner>> getSubscriptionGeoRegionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -367,57 +437,82 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<CertificateCollectionInner> getAllCertificates() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllCertificatesDelegate(call.execute());
+    public ServiceResponse<PagedList<CertificateInner>> getAllCertificates() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CertificateInner>> response = getAllCertificatesSinglePageAsync().toBlocking().single();
+        PagedList<CertificateInner> pagedList = new PagedList<CertificateInner>(response.getBody()) {
+            @Override
+            public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Get all certificates for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<CertificateCollectionInner> getAllCertificatesAsync(final ServiceCallback<CertificateCollectionInner> serviceCallback) {
+    public ServiceCall<List<CertificateInner>> getAllCertificatesAsync(final ListOperationCallback<CertificateInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllCertificatesSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(String nextPageLink) {
+                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @return the observable to the List&lt;CertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesAsync() {
+        return getAllCertificatesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<CertificateCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateCollectionInner> clientResponse = getAllCertificatesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllCertificates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateInner>> result = getAllCertificatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<CertificateCollectionInner> getAllCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<CertificateCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<CertificateInner>> getAllCertificatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -428,27 +523,59 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ServerFarmCollectionInner> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final Boolean detailed = null;
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllServerFarmsDelegate(call.execute());
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync().toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets all App Service Plans for a subcription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerFarmCollectionInner> getAllServerFarmsAsync(final ServiceCallback<ServerFarmCollectionInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllServerFarmsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsAsync() {
+        return getAllServerFarmsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -456,26 +583,18 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean detailed = null;
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ServerFarmCollectionInner> clientResponse = getAllServerFarmsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getAllServerFarmsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -486,17 +605,17 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ServerFarmCollectionInner> getAllServerFarms(Boolean detailed) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllServerFarmsDelegate(call.execute());
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarms(final Boolean detailed) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync(detailed).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -505,40 +624,69 @@ public final class GlobalsInner {
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerFarmCollectionInner> getAllServerFarmsAsync(Boolean detailed, final ServiceCallback<ServerFarmCollectionInner> serviceCallback) {
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final Boolean detailed, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllServerFarmsSinglePageAsync(detailed),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
+                 Retrieval of all properties may increase the API latency.
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsAsync(final Boolean detailed) {
+        return getAllServerFarmsSinglePageAsync(detailed)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
+                 Retrieval of all properties may increase the API latency.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsSinglePageAsync(final Boolean detailed) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ServerFarmCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ServerFarmCollectionInner> clientResponse = getAllServerFarmsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllServerFarms(this.client.subscriptionId(), detailed, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getAllServerFarmsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ServerFarmCollectionInner> getAllServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getAllServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -549,57 +697,82 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<SiteCollectionInner> getAllSites() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllSitesDelegate(call.execute());
+    public ServiceResponse<PagedList<SiteInner>> getAllSites() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = getAllSitesSinglePageAsync().toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets all Web Apps for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<SiteCollectionInner> getAllSitesAsync(final ServiceCallback<SiteCollectionInner> serviceCallback) {
+    public ServiceCall<List<SiteInner>> getAllSitesAsync(final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllSitesSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesAsync() {
+        return getAllSitesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<SiteCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SiteCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SiteCollectionInner> clientResponse = getAllSitesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllSites(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getAllSitesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<SiteCollectionInner> getAllSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<SiteCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<SiteInner>> getAllSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -610,57 +783,82 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<HostingEnvironmentCollectionInner> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllHostingEnvironmentsDelegate(call.execute());
+    public ServiceResponse<PagedList<HostingEnvironmentInner>> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsSinglePageAsync().toBlocking().single();
+        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<HostingEnvironmentCollectionInner> getAllHostingEnvironmentsAsync(final ServiceCallback<HostingEnvironmentCollectionInner> serviceCallback) {
+    public ServiceCall<List<HostingEnvironmentInner>> getAllHostingEnvironmentsAsync(final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllHostingEnvironmentsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsAsync() {
+        return getAllHostingEnvironmentsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<HostingEnvironmentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<HostingEnvironmentCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<HostingEnvironmentCollectionInner> clientResponse = getAllHostingEnvironmentsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<HostingEnvironmentInner>> result = getAllHostingEnvironmentsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<HostingEnvironmentCollectionInner> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<HostingEnvironmentCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<HostingEnvironmentInner>> getAllHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HostingEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -671,57 +869,82 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ManagedHostingEnvironmentCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ManagedHostingEnvironmentCollectionInner> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllManagedHostingEnvironmentsDelegate(call.execute());
+    public ServiceResponse<PagedList<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsSinglePageAsync().toBlocking().single();
+        PagedList<ManagedHostingEnvironmentInner> pagedList = new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets all managed hosting environments for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ManagedHostingEnvironmentCollectionInner> getAllManagedHostingEnvironmentsAsync(final ServiceCallback<ManagedHostingEnvironmentCollectionInner> serviceCallback) {
+    public ServiceCall<List<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsAsync(final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllManagedHostingEnvironmentsSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @return the observable to the List&lt;ManagedHostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsAsync() {
+        return getAllManagedHostingEnvironmentsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ManagedHostingEnvironmentCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ManagedHostingEnvironmentCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ManagedHostingEnvironmentCollectionInner> clientResponse = getAllManagedHostingEnvironmentsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllManagedHostingEnvironments(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> result = getAllManagedHostingEnvironmentsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedHostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ManagedHostingEnvironmentCollectionInner> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ManagedHostingEnvironmentCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ManagedHostingEnvironmentCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ManagedHostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedHostingEnvironmentInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -732,57 +955,82 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ClassicMobileServiceCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<ClassicMobileServiceCollectionInner> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllClassicMobileServicesDelegate(call.execute());
+    public ServiceResponse<PagedList<ClassicMobileServiceInner>> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesSinglePageAsync().toBlocking().single();
+        PagedList<ClassicMobileServiceInner> pagedList = new PagedList<ClassicMobileServiceInner>(response.getBody()) {
+            @Override
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets all mobile services for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ClassicMobileServiceCollectionInner> getAllClassicMobileServicesAsync(final ServiceCallback<ClassicMobileServiceCollectionInner> serviceCallback) {
+    public ServiceCall<List<ClassicMobileServiceInner>> getAllClassicMobileServicesAsync(final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllClassicMobileServicesSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(String nextPageLink) {
+                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @return the observable to the List&lt;ClassicMobileServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesAsync() {
+        return getAllClassicMobileServicesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(ServiceResponse<Page<ClassicMobileServiceInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ClassicMobileServiceCollectionInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ClassicMobileServiceCollectionInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ClassicMobileServiceCollectionInner> clientResponse = getAllClassicMobileServicesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getAllClassicMobileServices(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ClassicMobileServiceInner>> result = getAllClassicMobileServicesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ClassicMobileServiceInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ClassicMobileServiceCollectionInner> getAllClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ClassicMobileServiceCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ClassicMobileServiceCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ClassicMobileServiceInner>> getAllClassicMobileServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ClassicMobileServiceInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ClassicMobileServiceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -796,49 +1044,43 @@ public final class GlobalsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> listPremierAddOnOffers() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listPremierAddOnOffersDelegate(call.execute());
+        return listPremierAddOnOffersAsync().toBlocking().single();
     }
 
     /**
      * List premier add on offers.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> listPremierAddOnOffersAsync(final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(listPremierAddOnOffersAsync(), serviceCallback);
+    }
+
+    /**
+     * List premier add on offers.
+     *
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> listPremierAddOnOffersAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = listPremierAddOnOffersDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.listPremierAddOnOffers(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = listPremierAddOnOffersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> listPremierAddOnOffersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -858,17 +1100,7 @@ public final class GlobalsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> isHostingEnvironmentNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return isHostingEnvironmentNameAvailableDelegate(call.execute());
+        return isHostingEnvironmentNameAvailableAsync(name).toBlocking().single();
     }
 
     /**
@@ -876,9 +1108,19 @@ public final class GlobalsInner {
      *
      * @param name Hosting environment name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> isHostingEnvironmentNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(isHostingEnvironmentNameAvailableAsync(name), serviceCallback);
+    }
+
+    /**
+     * Whether hosting environment name is available.
+     *
+     * @param name Hosting environment name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> isHostingEnvironmentNameAvailableAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -888,26 +1130,18 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = isHostingEnvironmentNameAvailableDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.isHostingEnvironmentNameAvailable(this.client.subscriptionId(), name, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = isHostingEnvironmentNameAvailableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> isHostingEnvironmentNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -927,17 +1161,7 @@ public final class GlobalsInner {
      * @return the Object object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return isHostingEnvironmentWithLegacyNameAvailableDelegate(call.execute());
+        return isHostingEnvironmentWithLegacyNameAvailableAsync(name).toBlocking().single();
     }
 
     /**
@@ -945,9 +1169,19 @@ public final class GlobalsInner {
      *
      * @param name Hosting environment name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> isHostingEnvironmentWithLegacyNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(isHostingEnvironmentWithLegacyNameAvailableAsync(name), serviceCallback);
+    }
+
+    /**
+     * Whether hosting environment name is available.
+     *
+     * @param name Hosting environment name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> isHostingEnvironmentWithLegacyNameAvailableAsync(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
@@ -957,26 +1191,18 @@ public final class GlobalsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<Object> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Object> clientResponse = isHostingEnvironmentWithLegacyNameAvailableDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.isHostingEnvironmentWithLegacyNameAvailable(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = isHostingEnvironmentWithLegacyNameAvailableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -996,18 +1222,7 @@ public final class GlobalsInner {
      * @return the ResourceNameAvailabilityInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailability(ResourceNameAvailabilityRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (request == null) {
-            throw new IllegalArgumentException("Parameter request is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(request);
-        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return checkNameAvailabilityDelegate(call.execute());
+        return checkNameAvailabilityAsync(request).toBlocking().single();
     }
 
     /**
@@ -1015,9 +1230,19 @@ public final class GlobalsInner {
      *
      * @param request Name availability request
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequestInner request, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceCall.create(checkNameAvailabilityAsync(request), serviceCallback);
+    }
+
+    /**
+     * Check if resource name is available.
+     *
+     * @param request Name availability request
+     * @return the observable to the ResourceNameAvailabilityInner object
+     */
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityAsync(ResourceNameAvailabilityRequestInner request) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1028,31 +1253,639 @@ public final class GlobalsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(request);
-        Call<ResponseBody> call = service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<ResourceNameAvailabilityInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<ResourceNameAvailabilityInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<ResourceNameAvailabilityInner> clientResponse = checkNameAvailabilityDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.checkNameAvailability(this.client.subscriptionId(), request, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ResourceNameAvailabilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ResourceNameAvailabilityInner> clientResponse = checkNameAvailabilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ResourceNameAvailabilityInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ResourceNameAvailabilityInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+            @Override
+            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<GeoRegionInner>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink, final ServiceCall<List<GeoRegionInner>> serviceCall, final ListOperationCallback<GeoRegionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(String nextPageLink) {
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink) {
+        return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+    ServiceResponse<PageImpl<GeoRegionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getSubscriptionGeoRegionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<GeoRegionInner>> result = getSubscriptionGeoRegionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GeoRegionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<GeoRegionInner>> getSubscriptionGeoRegionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<GeoRegionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<GeoRegionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<CertificateInner>> getAllCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CertificateInner>> response = getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<CertificateInner> pagedList = new PagedList<CertificateInner>(response.getBody()) {
+            @Override
+            public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<CertificateInner>> getAllCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateInner>> serviceCall, final ListOperationCallback<CertificateInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllCertificatesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(String nextPageLink) {
+                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;CertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextAsync(final String nextPageLink) {
+        return getAllCertificatesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+    ServiceResponse<PageImpl<CertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllCertificatesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateInner>> result = getAllCertificatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CertificateInner>> getAllCertificatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CertificateInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CertificateInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getAllServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllServerFarmsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextAsync(final String nextPageLink) {
+        return getAllServerFarmsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllServerFarmsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getAllServerFarmsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getAllServerFarmsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<SiteInner>> getAllSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SiteInner>> response = getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> getAllSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllSitesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextAsync(final String nextPageLink) {
+        return getAllSitesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllSitesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getAllSitesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SiteInner>> getAllSitesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<SiteInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<SiteInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<HostingEnvironmentInner>> getAllHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<HostingEnvironmentInner>> getAllHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<HostingEnvironmentInner>> serviceCall, final ListOperationCallback<HostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+    ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllHostingEnvironmentsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<HostingEnvironmentInner>> result = getAllHostingEnvironmentsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<HostingEnvironmentInner>> getAllHostingEnvironmentsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HostingEnvironmentInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ManagedHostingEnvironmentInner> pagedList = new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
+            @Override
+            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink, final ServiceCall<List<ManagedHostingEnvironmentInner>> serviceCall, final ListOperationCallback<ManagedHostingEnvironmentInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(String nextPageLink) {
+                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ManagedHostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+    ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllManagedHostingEnvironmentsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> result = getAllManagedHostingEnvironmentsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedHostingEnvironmentInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ManagedHostingEnvironmentInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedHostingEnvironmentInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<PagedList<ClassicMobileServiceInner>> getAllClassicMobileServicesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<ClassicMobileServiceInner> pagedList = new PagedList<ClassicMobileServiceInner>(response.getBody()) {
+            @Override
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ClassicMobileServiceInner>> getAllClassicMobileServicesNextAsync(final String nextPageLink, final ServiceCall<List<ClassicMobileServiceInner>> serviceCall, final ListOperationCallback<ClassicMobileServiceInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllClassicMobileServicesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(String nextPageLink) {
+                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;ClassicMobileServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextAsync(final String nextPageLink) {
+        return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(ServiceResponse<Page<ClassicMobileServiceInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+    ServiceResponse<PageImpl<ClassicMobileServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllClassicMobileServicesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ClassicMobileServiceInner>> result = getAllClassicMobileServicesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ClassicMobileServiceInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ClassicMobileServiceInner>> getAllClassicMobileServicesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ClassicMobileServiceInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ClassicMobileServiceInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

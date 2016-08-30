@@ -12,7 +12,7 @@ import java.util.List;
 import com.microsoft.azure.management.network.EffectiveRoute;
 
 /**
- * Response for list effective route api servive call.
+ * Response for list effective route api service call.
  */
 public class EffectiveRouteListResultInner {
     /**

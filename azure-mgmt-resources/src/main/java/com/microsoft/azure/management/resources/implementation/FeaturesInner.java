@@ -10,19 +10,19 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -30,6 +30,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -59,27 +61,27 @@ public final class FeaturesInner {
     interface FeaturesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
-        Call<ResponseBody> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
-        Call<ResponseBody> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
-        Call<ResponseBody> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> register(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("featureName") String featureName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
-        Call<ResponseBody> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
-        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -92,62 +94,74 @@ public final class FeaturesInner {
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<FeatureResultInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<FeatureResultInner>> response = listAllDelegate(call.execute());
-        PagedList<FeatureResultInner> result = new PagedList<FeatureResultInner>(response.getBody()) {
+        ServiceResponse<Page<FeatureResultInner>> response = listAllSinglePageAsync().toBlocking().single();
+        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listAllNext(nextPageLink).getBody();
+            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAllAsync(final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listAllSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(String nextPageLink) {
+                    return listAllNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listAllNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<FeatureResultInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FeatureResultInner>> result = listAllDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FeatureResultInner>> result = listAllDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -167,24 +181,14 @@ public final class FeaturesInner {
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<FeatureResultInner>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceProviderNamespace == null) {
-            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<FeatureResultInner>> response = listDelegate(call.execute());
-        PagedList<FeatureResultInner> result = new PagedList<FeatureResultInner>(response.getBody()) {
+        ServiceResponse<Page<FeatureResultInner>> response = listSinglePageAsync(resourceProviderNamespace).toBlocking().single();
+        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
+            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -192,9 +196,44 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAsync(final String resourceProviderNamespace, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(resourceProviderNamespace),
+            new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAsync(final String resourceProviderNamespace) {
+        return listSinglePageAsync(resourceProviderNamespace)
+            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider.
+     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listSinglePageAsync(final String resourceProviderNamespace) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -204,32 +243,18 @@ public final class FeaturesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<List<FeatureResultInner>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FeatureResultInner>> result = listDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.list(resourceProviderNamespace, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FeatureResultInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -250,20 +275,7 @@ public final class FeaturesInner {
      * @return the FeatureResultInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<FeatureResultInner> get(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceProviderNamespace == null) {
-            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
-        }
-        if (featureName == null) {
-            throw new IllegalArgumentException("Parameter featureName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
+        return getAsync(resourceProviderNamespace, featureName).toBlocking().single();
     }
 
     /**
@@ -272,9 +284,20 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
+        return ServiceCall.create(getAsync(resourceProviderNamespace, featureName), serviceCallback);
+    }
+
+    /**
+     * Get all features under the subscription.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param featureName Previewed feature name in the resource provider.
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<ServiceResponse<FeatureResultInner>> getAsync(String resourceProviderNamespace, String featureName) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -287,26 +310,18 @@ public final class FeaturesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<FeatureResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<FeatureResultInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<FeatureResultInner> clientResponse = getDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.get(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeatureResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FeatureResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FeatureResultInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<FeatureResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -327,20 +342,7 @@ public final class FeaturesInner {
      * @return the FeatureResultInner object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<FeatureResultInner> register(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceProviderNamespace == null) {
-            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
-        }
-        if (featureName == null) {
-            throw new IllegalArgumentException("Parameter featureName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return registerDelegate(call.execute());
+        return registerAsync(resourceProviderNamespace, featureName).toBlocking().single();
     }
 
     /**
@@ -349,9 +351,20 @@ public final class FeaturesInner {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
+        return ServiceCall.create(registerAsync(resourceProviderNamespace, featureName), serviceCallback);
+    }
+
+    /**
+     * Registers for a previewed feature of a resource provider.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param featureName Previewed feature name in the resource provider.
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<ServiceResponse<FeatureResultInner>> registerAsync(String resourceProviderNamespace, String featureName) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -364,26 +377,18 @@ public final class FeaturesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.register(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall<FeatureResultInner> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<FeatureResultInner>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<FeatureResultInner> clientResponse = registerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.register(resourceProviderNamespace, featureName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeatureResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FeatureResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FeatureResultInner> clientResponse = registerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<FeatureResultInner> registerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -402,12 +407,15 @@ public final class FeaturesInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<FeatureResultInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listAllNextDelegate(call.execute());
+    public ServiceResponse<PagedList<FeatureResultInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<FeatureResultInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+            @Override
+            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -416,35 +424,59 @@ public final class FeaturesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listAllNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(String nextPageLink) {
+                    return listAllNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listAllNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FeatureResultInner>> result = listAllNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FeatureResultInner>> result = listAllNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -463,12 +495,15 @@ public final class FeaturesInner {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<FeatureResultInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listNextDelegate(call.execute());
+    public ServiceResponse<PagedList<FeatureResultInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<FeatureResultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+            @Override
+            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -477,35 +512,59 @@ public final class FeaturesInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<FeatureResultInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<FeatureResultInner>> serviceCall, final ListOperationCallback<FeatureResultInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+    ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<FeatureResultInner>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<FeatureResultInner>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<FeatureResultInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<FeatureResultInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<FeatureResultInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
