@@ -39,17 +39,12 @@ public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentMo
         return (FluentModelImplT) this;
     }
 
-    /**
-     * Execute the update request.
-     *
-     * @return the updated resource
-     * @throws Exception exceptions from Azure
-     */
-    @SuppressWarnings("unchecked")
+    @Override
     public FluentModelT apply() throws Exception {
         return applyAsync().toBlocking().last();
     }
 
+    @Override
     public ServiceCall<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
         return observableToFuture(applyAsync(), callback);
     }

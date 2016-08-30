@@ -23,8 +23,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;

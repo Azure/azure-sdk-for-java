@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.TaskItem;
 import rx.Observable;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Represents a task that creates a resource when executed.
@@ -31,6 +32,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     public Observable<ResourceT> executeAsync() {
         if (this.created == null) {
             return this.resourceCreator.createResourceAsync()
+                    .subscribeOn(Schedulers.io())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
                         public void call(ResourceT resourceT) {
@@ -38,7 +40,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
                         }
                     });
         } else {
-            return Observable.empty();
+            return Observable.just(created);
         }
     }
 }

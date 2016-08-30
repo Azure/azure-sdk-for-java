@@ -14,8 +14,6 @@ import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.W
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
