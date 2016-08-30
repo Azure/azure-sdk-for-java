@@ -8,8 +8,6 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -92,18 +90,8 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroup apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<NetworkSecurityGroup> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<NetworkSecurityGroup> applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
-        return createAsync(callback);
     }
 
     // Setters (fluent)
@@ -156,16 +144,6 @@ class NetworkSecurityGroupImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public NetworkSecurityGroup createResource() throws Exception {
-        ServiceResponse<NetworkSecurityGroupInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeRulesFromInner();
-        return this;
-    }
-
     @Override
     public Observable<NetworkSecurityGroup> createResourceAsync() {
         final NetworkSecurityGroupImpl self = this;
