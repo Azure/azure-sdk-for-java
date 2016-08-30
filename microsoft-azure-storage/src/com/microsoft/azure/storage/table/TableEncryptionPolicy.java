@@ -127,6 +127,11 @@ public class TableEncryptionPolicy {
         }
 
         EncryptionData encryptionData = new EncryptionData();
+        if (encryptionData.getKeyWrappingMetadata() == null) {
+            encryptionData.setKeyWrappingMetadata(new HashMap<String, String>());
+        }
+        
+        encryptionData.getKeyWrappingMetadata().put("EncryptionLibrary", "Java " + Constants.HeaderConstants.USER_AGENT_VERSION);
         encryptionData.setEncryptionAgent(new EncryptionAgent(Constants.EncryptionConstants.ENCRYPTION_PROTOCOL_V1,
                 EncryptionAlgorithm.AES_CBC_256));
 
@@ -222,7 +227,7 @@ public class TableEncryptionPolicy {
         }
     }
     
-    Key decryptMetadataAndReturnCEK(String partitionKey, String rowKey, EntityProperty encryptionKeyProperty, 
+    CEKReturn decryptMetadataAndReturnCEK(String partitionKey, String rowKey, EntityProperty encryptionKeyProperty, 
             EntityProperty propertyDetailsProperty, EncryptionData encryptionData) throws StorageException
     {
         // Throw if neither the key nor the key resolver are set.
@@ -236,7 +241,7 @@ public class TableEncryptionPolicy {
 
             Utility.assertNotNull("contentEncryptionIV", encryptionData.getContentEncryptionIV());
             Utility.assertNotNull("encryptedKey", encryptionData.getWrappedContentKey().getEncryptedKey());
-
+            
             // Throw if the encryption protocol on the entity doesn't match the version that this client library understands
             // and is able to decrypt.
             if (!Constants.EncryptionConstants.ENCRYPTION_PROTOCOL_V1.equals(encryptionData.getEncryptionAgent()
@@ -244,6 +249,11 @@ public class TableEncryptionPolicy {
                 throw new StorageException(StorageErrorCodeStrings.DECRYPTION_ERROR,
                         SR.ENCRYPTION_PROTOCOL_VERSION_INVALID, null);
             }
+
+            Boolean isJavaV1 = (encryptionData.getEncryptionAgent().getProtocol().equals(Constants.EncryptionConstants.ENCRYPTION_PROTOCOL_V1)) 
+                    && ((encryptionData.getKeyWrappingMetadata() == null)
+                            || (encryptionData.getKeyWrappingMetadata().containsKey("EncryptionLibrary") 
+                             && encryptionData.getKeyWrappingMetadata().get("EncryptionLibrary").contains("Java")));
 
             byte[] contentEncryptionKey = null;
 
@@ -275,9 +285,8 @@ public class TableEncryptionPolicy {
             Cipher myAes = Cipher.getInstance("AES/CBC/PKCS5Padding");
             MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
 
-            byte[] metadataIVFull = sha256.digest(Utility.binaryAppend(encryptionData.getContentEncryptionIV(), 
-                    (partitionKey + rowKey + Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS)
-                    .getBytes(Constants.UTF8_CHARSET)));
+            String IVString = isJavaV1 ? (partitionKey + rowKey + Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS) : (rowKey + partitionKey + Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS);
+            byte[] metadataIVFull = sha256.digest(Utility.binaryAppend(encryptionData.getContentEncryptionIV(), IVString.getBytes(Constants.UTF8_CHARSET)));
             
             byte[] metadataIV = new byte[16];
             System.arraycopy(metadataIVFull, 0, metadataIV, 0, 16);
@@ -290,7 +299,10 @@ public class TableEncryptionPolicy {
             byte[] src = propertyDetailsProperty.getValueAsByteArray();
             propertyDetailsProperty.setValue(myAes.doFinal(src, 0, src.length));
 
-            return keySpec;
+            CEKReturn ret = new CEKReturn();
+            ret.key = keySpec;
+            ret.isJavaV1 = isJavaV1;
+            return ret;
         }
         catch (StorageException ex) {
             throw ex;
@@ -305,7 +317,7 @@ public class TableEncryptionPolicy {
      */
     HashMap<String, EntityProperty> decryptEntity(HashMap<String, EntityProperty> properties,
             HashSet<String> encryptedPropertyDetailsSet, String partitionKey, String rowKey, Key contentEncryptionKey,
-            EncryptionData encryptionData) throws StorageException {        
+            EncryptionData encryptionData, Boolean isJavaV1) throws StorageException {        
         HashMap<String, EntityProperty> decryptedProperties = new HashMap<String, EntityProperty>();
         
         try {
@@ -320,9 +332,9 @@ public class TableEncryptionPolicy {
                         }
                         else if (encryptedPropertyDetailsSet.contains(kvp.getKey())) {
                             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                            byte[] columnIVFull = digest.digest(Utility.binaryAppend(
-                                    encryptionData.getContentEncryptionIV(),
-                                    (partitionKey + rowKey + kvp.getKey()).getBytes(Constants.UTF8_CHARSET)));
+
+                            String IVString = isJavaV1 ? (partitionKey + rowKey + kvp.getKey()) : (rowKey + partitionKey + kvp.getKey());
+                            byte[] columnIVFull = digest.digest(Utility.binaryAppend(encryptionData.getContentEncryptionIV(), IVString.getBytes(Constants.UTF8_CHARSET)));
 
                             byte[] columnIV = new byte[16];
                             System.arraycopy(columnIVFull, 0, columnIV, 0, 16);

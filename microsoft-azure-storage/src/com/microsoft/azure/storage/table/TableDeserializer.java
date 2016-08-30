@@ -38,6 +38,11 @@ import com.microsoft.azure.storage.core.JsonUtilities;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 
+final class CEKReturn {
+    public Key key;
+    public Boolean isJavaV1;
+}
+
 /**
  * Reserved for internal use. A class used to read Table entities.
  */
@@ -335,6 +340,7 @@ final class TableDeserializer {
         
         // Deserialize the metadata property value to get the names of encrypted properties so that they can be parsed correctly below.
         Key cek = null;
+        Boolean isJavaV1 = true;
         EncryptionData encryptionData = new EncryptionData();
         HashSet<String> encryptedPropertyDetailsSet = null;
         if (options.getEncryptionPolicy() != null) {     
@@ -345,9 +351,11 @@ final class TableDeserializer {
             if (propertyDetailsProperty != null && !propertyDetailsProperty.getIsNull() && 
                     keyProperty != null && !keyProperty.getIsNull()) {
                 // Decrypt the metadata property value to get the names of encrypted properties.
-                cek = options.getEncryptionPolicy().decryptMetadataAndReturnCEK(partitionKey, rowKey, keyProperty,
+                CEKReturn cekReturn = options.getEncryptionPolicy().decryptMetadataAndReturnCEK(partitionKey, rowKey, keyProperty,
                         propertyDetailsProperty, encryptionData);
-
+                
+                cek = cekReturn.key;
+                isJavaV1 = cekReturn.isJavaV1;
                 properties.put(Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS, propertyDetailsProperty);
 
                 encryptedPropertyDetailsSet = parsePropertyDetails(propertyDetailsProperty);
@@ -430,7 +438,7 @@ final class TableDeserializer {
         // set the result properties, now that they are appropriately parsed
         if (options.getEncryptionPolicy() != null && cek != null) {
             // decrypt properties, if necessary
-            properties = decryptProperties(properties, options, partitionKey, rowKey, cek, encryptionData);
+            properties = options.getEncryptionPolicy().decryptEntity(properties, encryptedPropertyDetailsSet, partitionKey, rowKey, cek, encryptionData, isJavaV1);
         } 
        res.setProperties(properties);
         
@@ -485,23 +493,15 @@ final class TableDeserializer {
         return encryptedPropertyDetailsSet != null && encryptedPropertyDetailsSet.contains(key);
     }
     
-    private static HashMap<String, EntityProperty> decryptProperties(HashMap<String, EntityProperty> properties,
-            TableRequestOptions options, String partitionKey, String rowKey, Key contentEncryptionKey,
-            EncryptionData encryptionData) throws IOException, StorageException {
-        // Deserialize the metadata property value to get the names of encrypted properties.
-        EntityProperty propertyDetailsProperty = properties.get(Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS);
-        HashSet<String> encryptedPropertyDetailsSet = parsePropertyDetails(propertyDetailsProperty);
-        return options.getEncryptionPolicy().decryptEntity(properties, encryptedPropertyDetailsSet, partitionKey,
-                rowKey, contentEncryptionKey, encryptionData);
-    }
-    
-    private static HashSet<String> parsePropertyDetails(EntityProperty propertyDetailsProperty) {
+    private static HashSet<String> parsePropertyDetails(EntityProperty propertyDetailsProperty) throws UnsupportedEncodingException {
         HashSet<String> encryptedPropertyDetailsSet = null;        
         if (propertyDetailsProperty != null && !propertyDetailsProperty.getIsNull()) {
             byte[] binaryVal = propertyDetailsProperty.getValueAsByteArray();
-            String stringProperty = new String(binaryVal, 0, binaryVal.length).replaceAll(" ", "");
+            
+            // The below code will work for both potential property details formats (JavaV1 and .NET).
+            String stringProperty = new String(binaryVal, 0, binaryVal.length, Constants.UTF8_CHARSET).replaceAll(" ", "").replaceAll("\"", "");
             encryptedPropertyDetailsSet = new HashSet<String>(
-                    Arrays.asList(stringProperty.substring(1, stringProperty.length() - 1).split(",")));
+                Arrays.asList(stringProperty.substring(1, stringProperty.length() - 1).split(",")));
         }
         
         return encryptedPropertyDetailsSet;
