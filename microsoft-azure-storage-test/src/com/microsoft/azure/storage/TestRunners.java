@@ -138,7 +138,7 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ CoreTestSuite.class, BlobTestSuite.class, QueueTestSuite.class, TableTestSuite.class,
-            FileTestSuite.class, AnalyticsTestSuite.class })
+            FileTestSuite.class, AnalyticsTestSuite.class, EncryptionTestSuite.class })
     public static class AllTestSuite {
     }
 

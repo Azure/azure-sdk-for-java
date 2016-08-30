@@ -547,14 +547,11 @@ public final class CloudTableClient extends ServiceClient {
         if (queryToExecute.getColumns() != null) {
             columns = new String[queryToExecute.getColumns().length + 2];
             System.arraycopy(queryToExecute.getColumns(), 0, columns, 2, queryToExecute.getColumns().length);
-        } else {
-            columns = new String[2];
+            columns[0] = Constants.EncryptionConstants.TABLE_ENCRYPTION_KEY_DETAILS;
+            columns[1] = Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS;
+            
+            queryToExecute.setColumns(columns);
         }
-
-        columns[0] = Constants.EncryptionConstants.TABLE_ENCRYPTION_KEY_DETAILS;
-        columns[1] = Constants.EncryptionConstants.TABLE_ENCRYPTION_PROPERTY_DETAILS;
-        
-        queryToExecute.setColumns(columns);
     }
 
     protected final StorageUri getTransformedEndPoint(final OperationContext opContext) throws URISyntaxException,

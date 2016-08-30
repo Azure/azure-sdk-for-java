@@ -254,6 +254,41 @@ public final class Constants {
          * Additional property name to store the encryption metadata.
          */
         public static final String TABLE_ENCRYPTION_PROPERTY_DETAILS = "_ClientEncryptionMetadata2";
+        
+        /**
+         * Constant for the key for the encryption mode.
+         */
+        public static final String ENCRYPTION_MODE = "EncryptionMode";
+        
+        /**
+         * FullBlob string constant for the encryption mode.
+         */
+        public static final String FULL_BLOB = "FullBlob";
+        
+        /**
+         * Constant for the key for the wrapped CEK.
+         */
+        public static final String WRAPPED_CONTENT_KEY = "WrappedContentKey";
+                
+        /**
+         * Constant for the key for the encryption agent.
+         */
+        public static final String ENCRYPTION_AGENT = "EncryptionAgent";
+        
+        /**
+         * Constant for the key for the IV.
+         */
+        public static final String CONTENT_ENCRYPTION_IV = "ContentEncryptionIV";
+        
+        /**
+         * Constant for the key wrapping metadata.
+         */
+        public static final String KEY_WRAPPING_METADATA = "KeyWrappingMetadata";
+        
+        /**
+         * Constant for the key for the encryption library in the key wrapping metadata.
+         */
+        public static final String ENCRYPTION_LIBRARY = "EncryptionLibrary";
     }
     
     /**
@@ -611,7 +646,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "4.3.0";
+        public static final String USER_AGENT_VERSION = "4.4.0";
 
         /**
          * The default type for content-type and accept
