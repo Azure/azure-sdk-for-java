@@ -37,7 +37,7 @@ public class ResourceServiceCall<FluentModelT extends Resource,
      * @return new callback that wraps the given callback
      */
     public ServiceCallback<InnerModelT> wrapCallBack(final ServiceCallback<Resource> callback) {
-        return wrapCallBack(callback, true);
+        return wrapCallBack(callback, true, true);
     }
 
     /**
@@ -45,9 +45,10 @@ public class ResourceServiceCall<FluentModelT extends Resource,
      *
      * @param callback the callback to wrap
      * @param reportSuccess true to invoke callback.success on success
+     * @param reportFailure true to invoke callback.failure on failure
      * @return new callback that wraps the given callback
      */
-    public ServiceCallback<InnerModelT> wrapCallBack(final ServiceCallback<Resource> callback, final boolean reportSuccess) {
+    public ServiceCallback<InnerModelT> wrapCallBack(final ServiceCallback<Resource> callback, final boolean reportSuccess, final boolean reportFailure) {
         final ResourceServiceCall<FluentModelT, InnerModelT, FluentModelImplT> self = this;
         return new ServiceCallback<InnerModelT>() {
             @Override
@@ -55,8 +56,10 @@ public class ResourceServiceCall<FluentModelT extends Resource,
                 if (self.failureHandler != null) {
                     self.failureHandler.failure(t);
                 }
-                callback.failure(t);
-                self.failure(t); // Signal Future
+                if (reportFailure) {
+                    callback.failure(t);
+                    self.failure(t); // Signal Future
+                }
             }
 
             @Override

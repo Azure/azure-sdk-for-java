@@ -40,13 +40,16 @@ class VirtualMachinesImpl
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final VirtualMachineSizesImpl vmSizes;
+    private final VirtualMachineExtensionsInner virtualMachineExtensionsClient;
 
     VirtualMachinesImpl(VirtualMachinesInner client,
+                        VirtualMachineExtensionsInner virtualMachineExtensionsClient,
                         VirtualMachineSizesInner virtualMachineSizesClient,
                         ComputeManager computeManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         super(client, computeManager);
+        this.virtualMachineExtensionsClient = virtualMachineExtensionsClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
@@ -150,6 +153,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(name,
             inner,
             this.innerCollection,
+                this.virtualMachineExtensionsClient,
             super.myManager,
             this.storageManager,
             this.networkManager);
@@ -160,6 +164,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,
+                this.virtualMachineExtensionsClient,
                 super.myManager,
                 this.storageManager,
                 this.networkManager);

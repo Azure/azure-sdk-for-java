@@ -110,6 +110,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
             virtualMachines = new VirtualMachinesImpl(super.innerManagementClient.virtualMachines(),
+                    super.innerManagementClient.virtualMachineExtensions(),
                     super.innerManagementClient.virtualMachineSizes(),
                     this,
                     storageManager,

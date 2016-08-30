@@ -44,7 +44,7 @@ public interface VirtualMachineExtension extends
     /**
      * @return the public settings of the virtual machine extension as key value pairs
      */
-    HashMap<String, Object> publicSettings();
+    Map<String, Object> publicSettings();
 
     /**
      * @return the public settings of the virtual machine extension as a json string
@@ -191,7 +191,7 @@ public interface VirtualMachineExtension extends
              * @param value the value of the private settings entry
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateSetting(String key, Object value);
+            WithAttach<ParentT> withProtectedSetting(String key, Object value);
 
             /**
              * Specifies public settings.
@@ -207,7 +207,7 @@ public interface VirtualMachineExtension extends
              * @param settings the private settings
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateSettings(HashMap<String, Object> settings);
+            WithAttach<ParentT> withProtectedSettings(HashMap<String, Object> settings);
         }
 
         /**
@@ -382,7 +382,7 @@ public interface VirtualMachineExtension extends
              * @param value the value of the private settings entry
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateSetting(String key, Object value);
+            WithAttach<ParentT> withProtectedSetting(String key, Object value);
 
             /**
              * Specifies public settings.
@@ -398,7 +398,7 @@ public interface VirtualMachineExtension extends
              * @param settings the private settings
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateSettings(HashMap<String, Object> settings);
+            WithAttach<ParentT> withProtectedSettings(HashMap<String, Object> settings);
         }
 
         /**
@@ -488,7 +488,7 @@ public interface VirtualMachineExtension extends
              * @param settings the private settings
              * @return the next stage of the update
              */
-            Update withPrivateSettings(HashMap<String, Object> settings);
+            Update withProtectedSettings(HashMap<String, Object> settings);
         }
 
         /**

@@ -278,18 +278,22 @@ class StorageAccountImpl
         createParameters.withTags(this.inner().getTags());
 
         final ResourceServiceCall<StorageAccount, StorageAccountInner, StorageAccountImpl> createServiceCall = new ResourceServiceCall<>(this);
+        final ServiceCallback<StorageAccountInner> createServiceCallWrapped = createServiceCall.wrapCallBack(callback, false, false);
+
         final ResourceServiceCall<StorageAccount, StorageAccountInner, StorageAccountImpl> serviceCall = new ResourceServiceCall<>(this);
+        final ServiceCallback<StorageAccountInner> serviceCallWrapped = createServiceCall.wrapCallBack(callback);
+
+        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<StorageAccountInner>() {
+            @Override
+            public void success(ServiceResponse<StorageAccountInner> response) {
+                clearWrapperProperties();
+            }
+        });
 
         createServiceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<StorageAccountInner>() {
             @Override
             public void success(ServiceResponse<StorageAccountInner> response) {
-                serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<StorageAccountInner>() {
-                    @Override
-                    public void success(ServiceResponse<StorageAccountInner> response) {
-                        clearWrapperProperties();
-                    }
-                });
-                client.getPropertiesAsync(self.resourceGroupName(), self.name(), serviceCall.wrapCallBack(callback));
+                client.getPropertiesAsync(self.resourceGroupName(), self.name(), serviceCallWrapped);
             }
         }).withFailureHandler(new ResourceServiceCall.FailureHandler() {
             @Override
@@ -301,7 +305,7 @@ class StorageAccountImpl
         this.client.createAsync(this.resourceGroupName(),
                 this.name(),
                 createParameters,
-                createServiceCall.wrapCallBack(callback, false));
+                createServiceCallWrapped);
         return serviceCall;
     }
 }

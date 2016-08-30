@@ -10,7 +10,10 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Implementation of {@link VirtualMachineExtension}.
@@ -26,6 +29,8 @@ class VirtualMachineExtensionImpl
         VirtualMachineExtension.Update {
     private final VirtualMachineExtensionsInner client;
     private boolean requireCreateOrUpdate = false;
+    private HashMap<String, Object> publicSettings;
+    private HashMap<String, Object> protectedSettings;
 
     VirtualMachineExtensionImpl(String name,
                                 VirtualMachineImpl parent,
@@ -33,6 +38,18 @@ class VirtualMachineExtensionImpl
                                 VirtualMachineExtensionsInner client) {
         super(name, parent, inner);
         this.client = client;
+
+        if (this.inner().settings() == null) {
+            this.publicSettings = new LinkedHashMap<>();
+            this.inner().withSettings(this.publicSettings);
+        } else {
+            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
+        }
+
+        if (this.inner().protectedSettings() == null) {
+            this.protectedSettings = new LinkedHashMap<>();
+            this.inner().withProtectedSettings(this.protectedSettings);
+        }
     }
 
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(String name,
@@ -62,8 +79,8 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public HashMap<String, Object> publicSettings() {
-        return null;
+    public Map<String, Object> publicSettings() {
+        return Collections.unmodifiableMap(this.publicSettings);
     }
 
     @Override
@@ -89,11 +106,6 @@ class VirtualMachineExtensionImpl
         ResourceServiceCall<VirtualMachineExtension,
                 VirtualMachineExtensionInner,
                 VirtualMachineExtensionImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualMachineExtensionInner>() {
-            @Override
-            public void success(ServiceResponse<VirtualMachineExtensionInner> response) {
-            }
-        });
         this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
                 this.parent.name(),
                 this.name(),
@@ -141,21 +153,27 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl withPublicSetting(String key, Object value) {
+        this.publicSettings.put(key, value);
         return this;
     }
 
     @Override
-    public VirtualMachineExtensionImpl withPrivateSetting(String key, Object value) {
+    public VirtualMachineExtensionImpl withProtectedSetting(String key, Object value) {
+        this.protectedSettings.put(key, value);
         return this;
     }
 
     @Override
     public VirtualMachineExtensionImpl withPublicSettings(HashMap<String, Object> settings) {
+        this.publicSettings.clear();
+        this.publicSettings.putAll(settings);
         return this;
     }
 
     @Override
-    public VirtualMachineExtensionImpl withPrivateSettings(HashMap<String, Object> settings) {
+    public VirtualMachineExtensionImpl withProtectedSettings(HashMap<String, Object> settings) {
+        this.protectedSettings.clear();
+        this.protectedSettings.putAll(settings);
         return this;
     }
 
@@ -174,13 +192,18 @@ class VirtualMachineExtensionImpl
     @Override
     public VirtualMachineImpl parent() {
         this.requireCreateOrUpdate = true;
+        if (this.publicSettings.size() == 0) {
+            this.inner().withSettings(null);
+        }
+        if (this.protectedSettings.size() == 0) {
+            this.inner().withProtectedSettings(null);
+        }
         return this.parent;
     }
 
     @Override
     public VirtualMachineImpl attach() {
-        this.requireCreateOrUpdate = true;
-        return this.parent.withExtension(this);
+        return this.parent().withExtension(this);
     }
 
     /**
