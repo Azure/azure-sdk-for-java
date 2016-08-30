@@ -149,22 +149,6 @@ final class GenericResourceImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public GenericResource createResource() throws Exception {
-        GenericResourceInner inner = client.createOrUpdate(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                name(),
-                apiVersion,
-                inner()
-        ).getBody();
-        this.setInner(inner);
-        return this;
-    }
-
     @Override
     public Observable<GenericResource> createResourceAsync() {
         return client.createOrUpdateAsync(

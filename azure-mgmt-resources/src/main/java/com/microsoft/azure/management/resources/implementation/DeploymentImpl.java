@@ -320,19 +320,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment createResource() throws Exception {
-        DeploymentInner inner = new DeploymentInner()
-                .withProperties(new DeploymentProperties());
-        inner.properties().withMode(mode());
-        inner.properties().withTemplate(template());
-        inner.properties().withTemplateLink(templateLink());
-        inner.properties().withParameters(parameters());
-        inner.properties().withParametersLink(parametersLink());
-        client.createOrUpdate(resourceGroupName(), name(), inner);
-        return this;
-    }
-
-    @Override
     public Observable<Deployment> createResourceAsync() {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());

@@ -144,25 +144,6 @@ class PublicIpAddressImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public PublicIpAddress createResource() throws Exception {
-        // Clean up empty DNS settings
-        final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
-        if (dnsSettings != null) {
-            if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
-                    && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
-                    && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
-                this.inner().withDnsSettings(null);
-            }
-        }
-
-        ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        return this;
-    }
-
     @Override
     public Observable<PublicIpAddress> createResourceAsync() {
         // Clean up empty DNS settings

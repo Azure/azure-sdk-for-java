@@ -186,18 +186,6 @@ class NetworkImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public Network createResource() throws Exception {
-        ensureCreationPrerequisites();
-
-        ServiceResponse<VirtualNetworkInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeSubnetsFromInner();
-        return this;
-    }
-
     @Override
     public Observable<Network> createResourceAsync() {
         final  NetworkImpl self = this;

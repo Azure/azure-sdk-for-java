@@ -218,18 +218,6 @@ class LoadBalancerImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public LoadBalancer createResource() throws Exception {
-        ensureCreationPrerequisites();
-
-        ServiceResponse<LoadBalancerInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        runPostCreationTasks();
-        return this;
-    }
-
     @Override
     public Observable<LoadBalancer> createResourceAsync()  {
         final LoadBalancer self = this;

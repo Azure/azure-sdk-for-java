@@ -355,9 +355,9 @@ class NetworkInterfaceImpl
 
 
     // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public NetworkInterface createResource() throws Exception {
+    public Observable<NetworkInterface> createResourceAsync() {
+        final NetworkInterfaceImpl self = this;
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
@@ -368,20 +368,6 @@ class NetworkInterfaceImpl
         if (networkSecurityGroup != null) {
             this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         }
-
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
-                this.nicName,
-                this.inner());
-        this.setInner(response.getBody());
-        clearCachedRelatedResources();
-        initializeNicIpConfigurations();
-        return this;
-    }
-
-    @Override
-    public Observable<NetworkInterface> createResourceAsync() {
-        final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
 
         return this.client.createOrUpdateAsync(this.resourceGroupName(),

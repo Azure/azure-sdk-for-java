@@ -111,6 +111,10 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
         return this.creatorTaskGroup;
     }
 
+    public FluentModelT createResource() throws Exception {
+        return this.createResourceAsync().toBlocking().last();
+    }
+
     protected Func1<ServiceResponse<InnerModelT>, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
         return new Func1<ServiceResponse<InnerModelT>, FluentModelT>() {
             @Override

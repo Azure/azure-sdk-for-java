@@ -110,14 +110,6 @@ class AvailabilitySetImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public AvailabilitySet createResource() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        this.idOfVMsInSet = null;
-        return this;
-    }
-
-    @Override
     public Observable<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
         return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())

@@ -251,21 +251,6 @@ class StorageAccountImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public StorageAccount createResource() throws Exception {
-        createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
-        this.client.create(this.resourceGroupName(), this.name(), createParameters);
-        // create response does not seems including the endpoints so fetching it again.
-        StorageAccountInner storageAccountInner = this.client
-                .getProperties(this.resourceGroupName(), this.name())
-                .getBody();
-        this.setInner(storageAccountInner);
-        clearWrapperProperties();
-        return this;
-    }
-
     @Override
     public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());

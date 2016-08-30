@@ -859,28 +859,7 @@ class VirtualMachineImpl
         return null;
     }
 
-
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public VirtualMachine createResource() throws Exception {
-        if (isInCreateMode()) {
-            setOSDiskAndOSProfileDefaults();
-            setHardwareProfileDefaults();
-        }
-        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-
-        handleStorageSettings();
-        handleNetworkSettings();
-        handleAvailabilitySettings();
-
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
-        this.setInner(serviceResponse.getBody());
-        clearCachedRelatedResources();
-        initializeDataDisks();
-        return this;
-    }
-
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
