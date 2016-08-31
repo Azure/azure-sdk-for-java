@@ -44,6 +44,11 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     @Override
+    public final CreatedResources<T> create(List<Creatable<T>> creatables) throws Exception {
+        return BlockingObservable.from(createAsync(creatables)).single();
+    }
+
+    @Override
     @SafeVarargs
     public final Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
         CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
@@ -59,8 +64,33 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     }
 
     @Override
+    public final Observable<CreatedResources<T>> createAsync(List<Creatable<T>> creatables) {
+        CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
+        rootResource.addCreatableDependencies(creatables);
+
+        return rootResource.createAsync()
+                .map(new Func1<CreatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableResourcesRoot<T> tCreatableResourcesRoot) {
+                        return new CreatedResourcesImpl<T>(tCreatableResourcesRoot);
+                    }
+                });
+    }
+
+    @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
+        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+            @Override
+            public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
+                // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
+                return new ServiceResponse<>(ts, null);
+            }
+        }), callback);
+    }
+
+    @Override
+    public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, List<Creatable<T>> creatables) {
         return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
@@ -248,6 +278,13 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         void addCreatableDependencies(Creatable<T> ... creatables) {
+            for (Creatable<T> item : creatables) {
+                this.keys.add(item.key());
+                this.addCreatableDependency((item));
+            }
+        }
+
+        void addCreatableDependencies(List<Creatable<T>> creatables) {
             for (Creatable<T> item : creatables) {
                 this.keys.add(item.key());
                 this.addCreatableDependency((item));
