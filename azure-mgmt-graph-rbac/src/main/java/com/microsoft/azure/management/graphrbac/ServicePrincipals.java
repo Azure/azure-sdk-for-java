@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
 import java.io.IOException;
 
@@ -59,4 +60,13 @@ public interface ServicePrincipals extends
      * @return the Future based service call
      */
     ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(String spn, final ServiceCallback<ServicePrincipal> callback);
+
+    /**
+     * Gets the information about a service principal.
+     *
+     * @param spn      the service principal name
+     * @param callback the call back to handle response
+     * @return the Future based service call
+     */
+    Observable<ServicePrincipal> getByServicePrincipalNameAsync(String spn);
 }

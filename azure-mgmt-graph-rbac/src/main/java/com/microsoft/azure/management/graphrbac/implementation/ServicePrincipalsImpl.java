@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
@@ -15,6 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.List;
@@ -85,26 +87,28 @@ class ServicePrincipalsImpl
 
     @Override
     public ServiceCall<ServicePrincipal> getByServicePrincipalNameAsync(final String spn, final ServiceCallback<ServicePrincipal> callback) {
-        final ServiceCall<ServicePrincipal> serviceCall = new ServiceCall<>(null);
-        serviceCall.newCall(innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn), new ListOperationCallback<ServicePrincipalInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-                serviceCall.failure(t);
-            }
+        return ServiceCall.create(
+                getByServicePrincipalNameAsync(spn).map(new Func1<ServicePrincipal, ServiceResponse<ServicePrincipal>>() {
+                    @Override
+                    public ServiceResponse<ServicePrincipal> call(ServicePrincipal fluentModelT) {
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
+    }
 
-            @Override
-            public void success(ServiceResponse<List<ServicePrincipalInner>> result) {
-                List<ServicePrincipalInner> servicePrincipals = result.getBody();
-                if (servicePrincipals == null || servicePrincipals.isEmpty()) {
-                    failure(new GraphErrorException("Service principal not found for SPN: " + spn));
-                }
-                ServicePrincipal user = new ServicePrincipalImpl(servicePrincipals.get(0), innerCollection);
-                ServiceResponse<ServicePrincipal> clientResponse = new ServiceResponse<>(user, result.getResponse());
-                callback.success(clientResponse);
-                serviceCall.success(clientResponse);
-            }
-        }).getCall());
-        return serviceCall;
+    @Override
+    public Observable<ServicePrincipal> getByServicePrincipalNameAsync(final String spn) {
+        return innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
+                .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, ServicePrincipal>() {
+                    @Override
+                    public ServicePrincipal call(ServiceResponse<Page<ServicePrincipalInner>> result) {
+                        Page<ServicePrincipalInner> servicePrincipals = result.getBody();
+                        if (servicePrincipals == null || servicePrincipals.getItems() == null || servicePrincipals.getItems().isEmpty()) {
+                            throw new GraphErrorException("Service principal not found for SPN: " + spn);
+                        }
+                        return new ServicePrincipalImpl(servicePrincipals.getItems().get(0), innerCollection);
+                    }
+                });
     }
 }

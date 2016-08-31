@@ -8,18 +8,14 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.graphrbac.PasswordProfile;
 import com.microsoft.azure.management.graphrbac.User;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Implementation for StorageAccount and its parent interfaces.
  */
 class UserImpl
-        extends WrapperImpl<UserInner>
+        extends CreatableUpdatableImpl<User, UserInner, UserImpl>
         implements
             User,
             User.Definition,
@@ -28,13 +24,13 @@ class UserImpl
     private UserCreateParametersInner createParameters;
 
     UserImpl(String userPrincipalName, UsersInner client) {
-        super(new UserInner());
+        super(userPrincipalName, new UserInner());
         this.client = client;
         this.createParameters = new UserCreateParametersInner().withUserPrincipalName(userPrincipalName);
     }
 
     UserImpl(UserInner innerObject, UsersInner client) {
-        super(innerObject);
+        super(innerObject.userPrincipalName(), innerObject);
         this.client = client;
         this.createParameters = new UserCreateParametersInner();
     }
@@ -75,41 +71,6 @@ class UserImpl
     }
 
     @Override
-    public String name() {
-        return userPrincipalName();
-    }
-
-    @Override
-    public UserImpl create() throws Exception {
-        setInner(client.create(createParameters).getBody());
-        return this;
-    }
-
-    @Override
-    public ServiceCall<User> createAsync(final ServiceCallback<User> callback) {
-        final UserImpl self = this;
-        return obser
-    }
-
-    @Override
-    public Observable<User> createAsync() {
-        final UserImpl self = this;
-        return client.createAsync(createParameters)
-                .map(new Func1<ServiceResponse<UserInner>, User>() {
-                    @Override
-                    public User call(ServiceResponse<UserInner> userInnerServiceResponse) {
-                        setInner(userInnerServiceResponse.getBody());
-                        return self;
-                    }
-                });
-    }
-
-    @Override
-    public String key() {
-        return objectId();
-    }
-
-    @Override
     public UserImpl withAccountEnabled(boolean enabled) {
         createParameters.withAccountEnabled(enabled);
         return this;
@@ -137,5 +98,20 @@ class UserImpl
     public UserImpl withPassword(String password, boolean forceChangePasswordNextLogin) {
         createParameters.withPasswordProfile(new PasswordProfile().withPassword(password).withForceChangePasswordNextLogin(forceChangePasswordNextLogin));
         return this;
+    }
+
+    @Override
+    public User refresh() throws Exception {
+        return null;
+    }
+
+    @Override
+    public Observable<User> createResourceAsync() {
+        return null;
+    }
+
+    @Override
+    public Observable<User> applyAsync() {
+        return null;
     }
 }
