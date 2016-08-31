@@ -6,11 +6,13 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Implementation of {@link VirtualMachineExtension}.
@@ -18,7 +20,6 @@ import java.util.Map;
 class VirtualMachineExtensionImpl
         extends ExternalChildResourceImpl<VirtualMachineExtension,
         VirtualMachineExtensionInner,
-        VirtualMachineExtensionImpl,
         VirtualMachineImpl>
         implements VirtualMachineExtension,
         VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
@@ -59,6 +60,11 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public String publisherName() {
         return this.inner().publisher();
     }
@@ -94,30 +100,17 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtension refresh() throws Exception {
-        ServiceResponse<VirtualMachineExtensionInner> response =
-                this.client.get(this.parent.resourceGroupName(), this.parent.name(), this.name());
-        this.setInner(response.getBody());
-        return this;
+    public Map<String, String> tags() {
+        Map<String, String> tags = this.inner().getTags();
+        if (tags == null) {
+            tags = new TreeMap<>();
+        }
+        return Collections.unmodifiableMap(tags);
     }
 
     @Override
-    public Observable<VirtualMachineExtension> applyAsync() {
-        return createResourceAsync();
-    }
-
-    @Override
-    public Observable<VirtualMachineExtension> createResourceAsync() {
-        return this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
-                this.parent.name(),
-                this.name(),
-                this.inner())
-                .map(innerToFluentMap(this));
-    }
-
-    @Override
-    public VirtualMachineExtension createResource() throws Exception {
-        return createResourceAsync().toBlocking().first();
+    public String provisioningState() {
+        return this.inner().provisioningState();
     }
 
     @Override
@@ -185,6 +178,24 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
+    public final VirtualMachineExtensionImpl withTags(Map<String, String> tags) {
+        this.inner().withTags(new HashMap<>(tags));
+        return this;
+    }
+
+    @Override
+    public final VirtualMachineExtensionImpl withTag(String key, String value) {
+        this.inner().getTags().put(key, value);
+        return this;
+    }
+
+    @Override
+    public final VirtualMachineExtensionImpl withoutTag(String key) {
+        this.inner().getTags().remove(key);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl parent() {
         this.nullifySettingsIfEmpty();
         return this.parent;
@@ -196,6 +207,46 @@ class VirtualMachineExtensionImpl
         return this.parent.withExtension(this);
     }
 
+    @Override
+    public VirtualMachineExtensionImpl refresh() throws Exception {
+        ServiceResponse<VirtualMachineExtensionInner> response =
+                this.client.get(this.parent.resourceGroupName(), this.parent.name(), this.name());
+        this.setInner(response.getBody());
+        return this;
+    }
+
+    // Implementation of ExternalChildResourceImpl setAsync and deleteAsync
+    //
+    @Override
+    public Observable<VirtualMachineExtension> setAsync() {
+        final VirtualMachineExtensionImpl self = this;
+        return this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
+                this.parent.name(),
+                this.name(),
+                this.inner())
+                .map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtension>() {
+                    @Override
+                    public VirtualMachineExtension call(ServiceResponse<VirtualMachineExtensionInner> response) {
+                        self.setInner(response.getBody());
+                        return self;
+                    }
+                });
+    }
+
+    @Override
+    public Observable<Void> deleteAsync() {
+        return this.client.deleteAsync(this.parent.resourceGroupName(),
+                this.parent.name(),
+                this.name()).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> voidServiceResponse) {
+                return voidServiceResponse.getBody();
+            }
+        });
+    }
+
+    // Helper methods
+    //
     private void nullifySettingsIfEmpty() {
         if (this.publicSettings.size() == 0) {
             this.inner().withSettings(null);

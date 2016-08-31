@@ -151,6 +151,7 @@ class VirtualMachineImpl
         this.setInner(response.getBody());
         clearCachedRelatedResources();
         initializeDataDisks();
+        this.virtualMachineExtensions.refresh();
         return this;
     }
 

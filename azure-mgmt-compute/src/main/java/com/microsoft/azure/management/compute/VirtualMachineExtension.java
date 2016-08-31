@@ -1,10 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -16,10 +13,8 @@ import java.util.Map;
  * An extension associated with a virtual machine will be created from a {@link VirtualMachineExtensionImage }.
  */
 public interface VirtualMachineExtension extends
-        Wrapper<VirtualMachineExtensionInner>,
-        Refreshable<VirtualMachineExtension>,
-        ChildResource,
-        Resource {
+        ExternalChildResource<VirtualMachineExtension>,
+        Wrapper<VirtualMachineExtensionInner> {
     /**
      * @return the publisher name of the virtual machine extension image this extension is created from
      */
@@ -55,6 +50,16 @@ public interface VirtualMachineExtension extends
      * @return the instance view of this virtual machine extension
      */
     VirtualMachineExtensionInstanceView instanceView();
+
+    /**
+     * @return the tags for this virtual machine extension
+     */
+    Map<String, String> tags();
+
+    /**
+     * @return the provisioning state of this virtual machine extension
+     */
+    String provisioningState();
 
     /**
      * Grouping of virtual machine extension definition stages as a part of parent virtual machine definition.
