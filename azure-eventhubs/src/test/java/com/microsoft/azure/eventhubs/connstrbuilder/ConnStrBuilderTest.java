@@ -58,4 +58,19 @@ public class ConnStrBuilderTest extends ApiTestBase
 		
 		validateConnStrBuilder.accept(new ConnectionStringBuilder(secondConnStr.toString()));
 	}
+	
+	@Test
+	public void testPropertySetters()
+	{
+		final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(correctConnectionString);
+		final ConnectionStringBuilder testConnStrBuilder = new ConnectionStringBuilder(connStrBuilder.toString());
+		validateConnStrBuilder.accept(testConnStrBuilder);
+		
+		connStrBuilder.setOperationTimeout(Duration.ofSeconds(8));
+		connStrBuilder.setRetryPolicy(RetryPolicy.getDefault());
+		
+		ConnectionStringBuilder testConnStrBuilder1 = new ConnectionStringBuilder(connStrBuilder.toString());
+		Assert.assertTrue(testConnStrBuilder1.getRetryPolicy().toString().equals(RetryPolicy.getDefault().toString()));
+		Assert.assertTrue(testConnStrBuilder1.getOperationTimeout().getSeconds() == 8);
+	}
 }
