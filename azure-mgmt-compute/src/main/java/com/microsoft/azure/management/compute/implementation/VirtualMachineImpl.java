@@ -48,8 +48,6 @@ import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -151,18 +149,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachine apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<VirtualMachine> applyAsync() {
         return this.createAsync();
-    }
-
-    @Override
-    public ServiceCall<VirtualMachine> applyAsync(ServiceCallback<VirtualMachine> callback) {
-        return this.createAsync(callback);
     }
 
     @Override
@@ -859,28 +847,7 @@ class VirtualMachineImpl
         return null;
     }
 
-
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public VirtualMachine createResource() throws Exception {
-        if (isInCreateMode()) {
-            setOSDiskAndOSProfileDefaults();
-            setHardwareProfileDefaults();
-        }
-        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-
-        handleStorageSettings();
-        handleNetworkSettings();
-        handleAvailabilitySettings();
-
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
-        this.setInner(serviceResponse.getBody());
-        clearCachedRelatedResources();
-        initializeDataDisks();
-        return this;
-    }
-
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {

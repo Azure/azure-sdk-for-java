@@ -21,8 +21,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -88,18 +86,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterface apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<NetworkInterface> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<NetworkInterface> applyAsync(ServiceCallback<NetworkInterface> callback) {
-        return createAsync(callback);
     }
 
     // Setters (fluent)
@@ -365,9 +353,9 @@ class NetworkInterfaceImpl
 
 
     // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public NetworkInterface createResource() throws Exception {
+    public Observable<NetworkInterface> createResourceAsync() {
+        final NetworkInterfaceImpl self = this;
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
@@ -378,20 +366,6 @@ class NetworkInterfaceImpl
         if (networkSecurityGroup != null) {
             this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         }
-
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
-                this.nicName,
-                this.inner());
-        this.setInner(response.getBody());
-        clearCachedRelatedResources();
-        initializeNicIpConfigurations();
-        return this;
-    }
-
-    @Override
-    public Observable<NetworkInterface> createResourceAsync() {
-        final NetworkInterfaceImpl self = this;
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
 
         return this.client.createOrUpdateAsync(this.resourceGroupName(),

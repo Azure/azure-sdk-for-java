@@ -12,9 +12,6 @@ import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 import java.io.IOException;
@@ -118,33 +115,13 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroup apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<ResourceGroup> applyAsync() {
         return createAsync();
     }
 
     @Override
-    public ServiceCall<ResourceGroup> applyAsync(ServiceCallback<ResourceGroup> callback) {
-        return createAsync(callback);
-    }
-
-    @Override
     public ResourceGroupImpl refresh() throws Exception {
         this.setInner(client.get(this.key).getBody());
-        return this;
-    }
-
-    @Override
-    public ResourceGroup createResource() throws Exception {
-        ResourceGroupInner params = new ResourceGroupInner();
-        params.withLocation(this.inner().location());
-        params.withTags(this.inner().tags());
-        ServiceResponse<ResourceGroupInner> response = client.createOrUpdate(this.name(), params);
-        this.setInner(response.getBody());
         return this;
     }
 

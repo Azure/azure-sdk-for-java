@@ -9,8 +9,6 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -124,18 +122,9 @@ final class GenericResourceImpl
         return this;
     }
 
-    public ServiceCall<GenericResource> createAsync(final ServiceCallback<GenericResource> callback) {
-        return observableToFuture(createAsync(), callback);
-    }
-
     @Override
     public Observable<GenericResource> createAsync() {
         return createResourceAsync();
-    }
-
-    @Override
-    public GenericResourceImpl apply() throws Exception {
-        return create();
     }
 
     @Override
@@ -143,28 +132,7 @@ final class GenericResourceImpl
         return createAsync();
     }
 
-    @Override
-    public ServiceCall<GenericResource> applyAsync(ServiceCallback<GenericResource> callback) {
-        return createAsync(callback);
-    }
-
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public GenericResource createResource() throws Exception {
-        GenericResourceInner inner = client.createOrUpdate(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                name(),
-                apiVersion,
-                inner()
-        ).getBody();
-        this.setInner(inner);
-        return this;
-    }
-
     @Override
     public Observable<GenericResource> createResourceAsync() {
         return client.createOrUpdateAsync(

@@ -34,8 +34,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -97,18 +95,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancer apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<LoadBalancer> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<LoadBalancer> applyAsync(ServiceCallback<LoadBalancer> callback) {
-        return createAsync(callback);
     }
 
     // Helpers
@@ -569,6 +557,24 @@ class LoadBalancerImpl
         return this;
     }
 
+    public Observable<LoadBalancer> createResourceAsync()  {
+        final LoadBalancer self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
+                    @Override
+                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
+                        setInner(loadBalancerInner.getBody());
+                        try {
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+                    }
+                });
+    }
+
     @Override
     public LoadBalancerImpl withoutProbe(String name) {
         if (this.httpProbes.containsKey(name)) {
@@ -695,23 +701,5 @@ class LoadBalancerImpl
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);
-    }
-
-    public Observable<LoadBalancer> createResourceAsync()  {
-        final LoadBalancer self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
-                    @Override
-                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
-                        setInner(loadBalancerInner.getBody());
-                        try {
-                            afterCreating();
-                            return Observable.just(self);
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
     }
 }
