@@ -1,3 +1,6 @@
+2016.08.30 Version 4.4.0
+ * Fixed a bug in client-side encryption for tables that was preventing the Java client from decrypting entities encrypted with the .NET client, and vice versa.
+
 2016.07.06 Version 4.3.0
  * Added support for server-side encryption.
  * Added support for getBlobReferenceFromServer methods on CloudBlobContainer to support retrieving a blob without knowing its type.
