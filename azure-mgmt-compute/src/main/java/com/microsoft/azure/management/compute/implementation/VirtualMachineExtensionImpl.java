@@ -102,6 +102,11 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
+    public Observable<VirtualMachineExtension> applyAsync() {
+        return createResourceAsync();
+    }
+
+    @Override
     public Observable<VirtualMachineExtension> createResourceAsync() {
         return this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
                 this.parent.name(),
