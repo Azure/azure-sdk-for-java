@@ -30,10 +30,14 @@ class VirtualMachineExtensionsImpl {
         this.initializeExtensionsFromParent();
     }
 
+    /**
+     * @return the extensions as a name value map
+     */
     Map<String, VirtualMachineExtension> asMap() {
         if (requireRefresh) {
             try {
                 parent.refresh();
+                this.requireRefresh = false;
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -46,6 +50,12 @@ class VirtualMachineExtensionsImpl {
         return Collections.unmodifiableMap(result);
     }
 
+    /**
+     * Starts an extension definition chain.
+     *
+     * @param name the reference name of the extension to be added
+     * @return the extension
+     */
     VirtualMachineExtensionImpl define(String name) {
         if (findExtension(name) != null) {
             throw new IllegalArgumentException("An extension with name  '" + name + "' already exists");
@@ -56,6 +66,12 @@ class VirtualMachineExtensionsImpl {
         return extension;
     }
 
+    /**
+     * Starts an extension update chain.
+     *
+     * @param name the reference name of the extension to be updated
+     * @return the extension
+     */
     VirtualMachineExtensionImpl update(String name) {
         VirtualMachineExtensionImpl extension = findExtension(name);
         if (extension == null
@@ -69,6 +85,11 @@ class VirtualMachineExtensionsImpl {
         return extension;
     }
 
+    /**
+     * Mark the extension with given name as to be removed.
+     *
+     * @param name the reference name of the extension to be removed
+     */
     void remove(String name) {
         VirtualMachineExtensionImpl extension = findExtension(name);
         if (extension == null
@@ -82,6 +103,11 @@ class VirtualMachineExtensionsImpl {
         this.extensions.put(extension.name(), extension);
     }
 
+    /**
+     * Commits the changes in the extension collection.
+     *
+     * @return the stream of updated extensions
+     */
     Observable<VirtualMachineExtensionImpl> commitAsync() {
         final VirtualMachineExtensionsImpl self = this;
         List<VirtualMachineExtensionImpl> items = new ArrayList<>();
@@ -110,11 +136,6 @@ class VirtualMachineExtensionsImpl {
                             }
                         });
                     }
-                }).doOnError(new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        self.extensions.clear();
-                    }
                 });
 
         Observable<VirtualMachineExtensionImpl> setStream = Observable.from(items)
@@ -136,11 +157,6 @@ class VirtualMachineExtensionsImpl {
                             }
                         });
             }
-        }).doOnError(new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                self.extensions.clear();
-            }
         });
 
         return deleteStream.mergeWith(setStream)
@@ -149,9 +165,18 @@ class VirtualMachineExtensionsImpl {
                     public Boolean call(VirtualMachineExtensionImpl extension) {
                         return extension.state() == ExternalChildResourceImpl.State.None;
                     }
-                });
+                }).doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        self.extensions.clear();
+                        self.requireRefresh = true;
+                }
+            });
     }
 
+    /**
+     * Populate the collection from the parent.
+     */
     private void initializeExtensionsFromParent() {
         if (parent.inner().resources() != null) {
             for (VirtualMachineExtensionInner innerExtension : this.parent.inner().resources()) {
@@ -164,6 +189,11 @@ class VirtualMachineExtensionsImpl {
         }
     }
 
+    /**
+     *
+     * @param name the extension to lookup
+     * @return the extension
+     */
     private VirtualMachineExtensionImpl findExtension(String name) {
         for (Map.Entry<String, VirtualMachineExtensionImpl> extensionEntry : this.extensions.entrySet()) {
             if (extensionEntry.getKey().equalsIgnoreCase(name)) {
