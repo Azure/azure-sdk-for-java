@@ -18,8 +18,6 @@ import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;
@@ -196,20 +194,9 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccount apply() throws Exception {
-        this.setInner(client.update(resourceGroupName(), name(), updateParameters).getBody());
-        return this;
-    }
-
-    @Override
     public Observable<StorageAccount> applyAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
-    }
-
-    @Override
-    public ServiceCall<StorageAccount> applyAsync(final ServiceCallback<StorageAccount> callback) {
-        return observableToFuture(applyAsync(), callback);
     }
 
     @Override
@@ -251,21 +238,6 @@ class StorageAccountImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public StorageAccount createResource() throws Exception {
-        createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
-        this.client.create(this.resourceGroupName(), this.name(), createParameters);
-        // create response does not seems including the endpoints so fetching it again.
-        StorageAccountInner storageAccountInner = this.client
-                .getProperties(this.resourceGroupName(), this.name())
-                .getBody();
-        this.setInner(storageAccountInner);
-        clearWrapperProperties();
-        return this;
-    }
-
     @Override
     public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());

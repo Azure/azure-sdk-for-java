@@ -23,8 +23,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -292,11 +290,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public ServiceCall<Deployment> createAsync(final ServiceCallback<Deployment> callback) {
-        return observableToFuture(createAsync(), callback);
-    }
-
-    @Override
     public Observable<Deployment> createAsync() {
         Observable<Deployment> observable;
         if (this.creatableResourceGroup != null) {
@@ -320,19 +313,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment createResource() throws Exception {
-        DeploymentInner inner = new DeploymentInner()
-                .withProperties(new DeploymentProperties());
-        inner.properties().withMode(mode());
-        inner.properties().withTemplate(template());
-        inner.properties().withTemplateLink(templateLink());
-        inner.properties().withParameters(parameters());
-        inner.properties().withParametersLink(parametersLink());
-        client.createOrUpdate(resourceGroupName(), name(), inner);
-        return this;
-    }
-
-    @Override
     public Observable<Deployment> createResourceAsync() {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
@@ -343,17 +323,6 @@ final class DeploymentImpl extends
         inner.properties().withParametersLink(parametersLink());
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner)
                 .map(innerToFluentMap(this));
-    }
-
-    @Override
-    public Deployment apply() throws Exception {
-        if (this.templateLink() != null && this.template() != null) {
-            this.withTemplate(null);
-        }
-        if (this.parametersLink() != null && this.parameters() != null) {
-            this.withParameters(null);
-        }
-        return this.create();
     }
 
     @Override
@@ -369,9 +338,5 @@ final class DeploymentImpl extends
             return Observable.error(e);
         }
         return this.createAsync();
-    }
-
-    public ServiceCall<Deployment> applyAsync(ServiceCallback<Deployment> callback) {
-        return observableToFuture(applyAsync(), callback);
     }
 }

@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.TaskItem;
 import rx.Observable;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Represents a task that creates a resource when executed.
@@ -28,22 +29,18 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public void execute() throws Exception {
-        if (this.created == null) {
-            // execute will be called both in update and create scenarios,
-            // so run the task only if it not not executed already.
-            this.created = this.resourceCreator.createResource();
-        }
-    }
-
-    @Override
     public Observable<ResourceT> executeAsync() {
-        return this.resourceCreator.createResourceAsync()
-                .doOnNext(new Action1<ResourceT>() {
-                    @Override
-                    public void call(ResourceT resourceT) {
-                        created = resourceT;
-                    }
-                });
+        if (this.created == null) {
+            return this.resourceCreator.createResourceAsync()
+                    .subscribeOn(Schedulers.io())
+                    .doOnNext(new Action1<ResourceT>() {
+                        @Override
+                        public void call(ResourceT resourceT) {
+                            created = resourceT;
+                        }
+                    });
+        } else {
+            return Observable.just(created);
+        }
     }
 }

@@ -8,8 +8,6 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -67,18 +65,8 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
     public Observable<Network> applyAsync() {
         return createAsync();
-    }
-
-    @Override
-    public ServiceCall<Network> applyAsync(ServiceCallback<Network> callback) {
-        return createAsync(callback);
     }
 
     // Helpers
@@ -186,18 +174,6 @@ class NetworkImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public Network createResource() throws Exception {
-        ensureCreationPrerequisites();
-
-        ServiceResponse<VirtualNetworkInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeSubnetsFromInner();
-        return this;
-    }
-
     @Override
     public Observable<Network> createResourceAsync() {
         final  NetworkImpl self = this;

@@ -56,6 +56,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.redis',
         'args': '-FT 1'
     },
+    'search': {
+        'dir': 'azure-mgmt-search',
+        'source': 'arm-search/2015-02-28/swagger/search.json',
+        'package': 'com.microsoft.azure.management.search',
+        'args': '-FT 1'
+    },
     'datalake.store.filesystem': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
