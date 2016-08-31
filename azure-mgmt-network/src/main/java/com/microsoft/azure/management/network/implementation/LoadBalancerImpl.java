@@ -5,10 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -16,13 +12,15 @@ import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of the LoadBalancer interface.
@@ -61,13 +59,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancer apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
-    public ServiceCall<LoadBalancer> applyAsync(ServiceCallback<LoadBalancer> callback) {
-        return createAsync(callback);
+    public Observable<LoadBalancer> applyAsync() {
+        return createAsync();
     }
 
     // Helpers
@@ -213,34 +206,22 @@ class LoadBalancerImpl
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public Resource createResource() throws Exception {
+    public Observable<LoadBalancer> createResourceAsync()  {
+        final LoadBalancer self = this;
         ensureCreationPrerequisites();
-
-        ServiceResponse<LoadBalancerInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        runPostCreationTasks();
-        return this;
-    }
-
-    @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback)  {
-        ensureCreationPrerequisites();
-        ResourceServiceCall<LoadBalancer, LoadBalancerInner, LoadBalancerImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<LoadBalancerInner>() {
-            @Override
-            public void success(ServiceResponse<LoadBalancerInner> response) {
-                try {
-                    runPostCreationTasks();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
-        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), serviceCall.wrapCallBack(callback));
-        return serviceCall;
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
+                    @Override
+                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
+                        setInner(loadBalancerInner.getBody());
+                        try {
+                            runPostCreationTasks();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+                    }
+                });
     }
 }

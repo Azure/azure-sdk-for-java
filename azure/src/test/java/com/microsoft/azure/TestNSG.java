@@ -5,12 +5,19 @@
  */
 package com.microsoft.azure;
 
+import com.google.common.util.concurrent.SettableFuture;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
+import org.junit.Test;
+import rx.Subscriber;
+
+import java.util.concurrent.Future;
 
 /**
  * Test for network security group CRUD.
@@ -21,9 +28,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;
         Region region = Region.US_WEST;
-
+        final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
         // Create
-        NetworkSecurityGroup nsg = nsgs.define(newName)
+        nsgs.define(newName)
                 .withRegion(region)
                 .withNewResourceGroup()
                 .defineRule("rule1")
@@ -44,7 +51,24 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .withPriority(200)
                     .withDescription("foo!!")
                     .attach()
-                .create();
+                .createAsync()
+                .subscribe(new Subscriber<NetworkSecurityGroup>() {
+                       @Override
+                       public void onCompleted() {
+                            System.out.print("completed");
+                       }
+
+                       @Override
+                       public void onError(Throwable throwable) {
+                            nsgFuture.setException(throwable);
+                       }
+
+                       @Override
+                       public void onNext(NetworkSecurityGroup networkSecurityGroup) {
+                            nsgFuture.set(networkSecurityGroup);
+                       }
+                   });
+        NetworkSecurityGroup nsg = nsgFuture.get();
 
         // Verify
         Assert.assertTrue(nsg.region().equals(region));
@@ -106,5 +130,20 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
 
         System.out.println(info.toString());
+    }
+
+    @Test
+    public void run() throws Exception {
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                System.getenv("client-id"),
+                System.getenv("domain"),
+                System.getenv("secret"),
+                null);
+
+        Azure azure = Azure.configure()
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .authenticate(credentials)
+                .withDefaultSubscription();
+        runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 }
