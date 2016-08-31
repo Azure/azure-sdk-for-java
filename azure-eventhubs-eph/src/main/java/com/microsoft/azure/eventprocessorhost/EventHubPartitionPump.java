@@ -77,7 +77,7 @@ class EventHubPartitionPump extends PartitionPump
             // meaning it is safe to set the handler and start calling IEventProcessor.onEvents.
             // Set the status to running before setting the javaClient handler, so the IEventProcessor.onEvents can never race and see status != running.
             this.pumpStatus = PartitionPumpStatus.PP_RUNNING;
-            this.partitionReceiver.setReceiveHandler(this.internalReceiveHandler);
+            this.partitionReceiver.setReceiveHandler(this.internalReceiveHandler, this.host.getEventProcessorOptions().getInvokeProcessorAfterReceiveTimeout());
         }
         
         if (this.pumpStatus == PartitionPumpStatus.PP_OPENFAILED)
