@@ -7,6 +7,7 @@ package com.microsoft.azure;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.junit.Assert;
 
@@ -33,6 +34,7 @@ import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * Test of virtual network management.
@@ -421,16 +423,15 @@ public class TestLoadBalancer {
     // Create PIPs for the LB
     private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
         //  TODO do this with List<Creatable<PublicIpAddress>> when create(List<Creatable<T>>) is available
-        List<PublicIpAddress> createdPips = new ArrayList<>();
+        List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
-            createdPips.add(pips.define(PIP_NAMES[i])
+            creatablePips.add(pips.define(PIP_NAMES[i])
                     .withRegion(REGION)
                     .withNewResourceGroup(GROUP_NAME)
-                    .withLeafDomainLabel(PIP_NAMES[i])
-                    .create());
+                    .withLeafDomainLabel(PIP_NAMES[i]));
         }
         
-        return createdPips;
+        return pips.create(creatablePips);
     }
 
     // Ensure VMs for the LB
@@ -605,6 +606,18 @@ public class TestLoadBalancer {
                     .append(natPool.frontendPortRangeEnd())
                 .append("\n\t\t\tBackend port: ").append(natPool.backendPort());
             }
+
+        // Show backends
+        info.append("\n\tBackends:");
+        for (Backend backend : resource.backends().values()) {
+            info.append("\n\t\tBackend name: ").append(backend.name())
+                .append("\n\t\t\tAssigned NICs:");
+            
+            for (Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
+                info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
+                    .append(" - IP Config: ").append(entry.getValue());
+            }
+        }
 
         System.out.println(info.toString());
     }
