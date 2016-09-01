@@ -105,6 +105,12 @@ var mappings = {
         'package': 'com.microsoft.azure.keyvault',
         'fluent': false,
         'args': '-FT 1'
+    },
+    'batch': {
+        'dir': 'azure-mgmt-batch',
+        'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
+        'package': 'com.microsoft.azure.management.batch',
+        'args': '-FT 1'
     }
 };
 
