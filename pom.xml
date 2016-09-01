@@ -14,7 +14,7 @@
 	<properties>
 		<proton-j-version>0.14.0</proton-j-version>
 	  	<junit-version>4.12</junit-version>
-		<client-current-version>0.8.1</client-current-version>
+		<client-current-version>0.9.0-SNAPSHOT</client-current-version>
 	</properties>
 	
 	<build>

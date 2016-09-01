@@ -1,5 +1,17 @@
 # Release log of Microsoft Azure Event Hubs Client for Java
 
+### 0.8.1
+
+* The client update primarily involves
+	- fix retrycount accounting issue in error handling code
+	- modifies the experience of `PartitionReceiveHandler.onReceive` - doesn't invoke the callback with no events (default behavior change)
+	- Adds client and platform information to the outgoing `AmqpConnection.Properties` to EventHubs Service
+* List of Issues & PR's of this release: https://github.com/Azure/azure-event-hubs/milestone/4?closed=1
+
+#### API Changes
+##### New API
+* `PartitionReceiver.setReceiveHandler(receiveHandler, invokeWhenNoEvents)`
+
 ### 0.8.0
 
 * The release primarily targets exposing `MessageAnnotations` & `AmqpProperties` via `EventData` on a Received `AMQPMessage`.
