@@ -1,10 +1,9 @@
 package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
-import rx.Observable;
-import rx.functions.Func1;
-
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +23,7 @@ class VirtualMachineExtensionsImpl extends
      * @param parent the parent virtual machine of the extensions
      */
     VirtualMachineExtensionsImpl(VirtualMachineExtensionsInner client, VirtualMachineImpl parent) {
-        super(parent, "VirtualMachine", "VirtualMachineExtension");
+        super(parent, "VirtualMachineExtension");
         this.client = client;
     }
 
@@ -78,30 +77,17 @@ class VirtualMachineExtensionsImpl extends
     }
 
     @Override
-    protected Observable<VirtualMachineExtensionImpl> listChildResourcesAsync(boolean requireRefresh) {
-        if (requireRefresh) {
-            try {
-                parent().refresh(); // This is sync
-            } catch (Exception exception) {
-                return Observable.error(exception);
+    protected List<VirtualMachineExtensionImpl> listChildResources() {
+        List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
+        if (parent().inner().resources() != null) {
+            for (VirtualMachineExtensionInner inner : parent().inner().resources()) {
+                childResources.add(new VirtualMachineExtensionImpl(inner.name(),
+                        this.parent(),
+                        inner,
+                        this.client));
             }
         }
-
-        if (parent().inner().resources() == null) {
-            return Observable.empty();
-        }
-
-        final VirtualMachineExtensionsImpl self = this;
-        return Observable.from(this.parent().inner().resources())
-                .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtensionImpl>() {
-                    @Override
-                    public VirtualMachineExtensionImpl call(VirtualMachineExtensionInner inner) {
-                        return new VirtualMachineExtensionImpl(inner.name(),
-                                self.parent(),
-                                inner,
-                                self.client);
-                    }
-                });
+        return childResources;
     }
 
     @Override

@@ -2,11 +2,13 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.ExternalChildResource;
 import rx.Observable;
-import rx.Observer;
-import rx.functions.Action1;
+import rx.exceptions.CompositeException;
+import rx.functions.Action0;
 import rx.functions.Func1;
+import rx.subjects.PublishSubject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,10 +17,10 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Externalized child resource collection abstract implementation.
  *
- * @param <FluentModelTImpl> the type of the external child resource implementation
+ * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
  * @param <FluentModelT> the type of the external child resource
- * @param <InnerModelT> the type of the external child resource inner model
- * @param <ParentImplT> the type of parent of the external child resource collection
+ * @param <InnerModelT> the type of the external child resource inner
+ * @param <ParentImplT> the type of parent of the external child resources
  */
 abstract class ExternalChildResourcesImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT>,
@@ -26,36 +28,32 @@ abstract class ExternalChildResourcesImpl<
         InnerModelT,
         ParentImplT> {
     private final ParentImplT parent;
-    private final String parentResourceName;
     private final String childResourceName;
-    private boolean requireRefresh = false;
     private ConcurrentMap<String, FluentModelTImpl> collection = new ConcurrentHashMap<>();
 
     /**
      * Creates a new ExternalChildResourcesImpl.
      *
      * @param parent the parent Azure resource
-     * @param parentResourceName the parent resource name
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourcesImpl(ParentImplT parent, String parentResourceName, String childResourceName) {
+    protected ExternalChildResourcesImpl(ParentImplT parent, String childResourceName) {
         this.parent = parent;
-        this.parentResourceName = parentResourceName;
         this.childResourceName = childResourceName;
-        this.initializeCollection(false);
+        this.initializeCollection();
     }
 
     /**
      * Refresh the collection from the parent.
      */
     public void refresh() {
-        initializeCollection(false);
+        initializeCollection();
     }
 
     /**
      * Commits the changes in the external child resource collection.
      *
-     * @return the stream of updated extensions
+     * @return the stream of committed resources
      */
     public Observable<FluentModelTImpl> commitAsync() {
         final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT> self = this;
@@ -63,6 +61,9 @@ abstract class ExternalChildResourcesImpl<
         for (FluentModelTImpl extension : this.collection.values()) {
             items.add(extension);
         }
+
+        final List<Throwable> exceptionsList = Collections.synchronizedList(new ArrayList<Throwable>());
+        final PublishSubject<FluentModelTImpl> exceptionSubject = PublishSubject.create();
 
         Observable<FluentModelTImpl> deleteStream = Observable.from(items)
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
@@ -80,16 +81,22 @@ abstract class ExternalChildResourcesImpl<
                                         self.collection.remove(childResource.name());
                                         return childResource;
                                     }
+                                }).onErrorResumeNext(new Func1<Throwable, Observable<FluentModelTImpl>>() {
+                                    @Override
+                                    public Observable<FluentModelTImpl> call(Throwable throwable) {
+                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        exceptionsList.add(throwable);
+                                        return Observable.empty();
+                                    }
                                 });
                     }
                 });
 
-        Observable<FluentModelTImpl> setStream = Observable.from(items)
+        Observable<FluentModelTImpl> createStream = Observable.from(items)
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
                     public Boolean call(FluentModelTImpl childResource) {
-                        return childResource.state() == ExternalChildResourceImpl.State.ToBeUpdated
-                                || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated;
+                        return childResource.state() == ExternalChildResourceImpl.State.ToBeCreated;
                     }
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
@@ -101,23 +108,56 @@ abstract class ExternalChildResourcesImpl<
                                         childResource.setState(ExternalChildResourceImpl.State.None);
                                         return childResource;
                                     }
+                                }).onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                    @Override
+                                    public Observable<? extends FluentModelTImpl> call(Throwable throwable) {
+                                        self.collection.remove(childResource.name());
+                                        exceptionsList.add(throwable);
+                                        return Observable.empty();
+                                    }
                                 });
                     }
                 });
 
-        Observable<FluentModelTImpl> mergedStream = deleteStream.mergeWith(setStream)
+        Observable<FluentModelTImpl> updateStream = Observable.from(items)
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
                     public Boolean call(FluentModelTImpl childResource) {
-                        return childResource.state() == ExternalChildResourceImpl.State.None;
+                        return childResource.state() == ExternalChildResourceImpl.State.ToBeUpdated;
                     }
-                }).doOnError(new Action1<Throwable>() {
+                }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
-                    public void call(Throwable throwable) {
-                        initializeCollection(true);
+                    public Observable<FluentModelTImpl> call(final FluentModelTImpl childResource) {
+                        return childResource.setAsync()
+                                .map(new Func1<FluentModelT, FluentModelTImpl>() {
+                                    @Override
+                                    public FluentModelTImpl call(FluentModelT e) {
+                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        return childResource;
+                                    }
+                                }).onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                    @Override
+                                    public Observable<? extends FluentModelTImpl> call(Throwable throwable) {
+                                        exceptionsList.add(throwable);
+                                        return Observable.empty();
+                                    }
+                                });
                     }
                 });
 
+        Observable<FluentModelTImpl> operationsStream = Observable.merge(deleteStream, createStream, updateStream);
+        operationsStream.doOnTerminate(new Action0() {
+            @Override
+            public void call() {
+                if (exceptionsList.isEmpty()) {
+                    exceptionSubject.onCompleted();
+                } else {
+                    exceptionSubject.onError(new CompositeException(exceptionsList));
+                }
+            }
+        });
+
+        Observable<FluentModelTImpl> mergedStream = Observable.mergeDelayError(operationsStream, exceptionSubject);
         return mergedStream;
     }
 
@@ -142,7 +182,6 @@ abstract class ExternalChildResourcesImpl<
      * @return the child resource
      */
     protected FluentModelTImpl prepareDefine(String name) {
-        this.checkRefreshRequired();
         if (find(name) != null) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' already exists");
         }
@@ -158,7 +197,6 @@ abstract class ExternalChildResourcesImpl<
      * @return the child resource
      */
     protected FluentModelTImpl prepareUpdate(String name) {
-        this.checkRefreshRequired();
         FluentModelTImpl childResource = find(name);
         if (childResource == null
                 || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
@@ -177,7 +215,6 @@ abstract class ExternalChildResourcesImpl<
      * @param name the name of the child resource
      */
     protected void prepareRemove(String name) {
-        this.checkRefreshRequired();
         FluentModelTImpl childResource = find(name);
         if (childResource == null
                 || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
@@ -198,10 +235,9 @@ abstract class ExternalChildResourcesImpl<
     /**
      * Gets the list of external child resources.
      *
-     * @param requireRefresh true if the child resource collection needs to be refreshed
      * @return the list of external child resources
      */
-    protected abstract Observable<FluentModelTImpl> listChildResourcesAsync(boolean requireRefresh);
+    protected abstract List<FluentModelTImpl> listChildResources();
 
     /**
      * Creates a new external child resource.
@@ -228,38 +264,11 @@ abstract class ExternalChildResourcesImpl<
 
     /**
      * Initializes the child resource collection.
-     *
-     * @param doRefresh true if inner collection required to be refreshed
      */
-    private void initializeCollection(boolean doRefresh) {
+    private void initializeCollection() {
         this.collection.clear();
-        final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT> self = this;
-        this.listChildResourcesAsync(doRefresh)
-                .toBlocking()
-                .subscribe(new Observer<FluentModelTImpl>() {
-                    @Override
-                    public void onCompleted() {
-                        self.requireRefresh = false;
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        self.requireRefresh = true;
-                    }
-
-                    @Override
-                    public void onNext(FluentModelTImpl childResource) {
-                        self.collection.put(childResource.name(), childResource);
-                    }
-                });
-    }
-
-    /**
-     * Checks collection refresh is required if yes throw exception.
-     */
-    private void checkRefreshRequired() {
-        if (this.requireRefresh) {
-            throw new RuntimeException("The parent '" + parentResourceName + "' needs to be refreshed before adding '" + childResourceName + "'");
+        for (FluentModelTImpl childResource : this.listChildResources()) {
+            this.collection.put(childResource.name(), childResource);
         }
     }
 }
