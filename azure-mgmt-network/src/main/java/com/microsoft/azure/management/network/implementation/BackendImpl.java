@@ -9,8 +9,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -45,6 +47,22 @@ class BackendImpl
         }
 
         return Collections.unmodifiableMap(ipConfigNames);
+    }
+
+    @Override
+    public Map<String, LoadBalancingRule> loadBalancingRules() {
+        final Map<String, LoadBalancingRule> rules = new TreeMap<>();
+        if (this.inner().loadBalancingRules() != null) {
+            for (SubResource inner : this.inner().loadBalancingRules()) {
+                String name = ResourceUtils.nameFromResourceId(inner.id());
+                LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
+                if (rule != null) {
+                    rules.put(name, rule);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(rules);
     }
 
     @Override

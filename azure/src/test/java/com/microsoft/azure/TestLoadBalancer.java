@@ -422,7 +422,6 @@ public class TestLoadBalancer {
 
     // Create PIPs for the LB
     private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
-        //  TODO do this with List<Creatable<PublicIpAddress>> when create(List<Creatable<T>>) is available
         List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
             creatablePips.add(pips.define(PIP_NAMES[i])
@@ -610,12 +609,19 @@ public class TestLoadBalancer {
         // Show backends
         info.append("\n\tBackends:");
         for (Backend backend : resource.backends().values()) {
-            info.append("\n\t\tBackend name: ").append(backend.name())
-                .append("\n\t\t\tAssigned NICs:");
-            
+            info.append("\n\t\tBackend name: ").append(backend.name());
+
+            // Show assigned backend NICs
+            info.append("\n\t\t\tAssigned NICs:");
             for (Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                     .append(" - IP Config: ").append(entry.getValue());
+            }
+
+            // Show assigned load balancing rules
+            info.append("\n\t\t\tAssigned load balancing rule names:");
+            for (Entry<String, LoadBalancingRule> entry : backend.loadBalancingRules().entrySet()) {
+                info.append("\n\t\t\t\tLoad balancing rule name: ").append(entry.getKey());
             }
         }
 

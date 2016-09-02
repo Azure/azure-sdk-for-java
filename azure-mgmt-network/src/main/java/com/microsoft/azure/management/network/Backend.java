@@ -27,6 +27,11 @@ public interface Backend extends
     Map<String, String> backendNicIpConfigurationNames();
 
     /**
+     * @return the load balancing rules on this load balancer that reference this backend, indexed by their names
+     */
+    Map<String, LoadBalancingRule> loadBalancingRules();
+
+    /**
      * Grouping of backend definition stages.
      */
     interface DefinitionStages {
