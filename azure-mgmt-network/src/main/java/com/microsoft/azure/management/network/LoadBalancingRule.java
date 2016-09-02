@@ -27,7 +27,7 @@ public interface LoadBalancingRule extends
     /**
      * @return true if floating IP is enabled, false otherwise
      */
-    boolean floatingIp();
+    boolean floatingIpEnabled();
 
     //TODO:
      /* withProbe and return them */

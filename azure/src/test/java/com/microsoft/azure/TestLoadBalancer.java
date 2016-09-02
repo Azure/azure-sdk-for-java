@@ -548,7 +548,7 @@ public class TestLoadBalancer {
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIp())
+                .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIpEnabled())
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                 .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 

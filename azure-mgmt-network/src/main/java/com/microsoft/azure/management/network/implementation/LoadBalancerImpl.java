@@ -27,7 +27,7 @@ import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
-import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -372,7 +372,7 @@ class LoadBalancerImpl
                 .attach();
     }
 
-    private LoadBalancerImpl withExistingVirtualMachine(SupportsNetworkInterfaces vm, String backendName) {
+    private LoadBalancerImpl withExistingVirtualMachine(HasNetworkInterfaces vm, String backendName) {
         if (backendName == null) {
             backendName = DEFAULT;
         }
@@ -386,9 +386,9 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withExistingVirtualMachines(SupportsNetworkInterfaces... vms) {
+    public LoadBalancerImpl withExistingVirtualMachines(HasNetworkInterfaces... vms) {
         if (vms != null) {
-            for (SupportsNetworkInterfaces vm : vms) {
+            for (HasNetworkInterfaces vm : vms) {
                 withExistingVirtualMachine(vm, null);
             }
         }

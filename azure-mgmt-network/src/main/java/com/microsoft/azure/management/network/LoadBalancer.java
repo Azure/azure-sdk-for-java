@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -222,7 +223,7 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            ReturnT withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+            ReturnT withExistingVirtualMachines(HasNetworkInterfaces...vms);
         }
 
         /**

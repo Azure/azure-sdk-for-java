@@ -7,7 +7,7 @@ import com.microsoft.azure.management.compute.implementation.VirtualMachineExten
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.SupportsNetworkInterfaces;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -28,7 +28,7 @@ public interface VirtualMachine extends
         Refreshable<VirtualMachine>,
         Wrapper<VirtualMachineInner>,
         Updatable<VirtualMachine.Update>,
-        SupportsNetworkInterfaces {
+        HasNetworkInterfaces {
 
     // Actions
 
