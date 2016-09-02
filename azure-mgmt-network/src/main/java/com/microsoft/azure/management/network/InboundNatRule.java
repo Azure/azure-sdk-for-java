@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
+import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an inbound NAT rule.
  */
 public interface InboundNatRule extends
+    HasFrontend,
     Wrapper<InboundNatRuleInner>,
     ChildResource,
     InboundNatCommon {

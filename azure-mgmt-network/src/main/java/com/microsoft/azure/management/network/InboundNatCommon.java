@@ -21,12 +21,7 @@ interface InboundNatCommon {
     int backendPort();
 
     /**
-     * @return the frontend IP configuration associated with this NAT rule
-     */
-    Frontend frontend();
-
-    /**
-     * Grouping of inbound NAT rule definition stages.
+     * Grouping of inbound NAT definition stages.
      */
     interface DefinitionStages {
         /**

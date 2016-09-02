@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.InboundNatPoolInner;
+import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface InboundNatPool extends
     InboundNatCommon,
+    HasFrontend,
     Wrapper<InboundNatPoolInner>,
     ChildResource {
 
