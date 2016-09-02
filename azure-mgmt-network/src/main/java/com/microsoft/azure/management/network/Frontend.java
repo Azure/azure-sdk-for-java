@@ -27,4 +27,9 @@ public interface Frontend extends
      * @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names
      */
     Map<String, InboundNatPool> inboundNatPools();
+
+    /**
+     * @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names
+     */
+    Map<String, InboundNatRule> inboundNatRules();
 }

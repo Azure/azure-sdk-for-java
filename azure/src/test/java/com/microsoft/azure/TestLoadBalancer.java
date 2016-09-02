@@ -583,6 +583,12 @@ public class TestLoadBalancer {
             for (InboundNatPool pool : frontend.inboundNatPools().values()) {
                 info.append("\n\t\t\t\tName: ").append(pool.name());
             }
+
+            // Inbound NAT rule references
+            info.append("\n\t\t\tInbound NAT rule reference names:");
+            for (InboundNatRule rule : frontend.inboundNatRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
         }
         
         // Show inbound NAT rules

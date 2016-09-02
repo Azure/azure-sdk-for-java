@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -65,6 +66,22 @@ class FrontendImpl
         }
 
         return Collections.unmodifiableMap(pools);
+    }
+
+    @Override
+    public Map<String, InboundNatRule> inboundNatRules() {
+        final Map<String, InboundNatRule> rules = new TreeMap<>();
+        if (this.inner().inboundNatRules() != null) {
+            for (SubResource innerRef : this.inner().inboundNatRules()) {
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
+                InboundNatRule rule = this.parent().inboundNatRules().get(name);
+                if (rule != null) {
+                    rules.put(name, rule);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(rules);
     }
 
     // Fluent setters
