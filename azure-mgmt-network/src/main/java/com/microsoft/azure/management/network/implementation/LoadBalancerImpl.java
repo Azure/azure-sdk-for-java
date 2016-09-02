@@ -77,7 +77,7 @@ class LoadBalancerImpl
         ServiceResponse<LoadBalancerInner> response =
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        initializeChildren();
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -89,7 +89,7 @@ class LoadBalancerImpl
     // Helpers
 
     @Override
-    protected void initializeChildren() {
+    protected void initializeChildrenFromInner() {
         initializeFrontendsFromInner();
         initializeProbesFromInner();
         initializeBackendsFromInner();

@@ -34,8 +34,8 @@ public abstract class GroupableParentResourceImpl<
             InnerModelT innerObject,
             ManagerT manager) {
         super(name, innerObject, manager);
-        initializeChildren();
+        initializeChildrenFromInner();
     }
 
-    protected abstract void initializeChildren();
+    protected abstract void initializeChildrenFromInner();
 }
