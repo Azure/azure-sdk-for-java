@@ -30,7 +30,7 @@ import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.W
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
@@ -40,7 +40,7 @@ import rx.functions.Func1;
  * Implementation of the LoadBalancer interface.
  */
 class LoadBalancerImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         LoadBalancer,
         LoadBalancerInner,
         LoadBalancerImpl,
@@ -68,12 +68,6 @@ class LoadBalancerImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeFrontendsFromInner();
-        initializeProbesFromInner();
-        initializeBackendsFromInner();
-        initializeLoadBalancingRulesFromInner();
-        initializeInboundNatRulesFromInner();
-        initializeInboundNatPoolsFromInner();
     }
 
     // Verbs
@@ -83,12 +77,7 @@ class LoadBalancerImpl
         ServiceResponse<LoadBalancerInner> response =
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        initializeFrontendsFromInner();
-        initializeProbesFromInner();
-        initializeBackendsFromInner();
-        initializeLoadBalancingRulesFromInner();
-        initializeInboundNatRulesFromInner();
-        initializeInboundNatPoolsFromInner();
+        initializeChildren();
         return this;
     }
 
@@ -99,7 +88,15 @@ class LoadBalancerImpl
 
     // Helpers
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    @Override
+    protected void initializeChildren() {
+        initializeFrontendsFromInner();
+        initializeProbesFromInner();
+        initializeBackendsFromInner();
+        initializeLoadBalancingRulesFromInner();
+        initializeInboundNatRulesFromInner();
+        initializeInboundNatPoolsFromInner();
+    }
 
     @Override
     public Observable<LoadBalancer> createResourceAsync()  {
