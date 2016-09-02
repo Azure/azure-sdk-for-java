@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -63,9 +64,10 @@ class NicIpConfigurationImpl
         this.networkManager = networkManager;
     }
 
-    protected static NicIpConfigurationImpl prepareNicIpConfiguration(String name,
-                                                                      NetworkInterfaceImpl parent,
-                                                                      final NetworkManager networkManager) {
+    protected static NicIpConfigurationImpl prepareNicIpConfiguration(
+            String name,
+            NetworkInterfaceImpl parent,
+            final NetworkManager networkManager) {
         NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
         ipConfigurationInner.withName(name);
         return new NicIpConfigurationImpl(ipConfigurationInner,
@@ -237,7 +239,7 @@ class NicIpConfigurationImpl
         return poolRefs;
     }
 
-    protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIpConfigurations) {
         for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIpConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());

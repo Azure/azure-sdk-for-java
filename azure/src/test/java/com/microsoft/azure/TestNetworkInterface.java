@@ -31,7 +31,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIpForwarding()
-                .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
+                .updateIpConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
                     .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
                     .parent()
@@ -69,7 +69,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tIP configurations: ");
 
         // Output IP configs
-        for (NicIpConfiguration ipConfig : resource.ipConfigurations()) {
+        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                 .append("\n\t\tPrivate IP: ").append(ipConfig.privateIp())
                 .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
