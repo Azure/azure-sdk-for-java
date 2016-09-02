@@ -9,17 +9,6 @@ package com.microsoft.azure.management.network;
  * The base interface for common members of inbound NAT-related interfaces.
  */
 interface InboundNatCommon {
-
-    /**
-     * @return the transport protocol
-     */
-    TransportProtocol protocol();
-
-    /**
-     * @return the backend port number
-     */
-    int backendPort();
-
     /**
      * Grouping of inbound NAT definition stages.
      */

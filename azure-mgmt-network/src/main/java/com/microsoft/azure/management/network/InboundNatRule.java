@@ -6,7 +6,9 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
+import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFrontend;
+import com.microsoft.azure.management.network.model.HasTransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -17,6 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface InboundNatRule extends
     HasFrontend,
+    HasBackendPort,
+    HasTransportProtocol,
     Wrapper<InboundNatRuleInner>,
     ChildResource,
     InboundNatCommon {

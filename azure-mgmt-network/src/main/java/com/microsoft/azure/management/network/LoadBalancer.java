@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
+import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -24,7 +25,8 @@ public interface LoadBalancer extends
         GroupableResource,
         Refreshable<LoadBalancer>,
         Wrapper<LoadBalancerInner>,
-        Updatable<LoadBalancer.Update> {
+        Updatable<LoadBalancer.Update>,
+        HasLoadBalancingRules {
 
     // Getters
     /**
@@ -56,11 +58,6 @@ public interface LoadBalancer extends
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
     Map<String, Frontend> frontends();
-
-    /**
-     * @return load balancing rules, indexed by name
-     */
-    Map<String, LoadBalancingRule> loadBalancingRules();
 
     /**
      * @return inbound NAT pools, indexed by name

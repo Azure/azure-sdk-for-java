@@ -6,6 +6,9 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
+import com.microsoft.azure.management.network.model.HasBackendPort;
+import com.microsoft.azure.management.network.model.HasFrontend;
+import com.microsoft.azure.management.network.model.HasTransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -16,12 +19,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface LoadBalancingRule extends
     Wrapper<LoadBalancingRuleInner>,
-    ChildResource {
-
-    /**
-     * @return the transport protocol the load balancing rule applies to
-     */
-    TransportProtocol protocol();
+    ChildResource,
+    HasBackendPort,
+    HasFrontend,
+    HasTransportProtocol {
 
     /**
      * @return true if floating IP is enabled, false otherwise
@@ -44,16 +45,6 @@ public interface LoadBalancingRule extends
      * @return the load balanced front end port
      */
     int frontendPort();
-
-    /**
-     * @return the backend port the load balanced traffic is sent to
-     */
-    int backendPort();
-
-    /**
-     * @return the frontend associated with the load balancing rule
-     */
-    Frontend frontend();
 
     /**
      * @return the backend associated with the load balancing rule

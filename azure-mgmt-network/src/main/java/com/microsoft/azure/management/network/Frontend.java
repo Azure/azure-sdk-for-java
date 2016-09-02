@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.FrontendIPConfigurationInner;
+import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -16,7 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface Frontend extends
     Wrapper<FrontendIPConfigurationInner>,
-    ChildResource {
+    ChildResource,
+    HasLoadBalancingRules {
 
     /**
      * @return true if the front end is Internet-facing, i.e. it has a public IP address associated with it
@@ -32,9 +34,4 @@ public interface Frontend extends
      * @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names
      */
     Map<String, InboundNatRule> inboundNatRules();
-
-    /**
-     * @return the load balancing rules on this load balancer that use this frontend, indexed by their names
-     */
-    Map<String, LoadBalancingRule> loadBalancingRules();
 }
