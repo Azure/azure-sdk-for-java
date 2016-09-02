@@ -328,10 +328,10 @@ public interface VirtualMachine extends
          */
         interface WithSubnet {
             /**
-             * Associate a subnet with the virtual machine primary network interface.
+             * Associates a subnet with the virtual machine's primary network interface.
              *
              * @param name the subnet name
-             * @return the next stage of the virtual machine definition
+             * @return the next stage of the definition
              */
             WithPrivateIp withSubnet(String name);
         }

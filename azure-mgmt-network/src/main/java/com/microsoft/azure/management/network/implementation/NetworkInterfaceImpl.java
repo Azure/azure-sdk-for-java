@@ -187,7 +187,7 @@ class NetworkInterfaceImpl
     @Override
     public NicIpConfigurationImpl updateIpConfiguration(String name) {
         for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
-            if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
+            if (name.equalsIgnoreCase(nicIpConfiguration.name())) {
                 return (NicIpConfigurationImpl) nicIpConfiguration;
             }
         }
@@ -251,6 +251,16 @@ class NetworkInterfaceImpl
     @Override
     public String internalDnsNameLabel() {
         return this.inner().dnsSettings().internalDnsNameLabel();
+    }
+
+    @Override
+    public String internalDomainNameSuffix() {
+        return this.inner().dnsSettings().internalDomainNameSuffix();
+    }
+
+    @Override
+    public List<String> appliedDnsServers() {
+        return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
     }
 
     @Override

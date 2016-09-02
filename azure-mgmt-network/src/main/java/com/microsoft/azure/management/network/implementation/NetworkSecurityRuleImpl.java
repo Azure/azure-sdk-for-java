@@ -208,8 +208,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityGroupImpl attach() {
-        this.parent().inner().securityRules().add(this.inner());
-        return this.parent();
+        return this.parent().withRule(this);
     }
 
     @Override

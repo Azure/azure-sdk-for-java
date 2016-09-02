@@ -52,7 +52,11 @@ public abstract class TestTemplate<
      * @throws IOException if anything goes wrong
      */
     public int verifyListing() throws CloudException, IOException {
-        return this.collection.list().size();
+        PagedList<T> resources = this.collection.list();
+        for (T r : resources) {
+            System.out.println("resource id: " + r.id());
+        }
+        return resources.size();
     }
 
     /**
