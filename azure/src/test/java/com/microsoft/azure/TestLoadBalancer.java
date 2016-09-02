@@ -589,6 +589,12 @@ public class TestLoadBalancer {
             for (InboundNatRule rule : frontend.inboundNatRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
+
+            // Load balancing rule references
+            info.append("\n\t\t\tLoad balancing rule reference names:");
+            for (LoadBalancingRule rule : frontend.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
         }
         
         // Show inbound NAT rules

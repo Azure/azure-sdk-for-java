@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -50,6 +51,22 @@ class FrontendImpl
     @Override
     public boolean isInternetFacing() {
         return (this.inner().publicIPAddress() != null);
+    }
+
+    @Override
+    public Map<String, LoadBalancingRule> loadBalancingRules() {
+        final Map<String, LoadBalancingRule> rules = new TreeMap<>();
+        if (this.inner().loadBalancingRules() != null) {
+            for (SubResource innerRef : this.inner().loadBalancingRules()) {
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
+                LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
+                if (rule != null) {
+                    rules.put(name, rule);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(rules);
     }
 
     @Override

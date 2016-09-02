@@ -32,4 +32,9 @@ public interface Frontend extends
      * @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names
      */
     Map<String, InboundNatRule> inboundNatRules();
+
+    /**
+     * @return the load balancing rules on this load balancer that use this frontend, indexed by their names
+     */
+    Map<String, LoadBalancingRule> loadBalancingRules();
 }
