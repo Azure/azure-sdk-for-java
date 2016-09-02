@@ -32,6 +32,10 @@ public abstract class PagedList<E> implements List<E> {
     private String nextPageLink;
     /** Stores the latest page fetched. */
     private Page<E> currentPage;
+    /** Stores the last item retrieved from rest call. */
+    private E lastItem;
+    /** Stores whether the last item is not returned. */
+    private boolean hasLastItem;
 
     /**
      * Creates an instance of Pagedlist.
@@ -47,7 +51,12 @@ public abstract class PagedList<E> implements List<E> {
      */
     public PagedList(Page<E> page) {
         this();
-        items.addAll(page.getItems());
+        List<E> retrievedItems = page.getItems();
+        if (retrievedItems != null && retrievedItems.size() != 0) {
+            lastItem = retrievedItems.get(retrievedItems.size() - 1);
+            hasLastItem = true;
+            items.addAll(retrievedItems.subList(0, retrievedItems.size() - 1));
+        }
         nextPageLink = page.getNextPageLink();
         currentPage = page;
     }
@@ -73,13 +82,22 @@ public abstract class PagedList<E> implements List<E> {
 
     /**
      * Loads a page from next page link.
+     * Keeps the last item that is retrieved from REST call separate in case the list is empty.
      * The exceptions are wrapped into Java Runtime exceptions.
      */
     public void loadNextPage() {
         try {
             Page<E> nextPage = nextPage(this.nextPageLink);
             this.nextPageLink = nextPage.getNextPageLink();
-            this.items.addAll(nextPage.getItems());
+            List<E> retrievedItems = nextPage.getItems();
+            if (hasLastItem) {
+                retrievedItems.add(0, lastItem);
+            }
+            if (retrievedItems.size() != 0) {
+                hasLastItem = true;
+                lastItem = retrievedItems.get(retrievedItems.size() - 1);
+            }
+            this.items.addAll(retrievedItems.subList(0, retrievedItems.size() - 1));
             this.currentPage = nextPage;
         } catch (IOException e) {
             throw new DataBindingException(e.getMessage(), e);
@@ -131,21 +149,27 @@ public abstract class PagedList<E> implements List<E> {
 
         @Override
         public boolean hasNext() {
-            return itemsListItr.hasNext() || hasNextPage();
+            return itemsListItr.hasNext() || hasNextPage() || hasLastItem;
         }
 
         @Override
         public E next() {
             if (!itemsListItr.hasNext()) {
                 if (!hasNextPage()) {
-                    throw new NoSuchElementException();
+                    if (!hasLastItem) {
+                        throw new NoSuchElementException();                        
+                    }                        
                 } else {
                     int size = items.size();
                     loadNextPage();
                     itemsListItr = items.listIterator(size);
                 }
             }
-            return itemsListItr.next();
+            if (itemsListItr.hasNext()) {
+                return itemsListItr.next();
+            }
+            hasLastItem = false;
+            return lastItem;
         }
 
         @Override
