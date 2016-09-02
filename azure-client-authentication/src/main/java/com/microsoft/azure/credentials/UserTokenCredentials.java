@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 /**
  * Token based credentials for use with a REST Service Client.
  */
-public class UserTokenCredentials extends TokenCredentials {
+public class UserTokenCredentials extends TokenCredentials implements AzureTokenCredentials {
     /** The endpoint of the target resource. */
     private String resourceEndpoint;
     /** The Active Directory application client id. */
@@ -134,6 +134,11 @@ public class UserTokenCredentials extends TokenCredentials {
      */
     public String getClientRedirectUri() {
         return clientRedirectUri;
+    }
+
+    @Override
+    public String getToken(String resource) throws IOException {
+        return null;
     }
 
     /**
