@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.network.implementation.FrontendIPConfigurationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -20,4 +22,9 @@ public interface Frontend extends
      * @return true if the front end is Internet-facing, i.e. it has a public IP address associated with it
      */
     boolean isInternetFacing();
+
+    /**
+     * @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names
+     */
+    Map<String, InboundNatPool> inboundNatPools();
 }

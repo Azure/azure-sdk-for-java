@@ -5,11 +5,17 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InternetFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -43,6 +49,22 @@ class FrontendImpl
     @Override
     public boolean isInternetFacing() {
         return (this.inner().publicIPAddress() != null);
+    }
+
+    @Override
+    public Map<String, InboundNatPool> inboundNatPools() {
+        final Map<String, InboundNatPool> pools = new TreeMap<>();
+        if (this.inner().inboundNatPools() != null) {
+            for (SubResource innerRef : this.inner().inboundNatPools()) {
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
+                InboundNatPool pool = this.parent().inboundNatPools().get(name);
+                if (pool != null) {
+                    pools.put(name, pool);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(pools);
     }
 
     // Fluent setters

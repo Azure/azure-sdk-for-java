@@ -577,6 +577,12 @@ public class TestLoadBalancer {
             if (frontend.isInternetFacing()) {
                 info.append("\n\t\t\tPublic IP Address ID: ").append(((InternetFrontend) frontend).publicIpAddressId());
             }
+
+            // Inbound NAT pool references
+            info.append("\n\t\t\tInbound NAT pool reference names:");
+            for (InboundNatPool pool : frontend.inboundNatPools().values()) {
+                info.append("\n\t\t\t\tName: ").append(pool.name());
+            }
         }
         
         // Show inbound NAT rules
