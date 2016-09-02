@@ -41,11 +41,12 @@ import com.microsoft.azure.keyvault.requests.UpdateCertificatePolicyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateCertificateRequest;
 import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 import okhttp3.ResponseBody;
@@ -56,6 +57,8 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Initializes a new instance of the KeyVaultClient class.
@@ -179,7 +182,7 @@ public final class KeyVaultClient {
     interface KeyVaultClientService {
         @Headers({"Content-Type: application/json; charset=utf-8", "Accept: application/pkcs10"})
         @GET("certificates/{certificate-name}/pending")
-        Call<ResponseBody> getPendingCertificateSigningRequest(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPendingCertificateSigningRequest(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
     }
         
     /**
@@ -585,7 +588,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> encrypt(String keyIdentifier, String algorithm, byte[] value) 
+    public ServiceResponse<KeyOperationResult> encrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.encrypt(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
@@ -600,7 +603,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> encryptAsync(String keyIdentifier, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> encryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.encryptAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -616,7 +619,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> decrypt(String keyIdentifier, String algorithm, byte[] value) 
+    public ServiceResponse<KeyOperationResult> decrypt(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.decrypt(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
@@ -631,7 +634,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses. 
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> decryptAsync(String keyIdentifier, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> decryptAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.decryptAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -647,7 +650,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> sign(String keyIdentifier, String algorithm, byte[] value) 
+    public ServiceResponse<KeyOperationResult> sign(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.sign(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
@@ -662,7 +665,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> signAsync(String keyIdentifier, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> signAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.signAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);        
     }
@@ -679,7 +682,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyVerifyResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyVerifyResult> verify(String keyIdentifier, String algorithm, byte[] digest, byte[] signature) 
+    public ServiceResponse<KeyVerifyResult> verify(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.verify(id.vault, id.name, id.version == null ? "" : id.version, algorithm, digest, signature);
@@ -695,7 +698,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyVerifyResult> verifyAsync(String keyIdentifier, String algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
+    public ServiceCall<KeyVerifyResult> verifyAsync(String keyIdentifier, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.verifyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, digest, signature, serviceCallback);
     }
@@ -711,7 +714,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> wrapKey(String keyIdentifier, String algorithm, byte[] value) 
+    public ServiceResponse<KeyOperationResult> wrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.wrapKey(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
@@ -726,7 +729,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> wrapKeyAsync(String keyIdentifier, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> wrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.wrapKeyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -742,7 +745,7 @@ public final class KeyVaultClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> unwrapKey(String keyIdentifier, String algorithm, byte[] value) 
+    public ServiceResponse<KeyOperationResult> unwrapKey(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.unwrapKey(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value);
@@ -757,7 +760,7 @@ public final class KeyVaultClient {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String keyIdentifier, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String keyIdentifier, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
         KeyIdentifier id = new KeyIdentifier(keyIdentifier);
         return innerKeyVaultClient.unwrapKeyAsync(id.vault, id.name, id.version == null ? "" : id.version, algorithm, value, serviceCallback);
     }
@@ -1857,19 +1860,7 @@ public final class KeyVaultClient {
      */
     public ServiceResponse<String> getPendingCertificateSigningRequest(String vaultBaseUrl, String certificateName) 
             throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        Response<ResponseBody> response = call.execute();
-        return new ServiceResponse<String>(response.body().string(), response);
+        return getPendingCertificateSigningRequestAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -1881,6 +1872,17 @@ public final class KeyVaultClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<String> getPendingCertificateSigningRequestAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<String> serviceCallback) {
+        return ServiceCall.create(getPendingCertificateSigningRequestAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+    
+    /**
+     * Gets the pending certificate signing request response.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the observable to the String object
+     */
+    private Observable<ServiceResponse<String>> getPendingCertificateSigningRequestAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1891,24 +1893,17 @@ public final class KeyVaultClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<String> serviceCall = new ServiceCall<String>(call);
-        call.enqueue(new ServiceResponseCallback<String>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    if (serviceCallback != null) {
-                        serviceCallback.success(new ServiceResponse<String>(response.body().string(), response));
+        return service.getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
+                @Override
+                public Observable<ServiceResponse<String>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<String> clientResponse = new ServiceResponse<String>(response.body().string(), response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<String>(response.body().string(), response));
-                } catch (IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 }

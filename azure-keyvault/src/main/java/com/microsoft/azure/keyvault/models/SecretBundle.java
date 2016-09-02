@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import java.io.IOException;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,13 +50,17 @@ public class SecretBundle {
     private Map<String, String> tags;
 
     /**
-     * The key id for certificate.
+     * If this is a secret backing a KV certificate, then this field specifies
+     * the corresponding key backing the KV certificate.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String kid;
 
     /**
-     * True if the secret's lifetime is managed by key vault.
+     * True if the secret's lifetime is managed by key vault i.e. if this is a
+     * secret backing a certificate, then managed will be true.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
 
     /**

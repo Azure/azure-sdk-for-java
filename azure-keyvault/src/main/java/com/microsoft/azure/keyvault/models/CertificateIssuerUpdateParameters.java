@@ -13,13 +13,12 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The certificate issuer set parameters.
+ * The certificate issuer update parameters.
  */
 public class CertificateIssuerUpdateParameters {
     /**
-     * The name of the issuer.
+     * The issuer provider.
      */
-    @JsonProperty(required = true)
     private String provider;
 
     /**

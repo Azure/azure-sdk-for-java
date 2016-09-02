@@ -7,6 +7,7 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 /**
  * The import key request class.
@@ -110,7 +111,7 @@ public final class ImportKeyRequest {
                     .withD(builder.key.d()).withP(builder.key.p()).withQ(builder.key.q()).withDp(builder.key.dp())
                     .withDq(builder.key.dq()).withQi(builder.key.qi()).withK(builder.key.k()).withT(builder.key.t());
             if (builder.key.keyOps() != null) {
-                key.withKeyOps(new ArrayList<String>(builder.key.keyOps()));
+                key.withKeyOps(new ArrayList<JsonWebKeyOperation>(builder.key.keyOps()));
             }
         } else {
             key = null;

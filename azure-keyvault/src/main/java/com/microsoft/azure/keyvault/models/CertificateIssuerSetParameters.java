@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CertificateIssuerSetParameters {
     /**
-     * The name of the issuer.
+     * The issuer provider.
      */
     @JsonProperty(required = true)
     private String provider;

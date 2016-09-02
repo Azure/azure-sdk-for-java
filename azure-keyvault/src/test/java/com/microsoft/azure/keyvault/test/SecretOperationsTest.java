@@ -174,8 +174,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void listSecrets() throws Exception {
-
+    public void listSecrets() throws Exception {        
         HashSet<String> secrets = new HashSet<String>();
         for (int i = 0; i < MAX_SECRETS; ++i) {
             int failureCount = 0;
@@ -204,9 +203,11 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         HashSet<String> toDelete = new HashSet<String>();
 
         for (SecretItem item : listResult) {
-            SecretIdentifier id = new SecretIdentifier(item.id());
-            toDelete.add(id.name());
-            secrets.remove(item.id());
+            if(item != null) {
+                SecretIdentifier id = new SecretIdentifier(item.id());
+                toDelete.add(id.name());
+                secrets.remove(item.id());
+            }
         }
 
         Assert.assertEquals(0, secrets.size());
@@ -252,7 +253,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME).getBody();
         for (SecretItem item : listResult) {
-            secrets.remove(item.id());
+            if(item != null) {
+                secrets.remove(item.id());
+            }
         }
 
         Assert.assertEquals(0, secrets.size());

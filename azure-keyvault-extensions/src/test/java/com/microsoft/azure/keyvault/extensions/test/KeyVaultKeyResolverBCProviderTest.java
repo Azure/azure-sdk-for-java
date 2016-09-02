@@ -38,6 +38,7 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.requests.SetSecretRequest;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.rest.ServiceResponse;
 
 public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegrationTestBase {
@@ -79,7 +80,7 @@ public class KeyVaultKeyResolverBCProviderTest extends KeyVaultClientIntegration
     {
         try {
             // Create a key on a vault.
-            CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, "RSA").build();
+            CreateKeyRequest           request  = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build();
             ServiceResponse<KeyBundle> response = keyVaultClient.createKey(request);
             KeyBundle                  bundle   = response != null ? response.getBody() : null;
     

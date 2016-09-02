@@ -677,9 +677,11 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         HashSet<String> toDelete = new HashSet<String>();
 
         for (CertificateItem item : listResult) {
-            CertificateIdentifier id = new CertificateIdentifier(item.id());
-            toDelete.add(id.name());
-            certificates.remove(item.id());
+            if(item != null) {
+                CertificateIdentifier id = new CertificateIdentifier(item.id());
+                toDelete.add(id.name());
+                certificates.remove(item.id());
+            }
         }
 
         Assert.assertEquals(0, certificates.size());
@@ -736,7 +738,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         listResult = keyVaultClient.listCertificateVersions(getVaultUri(), certificateName).getBody();
 
         for (CertificateItem item : listResult) {
-            certificates.remove(item.id());
+            if(item != null) {
+                certificates.remove(item.id());
+            }
         }
 
         Assert.assertEquals(0, certificates.size());
