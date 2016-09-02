@@ -6,22 +6,22 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
-import com.microsoft.azure.ParallelServiceCall;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.AccessPolicyEntry;
 import com.microsoft.azure.management.keyvault.Sku;
-import com.microsoft.azure.management.keyvault.SkuFamily;
 import com.microsoft.azure.management.keyvault.SkuName;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.keyvault.VaultProperties;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.FuncN;
+import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ class VaultImpl
     private GraphRbacManager graphRbacManager;
     private List<AccessPolicyImpl> accessPolicies;
 
-    protected VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
+    VaultImpl(String key, VaultInner innerObject, VaultsInner client, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
         super(key, innerObject, manager);
         this.client = client;
         this.graphRbacManager = graphRbacManager;
@@ -191,128 +191,77 @@ class VaultImpl
         if (inner().properties() == null) {
             inner().withProperties(new VaultProperties());
         }
-        inner().properties().withSku(new Sku().withName(skuName).withFamily(SkuFamily.A));
+        inner().properties().withSku(new Sku().withName(skuName));
         return this;
     }
 
-    @Override
-    public VaultImpl apply() throws Exception {
-        return create();
-    }
-
-    @Override
-    public ServiceCall applyAsync(ServiceCallback<Vault> callback) {
-        return createAsync(callback);
-    }
-
-    @Override
-    public ServiceCall createResourceAsync(final ServiceCallback<Resource> serviceCallback) {
-        final ServiceCall serviceCall = new ServiceCall(null);
-        final VaultImpl self = this;
-        serviceCall.newCall(populateAccessPolicies(new ServiceCallback<Object>() {
-            @Override
-            public void failure(Throwable t) {
-                serviceCallback.failure(t);
-                serviceCall.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<Object> result) {
-                VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
-                parameters.withLocation(regionName());
-                parameters.withProperties(inner().properties());
-                parameters.withTags(inner().getTags());
-                serviceCall.newCall(client.createOrUpdateAsync(resourceGroupName(), name(), parameters, new ServiceCallback<VaultInner>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        serviceCallback.failure(t);
-                        serviceCall.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<VaultInner> result) {
-                        setInner(result.getBody());
-                        ServiceResponse<Resource> clientResponse = new ServiceResponse<Resource>(self, result.getResponse());
-                        serviceCallback.success(clientResponse);
-                        serviceCall.success(clientResponse);
-                    }
-                }).getCall());
-            }
-        }).getCall());
-        return serviceCall;
-    }
-
-    private ParallelServiceCall populateAccessPolicies(final ServiceCallback<?> callback) {
-        final ParallelServiceCall<?> parallelServiceCall = new ParallelServiceCall();
-        boolean any = false;
+    private Observable<List<AccessPolicy>> populateAccessPolicies() {
+        List<Observable<?>>observables = new ArrayList<>();
         for (final AccessPolicyImpl accessPolicy : accessPolicies) {
             if (accessPolicy.objectId() == null) {
-                any = true;
                 if (accessPolicy.userPrincipalName != null) {
-                    parallelServiceCall.addCall(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName, new ServiceCallback<User>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            if (callback != null) {
-                                callback.failure(t);
-                            }
-                            parallelServiceCall.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<User> result) {
-                            if (callback != null) {
-                                callback.success(null);
-                            }
-                            accessPolicy.forUser(result.getBody());
-                        }
-                    }));
+                    observables.add(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName)
+                            .subscribeOn(Schedulers.io())
+                            .doOnNext(new Action1<User>() {
+                                @Override
+                                public void call(User user) {
+                                    accessPolicy.forObjectId(UUID.fromString(user.objectId()));
+                                }
+                            }));
                 } else if (accessPolicy.servicePrincipalName != null) {
-                    parallelServiceCall.addCall(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName, new ServiceCallback<ServicePrincipal>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            if (callback != null) {
-                                callback.failure(t);
-                            }
-                            parallelServiceCall.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<ServicePrincipal> result) {
-                            if (callback != null) {
-                                callback.success(null);
-                            }
-                            accessPolicy.forServicePrincipal(result.getBody());
-                        }
-                    }));
+                    observables.add(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName)
+                            .subscribeOn(Schedulers.io())
+                            .doOnNext(new Action1<ServicePrincipal>() {
+                                @Override
+                                public void call(ServicePrincipal sp) {
+                                    accessPolicy.forObjectId(UUID.fromString(sp.objectId()));
+                                }
+                            }));
                 } else {
                     throw new IllegalArgumentException("Access policy must specify object ID.");
                 }
             }
         }
-        if (!any) {
-            parallelServiceCall.success(null);
+        if (observables.isEmpty()) {
+            return Observable.just(accessPolicies());
+        } else {
+            return Observable.zip(observables, new FuncN<List<AccessPolicy>>() {
+                @Override
+                public List<AccessPolicy> call(Object... args) {
+                    return accessPolicies();
+                }
+            });
         }
-        return parallelServiceCall;
     }
 
     @Override
-    public VaultImpl createResource() throws Exception {
-        populateAccessPolicies(null).get();
-        VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
-        parameters.withLocation(regionName());
-        parameters.withProperties(inner().properties());
-        parameters.withTags(inner().getTags());
-        parameters.properties().accessPolicies().clear();
-        for (AccessPolicy accessPolicy : accessPolicies) {
-            parameters.properties().accessPolicies().add(accessPolicy.inner());
-        }
-        this.setInner(client.createOrUpdate(resourceGroupName(), name(), parameters).getBody());
-        return this;
+    public Observable<Vault> createResourceAsync() {
+        return populateAccessPolicies()
+                .flatMap(new Func1<Object, Observable<ServiceResponse<VaultInner>>>() {
+                    @Override
+                    public Observable<ServiceResponse<VaultInner>> call(Object o) {
+                        VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
+                        parameters.withLocation(regionName());
+                        parameters.withProperties(inner().properties());
+                        parameters.withTags(inner().getTags());
+                        parameters.properties().withAccessPolicies(new ArrayList<AccessPolicyEntry>());
+                        for (AccessPolicy accessPolicy : accessPolicies) {
+                            parameters.properties().accessPolicies().add(accessPolicy.inner());
+                        }
+                        return client.createOrUpdateAsync(resourceGroupName(), name(), parameters);
+                    }
+                })
+                .map(innerToFluentMap(this));
     }
 
     @Override
     public VaultImpl refresh() throws Exception {
         setInner(client.get(resourceGroupName(), name()).getBody());
         return this;
+    }
+
+    @Override
+    public Observable<Vault> applyAsync() {
+        return createAsync();
     }
 }

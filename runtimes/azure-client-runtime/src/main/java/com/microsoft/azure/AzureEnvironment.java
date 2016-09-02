@@ -131,6 +131,10 @@ public final class AzureEnvironment {
         return managementEndpoint;
     }
 
+    public String getGraphEndpoint() {
+        return graphEndpoint;
+    }
+
     /**
      * Gets whether the authentication endpoint should
      * be validated with Azure AD.

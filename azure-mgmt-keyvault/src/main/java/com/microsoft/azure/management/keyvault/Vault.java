@@ -133,7 +133,8 @@ public interface Vault extends
             Creatable<Vault>,
             GroupableResource.DefinitionWithTags<WithCreate>,
             DefinitionStages.WithSku,
-            DefinitionStages.WithConfigurations {
+            DefinitionStages.WithConfigurations,
+            DefinitionStages.WithAccessPolicy {
         }
     }
 

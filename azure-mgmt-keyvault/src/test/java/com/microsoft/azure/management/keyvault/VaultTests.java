@@ -15,8 +15,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class VaultTests extends KeyVaultManagementTestBase {
-    private static final String RG_NAME = "javacsmrg901";
-    private static final String VAULT_NAME = "java-keyvault-901";
+    private static final String RG_NAME = "javacsmrg905";
+    private static final String VAULT_NAME = "java-keyvault-905";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -25,7 +25,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        //resourceManager.resourceGroups().delete(RG_NAME);
     }
 
     @Test
@@ -35,8 +35,13 @@ public class VaultTests extends KeyVaultManagementTestBase {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .defineAccessPolicy()
-                    .forServicePrincipal("http://graphapp")
+                    .forServicePrincipal("http://nativeapp")
                     .allowKeyPermissions(KeyPermissions.LIST)
+                    .allowSecretAllPermissions()
+                    .attach()
+                .defineAccessPolicy()
+                    .forUser("admin2@azuresdkteam.onmicrosoft.com")
+                    .allowKeyAllPermissions()
                     .allowSecretAllPermissions()
                     .attach()
                 .create();

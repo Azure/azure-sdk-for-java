@@ -65,8 +65,7 @@ public interface ServicePrincipals extends
      * Gets the information about a service principal.
      *
      * @param spn      the service principal name
-     * @param callback the call back to handle response
-     * @return the Future based service call
+     * @return the Observable to the request
      */
     Observable<ServicePrincipal> getByServicePrincipalNameAsync(String spn);
 }
