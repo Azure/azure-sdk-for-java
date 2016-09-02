@@ -70,7 +70,7 @@ public interface InboundNatPool extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithFrontend<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithFrontend<WithFrontendPortRange<ParentT>> {
+            HasFrontend.DefinitionStages.WithFrontend<WithFrontendPortRange<ParentT>> {
         }
 
         /**
@@ -123,7 +123,7 @@ public interface InboundNatPool extends
          * The stage of an inbound NAT pool update allowing to specify the frontend for the inbound NAT rules in the pool to apply to.
          */
         interface WithFrontend extends
-            InboundNatCommon.UpdateStages.WithFrontend<Update> {
+            HasFrontend.UpdateStages.WithFrontend<Update> {
         }
 
         /**
@@ -193,7 +193,7 @@ public interface InboundNatPool extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithFrontend<ParentT> extends
-            InboundNatCommon.UpdateDefinitionStages.WithFrontend<WithAttach<ParentT>> {
+            HasFrontend.UpdateDefinitionStages.WithFrontend<WithAttach<ParentT>> {
         }
 
         /**

@@ -97,15 +97,8 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the frontend to associate with the rule.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFrontend<ParentT> {
-            /**
-             * Associates the specified existing frontend of this load balancer with the load balancing rule.
-             * <p>
-             * A frontend with the specified name must already exist on this load balancer.
-             * @param frontendName the name of an existing frontend
-             * @return the next stage of the definition
-             */
-            WithFrontendPort<ParentT> withFrontend(String frontendName);
+        interface WithFrontend<ParentT> extends
+            HasFrontend.DefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**
@@ -253,6 +246,13 @@ public interface LoadBalancingRule extends
         }
 
         /**
+         * The stage of a load balancing rule update allowing to modify the frontend reference.
+         */
+        interface WithFrontend extends
+            HasFrontend.UpdateStages.WithFrontend<Update> {
+        }
+
+        /**
          * The stage of a load balancing rule update allowing to modify the backend port.
          */
         interface WithBackendPort extends
@@ -314,6 +314,7 @@ public interface LoadBalancingRule extends
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithFrontendPort,
+        UpdateStages.WithFrontend,
         UpdateStages.WithProtocol,
         UpdateStages.WithBackendPort,
         UpdateStages.WithFloatingIp,
@@ -362,15 +363,8 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the frontend to associate with the rule.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFrontend<ParentT> {
-            /**
-             * Associates the specified existing frontend of this load balancer with the load balancing rule.
-             * <p>
-             * A frontend with the specified name must already exist on this load balancer.
-             * @param frontendName the name of an existing frontend
-             * @return the next stage of the definition
-             */
-            WithFrontendPort<ParentT> withFrontend(String frontendName);
+        interface WithFrontend<ParentT> extends
+            HasFrontend.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**

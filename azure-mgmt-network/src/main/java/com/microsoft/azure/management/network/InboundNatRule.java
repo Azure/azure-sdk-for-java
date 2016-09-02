@@ -88,7 +88,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithFrontend<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
+            HasFrontend.DefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**
@@ -178,7 +178,7 @@ public interface InboundNatRule extends
          * The stage of an inbound NAT rule update allowing to specify a frontend for the rule to apply to.
          */
         interface WithFrontend extends
-            InboundNatCommon.UpdateStages.WithFrontend<Update> {
+            HasFrontend.UpdateStages.WithFrontend<Update> {
         }
 
         /**
@@ -288,7 +288,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithFrontend<ParentT> extends
-            InboundNatCommon.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
+            HasFrontend.UpdateDefinitionStages.WithFrontend<WithFrontendPort<ParentT>> {
         }
 
         /**
