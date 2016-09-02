@@ -219,7 +219,7 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags());
 
         // Output security rules
-        for (NetworkSecurityRule rule : resource.securityRules()) {
+        for (NetworkSecurityRule rule : resource.securityRules().values()) {
             info.append("\n\tRule: ").append(rule.name())
                     .append("\n\t\tAccess: ").append(rule.access())
                     .append("\n\t\tDirection: ").append(rule.direction())

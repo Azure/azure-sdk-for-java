@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -30,9 +31,9 @@ public interface NetworkSecurityGroup extends
      * Getters
      ***********************************************************/
     /**
-     * @return list of security rules associated with this network security group
+     * @return security rules associated with this network security group, indexed by their names
      */
-    List<NetworkSecurityRule> securityRules();
+    Map<String, NetworkSecurityRule> securityRules();
 
     /**
      * @return list of default security rules associated with this network security group

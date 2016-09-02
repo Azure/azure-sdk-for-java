@@ -579,7 +579,7 @@ public interface NetworkInterface extends
      */
     interface Update extends
             Appliable<NetworkInterface>,
-           Resource.UpdateWithTags<Update>,
+            Resource.UpdateWithTags<Update>,
             UpdateStages.WithPrimaryNetworkSubnet,
             UpdateStages.WithPrimaryPrivateIp,
             UpdateStages.WithPrimaryPublicIpAddress,
