@@ -31,14 +31,13 @@ public class KeyVaultErrorException extends RestException {
     public KeyVaultErrorException() { }
     
     @Override
-    public String getMessage()
-    {
-        if(body != null && body.error() != null
+    public String getMessage() {
+        if (body != null && body.error() != null
                 && body.error().message() != null
                 && !body.error().message().isEmpty()) {
             return body.error().message();
         }
-        return getMessage();
+        return super.getMessage();
     }
     /**
      * Initializes a new instance of the KeyVaultErrorException class.

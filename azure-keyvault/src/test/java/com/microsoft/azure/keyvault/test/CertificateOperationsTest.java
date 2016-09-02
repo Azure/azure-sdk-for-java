@@ -798,7 +798,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         retrievedCertificateIssuer.withCredentials(updatedCredentials);
         IssuerBundle updatedCertificateIssuer = keyVaultClient.updateCertificateIssuer(
                 new UpdateCertificateIssuerRequest
-                    .Builder(getVaultUri(), certificateIssuerName, ISSUER_TEST)
+                    .Builder(getVaultUri(), certificateIssuerName)
+                    .withProvider(ISSUER_TEST)
                     .withCredentials(updatedCredentials)
                     .withOrganizationDetails(retrievedCertificateIssuer.organizationDetails())
                     .withAttributes(retrievedCertificateIssuer.attributes())

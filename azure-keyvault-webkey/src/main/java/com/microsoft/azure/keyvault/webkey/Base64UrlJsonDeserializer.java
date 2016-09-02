@@ -20,13 +20,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
  */
 public class Base64UrlJsonDeserializer extends JsonDeserializer<byte[]> {
 
-    static final Base64 _base64 = new Base64(-1, null, true);
+    static final Base64 BASE64 = new Base64(-1, null, true);
 
     @Override
     public byte[] deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String text = jp.getText();
         if (text != null) {
-            return _base64.decode(text);
+            return BASE64.decode(text);
         }
         return null;
     }

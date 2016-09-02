@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
  */
 public class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
 
-    static final Base64 _base64 = new Base64(-1, null, true);
+    static final Base64 BASE64 = new Base64(-1, null, true);
 
     @Override
     public void serialize(byte[] value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
@@ -30,7 +30,7 @@ public class Base64UrlJsonSerializer extends JsonSerializer<byte[]> {
         } else if (value.length == 0) {
             text = "";
         } else {
-            text = _base64.encodeAsString(value);
+            text = BASE64.encodeAsString(value);
         }
         jgen.writeString(text);
     }

@@ -77,7 +77,7 @@ public final class SetCertificateIssuerRequest {
         /**
          * Set issuer attributes.
          * 
-         * @param organizationDetails
+         * @param attributes
          *            The issuer attributes.
          * @return the Builder object itself.
          */
@@ -100,14 +100,14 @@ public final class SetCertificateIssuerRequest {
         vaultBaseUrl = builder.vaultBaseUrl;
         issuerName = builder.issuerName;
         provider = builder.provider;
-        if(builder.organizationDetails != null) {
+        if (builder.organizationDetails != null) {
             organizationDetails = new OrganizationDetails()
                 .withId(builder.organizationDetails.id())
                 .withAdminDetails(new ArrayList<AdministratorDetails>(builder.organizationDetails.adminDetails()));
         } else {
             organizationDetails = null;
         }
-        if(builder.credentials != null) {
+        if (builder.credentials != null) {
             credentials = new IssuerCredentials()
                 .withAccountId(builder.credentials.accountId())
                 .withPassword(builder.credentials.password());
