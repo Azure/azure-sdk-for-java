@@ -245,7 +245,7 @@ public class JsonWebKey {
     }
 
     /**
-     * Set RSA Private Key Parameter value
+     * Set RSA Private Key Parameter value.
      * @param dp the RSA Private Key Parameter value to set.
      * @return the JsonWebKey object itself.
      */

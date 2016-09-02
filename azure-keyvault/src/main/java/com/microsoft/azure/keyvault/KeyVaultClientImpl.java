@@ -59,8 +59,6 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import com.microsoft.azure.keyvault.webkey.Base64UrlJsonSerializer;
-import com.microsoft.azure.keyvault.webkey.Base64UrlJsonDeserializer;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;

@@ -10,13 +10,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import com.microsoft.rest.credentials.ServiceClientCredentials;
-
 import okhttp3.HttpUrl;
 
 /**
- * An implementation of {@link ServiceClientCredentials} that supports automatic bearer token refresh.
- *
+ * Handles caching of the challenge.
  */
 class ChallengeCache {
 

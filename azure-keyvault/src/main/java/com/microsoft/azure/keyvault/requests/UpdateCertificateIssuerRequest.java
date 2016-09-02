@@ -26,9 +26,9 @@ public final class UpdateCertificateIssuerRequest {
         // Required parameters
         private final String vaultBaseUrl;
         private final String issuerName;
-        private final String provider;
 
         // Optional parameters
+        private String provider;
         private IssuerCredentials credentials;
         private OrganizationDetails organizationDetails;
         private IssuerAttributes attributes;
@@ -42,12 +42,23 @@ public final class UpdateCertificateIssuerRequest {
          * @param issuerName
          *            The name of the issuer in the given vault.
          */
-        public Builder(String vaultBaseUrl, String issuerName, String provider) {
+        public Builder(String vaultBaseUrl, String issuerName) {
             this.vaultBaseUrl = vaultBaseUrl;
             this.issuerName = issuerName;
-            this.provider = provider;
         }
 
+        /**
+         * Set issuer credentials.
+         * 
+         * @param provider
+         *            The issuer provider.
+         * @return the Builder object itself.
+         */
+        public Builder withProvider(String provider) {
+            this.provider = provider;
+            return this;
+        }
+        
         /**
          * Set issuer credentials.
          * 
@@ -75,7 +86,7 @@ public final class UpdateCertificateIssuerRequest {
         /**
          * Set issuer attributes.
          * 
-         * @param organizationDetails
+         * @param attributes
          *            The issuer attributes.
          * @return the Builder object itself.
          */
@@ -98,14 +109,14 @@ public final class UpdateCertificateIssuerRequest {
         vaultBaseUrl = builder.vaultBaseUrl;
         issuerName = builder.issuerName;
         provider = builder.provider;
-        if(builder.organizationDetails != null) {
+        if (builder.organizationDetails != null) {
             organizationDetails = new OrganizationDetails()
                 .withId(builder.organizationDetails.id())
                 .withAdminDetails(new ArrayList<AdministratorDetails>(builder.organizationDetails.adminDetails()));
         } else {
             organizationDetails = null;
         }
-        if(builder.credentials != null) {
+        if (builder.credentials != null) {
             credentials = new IssuerCredentials()
                 .withAccountId(builder.credentials.accountId())
                 .withPassword(builder.credentials.password());

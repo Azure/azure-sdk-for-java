@@ -241,7 +241,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         IssuerBundle certificateIssuer = keyVaultClient.setCertificateIssuerAsync(setCertificateIssuerRequest, null).get().getBody();
         Assert.assertNotNull(certificateIssuer);        
 
-        UpdateCertificateIssuerRequest updateCertificateIssuerRequest = new UpdateCertificateIssuerRequest.Builder(vault, issuerName, "SslAdmin").build();
+        UpdateCertificateIssuerRequest updateCertificateIssuerRequest = new UpdateCertificateIssuerRequest.Builder(vault, issuerName).withProvider("SslAdmin").build();
         certificateIssuer = keyVaultClient.updateCertificateIssuerAsync(updateCertificateIssuerRequest, null).get().getBody();
         Assert.assertNotNull(certificateIssuer);
         
