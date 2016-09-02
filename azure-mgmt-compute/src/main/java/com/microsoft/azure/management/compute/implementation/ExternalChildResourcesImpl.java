@@ -4,6 +4,9 @@ import com.microsoft.azure.management.compute.ExternalChildResource;
 import rx.Observable;
 import rx.exceptions.CompositeException;
 import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Action2;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 
@@ -52,8 +55,12 @@ abstract class ExternalChildResourcesImpl<
 
     /**
      * Commits the changes in the external child resource collection.
+     * <p/>
+     * This method returns a stream where onNext will be called for each successfully committed resource
+     * followed by 'one call to onCompleted or one call to onError' with a {@link CompositeException } containing
+     * the list of exceptions where each exception describes the reason for failure in committing a resource.
      *
-     * @return the stream of committed resources
+     * @return the observable stream
      */
     public Observable<FluentModelTImpl> commitAsync() {
         final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT> self = this;
@@ -63,8 +70,6 @@ abstract class ExternalChildResourcesImpl<
         }
 
         final List<Throwable> exceptionsList = Collections.synchronizedList(new ArrayList<Throwable>());
-        final PublishSubject<FluentModelTImpl> exceptionSubject = PublishSubject.create();
-
         Observable<FluentModelTImpl> deleteStream = Observable.from(items)
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
@@ -78,13 +83,18 @@ abstract class ExternalChildResourcesImpl<
                                 .map(new Func1<Void, FluentModelTImpl>() {
                                     @Override
                                     public FluentModelTImpl call(Void response) {
-                                        self.collection.remove(childResource.name());
                                         return childResource;
                                     }
-                                }).onErrorResumeNext(new Func1<Throwable, Observable<FluentModelTImpl>>() {
+                                }).doOnNext(new Action1<FluentModelTImpl>() {
+                                    @Override
+                                    public void call(FluentModelTImpl childResource) {
+                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        self.collection.remove(childResource.name());
+                                    }
+                                })
+                                .onErrorResumeNext(new Func1<Throwable, Observable<FluentModelTImpl>>() {
                                     @Override
                                     public Observable<FluentModelTImpl> call(Throwable throwable) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
                                         exceptionsList.add(throwable);
                                         return Observable.empty();
                                     }
@@ -104,13 +114,19 @@ abstract class ExternalChildResourcesImpl<
                         return childResource.setAsync()
                                 .map(new Func1<FluentModelT, FluentModelTImpl>() {
                                     @Override
-                                    public FluentModelTImpl call(FluentModelT e) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                    public FluentModelTImpl call(FluentModelT fluentModelT) {
                                         return childResource;
                                     }
-                                }).onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                })
+                                .doOnNext(new Action1<FluentModelTImpl>() {
                                     @Override
-                                    public Observable<? extends FluentModelTImpl> call(Throwable throwable) {
+                                    public void call(FluentModelTImpl fluentModelT) {
+                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                    }
+                                })
+                                .onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                    @Override
+                                    public Observable<FluentModelTImpl> call(Throwable throwable) {
                                         self.collection.remove(childResource.name());
                                         exceptionsList.add(throwable);
                                         return Observable.empty();
@@ -132,12 +148,18 @@ abstract class ExternalChildResourcesImpl<
                                 .map(new Func1<FluentModelT, FluentModelTImpl>() {
                                     @Override
                                     public FluentModelTImpl call(FluentModelT e) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
                                         return childResource;
                                     }
-                                }).onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                })
+                                .doOnNext(new Action1<FluentModelTImpl>() {
                                     @Override
-                                    public Observable<? extends FluentModelTImpl> call(Throwable throwable) {
+                                    public void call(FluentModelTImpl childResource) {
+                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                    }
+                                })
+                                .onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
+                                    @Override
+                                    public Observable<FluentModelTImpl> call(Throwable throwable) {
                                         exceptionsList.add(throwable);
                                         return Observable.empty();
                                     }
@@ -145,20 +167,44 @@ abstract class ExternalChildResourcesImpl<
                     }
                 });
 
-        Observable<FluentModelTImpl> operationsStream = Observable.merge(deleteStream, createStream, updateStream);
-        operationsStream.doOnTerminate(new Action0() {
-            @Override
-            public void call() {
-                if (exceptionsList.isEmpty()) {
-                    exceptionSubject.onCompleted();
-                } else {
-                    exceptionSubject.onError(new CompositeException(exceptionsList));
+        final PublishSubject<FluentModelTImpl> aggregatedErrorStream = PublishSubject.create();
+        Observable<FluentModelTImpl> operationsStream = Observable.merge(deleteStream,
+                createStream,
+                updateStream).doOnTerminate(new Action0() {
+                    @Override
+                    public void call() {
+                    if (exceptionsList.isEmpty()) {
+                        aggregatedErrorStream.onCompleted();
+                    } else {
+                        aggregatedErrorStream.onError(new CompositeException(exceptionsList));
+                    }
                 }
-            }
-        });
+            });
 
-        Observable<FluentModelTImpl> mergedStream = Observable.mergeDelayError(operationsStream, exceptionSubject);
-        return mergedStream;
+        Observable<FluentModelTImpl> stream = Observable.concat(operationsStream, aggregatedErrorStream);
+        return stream;
+    }
+
+    /**
+     * Commits the changes in the external child resource collection.
+     * <p/>
+     * This method returns a stream where either onError will be called with {@link CompositeException} if some
+     * resources are failed to commit or onNext will be called if all resources committed successfully
+     *
+     * @return the observable stream
+     */
+    public Observable<List<FluentModelTImpl>> commitAndGetAllAsync() {
+        return commitAsync().collect(
+                new Func0<List<FluentModelTImpl>>() {
+                        public List<FluentModelTImpl> call() {
+                            return new ArrayList<>();
+                        }
+                },
+                new Action2<List<FluentModelTImpl>, FluentModelTImpl>() {
+                    public void call(List<FluentModelTImpl> state, FluentModelTImpl item) {
+                        state.add(item);
+                    }
+                });
     }
 
     /**
