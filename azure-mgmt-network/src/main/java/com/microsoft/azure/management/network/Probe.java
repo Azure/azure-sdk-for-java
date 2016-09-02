@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.network.implementation.ProbeInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -35,4 +37,9 @@ public interface Probe extends
      * @return number of failed probes before the node is determined to be unhealthy
      */
     int numberOfProbes();
+
+    /**
+     * @return the associated load balancing rules from this load balancer, indexed by their names
+     */
+    Map<String, LoadBalancingRule> loadBalancingRules();
 }

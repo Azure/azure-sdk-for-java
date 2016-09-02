@@ -519,6 +519,12 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tPort: ").append(probe.port())
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
                 .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+
+            // Show associated load balancing rules
+            info.append("\n\t\t\tReferenced from load balancing rules:");
+            for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
         }
 
         // Show HTTP probes
@@ -529,6 +535,12 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
                 .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
                 .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+
+            // Show associated load balancing rules
+            info.append("\n\t\t\tReferenced from load balancing rules:");
+            for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
         }
 
         // Show load balancing rules
