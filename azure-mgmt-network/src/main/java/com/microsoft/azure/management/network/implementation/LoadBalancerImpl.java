@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,6 @@ import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -56,13 +54,13 @@ class LoadBalancerImpl
     private final LoadBalancersInner innerCollection;
     private final HashMap<String, String> nicsInBackends = new HashMap<>();
     private final HashMap<String, String> creatablePIPKeys = new HashMap<>();
-    private final TreeMap<String, Backend> backends = new TreeMap<>();
-    private final TreeMap<String, TcpProbe> tcpProbes = new TreeMap<>();
-    private final TreeMap<String, HttpProbe> httpProbes = new TreeMap<>();
-    private final TreeMap<String, LoadBalancingRule> loadBalancingRules = new TreeMap<>();
-    private final TreeMap<String, Frontend> frontends = new TreeMap<>();
-    private final TreeMap<String, InboundNatRule> inboundNatRules = new TreeMap<>();
-    private final TreeMap<String, InboundNatPool> inboundNatPools = new TreeMap<>();
+    private final Map<String, Backend> backends = new TreeMap<>();
+    private final Map<String, TcpProbe> tcpProbes = new TreeMap<>();
+    private final Map<String, HttpProbe> httpProbes = new TreeMap<>();
+    private final Map<String, LoadBalancingRule> loadBalancingRules = new TreeMap<>();
+    private final Map<String, Frontend> frontends = new TreeMap<>();
+    private final Map<String, InboundNatRule> inboundNatRules = new TreeMap<>();
+    private final Map<String, InboundNatPool> inboundNatPools = new TreeMap<>();
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -104,36 +102,22 @@ class LoadBalancerImpl
     // CreatorTaskGroup.ResourceCreator implementation
 
     @Override
-    public LoadBalancer createResource() throws Exception {
+    public Observable<LoadBalancer> createResourceAsync()  {
+        final LoadBalancer self = this;
         beforeCreating();
-        ServiceResponse<LoadBalancerInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        afterCreating();
-        return this;
-    }
-
-    private <InnerT> List<InnerT> innersFromWrappers(
-            Collection<? extends Wrapper<InnerT>> wrappers) {
-        return innersFromWrappers(wrappers, null);
-    }
-
-    private <InnerT> List<InnerT> innersFromWrappers(
-            Collection<? extends Wrapper<InnerT>> wrappers,
-            List<InnerT> inners) {
-        if (wrappers == null || wrappers.size() == 0) {
-            return inners;
-        } else {
-            if (inners == null) {
-                inners = new ArrayList<>();
-            }
-
-            for (Wrapper<InnerT> wrapper : wrappers) {
-                inners.add(wrapper.inner());
-            }
-
-            return inners;
-        }
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
+                    @Override
+                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
+                        setInner(loadBalancerInner.getBody());
+                        try {
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+                    }
+                });
     }
 
     private void beforeCreating()  {
@@ -555,24 +539,6 @@ class LoadBalancerImpl
         }
 
         return this;
-    }
-
-    public Observable<LoadBalancer> createResourceAsync()  {
-        final LoadBalancer self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
-                    @Override
-                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
-                        setInner(loadBalancerInner.getBody());
-                        try {
-                            afterCreating();
-                            return Observable.just(self);
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
     }
 
     @Override
