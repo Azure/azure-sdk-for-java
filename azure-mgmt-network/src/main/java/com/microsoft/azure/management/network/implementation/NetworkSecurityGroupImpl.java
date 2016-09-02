@@ -34,7 +34,7 @@ class NetworkSecurityGroupImpl
 
     private final NetworkSecurityGroupsInner innerCollection;
     private final Map<String, NetworkSecurityRule> rules = new TreeMap<>();
-    private List<NetworkSecurityRule> defaultRules;
+    private final Map<String, NetworkSecurityRule> defaultRules = new TreeMap<>();
 
     NetworkSecurityGroupImpl(
             final String name,
@@ -55,10 +55,11 @@ class NetworkSecurityGroupImpl
             }
         }
 
-        this.defaultRules = new ArrayList<>();
-        if (this.inner().defaultSecurityRules() != null) {
-            for (SecurityRuleInner ruleInner : this.inner().defaultSecurityRules()) {
-                this.defaultRules.add(new NetworkSecurityRuleImpl(ruleInner, this));
+        this.defaultRules.clear();
+        inners = this.inner().defaultSecurityRules();
+        if (inners != null) {
+            for (SecurityRuleInner inner : inners) {
+                this.defaultRules.put(inner.name(), new NetworkSecurityRuleImpl(inner, this));
             }
         }
     }
@@ -113,8 +114,8 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public List<NetworkSecurityRule> defaultSecurityRules() {
-        return Collections.unmodifiableList(this.defaultRules);
+    public Map<String, NetworkSecurityRule> defaultSecurityRules() {
+        return Collections.unmodifiableMap(this.defaultRules);
     }
 
     @Override

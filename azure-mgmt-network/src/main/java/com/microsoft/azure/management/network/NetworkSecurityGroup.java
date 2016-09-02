@@ -36,9 +36,9 @@ public interface NetworkSecurityGroup extends
     Map<String, NetworkSecurityRule> securityRules();
 
     /**
-     * @return list of default security rules associated with this network security group
+     * @return default security rules associated with this network security group, indexed by their name
      */
-    List<NetworkSecurityRule> defaultSecurityRules();
+    Map<String, NetworkSecurityRule> defaultSecurityRules();
 
     /**
      * @return list of the ids of the network interfaces associated with this network security group
