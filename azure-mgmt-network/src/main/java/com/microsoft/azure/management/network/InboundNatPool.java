@@ -92,7 +92,7 @@ public interface InboundNatPool extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithBackendPort<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
+            HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
     }
 
@@ -142,13 +142,8 @@ public interface InboundNatPool extends
         /**
          * The stage of an inbound NAT pool update allowing to specify the backend port.
          */
-        interface WithBackendPort {
-            /**
-             * Specifies the backend port number.
-             * @param port a port number between 1 and 65534
-             * @return the next stage of the update
-             */
-            Update withBackendPort(int port);
+        interface WithBackendPort extends
+            HasBackendPort.UpdateStages.WithBackendPort<Update> {
         }
     }
 
@@ -219,13 +214,8 @@ public interface InboundNatPool extends
          * The stage of an inbound NAT pool definition allowing to specify the backend port.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithBackendPort<ParentT> {
-            /**
-             * Specifies the backend port number.
-             * @param port a port number between 1 and 65534
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBackendPort(int port);
+        interface WithBackendPort<ParentT> extends
+            HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
     }
 

@@ -14,21 +14,6 @@ interface InboundNatCommon {
      */
     interface DefinitionStages {
         /**
-         * The stage of an inbound NAT definition allowing to specify the backend port.
-         * @param <ReturnT> the next stage of the definition
-         */
-        interface WithBackendPort<ReturnT> {
-            /**
-             * Specifies the backend port.
-             * <p>
-             * If not specified, the same backend port number is assumed as that used by the frontend.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            ReturnT withBackendPort(int port);
-        }
-
-        /**
          * The stage of an inbound NAT definition allowing to specify a frontend for the rule to apply to.
          * @param <ReturnT> the next stage of the definition
          */
@@ -60,19 +45,6 @@ interface InboundNatCommon {
      */
     interface UpdateStages {
         /**
-         * The stage of an inbound NAT update allowing to specify the backend port.
-         * @param <ReturnT> the next stage of the update
-         */
-        interface WithBackendPort<ReturnT> {
-            /**
-             * Specifies the backend port.
-             * @param port a port number
-             * @return the next stage of the update
-             */
-            ReturnT withBackendPort(int port);
-        }
-
-        /**
          * The stage of an inbound NAT update allowing to specify a frontend.
          * @param <ReturnT> the next stage of the update
          */
@@ -103,21 +75,6 @@ interface InboundNatCommon {
      * Grouping of inbound NAT definition stages applicable as part of a load balancer update.
      */
     interface UpdateDefinitionStages {
-        /**
-         * The stage of an inbound NAT definition allowing to specify the backend port.
-         * @param <ReturnT> the next stage of the definition
-         */
-        interface WithBackendPort<ReturnT> {
-            /**
-             * Specifies the backend port.
-             * <p>
-             * If not specified, the same backend port number is assumed as that used by the frontend.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            ReturnT withBackendPort(int port);
-        }
-
         /**
          * The stage of an inbound NAT definition allowing to specify a frontend for the rule to apply to.
          * @param <ReturnT> the next stage of the definition

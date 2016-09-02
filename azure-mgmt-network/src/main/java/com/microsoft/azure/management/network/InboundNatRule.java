@@ -96,7 +96,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithBackendPort<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
+            HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
 
         /**
@@ -171,7 +171,7 @@ public interface InboundNatRule extends
          * The stage of an inbound NAT rule update allowing to specify the backend port.
          */
         interface WithBackendPort extends
-            InboundNatCommon.UpdateStages.WithBackendPort<Update> {
+            HasBackendPort.UpdateStages.WithBackendPort<Update> {
         }
 
         /**
@@ -296,7 +296,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithBackendPort<ParentT> extends
-            InboundNatCommon.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>> {
+            HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
 
         /**

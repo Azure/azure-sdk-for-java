@@ -139,13 +139,9 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithBackendPort<ParentT> extends WithAttach<ParentT> {
-            /**
-             * Specifies the backend port to send the load-balanced traffic to.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBackendPort(int port);
+        interface WithBackendPort<ParentT> extends
+            HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>>,
+            WithAttach<ParentT> {
         }
 
         /**
@@ -259,13 +255,8 @@ public interface LoadBalancingRule extends
         /**
          * The stage of a load balancing rule update allowing to modify the backend port.
          */
-        interface WithBackendPort {
-            /**
-             * Specifies the backend port to send the load balanced traffic to.
-             * @param port a port number
-             * @return the next stage of the update
-             */
-            Update withBackendPort(int port);
+        interface WithBackendPort extends
+            HasBackendPort.UpdateStages.WithBackendPort<Update> {
         }
 
         /**
@@ -413,13 +404,9 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the backend port to send the load-balanced traffic to.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithBackendPort<ParentT> extends WithAttach<ParentT> {
-            /**
-             * Specifies the backend port to send the load-balanced traffic to.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withBackendPort(int port);
+        interface WithBackendPort<ParentT> extends
+            HasBackendPort.UpdateDefinitionStages.WithBackendPort<WithAttach<ParentT>>,
+            WithAttach<ParentT> {
         }
 
         /**
