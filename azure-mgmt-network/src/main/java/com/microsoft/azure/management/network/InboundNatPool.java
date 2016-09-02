@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.implementation.InboundNatPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFrontend;
-import com.microsoft.azure.management.network.model.HasTransportProtocol;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -18,10 +18,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an inbound NAT rule.
  */
 public interface InboundNatPool extends
-    InboundNatCommon,
     HasFrontend,
     HasBackendPort,
-    HasTransportProtocol,
+    HasProtocol<TransportProtocol>,
     Wrapper<InboundNatPoolInner>,
     ChildResource {
 
@@ -62,7 +61,7 @@ public interface InboundNatPool extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithProtocol<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithProtocol<WithFrontend<ParentT>> {
+            HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
         }
 
         /**
@@ -116,7 +115,7 @@ public interface InboundNatPool extends
          * The stage of an inbound NAT pool update allowing to specify the transport protocol for the pool to apply to.
          */
         interface WithProtocol extends
-            InboundNatCommon.UpdateStages.WithProtocol<Update> {
+            HasProtocol.UpdateStages.WithProtocol<Update, TransportProtocol> {
         }
 
         /**
@@ -185,7 +184,7 @@ public interface InboundNatPool extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithProtocol<ParentT> extends
-            InboundNatCommon.UpdateDefinitionStages.WithProtocol<WithAttach<ParentT>> {
+            HasProtocol.UpdateDefinitionStages.WithProtocol<WithAttach<ParentT>, TransportProtocol> {
         }
 
         /**

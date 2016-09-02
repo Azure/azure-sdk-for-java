@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.ProbeInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -16,12 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface Probe extends
     Wrapper<ProbeInner>,
     ChildResource,
-    HasLoadBalancingRules {
-
-    /**
-     * @return the probe protocol
-     */
-    ProbeProtocol protocol();
+    HasLoadBalancingRules,
+    HasProtocol<ProbeProtocol> {
 
     /**
      * @return the port number the probe is monitoring

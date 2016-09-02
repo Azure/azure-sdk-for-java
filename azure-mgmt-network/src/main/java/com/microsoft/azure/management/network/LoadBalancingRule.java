@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFrontend;
-import com.microsoft.azure.management.network.model.HasTransportProtocol;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -22,7 +22,7 @@ public interface LoadBalancingRule extends
     ChildResource,
     HasBackendPort,
     HasFrontend,
-    HasTransportProtocol {
+    HasProtocol<TransportProtocol> {
 
     /**
      * @return true if floating IP is enabled, false otherwise
@@ -71,13 +71,8 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithProtocol<ParentT> {
-            /**
-             * Specifies the transfer protocol to apply the load balancing rule to.
-             * @param protocol a transfer protocol
-             * @return the next stage of the definition
-             */
-            WithFrontend<ParentT> withProtocol(TransportProtocol protocol);
+        interface WithProtocol<ParentT> extends
+            HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
         }
 
         /**
@@ -224,13 +219,8 @@ public interface LoadBalancingRule extends
         /**
          * The stage of a load balancing rule update allowing to modify the transport protocol the rule applies to.
          */
-        interface WithProtocol {
-            /**
-             * Specifies the transport protocol for the load balancing rule to apply to.
-             * @param protocol a transport protocol
-             * @return the next stage of the update
-             */
-            Update withProtocol(TransportProtocol protocol);
+        interface WithProtocol extends
+            HasProtocol.UpdateStages.WithProtocol<Update, TransportProtocol> {
         }
 
         /**
@@ -337,13 +327,8 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the transport protocol to apply the rule to.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithProtocol<ParentT> {
-            /**
-             * Specifies the transfer protocol to apply the load balancing rule to.
-             * @param protocol a transfer protocol
-             * @return the next stage of the definition
-             */
-            WithFrontend<ParentT> withProtocol(TransportProtocol protocol);
+        interface WithProtocol<ParentT> extends
+            HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
         }
 
         /**

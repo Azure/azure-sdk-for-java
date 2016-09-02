@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFrontend;
-import com.microsoft.azure.management.network.model.HasTransportProtocol;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -20,10 +20,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface InboundNatRule extends
     HasFrontend,
     HasBackendPort,
-    HasTransportProtocol,
+    HasProtocol<TransportProtocol>,
     Wrapper<InboundNatRuleInner>,
-    ChildResource,
-    InboundNatCommon {
+    ChildResource {
 
     /**
      * @return the name of the IP configuration within the network interface associated with this NAT rule
@@ -80,7 +79,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithProtocol<ParentT> extends
-            InboundNatCommon.DefinitionStages.WithProtocol<WithFrontend<ParentT>> {
+            HasProtocol.DefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
         }
 
         /**
@@ -185,7 +184,7 @@ public interface InboundNatRule extends
          * The stage of an inbound NAT rule update allowing to specify the transport protocol for the rule to apply to.
          */
         interface WithProtocol extends
-            InboundNatCommon.UpdateStages.WithProtocol<Update> {
+            HasProtocol.UpdateStages.WithProtocol<Update, TransportProtocol> {
         }
 
         /**
@@ -280,7 +279,7 @@ public interface InboundNatRule extends
          * @param <ParentT> the parent load balancer type
          */
         interface WithProtocol<ParentT> extends
-            InboundNatCommon.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>> {
+            HasProtocol.UpdateDefinitionStages.WithProtocol<WithFrontend<ParentT>, TransportProtocol> {
         }
 
         /**
