@@ -8,6 +8,7 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 /**
  * The key update request class.
@@ -17,7 +18,7 @@ public final class UpdateKeyRequest {
     private final String vaultBaseUrl;
     private final String keyName;
     private final String keyVersion;
-    private final List<String> keyOperations;
+    private final List<JsonWebKeyOperation> keyOperations;
     private final KeyAttributes keyAttributes;
     private final Map<String, String> tags;
 
@@ -32,7 +33,7 @@ public final class UpdateKeyRequest {
 
         // Optional parameters
         private String keyVersion;
-        private List<String> keyOperations;
+        private List<JsonWebKeyOperation> keyOperations;
         private KeyAttributes attributes;
         private Map<String, String> tags;
 
@@ -83,7 +84,7 @@ public final class UpdateKeyRequest {
          *            the key operation list
          * @return the Builder object itself.
          */
-        public Builder withKeyOperations(List<String> keyOperations) {
+        public Builder withKeyOperations(List<JsonWebKeyOperation> keyOperations) {
             this.keyOperations = keyOperations;
             return this;
         }
@@ -129,7 +130,7 @@ public final class UpdateKeyRequest {
         keyVersion = builder.keyVersion == null ? "" : builder.keyVersion;
 
         if (builder.keyOperations != null) {
-            keyOperations = new ArrayList<String>(builder.keyOperations);
+            keyOperations = new ArrayList<JsonWebKeyOperation>(builder.keyOperations);
         } else {
             keyOperations = null;
         }
@@ -172,7 +173,7 @@ public final class UpdateKeyRequest {
     /**
      * @return the key operations
      */
-    public List<String> keyOperations() {
+    public List<JsonWebKeyOperation> keyOperations() {
         return keyOperations;
     }
 

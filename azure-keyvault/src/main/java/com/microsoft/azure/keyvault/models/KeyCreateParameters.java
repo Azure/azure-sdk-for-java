@@ -13,6 +13,8 @@ package com.microsoft.azure.keyvault.models;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 /**
  * The key create parameters.
@@ -20,10 +22,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class KeyCreateParameters {
     /**
      * The type of key to create. Valid key types, see JsonWebKeyType.
-     * Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'.
+     * Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM,
+     * Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(required = true)
-    private String kty;
+    private JsonWebKeyType kty;
 
     /**
      * The key size in bytes. e.g. 1024 or 2048.
@@ -35,7 +38,7 @@ public class KeyCreateParameters {
      * The keyOps property.
      */
     @JsonProperty(value = "key_ops")
-    private List<String> keyOps;
+    private List<JsonWebKeyOperation> keyOps;
 
     /**
      * The keyAttributes property.
@@ -53,7 +56,7 @@ public class KeyCreateParameters {
      *
      * @return the kty value
      */
-    public String kty() {
+    public JsonWebKeyType kty() {
         return this.kty;
     }
 
@@ -63,7 +66,7 @@ public class KeyCreateParameters {
      * @param kty the kty value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters withKty(String kty) {
+    public KeyCreateParameters withKty(JsonWebKeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -93,7 +96,7 @@ public class KeyCreateParameters {
      *
      * @return the keyOps value
      */
-    public List<String> keyOps() {
+    public List<JsonWebKeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -103,7 +106,7 @@ public class KeyCreateParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters withKeyOps(List<String> keyOps) {
+    public KeyCreateParameters withKeyOps(List<JsonWebKeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }

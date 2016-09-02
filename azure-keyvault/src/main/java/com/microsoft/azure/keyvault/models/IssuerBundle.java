@@ -30,7 +30,7 @@ public class IssuerBundle {
     private String id;
 
     /**
-     * The name of the issuer.
+     * The issuer provider.
      */
     private String provider;
 

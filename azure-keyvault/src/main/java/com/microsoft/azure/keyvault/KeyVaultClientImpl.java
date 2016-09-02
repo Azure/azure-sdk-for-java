@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
@@ -54,6 +55,10 @@ import com.microsoft.azure.keyvault.models.SecretItem;
 import com.microsoft.azure.keyvault.models.SecretSetParameters;
 import com.microsoft.azure.keyvault.models.SecretUpdateParameters;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.azure.keyvault.webkey.Base64UrlJsonSerializer;
 import com.microsoft.azure.keyvault.webkey.Base64UrlJsonDeserializer;
 import com.microsoft.azure.ListOperationCallback;
@@ -61,16 +66,15 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -83,6 +87,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the KeyVaultClientImpl class.
@@ -246,199 +252,199 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     interface KeyVaultClientService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/create")
-        Call<ResponseBody> createKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("keys/{key-name}")
-        Call<ResponseBody> importKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> importKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "keys/{key-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("keys/{key-name}/{key-version}")
-        Call<ResponseBody> updateKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys/{key-name}/{key-version}")
-        Call<ResponseBody> getKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys/{key-name}/versions")
-        Call<ResponseBody> getKeyVersions(@Path("key-name") String keyName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getKeyVersions(@Path("key-name") String keyName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("keys")
-        Call<ResponseBody> getKeys(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getKeys(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/backup")
-        Call<ResponseBody> backupKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> backupKey(@Path("key-name") String keyName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/restore")
-        Call<ResponseBody> restoreKey(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyRestoreParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> restoreKey(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyRestoreParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/encrypt")
-        Call<ResponseBody> encrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> encrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/decrypt")
-        Call<ResponseBody> decrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> decrypt(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/sign")
-        Call<ResponseBody> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeySignParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> sign(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeySignParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/verify")
-        Call<ResponseBody> verify(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyVerifyParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> verify(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyVerifyParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/wrapkey")
-        Call<ResponseBody> wrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> wrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("keys/{key-name}/{key-version}/unwrapkey")
-        Call<ResponseBody> unwrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> unwrapKey(@Path("key-name") String keyName, @Path("key-version") String keyVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyOperationsParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("secrets/{secret-name}")
-        Call<ResponseBody> setSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretSetParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> setSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretSetParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "secrets/{secret-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteSecret(@Path("secret-name") String secretName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("secrets/{secret-name}/{secret-version}")
-        Call<ResponseBody> updateSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SecretUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets/{secret-name}/{secret-version}")
-        Call<ResponseBody> getSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecret(@Path("secret-name") String secretName, @Path("secret-version") String secretVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets")
-        Call<ResponseBody> getSecrets(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecrets(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("secrets/{secret-name}/versions")
-        Call<ResponseBody> getSecretVersions(@Path("secret-name") String secretName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecretVersions(@Path("secret-name") String secretName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates")
-        Call<ResponseBody> getCertificates(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificates(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/{certificate-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("certificates/contacts")
-        Call<ResponseBody> setCertificateContacts(@Body Contacts contacts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> setCertificateContacts(@Body Contacts contacts, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/contacts")
-        Call<ResponseBody> getCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/contacts", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCertificateContacts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/issuers")
-        Call<ResponseBody> getCertificateIssuers(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateIssuers(@Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> setCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateIssuerSetParameters parameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> setCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateIssuerSetParameters parameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> updateCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateIssuerUpdateParameters parameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateIssuerUpdateParameters parameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/issuers/{issuer-name}")
-        Call<ResponseBody> getCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/issuers/{issuer-name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCertificateIssuer(@Path("issuer-name") String issuerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/create")
-        Call<ResponseBody> createCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateCreateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/import")
-        Call<ResponseBody> importCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> importCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateImportParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/versions")
-        Call<ResponseBody> getCertificateVersions(@Path("certificate-name") String certificateName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateVersions(@Path("certificate-name") String certificateName, @Query("maxresults") Integer maxresults, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/policy")
-        Call<ResponseBody> getCertificatePolicy(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificatePolicy(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/policy")
-        Call<ResponseBody> updateCertificatePolicy(@Path("certificate-name") String certificateName, @Body CertificatePolicy certificatePolicy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCertificatePolicy(@Path("certificate-name") String certificateName, @Body CertificatePolicy certificatePolicy, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/{certificate-version}")
-        Call<ResponseBody> updateCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateUpdateParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/{certificate-version}")
-        Call<ResponseBody> getCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificate(@Path("certificate-name") String certificateName, @Path("certificate-version") String certificateVersion, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("certificates/{certificate-name}/pending")
-        Call<ResponseBody> updateCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateOperationUpdateParameter certificateOperation, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateOperationUpdateParameter certificateOperation, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("certificates/{certificate-name}/pending")
-        Call<ResponseBody> getCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "certificates/{certificate-name}/pending", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCertificateOperation(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("certificates/{certificate-name}/pending/merge")
-        Call<ResponseBody> mergeCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateMergeParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> mergeCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateMergeParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getKeyVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getKeyVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getKeysNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getKeysNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getSecretsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecretsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getSecretVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecretVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getCertificatesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificatesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getCertificateIssuersNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateIssuersNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET
-        Call<ResponseBody> getCertificateVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCertificateVersionsNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -447,38 +453,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyBundle> createKey(String vaultBaseUrl, String keyName, String kty) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (kty == null) {
-            throw new IllegalArgumentException("Parameter kty is required and cannot be null.");
-        }
-        final Integer keySize = null;
-        final List<String> keyOps = null;
-        final KeyAttributes keyAttributes = null;
-        final Map<String, String> tags = null;
-        KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.withKty(kty);
-        parameters.withKeySize(null);
-        parameters.withKeyOps(null);
-        parameters.withKeyAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return createKeyDelegate(call.execute());
+    public ServiceResponse<KeyBundle> createKey(String vaultBaseUrl, String keyName, JsonWebKeyType kty) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return createKeyAsync(vaultBaseUrl, keyName, kty).toBlocking().single();
     }
 
     /**
@@ -486,11 +468,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, String kty, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(createKeyAsync(vaultBaseUrl, keyName, kty), serviceCallback);
+    }
+
+    /**
+     * Creates a new, named, key in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -504,7 +498,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter kty is required and cannot be null.");
         }
         final Integer keySize = null;
-        final List<String> keyOps = null;
+        final List<JsonWebKeyOperation> keyOps = null;
         final KeyAttributes keyAttributes = null;
         final Map<String, String> tags = null;
         KeyCreateParameters parameters = new KeyCreateParameters();
@@ -514,26 +508,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = createKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = createKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -541,9 +527,9 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
-     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
      * @param keySize The key size in bytes. e.g. 1024 or 2048.
-     * @param keyOps the List&lt;String&gt; value
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
      * @param keyAttributes the KeyAttributes value
      * @param tags Application-specific metadata in the form of key-value pairs
      * @throws KeyVaultErrorException exception thrown from REST call
@@ -551,7 +537,40 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyBundle> createKey(String vaultBaseUrl, String keyName, String kty, Integer keySize, List<String> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    public ServiceResponse<KeyBundle> createKey(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return createKeyAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags).toBlocking().single();
+    }
+
+    /**
+     * Creates a new, named, key in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. e.g. 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(createKeyAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Creates a new, named, key in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. e.g. 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -574,66 +593,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(keyAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return createKeyDelegate(call.execute());
-    }
-
-    /**
-     * Creates a new, named, key in the specified vault.
-     *
-     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
-     * @param keyName The name of the key
-     * @param kty The type of key to create. Valid key types, see JsonWebKeyType. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
-     * @param keySize The key size in bytes. e.g. 1024 or 2048.
-     * @param keyOps the List&lt;String&gt; value
-     * @param keyAttributes the KeyAttributes value
-     * @param tags Application-specific metadata in the form of key-value pairs
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
-     */
-    public ServiceCall<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, String kty, Integer keySize, List<String> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (kty == null) {
-            throw new IllegalArgumentException("Parameter kty is required and cannot be null.");
-        }
-        Validator.validate(keyOps);
-        Validator.validate(keyAttributes);
-        Validator.validate(tags);
-        KeyCreateParameters parameters = new KeyCreateParameters();
-        parameters.withKty(kty);
-        parameters.withKeySize(keySize);
-        parameters.withKeyOps(keyOps);
-        parameters.withKeyAttributes(keyAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = createKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.createKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = createKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> createKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -655,30 +626,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> importKey(String vaultBaseUrl, String keyName, JsonWebKey key) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (key == null) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
-        }
-        Validator.validate(key);
-        final Boolean hsm = null;
-        final KeyAttributes keyAttributes = null;
-        final Map<String, String> tags = null;
-        KeyImportParameters parameters = new KeyImportParameters();
-        parameters.withHsm(null);
-        parameters.withKey(key);
-        parameters.withKeyAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return importKeyDelegate(call.execute());
+        return importKeyAsync(vaultBaseUrl, keyName, key).toBlocking().single();
     }
 
     /**
@@ -688,9 +636,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key
      * @param key The Json web key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(importKeyAsync(vaultBaseUrl, keyName, key), serviceCallback);
+    }
+
+    /**
+     * Imports a key into the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param key The Json web key
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -713,26 +673,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = importKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = importKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -750,29 +702,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> importKey(String vaultBaseUrl, String keyName, JsonWebKey key, Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (key == null) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
-        }
-        Validator.validate(key);
-        Validator.validate(keyAttributes);
-        Validator.validate(tags);
-        KeyImportParameters parameters = new KeyImportParameters();
-        parameters.withHsm(hsm);
-        parameters.withKey(key);
-        parameters.withKeyAttributes(keyAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return importKeyDelegate(call.execute());
+        return importKeyAsync(vaultBaseUrl, keyName, key, hsm, keyAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -785,9 +715,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyAttributes The key management attributes
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(importKeyAsync(vaultBaseUrl, keyName, key, hsm, keyAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Imports a key into the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param key The Json web key
+     * @param hsm Whether to import as a hardware key (HSM) or software key
+     * @param keyAttributes The key management attributes
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> importKeyAsync(String vaultBaseUrl, String keyName, JsonWebKey key, Boolean hsm, KeyAttributes keyAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -800,7 +745,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (key == null) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null.");
         }
-        Validator.validate(key);
         Validator.validate(keyAttributes);
         Validator.validate(tags);
         KeyImportParameters parameters = new KeyImportParameters();
@@ -809,26 +753,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(keyAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = importKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.importKey(keyName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = importKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> importKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -849,18 +785,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> deleteKey(String vaultBaseUrl, String keyName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteKeyDelegate(call.execute());
+        return deleteKeyAsync(vaultBaseUrl, keyName).toBlocking().single();
     }
 
     /**
@@ -869,9 +794,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> deleteKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(deleteKeyAsync(vaultBaseUrl, keyName), serviceCallback);
+    }
+
+    /**
+     * Deletes the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> deleteKeyAsync(String vaultBaseUrl, String keyName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -882,26 +818,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = deleteKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = deleteKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> deleteKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -923,28 +851,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> updateKey(String vaultBaseUrl, String keyName, String keyVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final List<String> keyOps = null;
-        final KeyAttributes keyAttributes = null;
-        final Map<String, String> tags = null;
-        KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.withKeyOps(null);
-        parameters.withKeyAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateKeyDelegate(call.execute());
+        return updateKeyAsync(vaultBaseUrl, keyName, keyVersion).toBlocking().single();
     }
 
     /**
@@ -954,9 +861,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key
      * @param keyVersion The version of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(updateKeyAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
+    }
+
+    /**
+     * Updates the Key Attributes associated with the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -969,7 +888,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        final List<String> keyOps = null;
+        final List<JsonWebKeyOperation> keyOps = null;
         final KeyAttributes keyAttributes = null;
         final Map<String, String> tags = null;
         KeyUpdateParameters parameters = new KeyUpdateParameters();
@@ -977,26 +896,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = updateKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = updateKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1013,29 +924,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyBundle> updateKey(String vaultBaseUrl, String keyName, String keyVersion, List<String> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(keyOps);
-        Validator.validate(keyAttributes);
-        Validator.validate(tags);
-        KeyUpdateParameters parameters = new KeyUpdateParameters();
-        parameters.withKeyOps(keyOps);
-        parameters.withKeyAttributes(keyAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateKeyDelegate(call.execute());
+    public ServiceResponse<KeyBundle> updateKey(String vaultBaseUrl, String keyName, String keyVersion, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return updateKeyAsync(vaultBaseUrl, keyName, keyVersion, keyOps, keyAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -1048,9 +938,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyAttributes the KeyAttributes value
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, List<String> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+    public ServiceCall<KeyBundle> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(updateKeyAsync(vaultBaseUrl, keyName, keyVersion, keyOps, keyAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Updates the Key Attributes associated with the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param keyOps Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> updateKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1071,26 +976,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withKeyAttributes(keyAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = updateKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = updateKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> updateKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1112,21 +1009,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> getKey(String vaultBaseUrl, String keyName, String keyVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getKeyDelegate(call.execute());
+        return getKeyAsync(vaultBaseUrl, keyName, keyVersion).toBlocking().single();
     }
 
     /**
@@ -1136,9 +1019,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key
      * @param keyVersion The version of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(getKeyAsync(vaultBaseUrl, keyName, keyVersion), serviceCallback);
+    }
+
+    /**
+     * Retrieves the public portion of a key plus its attributes.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> getKeyAsync(String vaultBaseUrl, String keyName, String keyVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1152,26 +1047,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = getKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = getKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> getKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1192,26 +1079,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<KeyItem>> getKeyVersions(final String vaultBaseUrl, final String keyName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<KeyItem>> response = getKeyVersionsDelegate(call.execute());
-        PagedList<KeyItem> result = new PagedList<KeyItem>(response.getBody()) {
+        ServiceResponse<Page<KeyItem>> response = getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
             @Override
-            public Page<KeyItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getKeyVersionsNext(nextPageLink).getBody();
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeyVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1220,9 +1095,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName) {
+        return getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsSinglePageAsync(final String vaultBaseUrl, final String keyName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1234,32 +1146,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<KeyItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getKeyVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1274,25 +1172,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<KeyItem>> getKeyVersions(final String vaultBaseUrl, final String keyName, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<KeyItem>> response = getKeyVersionsDelegate(call.execute());
-        PagedList<KeyItem> result = new PagedList<KeyItem>(response.getBody()) {
+        ServiceResponse<Page<KeyItem>> response = getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName, maxresults).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
             @Override
-            public Page<KeyItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getKeyVersionsNext(nextPageLink).getBody();
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeyVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1302,9 +1189,48 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param keyName The name of the key
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults) {
+        return getKeyVersionsSinglePageAsync(vaultBaseUrl, keyName, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<KeyItem>> * @param keyName The name of the key
+    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsSinglePageAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1315,32 +1241,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<KeyItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getKeyVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getKeyVersions(keyName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<KeyItem>> getKeyVersionsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1360,23 +1272,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<KeyItem>> getKeys(final String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<KeyItem>> response = getKeysDelegate(call.execute());
-        PagedList<KeyItem> result = new PagedList<KeyItem>(response.getBody()) {
+        ServiceResponse<Page<KeyItem>> response = getKeysSinglePageAsync(vaultBaseUrl).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
             @Override
-            public Page<KeyItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getKeysNext(nextPageLink).getBody();
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeysNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1384,9 +1287,44 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeysSinglePageAsync(vaultBaseUrl),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysAsync(final String vaultBaseUrl) {
+        return getKeysSinglePageAsync(vaultBaseUrl)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysSinglePageAsync(final String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1395,32 +1333,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<KeyItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeysDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getKeysNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeysDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1434,22 +1358,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<KeyItem>> getKeys(final String vaultBaseUrl, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<KeyItem>> response = getKeysDelegate(call.execute());
-        PagedList<KeyItem> result = new PagedList<KeyItem>(response.getBody()) {
+        ServiceResponse<Page<KeyItem>> response = getKeysSinglePageAsync(vaultBaseUrl, maxresults).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
             @Override
-            public Page<KeyItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getKeysNext(nextPageLink).getBody();
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeysNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1458,9 +1374,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeysAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeysSinglePageAsync(vaultBaseUrl, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysAsync(final String vaultBaseUrl, final Integer maxresults) {
+        return getKeysSinglePageAsync(vaultBaseUrl, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1468,32 +1421,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<KeyItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeysDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getKeysNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getKeys(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeysDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<KeyItem>> getKeysDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1514,18 +1453,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the BackupKeyResult object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<BackupKeyResult> backupKey(String vaultBaseUrl, String keyName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return backupKeyDelegate(call.execute());
+        return backupKeyAsync(vaultBaseUrl, keyName).toBlocking().single();
     }
 
     /**
@@ -1534,9 +1462,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyName The name of the key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupKeyResult> backupKeyAsync(String vaultBaseUrl, String keyName, final ServiceCallback<BackupKeyResult> serviceCallback) {
+        return ServiceCall.create(backupKeyAsync(vaultBaseUrl, keyName), serviceCallback);
+    }
+
+    /**
+     * Requests that a backup of the specified key be downloaded to the client.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @return the observable to the BackupKeyResult object
+     */
+    public Observable<ServiceResponse<BackupKeyResult>> backupKeyAsync(String vaultBaseUrl, String keyName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1547,26 +1486,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<BackupKeyResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<BackupKeyResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<BackupKeyResult> clientResponse = backupKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.backupKey(keyName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupKeyResult>>>() {
+                @Override
+                public Observable<ServiceResponse<BackupKeyResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BackupKeyResult> clientResponse = backupKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<BackupKeyResult> backupKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1587,20 +1518,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the KeyBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<KeyBundle> restoreKey(String vaultBaseUrl, byte[] keyBundleBackup) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (keyBundleBackup == null) {
-            throw new IllegalArgumentException("Parameter keyBundleBackup is required and cannot be null.");
-        }
-        KeyRestoreParameters parameters = new KeyRestoreParameters();
-        parameters.withKeyBundleBackup(keyBundleBackup);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return restoreKeyDelegate(call.execute());
+        return restoreKeyAsync(vaultBaseUrl, keyBundleBackup).toBlocking().single();
     }
 
     /**
@@ -1609,9 +1527,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param keyBundleBackup the backup blob associated with a key bundle
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<KeyBundle> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup, final ServiceCallback<KeyBundle> serviceCallback) {
+        return ServiceCall.create(restoreKeyAsync(vaultBaseUrl, keyBundleBackup), serviceCallback);
+    }
+
+    /**
+     * Restores the backup key in to a vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyBundleBackup the backup blob associated with a key bundle
+     * @return the observable to the KeyBundle object
+     */
+    public Observable<ServiceResponse<KeyBundle>> restoreKeyAsync(String vaultBaseUrl, byte[] keyBundleBackup) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1624,26 +1553,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         KeyRestoreParameters parameters = new KeyRestoreParameters();
         parameters.withKeyBundleBackup(keyBundleBackup);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyBundle> clientResponse = restoreKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.restoreKey(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyBundle> clientResponse = restoreKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyBundle> restoreKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1666,31 +1587,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> encrypt(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withValue(value);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return encryptDelegate(call.execute());
+    public ServiceResponse<KeyOperationResult> encrypt(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return encryptAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value).toBlocking().single();
     }
 
     /**
@@ -1702,9 +1600,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> encryptAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> encryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceCall.create(encryptAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    }
+
+    /**
+     * Encrypts an arbitrary sequence of bytes using an encryption key that is stored in Azure Key Vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
+     * @param value the Base64Url value
+     * @return the observable to the KeyOperationResult object
+     */
+    public Observable<ServiceResponse<KeyOperationResult>> encryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1727,26 +1639,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyOperationResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyOperationResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyOperationResult> clientResponse = encryptDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.encrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyOperationResult> clientResponse = encryptDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyOperationResult> encryptDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1769,31 +1673,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> decrypt(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withValue(value);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return decryptDelegate(call.execute());
+    public ServiceResponse<KeyOperationResult> decrypt(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return decryptAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value).toBlocking().single();
     }
 
     /**
@@ -1805,9 +1686,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> decryptAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> decryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceCall.create(decryptAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    }
+
+    /**
+     * Decrypts a single block of encrypted data.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
+     * @param value the Base64Url value
+     * @return the observable to the KeyOperationResult object
+     */
+    public Observable<ServiceResponse<KeyOperationResult>> decryptAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1830,26 +1725,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyOperationResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyOperationResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyOperationResult> clientResponse = decryptDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.decrypt(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyOperationResult> clientResponse = decryptDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyOperationResult> decryptDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1872,31 +1759,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> sign(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        KeySignParameters parameters = new KeySignParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withValue(value);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return signDelegate(call.execute());
+    public ServiceResponse<KeyOperationResult> sign(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return signAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value).toBlocking().single();
     }
 
     /**
@@ -1908,9 +1772,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> signAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> signAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceCall.create(signAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    }
+
+    /**
+     * Creates a signature from a digest using the specified key in the vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
+     * @param value the Base64Url value
+     * @return the observable to the KeyOperationResult object
+     */
+    public Observable<ServiceResponse<KeyOperationResult>> signAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -1933,26 +1811,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyOperationResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyOperationResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyOperationResult> clientResponse = signDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.sign(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyOperationResult> clientResponse = signDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyOperationResult> signDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -1976,35 +1846,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyVerifyResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyVerifyResult> verify(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] digest, byte[] signature) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (digest == null) {
-            throw new IllegalArgumentException("Parameter digest is required and cannot be null.");
-        }
-        if (signature == null) {
-            throw new IllegalArgumentException("Parameter signature is required and cannot be null.");
-        }
-        KeyVerifyParameters parameters = new KeyVerifyParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withDigest(digest);
-        parameters.withSignature(signature);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return verifyDelegate(call.execute());
+    public ServiceResponse<KeyVerifyResult> verify(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return verifyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, digest, signature).toBlocking().single();
     }
 
     /**
@@ -2017,9 +1860,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param digest The digest used for signing
      * @param signature The signature to be verified
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyVerifyResult> verifyAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
+    public ServiceCall<KeyVerifyResult> verifyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature, final ServiceCallback<KeyVerifyResult> serviceCallback) {
+        return ServiceCall.create(verifyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, digest, signature), serviceCallback);
+    }
+
+    /**
+     * Verifies a signature using the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm. Possible values include: 'RS256', 'RS384', 'RS512', 'RSNULL'
+     * @param digest The digest used for signing
+     * @param signature The signature to be verified
+     * @return the observable to the KeyVerifyResult object
+     */
+    public Observable<ServiceResponse<KeyVerifyResult>> verifyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeySignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2046,26 +1904,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withDigest(digest);
         parameters.withSignature(signature);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyVerifyResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyVerifyResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyVerifyResult> clientResponse = verifyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.verify(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyVerifyResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyVerifyResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyVerifyResult> clientResponse = verifyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyVerifyResult> verifyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2088,31 +1938,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> wrapKey(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withValue(value);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return wrapKeyDelegate(call.execute());
+    public ServiceResponse<KeyOperationResult> wrapKey(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return wrapKeyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value).toBlocking().single();
     }
 
     /**
@@ -2124,9 +1951,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> wrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> wrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceCall.create(wrapKeyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    }
+
+    /**
+     * Wraps a symmetric key using the specified key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
+     * @param value the Base64Url value
+     * @return the observable to the KeyOperationResult object
+     */
+    public Observable<ServiceResponse<KeyOperationResult>> wrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2149,26 +1990,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyOperationResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyOperationResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyOperationResult> clientResponse = wrapKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.wrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyOperationResult> clientResponse = wrapKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyOperationResult> wrapKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2191,31 +2024,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the KeyOperationResult object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<KeyOperationResult> unwrapKey(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (keyName == null) {
-            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
-        }
-        if (keyVersion == null) {
-            throw new IllegalArgumentException("Parameter keyVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (algorithm == null) {
-            throw new IllegalArgumentException("Parameter algorithm is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        KeyOperationsParameters parameters = new KeyOperationsParameters();
-        parameters.withAlgorithm(algorithm);
-        parameters.withValue(value);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return unwrapKeyDelegate(call.execute());
+    public ServiceResponse<KeyOperationResult> unwrapKey(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return unwrapKeyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value).toBlocking().single();
     }
 
     /**
@@ -2227,9 +2037,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
      * @param value the Base64Url value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, String algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+    public ServiceCall<KeyOperationResult> unwrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value, final ServiceCallback<KeyOperationResult> serviceCallback) {
+        return ServiceCall.create(unwrapKeyAsync(vaultBaseUrl, keyName, keyVersion, algorithm, value), serviceCallback);
+    }
+
+    /**
+     * Unwraps a symmetric key using the specified key in the vault that has initially been used for wrapping the key.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param keyName The name of the key
+     * @param keyVersion The version of the key
+     * @param algorithm algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'
+     * @param value the Base64Url value
+     * @return the observable to the KeyOperationResult object
+     */
+    public Observable<ServiceResponse<KeyOperationResult>> unwrapKeyAsync(String vaultBaseUrl, String keyName, String keyVersion, JsonWebKeyEncryptionAlgorithm algorithm, byte[] value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2252,26 +2076,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withAlgorithm(algorithm);
         parameters.withValue(value);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<KeyOperationResult> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<KeyOperationResult>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<KeyOperationResult> clientResponse = unwrapKeyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.unwrapKey(keyName, keyVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyOperationResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyOperationResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyOperationResult> clientResponse = unwrapKeyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<KeyOperationResult> unwrapKeyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2293,29 +2109,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> setSecret(String vaultBaseUrl, String secretName, String value) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        final Map<String, String> tags = null;
-        final String contentType = null;
-        final SecretAttributes secretAttributes = null;
-        SecretSetParameters parameters = new SecretSetParameters();
-        parameters.withValue(value);
-        parameters.withTags(null);
-        parameters.withContentType(null);
-        parameters.withSecretAttributes(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return setSecretDelegate(call.execute());
+        return setSecretAsync(vaultBaseUrl, secretName, value).toBlocking().single();
     }
 
     /**
@@ -2325,9 +2119,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret in the given vault
      * @param value The value of the secret
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(setSecretAsync(vaultBaseUrl, secretName, value), serviceCallback);
+    }
+
+    /**
+     * Sets a secret in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param value The value of the secret
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> setSecretAsync(String vaultBaseUrl, String secretName, String value) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2349,26 +2155,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withContentType(null);
         parameters.withSecretAttributes(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = setSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = setSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2386,28 +2184,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> setSecret(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (value == null) {
-            throw new IllegalArgumentException("Parameter value is required and cannot be null.");
-        }
-        Validator.validate(tags);
-        Validator.validate(secretAttributes);
-        SecretSetParameters parameters = new SecretSetParameters();
-        parameters.withValue(value);
-        parameters.withTags(tags);
-        parameters.withContentType(contentType);
-        parameters.withSecretAttributes(secretAttributes);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return setSecretDelegate(call.execute());
+        return setSecretAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes).toBlocking().single();
     }
 
     /**
@@ -2420,9 +2197,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param contentType Type of the secret value such as a password
      * @param secretAttributes The secret management attributes
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(setSecretAsync(vaultBaseUrl, secretName, value, tags, contentType, secretAttributes), serviceCallback);
+    }
+
+    /**
+     * Sets a secret in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param value The value of the secret
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @param contentType Type of the secret value such as a password
+     * @param secretAttributes The secret management attributes
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> setSecretAsync(String vaultBaseUrl, String secretName, String value, Map<String, String> tags, String contentType, SecretAttributes secretAttributes) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2443,26 +2235,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withContentType(contentType);
         parameters.withSecretAttributes(secretAttributes);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = setSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.setSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = setSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<SecretBundle> setSecretDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2483,18 +2267,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> deleteSecret(String vaultBaseUrl, String secretName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteSecretDelegate(call.execute());
+        return deleteSecretAsync(vaultBaseUrl, secretName).toBlocking().single();
     }
 
     /**
@@ -2503,9 +2276,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(deleteSecretAsync(vaultBaseUrl, secretName), serviceCallback);
+    }
+
+    /**
+     * Deletes a secret from the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> deleteSecretAsync(String vaultBaseUrl, String secretName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2516,26 +2300,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = deleteSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteSecret(secretName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = deleteSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<SecretBundle> deleteSecretDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2557,28 +2333,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> updateSecret(String vaultBaseUrl, String secretName, String secretVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (secretVersion == null) {
-            throw new IllegalArgumentException("Parameter secretVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final String contentType = null;
-        final SecretAttributes secretAttributes = null;
-        final Map<String, String> tags = null;
-        SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.withContentType(null);
-        parameters.withSecretAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateSecretDelegate(call.execute());
+        return updateSecretAsync(vaultBaseUrl, secretName, secretVersion).toBlocking().single();
     }
 
     /**
@@ -2588,9 +2343,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret in the given vault
      * @param secretVersion The version of the secret
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(updateSecretAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
+    }
+
+    /**
+     * Updates the attributes associated with the specified secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param secretVersion The version of the secret
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2611,26 +2378,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withSecretAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = updateSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = updateSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2648,27 +2407,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> updateSecret(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (secretVersion == null) {
-            throw new IllegalArgumentException("Parameter secretVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(secretAttributes);
-        Validator.validate(tags);
-        SecretUpdateParameters parameters = new SecretUpdateParameters();
-        parameters.withContentType(contentType);
-        parameters.withSecretAttributes(secretAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateSecretDelegate(call.execute());
+        return updateSecretAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -2681,9 +2420,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretAttributes The secret management attributes
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(updateSecretAsync(vaultBaseUrl, secretName, secretVersion, contentType, secretAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Updates the attributes associated with the specified secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param secretVersion The version of the secret
+     * @param contentType Type of the secret value such as a password
+     * @param secretAttributes The secret management attributes
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, String contentType, SecretAttributes secretAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2703,26 +2457,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withSecretAttributes(secretAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = updateSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = updateSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<SecretBundle> updateSecretDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2744,21 +2490,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the SecretBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<SecretBundle> getSecret(String vaultBaseUrl, String secretName, String secretVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (secretVersion == null) {
-            throw new IllegalArgumentException("Parameter secretVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getSecretDelegate(call.execute());
+        return getSecretAsync(vaultBaseUrl, secretName, secretVersion).toBlocking().single();
     }
 
     /**
@@ -2768,9 +2500,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret in the given vault
      * @param secretVersion The version of the secret
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion, final ServiceCallback<SecretBundle> serviceCallback) {
+        return ServiceCall.create(getSecretAsync(vaultBaseUrl, secretName, secretVersion), serviceCallback);
+    }
+
+    /**
+     * Gets a secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param secretVersion The version of the secret
+     * @return the observable to the SecretBundle object
+     */
+    public Observable<ServiceResponse<SecretBundle>> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2784,26 +2528,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<SecretBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<SecretBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<SecretBundle> clientResponse = getSecretDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getSecret(secretName, secretVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecretBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<SecretBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SecretBundle> clientResponse = getSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<SecretBundle> getSecretDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2823,23 +2559,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<SecretItem>> getSecrets(final String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<SecretItem>> response = getSecretsDelegate(call.execute());
-        PagedList<SecretItem> result = new PagedList<SecretItem>(response.getBody()) {
+        ServiceResponse<Page<SecretItem>> response = getSecretsSinglePageAsync(vaultBaseUrl).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
             @Override
-            public Page<SecretItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getSecretsNext(nextPageLink).getBody();
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2847,9 +2574,44 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretsSinglePageAsync(vaultBaseUrl),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsAsync(final String vaultBaseUrl) {
+        return getSecretsSinglePageAsync(vaultBaseUrl)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsSinglePageAsync(final String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2858,32 +2620,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<SecretItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getSecretsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2897,22 +2645,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<SecretItem>> getSecrets(final String vaultBaseUrl, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<SecretItem>> response = getSecretsDelegate(call.execute());
-        PagedList<SecretItem> result = new PagedList<SecretItem>(response.getBody()) {
+        ServiceResponse<Page<SecretItem>> response = getSecretsSinglePageAsync(vaultBaseUrl, maxresults).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
             @Override
-            public Page<SecretItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getSecretsNext(nextPageLink).getBody();
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2921,9 +2661,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of secrets to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretsAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretsSinglePageAsync(vaultBaseUrl, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param maxresults Maximum number of secrets to return.
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsAsync(final String vaultBaseUrl, final Integer maxresults) {
+        return getSecretsSinglePageAsync(vaultBaseUrl, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of secrets to return.
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -2931,32 +2708,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<SecretItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getSecretsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getSecrets(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<SecretItem>> getSecretsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -2977,26 +2740,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<SecretItem>> getSecretVersions(final String vaultBaseUrl, final String secretName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<SecretItem>> response = getSecretVersionsDelegate(call.execute());
-        PagedList<SecretItem> result = new PagedList<SecretItem>(response.getBody()) {
+        ServiceResponse<Page<SecretItem>> response = getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
             @Override
-            public Page<SecretItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getSecretVersionsNext(nextPageLink).getBody();
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3005,9 +2756,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param secretName The name of the secret in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName) {
+        return getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsSinglePageAsync(final String vaultBaseUrl, final String secretName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3019,32 +2807,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<SecretItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getSecretVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3059,25 +2833,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<SecretItem>> getSecretVersions(final String vaultBaseUrl, final String secretName, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (secretName == null) {
-            throw new IllegalArgumentException("Parameter secretName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<SecretItem>> response = getSecretVersionsDelegate(call.execute());
-        PagedList<SecretItem> result = new PagedList<SecretItem>(response.getBody()) {
+        ServiceResponse<Page<SecretItem>> response = getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
             @Override
-            public Page<SecretItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getSecretVersionsNext(nextPageLink).getBody();
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3087,9 +2850,48 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param secretName The name of the secret in the given vault
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param secretName The name of the secret in the given vault
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults) {
+        return getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<SecretItem>> * @param secretName The name of the secret in the given vault
+    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsSinglePageAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3100,32 +2902,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<SecretItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getSecretVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getSecretVersions(secretName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<SecretItem>> getSecretVersionsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3145,23 +2933,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateItem>> getCertificates(final String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateItem>> response = getCertificatesDelegate(call.execute());
-        PagedList<CertificateItem> result = new PagedList<CertificateItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateItem>> response = getCertificatesSinglePageAsync(vaultBaseUrl).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
             @Override
-            public Page<CertificateItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificatesNext(nextPageLink).getBody();
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3169,9 +2948,44 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificatesSinglePageAsync(vaultBaseUrl),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesAsync(final String vaultBaseUrl) {
+        return getCertificatesSinglePageAsync(vaultBaseUrl)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesSinglePageAsync(final String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3180,32 +2994,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificatesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3219,22 +3019,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateItem>> getCertificates(final String vaultBaseUrl, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateItem>> response = getCertificatesDelegate(call.execute());
-        PagedList<CertificateItem> result = new PagedList<CertificateItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateItem>> response = getCertificatesSinglePageAsync(vaultBaseUrl, maxresults).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
             @Override
-            public Page<CertificateItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificatesNext(nextPageLink).getBody();
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3243,9 +3035,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificatesSinglePageAsync(vaultBaseUrl, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults) {
+        return getCertificatesSinglePageAsync(vaultBaseUrl, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3253,32 +3082,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificatesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificates(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateItem>> getCertificatesDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3299,18 +3114,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> deleteCertificate(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteCertificateDelegate(call.execute());
+        return deleteCertificateAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -3319,9 +3123,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> deleteCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(deleteCertificateAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+
+    /**
+     * Deletes a certificate from the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> deleteCertificateAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3332,26 +3147,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = deleteCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = deleteCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateBundle> deleteCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3372,19 +3179,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the Contacts object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Contacts> setCertificateContacts(String vaultBaseUrl, Contacts contacts) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (contacts == null) {
-            throw new IllegalArgumentException("Parameter contacts is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(contacts);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return setCertificateContactsDelegate(call.execute());
+        return setCertificateContactsAsync(vaultBaseUrl, contacts).toBlocking().single();
     }
 
     /**
@@ -3393,9 +3188,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param contacts The contacts for the vault certificates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Contacts> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceCall.create(setCertificateContactsAsync(vaultBaseUrl, contacts), serviceCallback);
+    }
+
+    /**
+     * Sets the certificate contacts for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param contacts The contacts for the vault certificates.
+     * @return the observable to the Contacts object
+     */
+    public Observable<ServiceResponse<Contacts>> setCertificateContactsAsync(String vaultBaseUrl, Contacts contacts) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3407,26 +3213,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         Validator.validate(contacts);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<Contacts> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Contacts>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Contacts> clientResponse = setCertificateContactsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.setCertificateContacts(contacts, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Contacts>>>() {
+                @Override
+                public Observable<ServiceResponse<Contacts>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Contacts> clientResponse = setCertificateContactsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Contacts> setCertificateContactsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3446,15 +3244,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the Contacts object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Contacts> getCertificateContacts(String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getCertificateContactsDelegate(call.execute());
+        return getCertificateContactsAsync(vaultBaseUrl).toBlocking().single();
     }
 
     /**
@@ -3462,9 +3252,19 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Contacts> getCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceCall.create(getCertificateContactsAsync(vaultBaseUrl), serviceCallback);
+    }
+
+    /**
+     * Gets the certificate contacts for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the Contacts object
+     */
+    public Observable<ServiceResponse<Contacts>> getCertificateContactsAsync(String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3472,26 +3272,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<Contacts> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Contacts>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Contacts> clientResponse = getCertificateContactsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Contacts>>>() {
+                @Override
+                public Observable<ServiceResponse<Contacts>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Contacts> clientResponse = getCertificateContactsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Contacts> getCertificateContactsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3511,15 +3303,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the Contacts object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<Contacts> deleteCertificateContacts(String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteCertificateContactsDelegate(call.execute());
+        return deleteCertificateContactsAsync(vaultBaseUrl).toBlocking().single();
     }
 
     /**
@@ -3527,9 +3311,19 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<Contacts> deleteCertificateContactsAsync(String vaultBaseUrl, final ServiceCallback<Contacts> serviceCallback) {
+        return ServiceCall.create(deleteCertificateContactsAsync(vaultBaseUrl), serviceCallback);
+    }
+
+    /**
+     * Deletes the certificate contacts for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the Contacts object
+     */
+    public Observable<ServiceResponse<Contacts>> deleteCertificateContactsAsync(String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3537,26 +3331,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<Contacts> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<Contacts>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<Contacts> clientResponse = deleteCertificateContactsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteCertificateContacts(this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Contacts>>>() {
+                @Override
+                public Observable<ServiceResponse<Contacts>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Contacts> clientResponse = deleteCertificateContactsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Contacts> deleteCertificateContactsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3576,23 +3362,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateIssuerItem>> getCertificateIssuers(final String vaultBaseUrl) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateIssuerItem>> response = getCertificateIssuersDelegate(call.execute());
-        PagedList<CertificateIssuerItem> result = new PagedList<CertificateIssuerItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateIssuerItem>> response = getCertificateIssuersSinglePageAsync(vaultBaseUrl).toBlocking().single();
+        PagedList<CertificateIssuerItem> pagedList = new PagedList<CertificateIssuerItem>(response.getBody()) {
             @Override
-            public Page<CertificateIssuerItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificateIssuersNext(nextPageLink).getBody();
+            public Page<CertificateIssuerItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateIssuersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateIssuerItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3600,9 +3377,44 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateIssuersSinglePageAsync(vaultBaseUrl),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(String nextPageLink) {
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the observable to the List&lt;CertificateIssuerItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersAsync(final String vaultBaseUrl) {
+        return getCertificateIssuersSinglePageAsync(vaultBaseUrl)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateIssuerItem>>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(ServiceResponse<Page<CertificateIssuerItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersSinglePageAsync(final String vaultBaseUrl) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3611,32 +3423,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateIssuerItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificateIssuersNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateIssuerItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3650,22 +3448,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateIssuerItem>> getCertificateIssuers(final String vaultBaseUrl, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateIssuerItem>> response = getCertificateIssuersDelegate(call.execute());
-        PagedList<CertificateIssuerItem> result = new PagedList<CertificateIssuerItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateIssuerItem>> response = getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults).toBlocking().single();
+        PagedList<CertificateIssuerItem> pagedList = new PagedList<CertificateIssuerItem>(response.getBody()) {
             @Override
-            public Page<CertificateIssuerItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificateIssuersNext(nextPageLink).getBody();
+            public Page<CertificateIssuerItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateIssuersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateIssuerItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3674,9 +3464,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(String nextPageLink) {
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;CertificateIssuerItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersAsync(final String vaultBaseUrl, final Integer maxresults) {
+        return getCertificateIssuersSinglePageAsync(vaultBaseUrl, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateIssuerItem>>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(ServiceResponse<Page<CertificateIssuerItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3684,32 +3511,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateIssuerItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificateIssuersNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificateIssuers(maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateIssuerItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateIssuerItem>> getCertificateIssuersDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3724,36 +3537,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<IssuerBundle> setCertificateIssuer(String vaultBaseUrl, String issuerName, String provider) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
-        }
-        final IssuerCredentials credentials = null;
-        final OrganizationDetails organizationDetails = null;
-        final IssuerAttributes attributes = null;
-        CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
-        parameter.withProvider(provider);
-        parameter.withCredentials(null);
-        parameter.withOrganizationDetails(null);
-        parameter.withAttributes(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        return setCertificateIssuerDelegate(call.execute());
+        return setCertificateIssuerAsync(vaultBaseUrl, issuerName, provider).toBlocking().single();
     }
 
     /**
@@ -3761,11 +3552,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(setCertificateIssuerAsync(vaultBaseUrl, issuerName, provider), serviceCallback);
+    }
+
+    /**
+     * Sets the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @param provider The issuer provider.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3787,26 +3590,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameter.withOrganizationDetails(null);
         parameter.withAttributes(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = setCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = setCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -3814,7 +3609,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
@@ -3824,29 +3619,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<IssuerBundle> setCertificateIssuer(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
-        }
-        Validator.validate(credentials);
-        Validator.validate(organizationDetails);
-        Validator.validate(attributes);
-        CertificateIssuerSetParameters parameter = new CertificateIssuerSetParameters();
-        parameter.withProvider(provider);
-        parameter.withCredentials(credentials);
-        parameter.withOrganizationDetails(organizationDetails);
-        parameter.withAttributes(attributes);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        return setCertificateIssuerDelegate(call.execute());
+        return setCertificateIssuerAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes).toBlocking().single();
     }
 
     /**
@@ -3854,14 +3627,29 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<IssuerBundle> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(setCertificateIssuerAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
+    }
+
+    /**
+     * Sets the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @param provider The issuer provider.
+     * @param credentials The credentials to be used for the issuer.
+     * @param organizationDetails Details of the organization as provided to the issuer.
+     * @param attributes Attributes of the issuer object.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> setCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3883,26 +3671,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameter.withOrganizationDetails(organizationDetails);
         parameter.withAttributes(attributes);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = setCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.setCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = setCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<IssuerBundle> setCertificateIssuerDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -3917,36 +3697,13 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
      * @throws KeyVaultErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<IssuerBundle> updateCertificateIssuer(String vaultBaseUrl, String issuerName, String provider) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
-        }
-        final IssuerCredentials credentials = null;
-        final OrganizationDetails organizationDetails = null;
-        final IssuerAttributes attributes = null;
-        CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
-        parameter.withProvider(provider);
-        parameter.withCredentials(null);
-        parameter.withOrganizationDetails(null);
-        parameter.withAttributes(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        return updateCertificateIssuerDelegate(call.execute());
+    public ServiceResponse<IssuerBundle> updateCertificateIssuer(String vaultBaseUrl, String issuerName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return updateCertificateIssuerAsync(vaultBaseUrl, issuerName).toBlocking().single();
     }
 
     /**
@@ -3954,11 +3711,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, final ServiceCallback<IssuerBundle> serviceCallback) {
+    public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(updateCertificateIssuerAsync(vaultBaseUrl, issuerName), serviceCallback);
+    }
+
+    /**
+     * Updates the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -3968,38 +3735,28 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
-        }
+        final String provider = null;
         final IssuerCredentials credentials = null;
         final OrganizationDetails organizationDetails = null;
         final IssuerAttributes attributes = null;
         CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
-        parameter.withProvider(provider);
+        parameter.withProvider(null);
         parameter.withCredentials(null);
         parameter.withOrganizationDetails(null);
         parameter.withAttributes(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = updateCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = updateCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4007,7 +3764,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
@@ -4017,29 +3774,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<IssuerBundle> updateCertificateIssuer(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
-        }
-        Validator.validate(credentials);
-        Validator.validate(organizationDetails);
-        Validator.validate(attributes);
-        CertificateIssuerUpdateParameters parameter = new CertificateIssuerUpdateParameters();
-        parameter.withProvider(provider);
-        parameter.withCredentials(credentials);
-        parameter.withOrganizationDetails(organizationDetails);
-        parameter.withAttributes(attributes);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        return updateCertificateIssuerDelegate(call.execute());
+        return updateCertificateIssuerAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes).toBlocking().single();
     }
 
     /**
@@ -4047,14 +3782,29 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
-     * @param provider The name of the issuer.
+     * @param provider The issuer provider.
      * @param credentials The credentials to be used for the issuer.
      * @param organizationDetails Details of the organization as provided to the issuer.
      * @param attributes Attributes of the issuer object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<IssuerBundle> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(updateCertificateIssuerAsync(vaultBaseUrl, issuerName, provider, credentials, organizationDetails, attributes), serviceCallback);
+    }
+
+    /**
+     * Updates the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @param provider The issuer provider.
+     * @param credentials The credentials to be used for the issuer.
+     * @param organizationDetails Details of the organization as provided to the issuer.
+     * @param attributes Attributes of the issuer object.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> updateCertificateIssuerAsync(String vaultBaseUrl, String issuerName, String provider, IssuerCredentials credentials, OrganizationDetails organizationDetails, IssuerAttributes attributes) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4063,9 +3813,6 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (provider == null) {
-            throw new IllegalArgumentException("Parameter provider is required and cannot be null.");
         }
         Validator.validate(credentials);
         Validator.validate(organizationDetails);
@@ -4076,26 +3823,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameter.withOrganizationDetails(organizationDetails);
         parameter.withAttributes(attributes);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = updateCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameter, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = updateCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<IssuerBundle> updateCertificateIssuerDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4116,18 +3855,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<IssuerBundle> getCertificateIssuer(String vaultBaseUrl, String issuerName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getCertificateIssuerDelegate(call.execute());
+        return getCertificateIssuerAsync(vaultBaseUrl, issuerName).toBlocking().single();
     }
 
     /**
@@ -4136,9 +3864,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<IssuerBundle> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(getCertificateIssuerAsync(vaultBaseUrl, issuerName), serviceCallback);
+    }
+
+    /**
+     * Gets the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> getCertificateIssuerAsync(String vaultBaseUrl, String issuerName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4149,26 +3888,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = getCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = getCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<IssuerBundle> getCertificateIssuerDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4189,18 +3920,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the IssuerBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<IssuerBundle> deleteCertificateIssuer(String vaultBaseUrl, String issuerName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (issuerName == null) {
-            throw new IllegalArgumentException("Parameter issuerName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteCertificateIssuerDelegate(call.execute());
+        return deleteCertificateIssuerAsync(vaultBaseUrl, issuerName).toBlocking().single();
     }
 
     /**
@@ -4209,9 +3929,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param issuerName The name of the issuer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<IssuerBundle> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName, final ServiceCallback<IssuerBundle> serviceCallback) {
+        return ServiceCall.create(deleteCertificateIssuerAsync(vaultBaseUrl, issuerName), serviceCallback);
+    }
+
+    /**
+     * Deletes the specified certificate issuer.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param issuerName The name of the issuer.
+     * @return the observable to the IssuerBundle object
+     */
+    public Observable<ServiceResponse<IssuerBundle>> deleteCertificateIssuerAsync(String vaultBaseUrl, String issuerName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4222,26 +3953,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<IssuerBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<IssuerBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<IssuerBundle> clientResponse = deleteCertificateIssuerDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteCertificateIssuer(issuerName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IssuerBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<IssuerBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IssuerBundle> clientResponse = deleteCertificateIssuerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<IssuerBundle> deleteCertificateIssuerDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4262,25 +3985,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateOperation> createCertificate(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final CertificatePolicy certificatePolicy = null;
-        final CertificateAttributes certificateAttributes = null;
-        final Map<String, String> tags = null;
-        CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.withCertificatePolicy(null);
-        parameters.withCertificateAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return createCertificateDelegate(call.execute());
+        return createCertificateAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -4289,9 +3994,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceCall.create(createCertificateAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+
+    /**
+     * Creates a new certificate version. If this is the first version, the certificate resource is created.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the observable to the CertificateOperation object
+     */
+    public Observable<ServiceResponse<CertificateOperation>> createCertificateAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4309,26 +4025,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateOperation> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOperation>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateOperation> clientResponse = createCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateOperation>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateOperation>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateOperation> clientResponse = createCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4345,25 +4053,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateOperation> createCertificate(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
-        Validator.validate(certificateAttributes);
-        Validator.validate(tags);
-        CertificateCreateParameters parameters = new CertificateCreateParameters();
-        parameters.withCertificatePolicy(certificatePolicy);
-        parameters.withCertificateAttributes(certificateAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return createCertificateDelegate(call.execute());
+        return createCertificateAsync(vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -4375,9 +4065,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOperation> createCertificateAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceCall.create(createCertificateAsync(vaultBaseUrl, certificateName, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Creates a new certificate version. If this is the first version, the certificate resource is created.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param certificatePolicy The management policy for the certificate
+     * @param certificateAttributes The attributes of the certificate (optional)
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the CertificateOperation object
+     */
+    public Observable<ServiceResponse<CertificateOperation>> createCertificateAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4395,26 +4099,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(certificateAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateOperation> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOperation>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateOperation> clientResponse = createCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.createCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateOperation>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateOperation>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateOperation> clientResponse = createCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateOperation> createCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4436,31 +4132,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (base64EncodedCertificate == null) {
-            throw new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null.");
-        }
-        final String password = null;
-        final CertificatePolicy certificatePolicy = null;
-        final CertificateAttributes certificateAttributes = null;
-        final Map<String, String> tags = null;
-        CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.withPassword(null);
-        parameters.withCertificatePolicy(null);
-        parameters.withCertificateAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return importCertificateDelegate(call.execute());
+        return importCertificateAsync(vaultBaseUrl, certificateName, base64EncodedCertificate).toBlocking().single();
     }
 
     /**
@@ -4470,9 +4142,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate
      * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(importCertificateAsync(vaultBaseUrl, certificateName, base64EncodedCertificate), serviceCallback);
+    }
+
+    /**
+     * Imports a certificate into the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4496,26 +4180,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = importCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = importCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4534,30 +4210,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> importCertificate(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (base64EncodedCertificate == null) {
-            throw new IllegalArgumentException("Parameter base64EncodedCertificate is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
-        Validator.validate(certificateAttributes);
-        Validator.validate(tags);
-        CertificateImportParameters parameters = new CertificateImportParameters();
-        parameters.withBase64EncodedCertificate(base64EncodedCertificate);
-        parameters.withPassword(password);
-        parameters.withCertificatePolicy(certificatePolicy);
-        parameters.withCertificateAttributes(certificateAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return importCertificateDelegate(call.execute());
+        return importCertificateAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password, certificatePolicy, certificateAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -4571,9 +4224,25 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(importCertificateAsync(vaultBaseUrl, certificateName, base64EncodedCertificate, password, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Imports a certificate into the specified vault.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param base64EncodedCertificate Base64 encoded representation of the certificate object to import. This certificate needs to contain the private key.
+     * @param password If the private key in base64EncodedCertificate is encrypted, the password used for encryption
+     * @param certificatePolicy The management policy for the certificate
+     * @param certificateAttributes The attributes of the certificate (optional)
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> importCertificateAsync(String vaultBaseUrl, String certificateName, String base64EncodedCertificate, String password, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4596,26 +4265,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(certificateAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = importCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.importCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = importCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateBundle> importCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4636,26 +4297,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateItem>> getCertificateVersions(final String vaultBaseUrl, final String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final Integer maxresults = null;
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateItem>> response = getCertificateVersionsDelegate(call.execute());
-        PagedList<CertificateItem> result = new PagedList<CertificateItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateItem>> response = getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
             @Override
-            public Page<CertificateItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificateVersionsNext(nextPageLink).getBody();
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4664,9 +4313,46 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName) {
+        return getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsSinglePageAsync(final String vaultBaseUrl, final String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4678,32 +4364,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         final Integer maxresults = null;
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificateVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -4718,25 +4390,14 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<PagedList<CertificateItem>> getCertificateVersions(final String vaultBaseUrl, final String certificateName, final Integer maxresults) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        ServiceResponse<PageImpl<CertificateItem>> response = getCertificateVersionsDelegate(call.execute());
-        PagedList<CertificateItem> result = new PagedList<CertificateItem>(response.getBody()) {
+        ServiceResponse<Page<CertificateItem>> response = getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
             @Override
-            public Page<CertificateItem> nextPage(String nextPageLink) throws KeyVaultErrorException, IOException {
-                return getCertificateVersionsNext(nextPageLink).getBody();
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4746,9 +4407,48 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate
      * @param maxresults Maximum number of results to return.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param maxresults Maximum number of results to return.
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults) {
+        return getCertificateVersionsSinglePageAsync(vaultBaseUrl, certificateName, maxresults)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+    ServiceResponse<PageImpl<CertificateItem>> * @param certificateName The name of the certificate
+    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return.
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsSinglePageAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4759,32 +4459,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<List<CertificateItem>> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.load(result.getBody().getItems());
-                        if (result.getBody().getNextPageLink() != null
-                                && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                            getCertificateVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                        } else {
-                            serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                        }
+        return service.getCertificateVersions(certificateName, maxresults, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(new ServiceResponse<>(result.getBody().getItems(), response));
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateItem>> getCertificateVersionsDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4805,18 +4491,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificatePolicy object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificatePolicy> getCertificatePolicy(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getCertificatePolicyDelegate(call.execute());
+        return getCertificatePolicyAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -4825,9 +4500,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate in the given vault.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificatePolicy> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificatePolicy> serviceCallback) {
+        return ServiceCall.create(getCertificatePolicyAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+
+    /**
+     * Gets the policy for a certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault.
+     * @return the observable to the CertificatePolicy object
+     */
+    public Observable<ServiceResponse<CertificatePolicy>> getCertificatePolicyAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4838,26 +4524,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificatePolicy> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificatePolicy>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificatePolicy> clientResponse = getCertificatePolicyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getCertificatePolicy(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificatePolicy>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificatePolicy>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificatePolicy> clientResponse = getCertificatePolicyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificatePolicy> getCertificatePolicyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4879,22 +4557,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificatePolicy object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificatePolicy> updateCertificatePolicy(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (certificatePolicy == null) {
-            throw new IllegalArgumentException("Parameter certificatePolicy is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return updateCertificatePolicyDelegate(call.execute());
+        return updateCertificatePolicyAsync(vaultBaseUrl, certificateName, certificatePolicy).toBlocking().single();
     }
 
     /**
@@ -4904,9 +4567,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificatePolicy> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy, final ServiceCallback<CertificatePolicy> serviceCallback) {
+        return ServiceCall.create(updateCertificatePolicyAsync(vaultBaseUrl, certificateName, certificatePolicy), serviceCallback);
+    }
+
+    /**
+     * Updates the policy for a certificate. Set appropriate members in the certificatePolicy that must be updated. Leave others as null.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault.
+     * @param certificatePolicy The policy for the certificate.
+     * @return the observable to the CertificatePolicy object
+     */
+    public Observable<ServiceResponse<CertificatePolicy>> updateCertificatePolicyAsync(String vaultBaseUrl, String certificateName, CertificatePolicy certificatePolicy) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -4921,26 +4596,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         }
         Validator.validate(certificatePolicy);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificatePolicy> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificatePolicy>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificatePolicy> clientResponse = updateCertificatePolicyDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificatePolicy(certificateName, certificatePolicy, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificatePolicy>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificatePolicy>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificatePolicy> clientResponse = updateCertificatePolicyDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificatePolicy> updateCertificatePolicyDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -4962,28 +4629,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> updateCertificate(String vaultBaseUrl, String certificateName, String certificateVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (certificateVersion == null) {
-            throw new IllegalArgumentException("Parameter certificateVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        final CertificatePolicy certificatePolicy = null;
-        final CertificateAttributes certificateAttributes = null;
-        final Map<String, String> tags = null;
-        CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.withCertificatePolicy(null);
-        parameters.withCertificateAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateCertificateDelegate(call.execute());
+        return updateCertificateAsync(vaultBaseUrl, certificateName, certificateVersion).toBlocking().single();
     }
 
     /**
@@ -4993,9 +4639,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given vault
      * @param certificateVersion The version of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(updateCertificateAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
+    }
+
+    /**
+     * Updates the attributes associated with the specified certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault
+     * @param certificateVersion The version of the certificate
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5016,26 +4674,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = updateCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = updateCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -5053,28 +4703,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> updateCertificate(String vaultBaseUrl, String certificateName, String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (certificateVersion == null) {
-            throw new IllegalArgumentException("Parameter certificateVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(certificatePolicy);
-        Validator.validate(certificateAttributes);
-        Validator.validate(tags);
-        CertificateUpdateParameters parameters = new CertificateUpdateParameters();
-        parameters.withCertificatePolicy(certificatePolicy);
-        parameters.withCertificateAttributes(certificateAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return updateCertificateDelegate(call.execute());
+        return updateCertificateAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy, certificateAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -5087,9 +4716,24 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(updateCertificateAsync(vaultBaseUrl, certificateName, certificateVersion, certificatePolicy, certificateAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Updates the attributes associated with the specified certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault
+     * @param certificateVersion The version of the certificate
+     * @param certificatePolicy The management policy for the certificate
+     * @param certificateAttributes The attributes of the certificate (optional)
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> updateCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, CertificatePolicy certificatePolicy, CertificateAttributes certificateAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5110,26 +4754,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(certificateAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = updateCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = updateCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateBundle> updateCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5151,21 +4787,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> getCertificate(String vaultBaseUrl, String certificateName, String certificateVersion) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (certificateVersion == null) {
-            throw new IllegalArgumentException("Parameter certificateVersion is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getCertificateDelegate(call.execute());
+        return getCertificateAsync(vaultBaseUrl, certificateName, certificateVersion).toBlocking().single();
     }
 
     /**
@@ -5175,9 +4797,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate in the given vault
      * @param certificateVersion The version of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(getCertificateAsync(vaultBaseUrl, certificateName, certificateVersion), serviceCallback);
+    }
+
+    /**
+     * Gets a Certificate.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate in the given vault
+     * @param certificateVersion The version of the certificate
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> getCertificateAsync(String vaultBaseUrl, String certificateName, String certificateVersion) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5191,26 +4825,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = getCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getCertificate(certificateName, certificateVersion, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = getCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateBundle> getCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5232,20 +4858,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateOperation> updateCertificateOperation(String vaultBaseUrl, String certificateName, boolean cancellationRequested) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
-        certificateOperation.withCancellationRequested(cancellationRequested);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), certificateOperation, parameterizedHost, this.userAgent());
-        return updateCertificateOperationDelegate(call.execute());
+        return updateCertificateOperationAsync(vaultBaseUrl, certificateName, cancellationRequested).toBlocking().single();
     }
 
     /**
@@ -5255,9 +4868,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate
      * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOperation> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName, boolean cancellationRequested, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceCall.create(updateCertificateOperationAsync(vaultBaseUrl, certificateName, cancellationRequested), serviceCallback);
+    }
+
+    /**
+     * Updates a certificate operation.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param cancellationRequested Indicates if cancellation was requested on the certificate operation.
+     * @return the observable to the CertificateOperation object
+     */
+    public Observable<ServiceResponse<CertificateOperation>> updateCertificateOperationAsync(String vaultBaseUrl, String certificateName, boolean cancellationRequested) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5270,26 +4895,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         CertificateOperationUpdateParameter certificateOperation = new CertificateOperationUpdateParameter();
         certificateOperation.withCancellationRequested(cancellationRequested);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.updateCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), certificateOperation, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateOperation> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOperation>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateOperation> clientResponse = updateCertificateOperationDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.updateCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), certificateOperation, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateOperation>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateOperation>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateOperation> clientResponse = updateCertificateOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateOperation> updateCertificateOperationDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5310,18 +4927,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateOperation> getCertificateOperation(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return getCertificateOperationDelegate(call.execute());
+        return getCertificateOperationAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -5330,9 +4936,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOperation> getCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceCall.create(getCertificateOperationAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+
+    /**
+     * Gets the certificate operation response.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the observable to the CertificateOperation object
+     */
+    public Observable<ServiceResponse<CertificateOperation>> getCertificateOperationAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5343,26 +4960,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateOperation> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOperation>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateOperation> clientResponse = getCertificateOperationDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.getCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateOperation>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateOperation>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateOperation> clientResponse = getCertificateOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateOperation> getCertificateOperationDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5383,18 +4992,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateOperation object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateOperation> deleteCertificateOperation(String vaultBaseUrl, String certificateName) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        return deleteCertificateOperationDelegate(call.execute());
+        return deleteCertificateOperationAsync(vaultBaseUrl, certificateName).toBlocking().single();
     }
 
     /**
@@ -5403,9 +5001,20 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
      * @param certificateName The name of the certificate
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOperation> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<CertificateOperation> serviceCallback) {
+        return ServiceCall.create(deleteCertificateOperationAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+
+    /**
+     * Deletes the certificate operation.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @return the observable to the CertificateOperation object
+     */
+    public Observable<ServiceResponse<CertificateOperation>> deleteCertificateOperationAsync(String vaultBaseUrl, String certificateName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5416,26 +5025,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateOperation> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOperation>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateOperation> clientResponse = deleteCertificateOperationDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.deleteCertificateOperation(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateOperation>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateOperation>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateOperation> clientResponse = deleteCertificateOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateOperation> deleteCertificateOperationDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5457,28 +5058,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> mergeCertificate(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (x509Certificates == null) {
-            throw new IllegalArgumentException("Parameter x509Certificates is required and cannot be null.");
-        }
-        Validator.validate(x509Certificates);
-        final CertificateAttributes certificateAttributes = null;
-        final Map<String, String> tags = null;
-        CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.withX509Certificates(x509Certificates);
-        parameters.withCertificateAttributes(null);
-        parameters.withTags(null);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return mergeCertificateDelegate(call.execute());
+        return mergeCertificateAsync(vaultBaseUrl, certificateName, x509Certificates).toBlocking().single();
     }
 
     /**
@@ -5488,9 +5068,21 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateName The name of the certificate
      * @param x509Certificates The certificate or the certificate chain to merge
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(mergeCertificateAsync(vaultBaseUrl, certificateName, x509Certificates), serviceCallback);
+    }
+
+    /**
+     * Merges a certificate or a certificate chain with a key pair existing on the server.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param x509Certificates The certificate or the certificate chain to merge
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5511,26 +5103,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(null);
         parameters.withTags(null);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = mergeCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = mergeCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -5547,28 +5131,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @return the CertificateBundle object wrapped in {@link ServiceResponse} if successful.
      */
     public ServiceResponse<CertificateBundle> mergeCertificate(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (vaultBaseUrl == null) {
-            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
-        }
-        if (certificateName == null) {
-            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        if (x509Certificates == null) {
-            throw new IllegalArgumentException("Parameter x509Certificates is required and cannot be null.");
-        }
-        Validator.validate(x509Certificates);
-        Validator.validate(certificateAttributes);
-        Validator.validate(tags);
-        CertificateMergeParameters parameters = new CertificateMergeParameters();
-        parameters.withX509Certificates(x509Certificates);
-        parameters.withCertificateAttributes(certificateAttributes);
-        parameters.withTags(tags);
-        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        return mergeCertificateDelegate(call.execute());
+        return mergeCertificateAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags).toBlocking().single();
     }
 
     /**
@@ -5580,9 +5143,23 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param certificateAttributes The attributes of the certificate (optional)
      * @param tags Application-specific metadata in the form of key-value pairs
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateBundle> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceCall.create(mergeCertificateAsync(vaultBaseUrl, certificateName, x509Certificates, certificateAttributes, tags), serviceCallback);
+    }
+
+    /**
+     * Merges a certificate or a certificate chain with a key pair existing on the server.
+     *
+     * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
+     * @param certificateName The name of the certificate
+     * @param x509Certificates The certificate or the certificate chain to merge
+     * @param certificateAttributes The attributes of the certificate (optional)
+     * @param tags Application-specific metadata in the form of key-value pairs
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> mergeCertificateAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -5603,26 +5180,18 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         parameters.withCertificateAttributes(certificateAttributes);
         parameters.withTags(tags);
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        Call<ResponseBody> call = service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent());
-        final ServiceCall<CertificateBundle> serviceCall = new ServiceCall<>(call);
-        call.enqueue(new ServiceResponseCallback<CertificateBundle>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<CertificateBundle> clientResponse = mergeCertificateDelegate(response);
-                    if (serviceCallback != null) {
-                        serviceCallback.success(clientResponse);
+        return service.mergeCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = mergeCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                    serviceCall.success(clientResponse);
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<CertificateBundle> mergeCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5641,12 +5210,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<KeyItem>> getKeyVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getKeyVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getKeyVersionsNextDelegate(call.execute());
+    public ServiceResponse<PagedList<KeyItem>> getKeyVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<KeyItem>> response = getKeyVersionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
+            @Override
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeyVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5655,35 +5227,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeyVersionsNextAsync(final String nextPageLink, final ServiceCall<List<KeyItem>> serviceCall, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeyVersionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsNextAsync(final String nextPageLink) {
+        return getKeyVersionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeyVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified key.
+     *
+    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getKeyVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getKeyVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getKeyVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeyVersionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<KeyItem>> getKeyVersionsNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5702,12 +5298,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<KeyItem>> getKeysNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getKeysNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getKeysNextDelegate(call.execute());
+    public ServiceResponse<PagedList<KeyItem>> getKeysNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<KeyItem>> response = getKeysNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<KeyItem> pagedList = new PagedList<KeyItem>(response.getBody()) {
+            @Override
+            public Page<KeyItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getKeysNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<KeyItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5716,35 +5315,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<KeyItem>> getKeysNextAsync(final String nextPageLink, final ServiceCall<List<KeyItem>> serviceCall, final ListOperationCallback<KeyItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getKeysNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(String nextPageLink) {
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;KeyItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysNextAsync(final String nextPageLink) {
+        return getKeysNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<KeyItem>>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(ServiceResponse<Page<KeyItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getKeysNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List keys in the specified vault.
+     *
+    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<KeyItem>>> getKeysNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getKeysNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<KeyItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<KeyItem>> result = getKeysNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getKeysNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getKeysNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<KeyItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<KeyItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyItem>> result = getKeysNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<KeyItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<KeyItem>> getKeysNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5763,12 +5386,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<SecretItem>> getSecretsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSecretsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getSecretsNextDelegate(call.execute());
+    public ServiceResponse<PagedList<SecretItem>> getSecretsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SecretItem>> response = getSecretsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
+            @Override
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5777,35 +5403,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretsNextAsync(final String nextPageLink, final ServiceCall<List<SecretItem>> serviceCall, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsNextAsync(final String nextPageLink) {
+        return getSecretsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List secrets in the specified vault.
+     *
+    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSecretsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getSecretsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getSecretsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<SecretItem>> getSecretsNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5824,12 +5474,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<SecretItem>> getSecretVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getSecretVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getSecretVersionsNextDelegate(call.execute());
+    public ServiceResponse<PagedList<SecretItem>> getSecretVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<SecretItem>> response = getSecretVersionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<SecretItem> pagedList = new PagedList<SecretItem>(response.getBody()) {
+            @Override
+            public Page<SecretItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getSecretVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<SecretItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5838,35 +5491,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<SecretItem>> getSecretVersionsNextAsync(final String nextPageLink, final ServiceCall<List<SecretItem>> serviceCall, final ListOperationCallback<SecretItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getSecretVersionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(String nextPageLink) {
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SecretItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsNextAsync(final String nextPageLink) {
+        return getSecretVersionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SecretItem>>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(ServiceResponse<Page<SecretItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getSecretVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of the specified secret.
+     *
+    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getSecretVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SecretItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getSecretVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getSecretVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecretItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SecretItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SecretItem>> result = getSecretVersionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SecretItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<SecretItem>> getSecretVersionsNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5885,12 +5562,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<CertificateItem>> getCertificatesNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getCertificatesNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getCertificatesNextDelegate(call.execute());
+    public ServiceResponse<PagedList<CertificateItem>> getCertificatesNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CertificateItem>> response = getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
+            @Override
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5899,35 +5579,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificatesNextAsync(final String nextPageLink, final ServiceCall<List<CertificateItem>> serviceCall, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificatesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesNextAsync(final String nextPageLink) {
+        return getCertificatesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificates in the specified vault.
+     *
+    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getCertificatesNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getCertificatesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getCertificatesNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateItem>> getCertificatesNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -5946,12 +5650,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<CertificateIssuerItem>> getCertificateIssuersNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getCertificateIssuersNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getCertificateIssuersNextDelegate(call.execute());
+    public ServiceResponse<PagedList<CertificateIssuerItem>> getCertificateIssuersNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CertificateIssuerItem>> response = getCertificateIssuersNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<CertificateIssuerItem> pagedList = new PagedList<CertificateIssuerItem>(response.getBody()) {
+            @Override
+            public Page<CertificateIssuerItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateIssuersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CertificateIssuerItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5960,35 +5667,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateIssuerItem>> getCertificateIssuersNextAsync(final String nextPageLink, final ServiceCall<List<CertificateIssuerItem>> serviceCall, final ListOperationCallback<CertificateIssuerItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateIssuersNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(String nextPageLink) {
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;CertificateIssuerItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersNextAsync(final String nextPageLink) {
+        return getCertificateIssuersNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateIssuerItem>>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(ServiceResponse<Page<CertificateIssuerItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateIssuersNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List certificate issuers for the specified vault.
+     *
+    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getCertificateIssuersNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateIssuerItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getCertificateIssuersNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getCertificateIssuersNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateIssuerItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateIssuerItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateIssuerItem>> result = getCertificateIssuersNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateIssuerItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateIssuerItem>> getCertificateIssuersNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
@@ -6007,12 +5738,15 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public ServiceResponse<PageImpl<CertificateItem>> getCertificateVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getCertificateVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        return getCertificateVersionsNextDelegate(call.execute());
+    public ServiceResponse<PagedList<CertificateItem>> getCertificateVersionsNext(final String nextPageLink) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<CertificateItem>> response = getCertificateVersionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        PagedList<CertificateItem> pagedList = new PagedList<CertificateItem>(response.getBody()) {
+            @Override
+            public Page<CertificateItem> nextPage(String nextPageLink) throws RestException, IOException {
+                return getCertificateVersionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+        return new ServiceResponse<PagedList<CertificateItem>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6021,35 +5755,59 @@ final class KeyVaultClientImpl extends AzureServiceClient {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateItem>> getCertificateVersionsNextAsync(final String nextPageLink, final ServiceCall<List<CertificateItem>> serviceCall, final ListOperationCallback<CertificateItem> serviceCallback) {
+        return AzureServiceCall.create(
+            getCertificateVersionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(String nextPageLink) {
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;CertificateItem&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsNextAsync(final String nextPageLink) {
+        return getCertificateVersionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateItem>>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(ServiceResponse<Page<CertificateItem>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    return getCertificateVersionsNextSinglePageAsync(nextPageLink);
+                }
+            });
+    }
+
+    /**
+     * List the versions of a certificate.
+     *
+    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the List&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getCertificateVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<CertificateItem>>(serviceCall, serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getCertificateVersionsNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getCertificateVersionsNext(nextPageLink, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateItem>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateItem>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateItem>> result = getCertificateVersionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateItem>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (KeyVaultErrorException | IOException exception) {
-                    if (serviceCallback != null) {
-                        serviceCallback.failure(exception);
-                    }
-                    serviceCall.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<CertificateItem>> getCertificateVersionsNextDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {

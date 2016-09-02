@@ -46,6 +46,7 @@ import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 
 public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
@@ -56,7 +57,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         String vault = getVaultUri();
         String keyname = "mykey";
         
-        CreateKeyRequest createKeyRequest = new CreateKeyRequest.Builder(vault, keyname, "RSA").build();
+        CreateKeyRequest createKeyRequest = new CreateKeyRequest.Builder(vault, keyname, JsonWebKeyType.RSA).build();
         KeyBundle keyBundle = keyVaultClient.createKeyAsync(createKeyRequest, null).get().getBody();
         Assert.assertNotNull(keyBundle);
         
@@ -81,16 +82,16 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get().getBody();
         Assert.assertNotNull(restoreResult);
         
-        KeyOperationResult encryptResult = keyVaultClient.encryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSAOAEP, new byte[100], null).get().getBody();
+        KeyOperationResult encryptResult = keyVaultClient.encryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get().getBody();
         Assert.assertNotNull(encryptResult);
         
-        KeyOperationResult decryptResult = keyVaultClient.decryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSAOAEP, encryptResult.result(), null).get().getBody();
+        KeyOperationResult decryptResult = keyVaultClient.decryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, encryptResult.result(), null).get().getBody();
         Assert.assertNotNull(decryptResult);
         
-        KeyOperationResult wrapResult = keyVaultClient.wrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSAOAEP, new byte[100], null).get().getBody();
+        KeyOperationResult wrapResult = keyVaultClient.wrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get().getBody();
         Assert.assertNotNull(wrapResult);
         
-        KeyOperationResult unwrapResult = keyVaultClient.unwrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSAOAEP, wrapResult.result(), null).get().getBody();
+        KeyOperationResult unwrapResult = keyVaultClient.unwrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, wrapResult.result(), null).get().getBody();
         Assert.assertNotNull(unwrapResult);
         
         byte[] plainText = new byte[100];

@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,7 +24,7 @@ public class KeyVerifyParameters {
      * include: 'RS256', 'RS384', 'RS512', 'RSNULL'.
      */
     @JsonProperty(value = "alg", required = true)
-    private String algorithm;
+    private JsonWebKeySignatureAlgorithm algorithm;
 
     /**
      * The digest used for signing.
@@ -42,7 +43,7 @@ public class KeyVerifyParameters {
      *
      * @return the algorithm value
      */
-    public String algorithm() {
+    public JsonWebKeySignatureAlgorithm algorithm() {
         return this.algorithm;
     }
 
@@ -52,7 +53,7 @@ public class KeyVerifyParameters {
      * @param algorithm the algorithm value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyParameters withAlgorithm(String algorithm) {
+    public KeyVerifyParameters withAlgorithm(JsonWebKeySignatureAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }

@@ -10,6 +10,7 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.rest.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +22,7 @@ public class KeyOperationsParameters {
      * algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'.
      */
     @JsonProperty(value = "alg", required = true)
-    private String algorithm;
+    private JsonWebKeyEncryptionAlgorithm algorithm;
 
     /**
      * The value property.
@@ -34,7 +35,7 @@ public class KeyOperationsParameters {
      *
      * @return the algorithm value
      */
-    public String algorithm() {
+    public JsonWebKeyEncryptionAlgorithm algorithm() {
         return this.algorithm;
     }
 
@@ -44,7 +45,7 @@ public class KeyOperationsParameters {
      * @param algorithm the algorithm value to set
      * @return the KeyOperationsParameters object itself.
      */
-    public KeyOperationsParameters withAlgorithm(String algorithm) {
+    public KeyOperationsParameters withAlgorithm(JsonWebKeyEncryptionAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }

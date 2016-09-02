@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.SecretIdentifier;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The secret item containing secret metadata.
@@ -39,8 +40,10 @@ public class SecretItem {
     private String contentType;
 
     /**
-     * True if the secret's lifetime is managed by key vault.
+     * True if the secret's lifetime is managed by key vault i.e. if this is a
+     * key backing a certificate, then managed will be true.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
 
     /**

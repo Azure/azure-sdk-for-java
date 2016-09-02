@@ -45,12 +45,12 @@ public class JsonWebKey {
      * Key type, usually RSA. Possible values include: 'EC', 'RSA', 'RSA-HSM',
      * 'oct'.
      */
-    private String kty;
+    private JsonWebKeyType kty;
 
     /**
      * The keyOps property.
      */
-    private List<String> keyOps;
+    private List<JsonWebKeyOperation> keyOps;
 
     /**
      * RSA modulus.
@@ -130,7 +130,7 @@ public class JsonWebKey {
      * @return the key type.
      */
     @JsonProperty("kty")
-    public String kty() {
+    public JsonWebKeyType kty() {
         return this.kty;
     }
 
@@ -140,7 +140,7 @@ public class JsonWebKey {
      * @param kty the key type
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey withKty(String kty) {
+    public JsonWebKey withKty(JsonWebKeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -151,7 +151,7 @@ public class JsonWebKey {
      * @return the key operations.
      */
     @JsonProperty("key_ops")
-    public List<String> keyOps() {
+    public List<JsonWebKeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -161,7 +161,7 @@ public class JsonWebKey {
      * @param keyOps the key operations value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey withKeyOps(List<String> keyOps) {
+    public JsonWebKey withKeyOps(List<JsonWebKeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -455,7 +455,7 @@ public class JsonWebKey {
      * Verifies if the key is an RSA key.
      */
     private void checkRSACompatible() {
-        if (!JsonWebKeyType.RSA.equals(kty()) && !JsonWebKeyType.RSAHSM.equals(kty())) {
+        if (!JsonWebKeyType.RSA.equals(kty()) && !JsonWebKeyType.RSA_HSM.equals(kty())) {
             throw new UnsupportedOperationException("Not an RSA key");
         }
     }

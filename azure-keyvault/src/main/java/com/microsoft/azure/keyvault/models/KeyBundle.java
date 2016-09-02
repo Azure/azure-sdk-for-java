@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A KeyBundle consisting of a WebKey plus its Attributes.
@@ -40,8 +41,10 @@ public class KeyBundle {
     private Map<String, String> tags;
 
     /**
-     * True if the secret's lifetime is managed by key vault.
+     * True if the key's lifetime is managed by key vault i.e. if this is a
+     * key backing a certificate, then managed will be true.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
 
     /**

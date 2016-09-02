@@ -30,6 +30,8 @@ import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.RsaKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
@@ -96,7 +98,7 @@ public class KeyVaultKey implements IKey {
         if (key.kty().equals(JsonWebKeyType.RSA)) {
             // The private key is not available for KeyVault keys
             implementation = new RsaKey(key.kid(), key.toRSA(false));
-        } else if (key.kty().equals(JsonWebKeyType.RSAHSM)) {
+        } else if (key.kty().equals(JsonWebKeyType.RSA_HSM)) {
             // The private key is not available for KeyVault keys
             implementation = new RsaKey(key.kid(), key.toRSA(false));
         }
@@ -169,7 +171,7 @@ public class KeyVaultKey implements IKey {
         ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall =
                 client.decryptAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
         return Futures.transform(futureCall, new DecryptResultTransform());
@@ -207,7 +209,7 @@ public class KeyVaultKey implements IKey {
         ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall = 
                 client.unwrapKeyAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
         return Futures.transform(futureCall, new DecryptResultTransform());
@@ -227,7 +229,7 @@ public class KeyVaultKey implements IKey {
         ListenableFuture<ServiceResponse<KeyOperationResult>>  futureCall = 
                 client.signAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeySignatureAlgorithm(algorithm),
                         digest,
                         null);
         return Futures.transform(futureCall, new SignResultTransform(algorithm));

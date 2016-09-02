@@ -16,7 +16,8 @@ package com.microsoft.azure.keyvault.models;
  */
 public class IssuerReference {
     /**
-     * Name of the referenced issuer object.
+     * Name of the referenced issuer object or reserved names e.g. 'Self',
+     * 'Unknown'.
      */
     private String name;
 

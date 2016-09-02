@@ -13,7 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A certificate operation is returned in case of async requests.
+ * The certificate operation update parameters.
  */
 public class CertificateOperationUpdateParameter {
     /**
