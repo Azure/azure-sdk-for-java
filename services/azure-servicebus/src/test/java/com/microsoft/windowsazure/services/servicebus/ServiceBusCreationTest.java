@@ -56,7 +56,7 @@ public class ServiceBusCreationTest {
     }
 
     private Configuration newConfigurationWithProfile() {
-        Configuration config = newConfiguration();
+        Configuration config = new Configuration();
         ServiceBusConfiguration.configureWithWrapAuthentication("other",
                 config, "my-other-namespace", "my-other-identity",
                 "my-shared-secret", ".servicebus.windows.net",
@@ -65,7 +65,7 @@ public class ServiceBusCreationTest {
     }
 
     private Configuration newConfigurationWithConnectionString() {
-        Configuration config = newConfiguration();
+        Configuration config = new Configuration();
         ServiceBusConfiguration.configureWithConnectionString(null, config,
                 "Endpoint=https://my-other-namespace.servicebus.windows.net/;"
                         + "SharedSecretIssuer=owner;"
@@ -76,7 +76,7 @@ public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayBeCreatedDirectlyWithConfig()
             throws Exception {
-        Configuration config = newConfiguration();
+        Configuration config = new Configuration();
         ServiceBusContract service = ServiceBusService.create(config);
 
         assertNotNull(service);
@@ -85,7 +85,7 @@ public class ServiceBusCreationTest {
 
     @Test
     public void theServiceClassMayAlsoBeCreatedFromConfig() throws Exception {
-        Configuration config = newConfiguration();
+        Configuration config = new Configuration();
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
         assertNotNull(service);
@@ -94,7 +94,7 @@ public class ServiceBusCreationTest {
 
     @Test
     public void testDefaultBuilderCreatesServiceImpl() throws Exception {
-        Configuration config = newConfiguration();
+        Configuration config = new Configuration();
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
         assertNotNull(service);
@@ -102,7 +102,7 @@ public class ServiceBusCreationTest {
 
     @Test
     public void theServiceClassCanBeCreatedThroughAProfile() throws Exception {
-        Configuration config = newConfigurationWithProfile();
+        Configuration config = new ConfigurationWithProfile();
         ServiceBusContract service = config.create("other",
                 ServiceBusContract.class);
 
@@ -113,7 +113,7 @@ public class ServiceBusCreationTest {
     @Test
     public void theServiceClassCanBeCreatedThroughConnectionString()
             throws Exception {
-        Configuration config = newConfigurationWithConnectionString();
+        Configuration config = new ConfigurationWithConnectionString();
 
         ServiceBusContract service = config.create(ServiceBusContract.class);
         assertNotNull(service);
