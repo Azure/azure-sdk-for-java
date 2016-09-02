@@ -55,11 +55,18 @@ abstract class ExternalChildResourceImpl<
     }
 
     /**
-     * Creates or update this external child resource.
+     * Creates this external child resource.
      *
-     * @return the observable to track the create or update action
+     * @return the observable to track the create action
      */
-    public abstract Observable<FluentModelT> setAsync();
+    public abstract Observable<FluentModelT> createAsync();
+
+    /**
+     * Update this external child resource.
+     *
+     * @return the observable to track the update action
+     */
+    public abstract Observable<FluentModelT> updateAsync();
 
     /**
      * Delete this external child resource.

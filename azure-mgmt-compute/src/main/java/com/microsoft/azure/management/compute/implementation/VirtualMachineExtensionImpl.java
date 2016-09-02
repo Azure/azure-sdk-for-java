@@ -215,10 +215,10 @@ class VirtualMachineExtensionImpl
         return this;
     }
 
-    // Implementation of ExternalChildResourceImpl setAsync and deleteAsync
+    // Implementation of ExternalChildResourceImpl createAsync,  updateAsync and deleteAsync
     //
     @Override
-    public Observable<VirtualMachineExtension> setAsync() {
+    public Observable<VirtualMachineExtension> createAsync() {
         final VirtualMachineExtensionImpl self = this;
         return this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
                 this.parent.name(),
@@ -231,6 +231,11 @@ class VirtualMachineExtensionImpl
                         return self;
                     }
                 });
+    }
+
+    @Override
+    public Observable<VirtualMachineExtension> updateAsync() {
+        return this.createAsync();
     }
 
     @Override

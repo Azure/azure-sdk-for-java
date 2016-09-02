@@ -56,9 +56,10 @@ abstract class ExternalChildResourcesImpl<
     /**
      * Commits the changes in the external child resource collection.
      * <p/>
-     * This method returns a stream where onNext will be called for each successfully committed resource
-     * followed by 'one call to onCompleted or one call to onError' with a {@link CompositeException } containing
-     * the list of exceptions where each exception describes the reason for failure in committing a resource.
+     * This method returns an observable stream, its observer's onNext will be called for each successfully
+     * committed resource followed by 'one call to onCompleted' or one call to onError with a
+     * {@link CompositeException } containing the list of exceptions where each exception describes the reason
+     * for failure of a resource commit.
      *
      * @return the observable stream
      */
@@ -111,7 +112,7 @@ abstract class ExternalChildResourcesImpl<
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
                     public Observable<FluentModelTImpl> call(final FluentModelTImpl childResource) {
-                        return childResource.setAsync()
+                        return childResource.createAsync()
                                 .map(new Func1<FluentModelT, FluentModelTImpl>() {
                                     @Override
                                     public FluentModelTImpl call(FluentModelT fluentModelT) {
@@ -144,7 +145,7 @@ abstract class ExternalChildResourcesImpl<
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
                     public Observable<FluentModelTImpl> call(final FluentModelTImpl childResource) {
-                        return childResource.setAsync()
+                        return childResource.updateAsync()
                                 .map(new Func1<FluentModelT, FluentModelTImpl>() {
                                     @Override
                                     public FluentModelTImpl call(FluentModelT e) {
@@ -188,8 +189,9 @@ abstract class ExternalChildResourcesImpl<
     /**
      * Commits the changes in the external child resource collection.
      * <p/>
-     * This method returns a stream where either onError will be called with {@link CompositeException} if some
-     * resources are failed to commit or onNext will be called if all resources committed successfully
+     * This method returns a observable stream, either its observer's onError will be called with
+     * {@link CompositeException} if some resources failed to commit or onNext will be called if all resources
+     * committed successfully.
      *
      * @return the observable stream
      */
@@ -232,7 +234,7 @@ abstract class ExternalChildResourcesImpl<
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' already exists");
         }
         FluentModelTImpl childResource = newChildResource(name);
-        childResource.setState(VirtualMachineExtensionImpl.State.ToBeCreated);
+        childResource.setState(ExternalChildResourceImpl.State.ToBeCreated);
         return childResource;
     }
 
@@ -248,10 +250,10 @@ abstract class ExternalChildResourcesImpl<
                 || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
         }
-        if (childResource.state() == VirtualMachineExtensionImpl.State.ToBeRemoved) {
+        if (childResource.state() == ExternalChildResourceImpl.State.ToBeRemoved) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' is marked for deletion");
         }
-        childResource.setState(VirtualMachineExtensionImpl.State.ToBeUpdated);
+        childResource.setState(ExternalChildResourceImpl.State.ToBeUpdated);
         return childResource;
     }
 
@@ -266,7 +268,7 @@ abstract class ExternalChildResourcesImpl<
                 || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
         }
-        childResource.setState(VirtualMachineExtensionImpl.State.ToBeRemoved);
+        childResource.setState(ExternalChildResourceImpl.State.ToBeRemoved);
     }
 
     /**
