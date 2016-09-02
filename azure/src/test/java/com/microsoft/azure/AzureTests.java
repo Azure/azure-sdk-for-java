@@ -153,6 +153,14 @@ public class AzureTests {
     }
 
     /**
+     * Tests application gateways implementation
+     * @throws Exception
+     */
+    @Test public void testApplicationGateways() throws Exception {
+        new TestApplicationGateway(azure.networks()).runTest(azure.applicationGateways(), azure.resourceGroups());
+    }
+
+    /**
      * Tests the public IP address implementation
      * @throws Exception
      */

@@ -11,6 +11,7 @@ import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
@@ -320,6 +321,13 @@ public final class Azure {
      */
     public LoadBalancers loadBalancers() {
         return networkManager.loadBalancers();
+    }
+
+    /**
+     * @return entry point to managing application gateways
+     */
+    public ApplicationGateways applicationGateways() {
+        return networkManager.applicationGateways();
     }
 
     /**
