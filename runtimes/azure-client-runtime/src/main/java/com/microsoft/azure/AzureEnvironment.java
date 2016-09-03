@@ -54,7 +54,7 @@ public final class AzureEnvironment {
         this.managementEndpoint = managementEndpoint;
         this.resourceManagerEndpoint = resourceManagerEndpoint;
         this.graphEndpoint = graphEndpoint;
-        this.validateAuthority = true;
+        this.validateAuthority = false;
     }
 
     /**
