@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <InnerModelT> the type of the external child resource inner
  * @param <ParentImplT> the type of parent of the external child resources
  */
-abstract class ExternalChildResourcesImpl<
+public abstract class ExternalChildResourcesImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT>,
         FluentModelT extends ExternalChildResource,
         InnerModelT,

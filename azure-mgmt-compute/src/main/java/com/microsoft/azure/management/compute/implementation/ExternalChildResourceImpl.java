@@ -11,7 +11,7 @@ import rx.Observable;
  * @param <InnerModelT> Azure inner resource class type representing this child resource
  * @param <ParentImplT> the parent Azure resource class type of this child resource
  */
-abstract class ExternalChildResourceImpl<
+public abstract class ExternalChildResourceImpl<
         FluentModelT extends ExternalChildResource,
         InnerModelT,
         ParentImplT>
@@ -34,6 +34,9 @@ abstract class ExternalChildResourceImpl<
         this.parent = parent;
     }
 
+    /**
+     * @return the resource name
+     */
     public String name() {
         return this.name;
     }
@@ -78,10 +81,22 @@ abstract class ExternalChildResourceImpl<
     /**
      * The possible state of an child resource in-memory.
      */
-    enum State {
+    public enum State {
+        /**
+         * No action needs to be taken on resource
+         */
         None,
+        /**
+         * Resource required to be created
+         */
         ToBeCreated,
+        /**
+         * Resource required to be updated
+         */
         ToBeUpdated,
+        /**
+         * Resource required to be updated
+         */
         ToBeRemoved
     }
 }
