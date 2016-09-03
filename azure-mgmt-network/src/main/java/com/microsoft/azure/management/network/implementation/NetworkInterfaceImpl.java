@@ -17,7 +17,7 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -36,7 +36,7 @@ import java.util.TreeMap;
  *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
-        extends GroupableResourceImpl<
+        extends GroupableParentResourceImpl<
             NetworkInterface,
             NetworkInterfaceInner,
             NetworkInterfaceImpl,
@@ -74,7 +74,7 @@ class NetworkInterfaceImpl
         this.client = client;
         this.nicName = name;
         this.namer = new ResourceNamer(this.nicName);
-        initializeNicIpConfigurations();
+        initializeChildrenFromInner();
     }
 
     // Verbs
@@ -85,7 +85,7 @@ class NetworkInterfaceImpl
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         clearCachedRelatedResources();
-        initializeNicIpConfigurations();
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -389,7 +389,7 @@ class NetworkInterfaceImpl
                     public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
                         self.setInner(networkInterfaceInner.getBody());
                         clearCachedRelatedResources();
-                        initializeNicIpConfigurations();
+                        initializeChildrenFromInner();
                         return self;
                     }
                 });
@@ -409,10 +409,8 @@ class NetworkInterfaceImpl
         return this.inner().dnsSettings().dnsServers();
     }
 
-    /**
-     * Initializes the list of {@link NicIpConfiguration} that wraps {@link NetworkInterfaceInner#ipConfigurations()}.
-     */
-    private void initializeNicIpConfigurations() {
+    @Override
+    protected void initializeChildrenFromInner() {
         this.nicIpConfigurations.clear();
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners != null) {
