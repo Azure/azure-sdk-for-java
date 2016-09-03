@@ -117,7 +117,8 @@ class LoadBalancerImpl
                 });
     }
 
-    private void beforeCreating()  {
+    @Override
+    protected void beforeCreating()  {
         // Account for the newly created public IPs
         for (Entry<String, String> pipFrontendAssociation : this.creatablePIPKeys.entrySet()) {
             PublicIpAddress pip = (PublicIpAddress) this.createdResource(pipFrontendAssociation.getKey());

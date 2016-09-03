@@ -129,7 +129,8 @@ class NetworkSecurityGroupImpl
         return Collections.unmodifiableList(ids);
     }
 
-    private void beforeCreating() {
+    @Override
+    protected void beforeCreating() {
         // Reset and update subnets
         this.inner().withSecurityRules(innersFromWrappers(this.rules.values()));
     }

@@ -357,7 +357,8 @@ class NetworkInterfaceImpl
         return this.nicPrimaryIpConfiguration;
     }
 
-    private void beforeCreating() {
+    @Override
+    protected void beforeCreating() {
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);

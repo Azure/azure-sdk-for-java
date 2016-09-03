@@ -142,7 +142,8 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    private void beforeCreating() {
+    @Override
+    protected void beforeCreating() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
