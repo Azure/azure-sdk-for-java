@@ -47,7 +47,7 @@ public class ExternalChildResourceTests {
                 .attach()
             .updatePullet("Clover")
                 .withAge(2)
-                .attach()
+                .parent()
             .withoutPullet("Pinky");
 
         final List<PulletImpl> changedPuppets = new ArrayList<>();
