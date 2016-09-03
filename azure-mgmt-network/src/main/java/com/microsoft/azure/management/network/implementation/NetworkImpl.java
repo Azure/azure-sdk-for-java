@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -22,7 +22,7 @@ import java.util.TreeMap;
  * Implementation for {@link Network} and its create and update interfaces.
  */
 class NetworkImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         Network,
         VirtualNetworkInner,
         NetworkImpl,
@@ -41,10 +41,10 @@ class NetworkImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeSubnetsFromInner();
     }
 
-    private void initializeSubnetsFromInner() {
+    @Override
+    protected void initializeChildrenFromInner() {
         this.subnets.clear();
         List<SubnetInner> inners = this.inner().subnets();
         if (inners != null) {
@@ -62,7 +62,7 @@ class NetworkImpl
         ServiceResponse<VirtualNetworkInner> response =
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        initializeSubnetsFromInner();
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -173,7 +173,7 @@ class NetworkImpl
                     @Override
                     public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
                         setInner(virtualNetworkInner.getBody());
-                        initializeSubnetsFromInner();
+                        initializeChildrenFromInner();
                         return self;
                     }
                 });
