@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
@@ -22,7 +22,7 @@ import java.util.TreeMap;
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
 class NetworkSecurityGroupImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         NetworkSecurityGroup,
         NetworkSecurityGroupInner,
         NetworkSecurityGroupImpl,
@@ -43,10 +43,10 @@ class NetworkSecurityGroupImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeRulesFromInner();
     }
 
-    private void initializeRulesFromInner() {
+    @Override
+    protected void initializeChildrenFromInner() {
         this.rules.clear();
         List<SecurityRuleInner> inners = this.inner().securityRules();
         if (inners != null) {
@@ -84,7 +84,7 @@ class NetworkSecurityGroupImpl
         ServiceResponse<NetworkSecurityGroupInner> response =
             this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
-        initializeRulesFromInner();
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -144,7 +144,7 @@ class NetworkSecurityGroupImpl
                     @Override
                     public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
                         self.setInner(networkSecurityGroupInner.getBody());
-                        initializeRulesFromInner();
+                        initializeChildrenFromInner();
                         return self;
                     }
                 });
