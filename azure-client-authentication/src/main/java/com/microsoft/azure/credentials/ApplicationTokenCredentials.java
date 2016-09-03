@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
  * Token based credentials for use with a REST Service Client.
  */
 public class ApplicationTokenCredentials extends TokenCredentials implements AzureTokenCredentials {
+    /** A mapping from resource endpoint to its cached access token. */
     private Map<String, AuthenticationResult> tokens;
     /** The Azure environment to authenticate with. */
     private AzureEnvironment environment;
