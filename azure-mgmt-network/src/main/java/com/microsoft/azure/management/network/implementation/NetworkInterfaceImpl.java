@@ -377,6 +377,11 @@ class NetworkInterfaceImpl
         this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
     }
 
+    @Override
+    protected void afterCreating() {
+        clearCachedRelatedResources();
+    }
+
     // CreatorTaskGroup.ResourceCreator implementation
     @Override
     public Observable<NetworkInterface> createResourceAsync() {
@@ -389,8 +394,8 @@ class NetworkInterfaceImpl
                     @Override
                     public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
                         self.setInner(networkInterfaceInner.getBody());
-                        clearCachedRelatedResources();
                         initializeChildrenFromInner();
+                        afterCreating();
                         return self;
                     }
                 });

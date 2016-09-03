@@ -135,6 +135,10 @@ class NetworkSecurityGroupImpl
         this.inner().withSecurityRules(innersFromWrappers(this.rules.values()));
     }
 
+    @Override
+    protected void afterCreating() {
+    }
+
     // CreatorTaskGroup.ResourceCreator implementation
     @Override
     public Observable<NetworkSecurityGroup> createResourceAsync() {
@@ -146,6 +150,7 @@ class NetworkSecurityGroupImpl
                     public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
                         self.setInner(networkSecurityGroupInner.getBody());
                         initializeChildrenFromInner();
+                        afterCreating();
                         return self;
                     }
                 });

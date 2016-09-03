@@ -99,25 +99,6 @@ class LoadBalancerImpl
     }
 
     @Override
-    public Observable<LoadBalancer> createResourceAsync()  {
-        final LoadBalancer self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
-                    @Override
-                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
-                        setInner(loadBalancerInner.getBody());
-                        try {
-                            afterCreating();
-                            return Observable.just(self);
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
-    }
-
-    @Override
     protected void beforeCreating()  {
         // Account for the newly created public IPs
         for (Entry<String, String> pipFrontendAssociation : this.creatablePIPKeys.entrySet()) {
@@ -187,23 +168,47 @@ class LoadBalancerImpl
         }
     }
 
-    private void afterCreating() throws Exception {
+    @Override
+    protected void afterCreating() {
         // Update the NICs to point to the backend pool
         for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
             String nicId = nicInBackend.getKey();
             String backendName = nicInBackend.getValue();
-            NetworkInterface nic = this.myManager().networkInterfaces().getById(nicId);
-            NicIpConfiguration nicIp = nic.primaryIpConfiguration();
-            nic.update()
-                .updateIpConfiguration(nicIp.name())
-                    .withExistingLoadBalancer(this)
-                    .withBackendAddressPool(backendName)
-                    .parent()
-                .apply();
+            try {
+                NetworkInterface nic = this.myManager().networkInterfaces().getById(nicId);
+                NicIpConfiguration nicIp = nic.primaryIpConfiguration();
+                nic.update()
+                    .updateIpConfiguration(nicIp.name())
+                        .withExistingLoadBalancer(this)
+                        .withBackendAddressPool(backendName)
+                        .parent()
+                    .apply();
+                this.nicsInBackends.clear();
+                this.refresh();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
 
-        this.nicsInBackends.clear();
-        this.refresh();
+    @Override
+    public Observable<LoadBalancer> createResourceAsync()  {
+        final LoadBalancer self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
+                    @Override
+                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
+                        setInner(loadBalancerInner.getBody());
+                        try {
+                            initializeChildrenFromInner();
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+                    }
+                });
     }
 
     private void initializeFrontendsFromInner() {

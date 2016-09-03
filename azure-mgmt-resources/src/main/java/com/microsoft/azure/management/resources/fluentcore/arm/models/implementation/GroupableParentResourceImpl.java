@@ -38,6 +38,6 @@ public abstract class GroupableParentResourceImpl<
     }
 
     protected abstract void initializeChildrenFromInner();
-
     protected abstract void beforeCreating();
+    protected abstract void afterCreating();
 }

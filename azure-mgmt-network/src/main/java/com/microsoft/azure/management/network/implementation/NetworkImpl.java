@@ -161,6 +161,11 @@ class NetworkImpl
     }
 
     @Override
+    protected void afterCreating() {
+        initializeChildrenFromInner();
+    }
+
+    @Override
     public SubnetImpl updateSubnet(String name) {
         return (SubnetImpl) this.subnets.get(name);
     }
@@ -175,6 +180,7 @@ class NetworkImpl
                     public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
                         setInner(virtualNetworkInner.getBody());
                         initializeChildrenFromInner();
+                        afterCreating();
                         return self;
                     }
                 });
