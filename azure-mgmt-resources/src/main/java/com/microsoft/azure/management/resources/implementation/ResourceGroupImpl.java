@@ -31,12 +31,10 @@ class ResourceGroupImpl extends
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
-    private final ResourceManagementClientImpl serviceClient;
 
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
-        this.serviceClient = serviceClient;
     }
 
     @Override

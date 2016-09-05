@@ -44,8 +44,8 @@ public final class ManageVirtualMachine {
      */
     public static void main(String[] args) {
 
-        final String windowsVMName = Utils.createRandomName("wVM");
-        final String linuxVMName = Utils.createRandomName("lVM");
+        final String windowsVmName = Utils.createRandomName("wVM");
+        final String linuxVmName = Utils.createRandomName("lVM");
         final String rgName = Utils.createRandomName("rgCOMV");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
@@ -77,7 +77,7 @@ public final class ManageVirtualMachine {
 
                 Date t1 = new Date();
 
-                VirtualMachine windowsVM = azure.virtualMachines().define(windowsVMName)
+                VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
                         .withNewPrimaryNetwork("10.0.0.0/28")
@@ -208,7 +208,7 @@ public final class ManageVirtualMachine {
 
                 System.out.println("Creating a Linux VM in the network");
 
-                VirtualMachine linuxVM = azure.virtualMachines().define(linuxVMName)
+                VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)

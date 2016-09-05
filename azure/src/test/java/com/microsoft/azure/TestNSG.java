@@ -17,8 +17,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import rx.Subscriber;
 
-import java.util.concurrent.Future;
-
 /**
  * Test for network security group CRUD.
  */
@@ -104,6 +102,20 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         return resource;
     }
 
+    private StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
+        info.append("\n\t\tRule: ").append(rule.name())
+            .append("\n\t\t\tAccess: ").append(rule.access())
+            .append("\n\t\t\tDirection: ").append(rule.direction())
+            .append("\n\t\t\tFrom address: ").append(rule.sourceAddressPrefix())
+            .append("\n\t\t\tFrom port range: ").append(rule.sourcePortRange())
+            .append("\n\t\t\tTo address: ").append(rule.destinationAddressPrefix())
+            .append("\n\t\t\tTo port: ").append(rule.destinationPortRange())
+            .append("\n\t\t\tProtocol: ").append(rule.protocol())
+            .append("\n\t\t\tPriority: ").append(rule.priority())
+            .append("\n\t\t\tDescription: ").append(rule.description());
+        return info;
+    }
+
     @Override
     public void print(NetworkSecurityGroup resource) {
         StringBuilder info = new StringBuilder();
@@ -114,17 +126,15 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\tTags: ").append(resource.tags());
 
         // Output security rules
-        for (NetworkSecurityRule rule : resource.securityRules()) {
-            info.append("\n\tRule: ").append(rule.name())
-                .append("\n\t\tAccess: ").append(rule.access())
-                .append("\n\t\tDirection: ").append(rule.direction())
-                .append("\n\t\tFrom address: ").append(rule.sourceAddressPrefix())
-                .append("\n\t\tFrom port range: ").append(rule.sourcePortRange())
-                .append("\n\t\tTo address: ").append(rule.destinationAddressPrefix())
-                .append("\n\t\tTo port: ").append(rule.destinationPortRange())
-                .append("\n\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\tPriority: ").append(rule.priority())
-                .append("\n\t\tDescription: ").append(rule.description());
+        info.append("\n\tCustom security rules:");
+        for (NetworkSecurityRule rule : resource.securityRules().values()) {
+            info = printRule(rule, info);
+        }
+
+        // Output default security rules
+        info.append("\n\tDefault security rules:");
+        for (NetworkSecurityRule rule : resource.defaultSecurityRules().values()) {
+            info = printRule(rule, info);
         }
 
         info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
