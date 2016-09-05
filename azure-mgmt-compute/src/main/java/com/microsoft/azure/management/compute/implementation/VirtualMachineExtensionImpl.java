@@ -52,9 +52,11 @@ class VirtualMachineExtensionImpl
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(String name,
                                                                             VirtualMachineImpl parent,
                                                                             VirtualMachineExtensionsInner client) {
+        VirtualMachineExtensionInner inner = new VirtualMachineExtensionInner();
+        inner.withLocation(parent.regionName());
         VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl(name,
                 parent,
-                new VirtualMachineExtensionInner(),
+                inner,
                 client);
         return extension;
     }
@@ -71,7 +73,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public String typeName() {
-        return this.inner().type();
+        return this.inner().virtualMachineExtensionType();
     }
 
     @Override

@@ -898,6 +898,17 @@ class VirtualMachineImpl
                                     }
                                 });
                     }
+                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                        return self.virtualMachineExtensions.commitAndGetAllAsync()
+                                .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
+                                        return self;
+                                    }
+                                });
+                    }
                 });
     }
 

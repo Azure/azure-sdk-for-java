@@ -6,7 +6,7 @@ import rx.Observable;
 
 /**
  * Externalized child resource abstract implementation.
- *
+ * (Internal use only)
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing this child resource
  * @param <ParentImplT> the parent Azure resource class type of this child resource
@@ -83,19 +83,19 @@ public abstract class ExternalChildResourceImpl<
      */
     public enum State {
         /**
-         * No action needs to be taken on resource
+         * No action needs to be taken on resource.
          */
         None,
         /**
-         * Resource required to be created
+         * Resource required to be created.
          */
         ToBeCreated,
         /**
-         * Resource required to be updated
+         * Resource required to be updated.
          */
         ToBeUpdated,
         /**
-         * Resource required to be updated
+         * Resource required to be deleted.
          */
         ToBeRemoved
     }

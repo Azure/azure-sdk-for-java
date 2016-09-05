@@ -2,12 +2,14 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTestBase {
-    private static final String RG_NAME = ResourceNamer.randomResourceName("jsdkunittest", 15);
+    private static final String RG_NAME = ResourceNamer.randomResourceName("vmexttest", 15);
     private static final String LOCATION = "eastus";
     private static final String VMNAME = "javavm";
 
@@ -24,7 +26,11 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     public void canInstallUpdateUninstallExtension() throws Exception {
         final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
         final String installCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
+        List<String> fileUris = new ArrayList<>();
+        fileUris.add(mySqlInstallScript);
+
         // Create VM and add extension
+        //
         VirtualMachine vm = computeManager.virtualMachines()
                 .define(VMNAME)
                 .withRegion(LOCATION)
@@ -37,15 +43,28 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPassword("BaR@12abc!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                 .defineNewExtension("CustomScriptForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("CustomScriptForLinux")
-                .withVersion("1.4")
-                .withAutoUpgradeMinorVersionEnabled()
-                .withPublicSetting("fileUris", new ArrayList<String>() {{
-                    add(mySqlInstallScript);
-                }})
-                .withPublicSetting("commandToExecute", installCommand)
+                    .withPublisher("Microsoft.OSTCExtensions")
+                    .withType("CustomScriptForLinux")
+                    .withVersion("1.4")
+                    .withAutoUpgradeMinorVersionEnabled()
+                    .withPublicSetting("fileUris",fileUris)
+                    .withPublicSetting("commandToExecute", installCommand)
                 .attach()
                 .create();
+
+        Assert.assertTrue(vm.extensions().size() > 0);
+        Assert.assertTrue(vm.extensions().containsKey("CustomScriptForLinux"));
+        VirtualMachineExtension customScriptExtension = vm.extensions().get("CustomScriptForLinux");
+        Assert.assertEquals(customScriptExtension.publisherName(), "Microsoft.OSTCExtensions");
+        Assert.assertEquals(customScriptExtension.typeName(), "CustomScriptForLinux");
+        Assert.assertEquals(customScriptExtension.autoUpgradeMinorVersionEnabled(), true);
+
+        // Remove the extension
+        //
+        vm.update()
+                .withoutExtension("CustomScriptForLinux")
+                .apply();
+
+        Assert.assertTrue(vm.extensions().size() == 0);
     }
 }

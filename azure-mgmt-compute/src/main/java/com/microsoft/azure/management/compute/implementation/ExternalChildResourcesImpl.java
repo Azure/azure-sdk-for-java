@@ -288,7 +288,7 @@ public abstract class ExternalChildResourcesImpl<
     protected abstract List<FluentModelTImpl> listChildResources();
 
     /**
-     * Creates a new external child resource.
+     * Gets a new external child resource model instance.
      *
      * @param name the name for the new child resource
      * @return the new child resource
