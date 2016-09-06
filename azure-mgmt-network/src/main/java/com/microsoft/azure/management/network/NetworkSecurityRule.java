@@ -19,7 +19,7 @@ public interface NetworkSecurityRule extends
     ChildResource {
 
     /**
-     * @return the network traffic direction the rule applies to
+     * @return the direction of the network traffic that the network security rule applies to.
      */
     SecurityRuleDirection direction();
 

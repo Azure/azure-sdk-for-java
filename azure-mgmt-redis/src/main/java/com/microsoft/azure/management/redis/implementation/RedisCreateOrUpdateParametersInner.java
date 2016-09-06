@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.redis.Sku;
-
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -61,19 +60,12 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
     private Integer shardCount;
 
     /**
-     * The exact ARM resource ID of the virtual network to deploy the redis
-     * cache in. Example format:
-     * /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.ClassicNetwork/VirtualNetworks/vnet1.
+     * The full resource ID of a subnet in a virtual network to deploy the
+     * redis cache in. Example format:
+     * /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      */
-    @JsonProperty(value = "properties.virtualNetwork")
-    private String virtualNetwork;
-
-    /**
-     * Required when deploying a redis cache inside an existing Azure Virtual
-     * Network.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private String subnet;
+    @JsonProperty(value = "properties.subnetId")
+    private String subnetId;
 
     /**
      * Required when deploying a redis cache inside an existing Azure Virtual
@@ -203,42 +195,22 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
     }
 
     /**
-     * Get the virtualNetwork value.
+     * Get the subnetId value.
      *
-     * @return the virtualNetwork value
+     * @return the subnetId value
      */
-    public String virtualNetwork() {
-        return this.virtualNetwork;
+    public String subnetId() {
+        return this.subnetId;
     }
 
     /**
-     * Set the virtualNetwork value.
+     * Set the subnetId value.
      *
-     * @param virtualNetwork the virtualNetwork value to set
+     * @param subnetId the subnetId value to set
      * @return the RedisCreateOrUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withVirtualNetwork(String virtualNetwork) {
-        this.virtualNetwork = virtualNetwork;
-        return this;
-    }
-
-    /**
-     * Get the subnet value.
-     *
-     * @return the subnet value
-     */
-    public String subnet() {
-        return this.subnet;
-    }
-
-    /**
-     * Set the subnet value.
-     *
-     * @param subnet the subnet value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
-     */
-    public RedisCreateOrUpdateParametersInner withSubnet(String subnet) {
-        this.subnet = subnet;
+    public RedisCreateOrUpdateParametersInner withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
         return this;
     }
 

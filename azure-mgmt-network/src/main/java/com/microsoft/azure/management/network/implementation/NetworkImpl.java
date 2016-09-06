@@ -7,13 +7,11 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import java.util.ArrayList;
+import rx.Observable;
+import rx.functions.Func1;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +33,7 @@ class NetworkImpl
         Network.Update {
 
     private final VirtualNetworksInner innerCollection;
-    private TreeMap<String, Subnet> subnets;
+    private final Map<String, Subnet> subnets = new TreeMap<>();
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
@@ -47,10 +45,13 @@ class NetworkImpl
     }
 
     private void initializeSubnetsFromInner() {
-        this.subnets = new TreeMap<>();
-        for (SubnetInner subnetInner : this.inner().subnets()) {
-            SubnetImpl subnet = new SubnetImpl(subnetInner, this);
-            this.subnets.put(subnetInner.name(), subnet);
+        this.subnets.clear();
+        List<SubnetInner> inners = this.inner().subnets();
+        if (inners != null) {
+            for (SubnetInner inner : inners) {
+                SubnetImpl subnet = new SubnetImpl(inner, this);
+                this.subnets.put(inner.name(), subnet);
+            }
         }
     }
 
@@ -66,19 +67,13 @@ class NetworkImpl
     }
 
     @Override
-    public Network apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
-    public ServiceCall<Network> applyAsync(ServiceCallback<Network> callback) {
-        return createAsync(callback);
+    public Observable<Network> applyAsync() {
+        return createAsync();
     }
 
     // Helpers
 
     NetworkImpl withSubnet(SubnetImpl subnet) {
-        this.inner().subnets().add(subnet.inner());
         this.subnets.put(subnet.name(), subnet);
         return this;
     }
@@ -104,9 +99,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withSubnets(Map<String, String> nameCidrPairs) {
-        List<SubnetInner> azureSubnets = new ArrayList<>();
-        this.inner().withSubnets(azureSubnets);
-        initializeSubnetsFromInner();
+        this.subnets.clear();
         for (Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());
         }
@@ -115,18 +108,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withoutSubnet(String name) {
-        // Remove from cache
         this.subnets.remove(name);
-
-        // Remove from inner
-        List<SubnetInner> innerSubnets = this.inner().subnets();
-        for (int i = 0; i < innerSubnets.size(); i++) {
-            if (innerSubnets.get(i).name().equalsIgnoreCase(name)) {
-                innerSubnets.remove(i);
-                break;
-            }
-        }
-
         return this;
     }
 
@@ -138,8 +120,8 @@ class NetworkImpl
 
     @Override
     public SubnetImpl defineSubnet(String name) {
-        SubnetInner inner = new SubnetInner();
-        inner.withName(name);
+        SubnetInner inner = new SubnetInner()
+                .withName(name);
         return new SubnetImpl(inner, this);
     }
 
@@ -160,7 +142,7 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    private void ensureCreationPrerequisites() {
+    private void beforeCreating() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
@@ -168,10 +150,13 @@ class NetworkImpl
 
         if (isInCreateMode()) {
             // Create a subnet as needed, covering the entire first address space
-            if (this.inner().subnets().size() == 0) {
+            if (this.subnets.size() == 0) {
                 this.withSubnet("subnet1", this.addressSpaces().get(0));
             }
         }
+
+        // Reset and update subnets
+        this.inner().withSubnets(innersFromWrappers(this.subnets.values()));
     }
 
     @Override
@@ -179,33 +164,18 @@ class NetworkImpl
         return (SubnetImpl) this.subnets.get(name);
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public Resource createResource() throws Exception {
-        ensureCreationPrerequisites();
-
-        ServiceResponse<VirtualNetworkInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeSubnetsFromInner();
-        return this;
-    }
-
-    @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ensureCreationPrerequisites();
-        ResourceServiceCall<Network, VirtualNetworkInner, NetworkImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<VirtualNetworkInner>() {
-            @Override
-            public void success(ServiceResponse<VirtualNetworkInner> response) {
-                initializeSubnetsFromInner();
-            }
-        });
-        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(),
-                this.name(),
-                this.inner(),
-                serviceCall.wrapCallBack(callback));
-        return serviceCall;
+    public Observable<Network> createResourceAsync() {
+        final NetworkImpl self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
+                    @Override
+                    public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
+                        setInner(virtualNetworkInner.getBody());
+                        initializeSubnetsFromInner();
+                        return self;
+                    }
+                });
     }
 }

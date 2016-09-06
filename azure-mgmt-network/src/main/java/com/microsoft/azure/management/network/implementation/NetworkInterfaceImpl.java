@@ -19,12 +19,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,13 +86,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterface apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
-    public ServiceCall<NetworkInterface> applyAsync(ServiceCallback<NetworkInterface> callback) {
-        return createAsync(callback);
+    public Observable<NetworkInterface> applyAsync() {
+        return createAsync();
     }
 
     // Setters (fluent)
@@ -193,7 +187,7 @@ class NetworkInterfaceImpl
     @Override
     public NicIpConfigurationImpl updateIpConfiguration(String name) {
         for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
-            if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
+            if (name.equalsIgnoreCase(nicIpConfiguration.name())) {
                 return (NicIpConfigurationImpl) nicIpConfiguration;
             }
         }
@@ -257,6 +251,16 @@ class NetworkInterfaceImpl
     @Override
     public String internalDnsNameLabel() {
         return this.inner().dnsSettings().internalDnsNameLabel();
+    }
+
+    @Override
+    public String internalDomainNameSuffix() {
+        return this.inner().dnsSettings().internalDomainNameSuffix();
+    }
+
+    @Override
+    public List<String> appliedDnsServers() {
+        return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
     }
 
     @Override
@@ -349,9 +353,9 @@ class NetworkInterfaceImpl
 
 
     // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public Resource createResource() throws Exception {
+    public Observable<NetworkInterface> createResourceAsync() {
+        final NetworkInterfaceImpl self = this;
         NetworkSecurityGroup networkSecurityGroup = null;
         if (creatableNetworkSecurityGroupKey != null) {
             networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
@@ -362,34 +366,20 @@ class NetworkInterfaceImpl
         if (networkSecurityGroup != null) {
             this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         }
-
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
-                this.nicName,
-                this.inner());
-        this.setInner(response.getBody());
-        clearCachedRelatedResources();
-        initializeNicIpConfigurations();
-        return this;
-    }
 
-    @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ResourceServiceCall<NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkInterfaceInner>() {
-            @Override
-            public void success(ServiceResponse<NetworkInterfaceInner> response) {
-                clearCachedRelatedResources();
-                initializeNicIpConfigurations();
-            }
-        });
-
-        this.client.createOrUpdateAsync(this.resourceGroupName(),
+        return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
-                this.inner(),
-                serviceCall.wrapCallBack((callback)));
-        return serviceCall;
+                this.inner())
+                .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
+                    @Override
+                    public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
+                        self.setInner(networkInterfaceInner.getBody());
+                        clearCachedRelatedResources();
+                        initializeNicIpConfigurations();
+                        return self;
+                    }
+                });
     }
 
     /**************************************************.

@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for RedisManagementClient.
- * .Net client wrapper for the REST API for Azure Redis Cache Management Service.
+ * REST API for Azure Redis Cache Service.
  */
 package com.microsoft.azure.management.redis;

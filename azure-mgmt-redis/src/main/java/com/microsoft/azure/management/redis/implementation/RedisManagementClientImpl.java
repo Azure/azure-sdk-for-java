@@ -146,6 +146,19 @@ public final class RedisManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PatchSchedulesInner object to access its operations.
+     */
+    private PatchSchedulesInner patchSchedules;
+
+    /**
+     * Gets the PatchSchedulesInner object to access its operations.
+     * @return the PatchSchedulesInner object.
+     */
+    public PatchSchedulesInner patchSchedules() {
+        return this.patchSchedules;
+    }
+
+    /**
      * Initializes an instance of RedisManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -178,11 +191,12 @@ public final class RedisManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-08-01";
+        this.apiVersion = "2016-04-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.redis = new RedisInner(restClient().retrofit(), this);
+        this.patchSchedules = new PatchSchedulesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -195,6 +209,6 @@ public final class RedisManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "RedisManagementClient, 2015-08-01");
+                "RedisManagementClient, 2016-04-01");
     }
 }

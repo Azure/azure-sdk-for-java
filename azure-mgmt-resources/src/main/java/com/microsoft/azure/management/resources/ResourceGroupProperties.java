@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ResourceGroupProperties {
     /**
-     * Gets resource group provisioning state.
+     * The provisioning state.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;

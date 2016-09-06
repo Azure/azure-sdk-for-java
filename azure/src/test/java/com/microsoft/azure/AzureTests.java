@@ -140,16 +140,36 @@ public class AzureTests {
      * Tests the network security group implementation
      * @throws Exception
      */
-    @Test public void testNetworkSecurityGroups() throws Exception {
+    @Test
+    public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
-    @Test public void testLoadBalancers() throws Exception {
-        new TestLoadBalancer(
+    @Test
+    public void testLoadBalancersNatRules() throws Exception {
+        new TestLoadBalancer.InternetWithNatRule(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersNatPools() throws Exception {
+        new TestLoadBalancer.InternetWithNatPool(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersInternetMinimum() throws Exception {
+        new TestLoadBalancer.InternetMinimal(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
     /**
@@ -238,12 +258,12 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
+        StorageAccount storageAccount = azure.storageAccounts().define("mystg123")
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertSame(storageAccount.name(), "my-stg1");
+        Assert.assertEquals(storageAccount.name(), "mystg123");
     }
 }

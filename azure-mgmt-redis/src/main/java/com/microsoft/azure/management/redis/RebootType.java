@@ -8,49 +8,55 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for RebootType.
  */
-public enum RebootType {
-    /** Enum value PrimaryNode. */
-    PRIMARY_NODE("PrimaryNode"),
+public final class RebootType {
+    /** Static value PrimaryNode for RebootType. */
+    public static final RebootType PRIMARY_NODE = new RebootType("PrimaryNode");
 
-    /** Enum value SecondaryNode. */
-    SECONDARY_NODE("SecondaryNode"),
+    /** Static value SecondaryNode for RebootType. */
+    public static final RebootType SECONDARY_NODE = new RebootType("SecondaryNode");
 
-    /** Enum value AllNodes. */
-    ALL_NODES("AllNodes");
+    /** Static value AllNodes for RebootType. */
+    public static final RebootType ALL_NODES = new RebootType("AllNodes");
 
-    /** The actual serialized value for a RebootType instance. */
     private String value;
 
-    RebootType(String value) {
-        this.value = value;
-    }
-
     /**
-     * Parses a serialized value to a RebootType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed RebootType object, or null if unable to parse.
+     * Creates a custom value for RebootType.
+     * @param value the custom value
      */
-    @JsonCreator
-    public static RebootType fromString(String value) {
-        RebootType[] items = RebootType.values();
-        for (RebootType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public RebootType(String value) {
+        this.value = value;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return this.value;
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RebootType)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        RebootType rhs = (RebootType) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

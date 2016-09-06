@@ -52,8 +52,14 @@ var mappings = {
     },
     'redis': {
         'dir': 'azure-mgmt-redis',
-        'source': 'arm-redis/2015-08-01/swagger/redis.json',
+        'source': 'arm-redis/2016-04-01/swagger/redis.json',
         'package': 'com.microsoft.azure.management.redis',
+        'args': '-FT 1'
+    },
+    'search': {
+        'dir': 'azure-mgmt-search',
+        'source': 'arm-search/2015-02-28/swagger/search.json',
+        'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },
     'datalake.store.filesystem': {
@@ -95,9 +101,15 @@ var mappings = {
     },
     'keyvault': {
         'dir': 'azure-keyvault',
-        'source': 'keyvault\2015-06-01\swagger\keyvault.json',
+        'source': 'keyvault/2015-06-01/swagger/keyvault.json',
         'package': 'com.microsoft.azure.keyvault',
         'fluent': false,
+        'args': '-FT 1'
+    },
+    'batch': {
+        'dir': 'azure-mgmt-batch',
+        'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
+        'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
     }
 };

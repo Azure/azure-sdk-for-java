@@ -86,6 +86,11 @@
         <artifactId>commons-codec</artifactId>
         <version>1.10</version>
       </dependency>
+      <dependency>
+        <groupId>io.reactivex</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>1.1.8</version>
+      </dependency>
       <!-- Test dependencies -->
       <dependency>
         <groupId>junit</groupId>
@@ -235,10 +240,10 @@
     <module>./runtimes</module>
     <module>./azure</module>
     <module>./azure-batch</module>
-    <module>./azure-keyvault</module>
+    <!--<module>./azure-keyvault</module>
     <module>./azure-keyvault-core</module>
     <module>./azure-keyvault-cryptography</module>
-    <module>./azure-keyvault-extensions</module>
+    <module>./azure-keyvault-extensions</module>-->
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-storage</module>
@@ -249,5 +254,7 @@
     <module>./azure-mgmt-datalake-store-uploader</module>
     <module>./azure-samples</module>
     <module>azure-mgmt-redis</module>
+    <module>./azure-mgmt-search</module>
+    <module>./azure-mgmt-batch</module>
   </modules>
 </project>

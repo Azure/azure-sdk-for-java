@@ -7,16 +7,16 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
@@ -33,8 +33,8 @@ class NetworkSecurityGroupImpl
         NetworkSecurityGroup.Update {
 
     private final NetworkSecurityGroupsInner innerCollection;
-    private List<NetworkSecurityRule> rules;
-    private List<NetworkSecurityRule> defaultRules;
+    private final Map<String, NetworkSecurityRule> rules = new TreeMap<>();
+    private final Map<String, NetworkSecurityRule> defaultRules = new TreeMap<>();
 
     NetworkSecurityGroupImpl(
             final String name,
@@ -47,17 +47,19 @@ class NetworkSecurityGroupImpl
     }
 
     private void initializeRulesFromInner() {
-        this.rules = new ArrayList<>();
-        if (this.inner().securityRules() != null) {
-            for (SecurityRuleInner ruleInner : this.inner().securityRules()) {
-                this.rules.add(new NetworkSecurityRuleImpl(ruleInner, this));
+        this.rules.clear();
+        List<SecurityRuleInner> inners = this.inner().securityRules();
+        if (inners != null) {
+            for (SecurityRuleInner inner : inners) {
+                this.rules.put(inner.name(), new NetworkSecurityRuleImpl(inner, this));
             }
         }
 
-        this.defaultRules = new ArrayList<>();
-        if (this.inner().defaultSecurityRules() != null) {
-            for (SecurityRuleInner ruleInner : this.inner().defaultSecurityRules()) {
-                this.defaultRules.add(new NetworkSecurityRuleImpl(ruleInner, this));
+        this.defaultRules.clear();
+        inners = this.inner().defaultSecurityRules();
+        if (inners != null) {
+            for (SecurityRuleInner inner : inners) {
+                this.defaultRules.put(inner.name(), new NetworkSecurityRuleImpl(inner, this));
             }
         }
     }
@@ -66,12 +68,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     public NetworkSecurityRuleImpl updateRule(String name) {
-        for (NetworkSecurityRule r : this.rules) {
-            if (r.name().equalsIgnoreCase(name)) {
-                return (NetworkSecurityRuleImpl) r;
-            }
-        }
-        throw new RuntimeException("Network security rule '" + name + "' not found");
+        return (NetworkSecurityRuleImpl) this.rules.get(name);
     }
 
     @Override
@@ -92,51 +89,33 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroup apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
-    public ServiceCall<NetworkSecurityGroup> applyAsync(ServiceCallback<NetworkSecurityGroup> callback) {
-        return createAsync(callback);
+    public Observable<NetworkSecurityGroup> applyAsync() {
+        return createAsync();
     }
 
     // Setters (fluent)
 
     @Override
     public Update withoutRule(String name) {
-        // Remove from cache
-        List<NetworkSecurityRule> r = this.rules;
-        for (int i = 0; i < r.size(); i++) {
-            if (r.get(i).name().equalsIgnoreCase(name)) {
-                r.remove(i);
-                break;
-            }
-        }
-
-        // Remove from inner
-        List<SecurityRuleInner> innerRules = this.inner().securityRules();
-        for (int i = 0; i < innerRules.size(); i++) {
-            if (innerRules.get(i).name().equalsIgnoreCase(name)) {
-                innerRules.remove(i);
-                break;
-            }
-        }
-
+        this.rules.remove(name);
         return this;
     }
 
+    NetworkSecurityGroupImpl withRule(NetworkSecurityRuleImpl rule) {
+        this.rules.put(rule.name(), rule);
+        return this;
+    }
 
     // Getters
 
     @Override
-    public List<NetworkSecurityRule> securityRules() {
-        return Collections.unmodifiableList(this.rules);
+    public Map<String, NetworkSecurityRule> securityRules() {
+        return Collections.unmodifiableMap(this.rules);
     }
 
     @Override
-    public List<NetworkSecurityRule> defaultSecurityRules() {
-        return Collections.unmodifiableList(this.defaultRules);
+    public Map<String, NetworkSecurityRule> defaultSecurityRules() {
+        return Collections.unmodifiableMap(this.defaultRules);
     }
 
     @Override
@@ -150,31 +129,24 @@ class NetworkSecurityGroupImpl
         return Collections.unmodifiableList(ids);
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
-
-    @Override
-    public Resource createResource() throws Exception {
-        ServiceResponse<NetworkSecurityGroupInner> response =
-                this.innerCollection.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
-        initializeRulesFromInner();
-        return this;
+    private void beforeCreating() {
+        // Reset and update subnets
+        this.inner().withSecurityRules(innersFromWrappers(this.rules.values()));
     }
 
+    // CreatorTaskGroup.ResourceCreator implementation
     @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ResourceServiceCall<NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl> serviceCall = new ResourceServiceCall<>(this);
-        serviceCall.withSuccessHandler(new ResourceServiceCall.SuccessHandler<NetworkSecurityGroupInner>() {
-            @Override
-            public void success(ServiceResponse<NetworkSecurityGroupInner> response) {
-                initializeRulesFromInner();
-            }
-        });
-
-        this.innerCollection.createOrUpdateAsync(this.resourceGroupName(),
-                this.name(),
-                this.inner(),
-                serviceCall.wrapCallBack(callback));
-        return serviceCall;
+    public Observable<NetworkSecurityGroup> createResourceAsync() {
+        final NetworkSecurityGroupImpl self = this;
+        beforeCreating();
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
+                    @Override
+                    public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
+                        self.setInner(networkSecurityGroupInner.getBody());
+                        initializeRulesFromInner();
+                        return self;
+                    }
+                });
     }
  }

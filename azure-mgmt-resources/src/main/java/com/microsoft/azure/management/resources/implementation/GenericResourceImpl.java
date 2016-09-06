@@ -7,13 +7,10 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.Plan;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.ResourceServiceCall;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * The implementation for {@link GenericResource} and its nested interfaces.
@@ -126,64 +123,27 @@ final class GenericResourceImpl
     }
 
     @Override
-    public ServiceCall<GenericResource> createAsync(final ServiceCallback<GenericResource> callback) {
-        final ServiceCall<GenericResource> serviceCall = new ServiceCall<>(null);
-        serviceCall.newCall(createResourceAsync(new ServiceCallback<Resource>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-                serviceCall.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<Resource> result) {
-                ServiceResponse<GenericResource> serviceResponse = new ServiceResponse<>((GenericResource) result.getBody(), result.getResponse());
-                callback.success(serviceResponse);
-                serviceCall.success(serviceResponse);
-            }
-        }).getCall());
-        return serviceCall;
+    public Observable<GenericResource> createAsync() {
+        return createResourceAsync();
     }
 
     @Override
-    public GenericResourceImpl apply() throws Exception {
-        return create();
-    }
-
-    @Override
-    public ServiceCall<GenericResource> applyAsync(ServiceCallback<GenericResource> callback) {
-        return createAsync(callback);
+    public Observable<GenericResource> applyAsync() {
+        return createAsync();
     }
 
     // CreatorTaskGroup.ResourceCreator implementation
-
     @Override
-    public Resource createResource() throws Exception {
-        GenericResourceInner inner = client.createOrUpdate(
+    public Observable<GenericResource> createResourceAsync() {
+        return client.createOrUpdateAsync(
                 resourceGroupName(),
                 resourceProviderNamespace,
                 parentResourceId,
                 resourceType,
                 name(),
                 apiVersion,
-                inner()
-        ).getBody();
-        this.setInner(inner);
-        return this;
-    }
-
-    @Override
-    public ServiceCall<Resource> createResourceAsync(final ServiceCallback<Resource> callback) {
-        ResourceServiceCall<GenericResource, GenericResourceInner, GenericResourceImpl> serviceCall = new ResourceServiceCall<>(this);
-        client.createOrUpdateAsync(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                name(),
-                apiVersion,
-                inner(),
-                serviceCall.wrapCallBack(callback));
-        return serviceCall;
+                inner())
+                .subscribeOn(Schedulers.io())
+                .map(innerToFluentMap(this));
     }
 }
