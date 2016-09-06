@@ -72,9 +72,7 @@ pattern.
 AMQP 1.0 is a TCP based protocol. For Azure Event Hubs, all traffic *must* be protected using TLS (SSL) and is using 
 TCP port 5672.  
 
-The current release of Proton-J does not yet support the WebSocket protocol. If your event publishers routinely operate 
-in environments where tunneling over the HTTPS TCP port 443 is required due to Firewall policy reasons, please refer to
-the section [Publishing via HTTPS](#Publishing via HTTPS) below for a temporary alternative.         
+This library will provide HTTPS support via WebSockets when Proton-J supports HTTPS.
 
 ##Connection Strings
 
