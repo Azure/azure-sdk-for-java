@@ -21,7 +21,7 @@ public abstract class RedisManagementTestBase {
     protected static ResourceManager resourceManager;
     protected static RedisManager redisManager;
 
-    protected static void createClients() {
+    protected static void createClients(){
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
                 System.getenv("client-id"),
                 System.getenv("domain"),
