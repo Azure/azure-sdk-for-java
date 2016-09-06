@@ -12,7 +12,12 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.management.storage.implementation.StorageManager;
 import okhttp3.logging.HttpLoggingInterceptor;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 
 /**
  * The base for storage manager tests.
@@ -20,6 +25,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public abstract class RedisManagementTestBase {
     protected static ResourceManager resourceManager;
     protected static RedisManager redisManager;
+    protected static StorageManager storageManager;
 
     protected static void createClients(){
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
@@ -31,6 +37,7 @@ public abstract class RedisManagementTestBase {
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888))) // uncomment for Fiddler tracing
                 .build();
 
         resourceManager = ResourceManager
@@ -38,6 +45,9 @@ public abstract class RedisManagementTestBase {
                 .withSubscription(System.getenv("subscription-id"));
 
         redisManager = RedisManager
+                .authenticate(restClient, System.getenv("subscription-id"));
+
+        storageManager = StorageManager
                 .authenticate(restClient, System.getenv("subscription-id"));
     }
 }

@@ -9,7 +9,7 @@ package com.microsoft.azure.management.redis.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.redis.*;
-import com.microsoft.azure.management.redis.RedisResource;
+import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
@@ -18,37 +18,34 @@ import java.io.IOException;
 /**
  * The implementation of StorageAccounts and its parent interfaces.
  */
-class RedisResourcesImpl
+class RedisCachesImpl
         extends GroupableResourcesImpl<
-            RedisResource,
-            RedisResourceImpl,
-            RedisResourceWithAccessKeyInner,
+        RedisCache,
+        RedisCacheImpl,
+            RedisResourceInner,
             RedisInner,
             RedisManager>
-        implements RedisResources {
+        implements RedisCaches {
 
-    RedisResourcesImpl(
+    RedisCachesImpl(
             final RedisInner client,
             final RedisManager storageManager) {
         super(client, storageManager);
     }
 
     @Override
-    public PagedList<RedisResource> list() throws CloudException, IOException {
-        //return wrapList(this.innerCollection.list().getBody());
-        return null;
+    public PagedList<RedisCache> list() throws CloudException, IOException {
+        return wrapList(this.innerCollection.list().getBody());
     }
 
     @Override
-    public PagedList<RedisResource> listByGroup(String groupName) throws CloudException, IOException {
-        //return wrapList(this.innerCollection.listByResourceGroup(groupName).getBody());
-        return null;
+    public PagedList<RedisCache> listByGroup(String groupName) throws CloudException, IOException {
+        return wrapList(this.innerCollection.listByResourceGroup(groupName).getBody());
     }
 
     @Override
-    public RedisResource getByGroup(String groupName, String name) throws CloudException, IOException {
-        //return wrapModel(this.innerCollection.get(groupName, name).getBody());
-        return null;
+    public RedisCache getByGroup(String groupName, String name) throws CloudException, IOException {
+        return wrapModel(this.innerCollection.get(groupName, name).getBody());
     }
 
     @Override
@@ -62,22 +59,22 @@ class RedisResourcesImpl
     }
 
     @Override
-    public RedisResourceImpl define(String name) {
+    public RedisCacheImpl define(String name) {
         return wrapModel(name);
     }
 
     @Override
-    protected RedisResourceImpl wrapModel(String name) {
-        return new RedisResourceImpl(
+    protected RedisCacheImpl wrapModel(String name) {
+        return new RedisCacheImpl(
                 name,
-                new RedisResourceWithAccessKeyInner(),
+                new RedisResourceInner(),
                 this.innerCollection,
                 super.myManager);
     }
 
     @Override
-    protected RedisResourceImpl wrapModel(RedisResourceWithAccessKeyInner storageAccountInner) {
-        return new RedisResourceImpl(
+    protected RedisCacheImpl wrapModel(RedisResourceInner storageAccountInner) {
+        return new RedisCacheImpl(
                 storageAccountInner.name(),
                 storageAccountInner,
                 this.innerCollection,

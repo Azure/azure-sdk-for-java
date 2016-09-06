@@ -15,40 +15,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * A single redis item in List or Get Operation.
+ * Parameters supplied to the Create Redis operation.
  */
 @JsonFlatten
-public class RedisResourceInner extends Resource {
-    /**
-     * Redis Version.
-     */
-    @JsonProperty(value = "properties.redisVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String redisVersion;
-
-    /**
-     * Redis instance provisioning status.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /**
-     * Redis host name.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostName;
-
-    /**
-     * Redis non-ssl port.
-     */
-    @JsonProperty(value = "properties.port", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer port;
-
-    /**
-     * Redis ssl port.
-     */
-    @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer sslPort;
-
+public class RedisCreateParametersInner extends Resource {
     /**
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
@@ -98,51 +68,6 @@ public class RedisResourceInner extends Resource {
     private Sku sku;
 
     /**
-     * Get the redisVersion value.
-     *
-     * @return the redisVersion value
-     */
-    public String redisVersion() {
-        return this.redisVersion;
-    }
-
-    /**
-     * Get the provisioningState value.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the hostName value.
-     *
-     * @return the hostName value
-     */
-    public String hostName() {
-        return this.hostName;
-    }
-
-    /**
-     * Get the port value.
-     *
-     * @return the port value
-     */
-    public Integer port() {
-        return this.port;
-    }
-
-    /**
-     * Get the sslPort value.
-     *
-     * @return the sslPort value
-     */
-    public Integer sslPort() {
-        return this.sslPort;
-    }
-
-    /**
      * Get the redisConfiguration value.
      *
      * @return the redisConfiguration value
@@ -155,9 +80,9 @@ public class RedisResourceInner extends Resource {
      * Set the redisConfiguration value.
      *
      * @param redisConfiguration the redisConfiguration value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisCreateParametersInner withRedisConfiguration(Map<String, String> redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
         return this;
     }
@@ -175,9 +100,9 @@ public class RedisResourceInner extends Resource {
      * Set the enableNonSslPort value.
      *
      * @param enableNonSslPort the enableNonSslPort value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withEnableNonSslPort(Boolean enableNonSslPort) {
+    public RedisCreateParametersInner withEnableNonSslPort(Boolean enableNonSslPort) {
         this.enableNonSslPort = enableNonSslPort;
         return this;
     }
@@ -195,9 +120,9 @@ public class RedisResourceInner extends Resource {
      * Set the tenantSettings value.
      *
      * @param tenantSettings the tenantSettings value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withTenantSettings(Map<String, String> tenantSettings) {
+    public RedisCreateParametersInner withTenantSettings(Map<String, String> tenantSettings) {
         this.tenantSettings = tenantSettings;
         return this;
     }
@@ -215,9 +140,9 @@ public class RedisResourceInner extends Resource {
      * Set the shardCount value.
      *
      * @param shardCount the shardCount value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withShardCount(Integer shardCount) {
+    public RedisCreateParametersInner withShardCount(Integer shardCount) {
         this.shardCount = shardCount;
         return this;
     }
@@ -235,9 +160,9 @@ public class RedisResourceInner extends Resource {
      * Set the subnetId value.
      *
      * @param subnetId the subnetId value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withSubnetId(String subnetId) {
+    public RedisCreateParametersInner withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
     }
@@ -255,9 +180,9 @@ public class RedisResourceInner extends Resource {
      * Set the staticIP value.
      *
      * @param staticIP the staticIP value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withStaticIP(String staticIP) {
+    public RedisCreateParametersInner withStaticIP(String staticIP) {
         this.staticIP = staticIP;
         return this;
     }
@@ -275,9 +200,9 @@ public class RedisResourceInner extends Resource {
      * Set the sku value.
      *
      * @param sku the sku value to set
-     * @return the RedisResourceInner object itself.
+     * @return the RedisCreateParametersInner object itself.
      */
-    public RedisResourceInner withSku(Sku sku) {
+    public RedisCreateParametersInner withSku(Sku sku) {
         this.sku = sku;
         return this;
     }

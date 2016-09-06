@@ -8,7 +8,7 @@ package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
-import com.microsoft.azure.management.redis.RedisResources;
+import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
@@ -19,7 +19,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
  */
 public final class RedisManager extends Manager<RedisManager, RedisManagementClientImpl> {
     // Collections
-    private RedisResources redisResources;
+    private RedisCaches redisCaches;
 
     /**
      * Get a Configurable instance that can be used to create RedisManager with optional configuration.
@@ -87,12 +87,12 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
     /**
      * @return the storage account management API entry point
      */
-    public RedisResources redisResources() {
-        if (redisResources == null) {
-            redisResources = new RedisResourcesImpl(
+    public RedisCaches redisCaches() {
+        if (redisCaches == null) {
+            redisCaches = new RedisCachesImpl(
                     super.innerManagementClient.redis(),
                     this);
         }
-        return redisResources;
+        return redisCaches;
     }
 }

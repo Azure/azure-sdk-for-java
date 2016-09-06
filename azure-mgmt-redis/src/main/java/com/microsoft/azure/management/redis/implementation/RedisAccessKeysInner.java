@@ -10,9 +10,9 @@ package com.microsoft.azure.management.redis.implementation;
 
 
 /**
- * The response of redis list keys operation.
+ * Redis cache access keys.
  */
-public class RedisListKeysResultInner {
+public class RedisAccessKeysInner {
     /**
      * The current primary key that clients can use to authenticate with redis
      * cache.
@@ -38,9 +38,9 @@ public class RedisListKeysResultInner {
      * Set the primaryKey value.
      *
      * @param primaryKey the primaryKey value to set
-     * @return the RedisListKeysResultInner object itself.
+     * @return the RedisAccessKeysInner object itself.
      */
-    public RedisListKeysResultInner withPrimaryKey(String primaryKey) {
+    public RedisAccessKeysInner withPrimaryKey(String primaryKey) {
         this.primaryKey = primaryKey;
         return this;
     }
@@ -58,9 +58,9 @@ public class RedisListKeysResultInner {
      * Set the secondaryKey value.
      *
      * @param secondaryKey the secondaryKey value to set
-     * @return the RedisListKeysResultInner object itself.
+     * @return the RedisAccessKeysInner object itself.
      */
-    public RedisListKeysResultInner withSecondaryKey(String secondaryKey) {
+    public RedisAccessKeysInner withSecondaryKey(String secondaryKey) {
         this.secondaryKey = secondaryKey;
         return this;
     }
