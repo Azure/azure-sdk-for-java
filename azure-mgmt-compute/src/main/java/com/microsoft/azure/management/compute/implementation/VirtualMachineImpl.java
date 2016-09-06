@@ -826,7 +826,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> extensions() throws Exception {
+    public Map<String, VirtualMachineExtension> extensions() {
         return this.virtualMachineExtensions.asMap();
     }
 

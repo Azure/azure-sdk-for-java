@@ -193,9 +193,8 @@ public interface VirtualMachine extends
 
     /**
      * @return the extensions attached to the Azure Virtual Machine
-     * @throws Exception exceptions thrown from the cloud or from serialization/deserialization.
      */
-    Map<String, VirtualMachineExtension> extensions() throws Exception;
+    Map<String, VirtualMachineExtension> extensions();
 
     /**
      * @return the plan value
