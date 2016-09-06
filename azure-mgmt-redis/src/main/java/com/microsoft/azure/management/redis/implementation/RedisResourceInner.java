@@ -20,6 +20,30 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RedisResourceInner extends Resource {
     /**
+     * Redis instance provisioning status.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private String provisioningState;
+
+    /**
+     * Redis host name.
+     */
+    @JsonProperty(value = "properties.hostName")
+    private String hostName;
+
+    /**
+     * Redis non-ssl port.
+     */
+    @JsonProperty(value = "properties.port")
+    private Integer port;
+
+    /**
+     * Redis ssl port.
+     */
+    @JsonProperty(value = "properties.sslPort")
+    private Integer sslPort;
+
+    /**
      * RedisVersion parameter has been deprecated. As such, it is no longer
      * necessary to provide this parameter and any value specified is ignored.
      */
@@ -75,28 +99,84 @@ public class RedisResourceInner extends Resource {
     private String staticIP;
 
     /**
-     * Redis instance provisioning status.
+     * Get the provisioningState value.
+     *
+     * @return the provisioningState value
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    public String provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
-     * Redis host name.
+     * Set the provisioningState value.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the RedisResourceInner object itself.
      */
-    @JsonProperty(value = "properties.hostName")
-    private String hostName;
+    public RedisResourceInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
 
     /**
-     * Redis non-ssl port.
+     * Get the hostName value.
+     *
+     * @return the hostName value
      */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
+    public String hostName() {
+        return this.hostName;
+    }
 
     /**
-     * Redis ssl port.
+     * Set the hostName value.
+     *
+     * @param hostName the hostName value to set
+     * @return the RedisResourceInner object itself.
      */
-    @JsonProperty(value = "properties.sslPort")
-    private Integer sslPort;
+    public RedisResourceInner withHostName(String hostName) {
+        this.hostName = hostName;
+        return this;
+    }
+
+    /**
+     * Get the port value.
+     *
+     * @return the port value
+     */
+    public Integer port() {
+        return this.port;
+    }
+
+    /**
+     * Set the port value.
+     *
+     * @param port the port value to set
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withPort(Integer port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the sslPort value.
+     *
+     * @return the sslPort value
+     */
+    public Integer sslPort() {
+        return this.sslPort;
+    }
+
+    /**
+     * Set the sslPort value.
+     *
+     * @param sslPort the sslPort value to set
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withSslPort(Integer sslPort) {
+        this.sslPort = sslPort;
+        return this;
+    }
 
     /**
      * Get the redisVersion value.
@@ -255,86 +335,6 @@ public class RedisResourceInner extends Resource {
      */
     public RedisResourceInner withStaticIP(String staticIP) {
         this.staticIP = staticIP;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState value.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the hostName value.
-     *
-     * @return the hostName value
-     */
-    public String hostName() {
-        return this.hostName;
-    }
-
-    /**
-     * Set the hostName value.
-     *
-     * @param hostName the hostName value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withHostName(String hostName) {
-        this.hostName = hostName;
-        return this;
-    }
-
-    /**
-     * Get the port value.
-     *
-     * @return the port value
-     */
-    public Integer port() {
-        return this.port;
-    }
-
-    /**
-     * Set the port value.
-     *
-     * @param port the port value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withPort(Integer port) {
-        this.port = port;
-        return this;
-    }
-
-    /**
-     * Get the sslPort value.
-     *
-     * @return the sslPort value
-     */
-    public Integer sslPort() {
-        return this.sslPort;
-    }
-
-    /**
-     * Set the sslPort value.
-     *
-     * @param sslPort the sslPort value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withSslPort(Integer sslPort) {
-        this.sslPort = sslPort;
         return this;
     }
 

@@ -70,8 +70,16 @@ public final class RedisInner {
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisCreateOrUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisCreateOrUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
@@ -132,10 +140,11 @@ public final class RedisInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RedisResourceWithAccessKeyInner object wrapped in {@link ServiceResponse} if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the RedisResourceWithAccessKeyInner object wrapped in ServiceResponse if successful.
      */
-    public ServiceResponse<RedisResourceWithAccessKeyInner> createOrUpdate(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateAsync(resourceGroupName, name, parameters).toBlocking().single();
+    public ServiceResponse<RedisResourceWithAccessKeyInner> createOrUpdate(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateAsync(resourceGroupName, name, parameters).toBlocking().last();
     }
 
     /**
@@ -157,7 +166,7 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters supplied to the CreateOrUpdate redis operation.
-     * @return the observable to the RedisResourceWithAccessKeyInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<RedisResourceWithAccessKeyInner>> createOrUpdateAsync(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
@@ -176,12 +185,69 @@ public final class RedisInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RedisResourceWithAccessKeyInner>() { }.getType());
+    }
+
+    /**
+     * Create a redis cache, or replace (overwrite/recreate, with potential downtime) an existing cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param parameters Parameters supplied to the CreateOrUpdate redis operation.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the RedisResourceWithAccessKeyInner object wrapped in {@link ServiceResponse} if successful.
+     */
+    public ServiceResponse<RedisResourceWithAccessKeyInner> beginCreateOrUpdate(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters).toBlocking().single();
+    }
+
+    /**
+     * Create a redis cache, or replace (overwrite/recreate, with potential downtime) an existing cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param parameters Parameters supplied to the CreateOrUpdate redis operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<RedisResourceWithAccessKeyInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters, final ServiceCallback<RedisResourceWithAccessKeyInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, name, parameters), serviceCallback);
+    }
+
+    /**
+     * Create a redis cache, or replace (overwrite/recreate, with potential downtime) an existing cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param parameters Parameters supplied to the CreateOrUpdate redis operation.
+     * @return the observable to the RedisResourceWithAccessKeyInner object
+     */
+    public Observable<ServiceResponse<RedisResourceWithAccessKeyInner>> beginCreateOrUpdateAsync(String resourceGroupName, String name, RedisCreateOrUpdateParametersInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisResourceWithAccessKeyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RedisResourceWithAccessKeyInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RedisResourceWithAccessKeyInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<RedisResourceWithAccessKeyInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -190,7 +256,7 @@ public final class RedisInner {
             });
     }
 
-    private ServiceResponse<RedisResourceWithAccessKeyInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RedisResourceWithAccessKeyInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RedisResourceWithAccessKeyInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<RedisResourceWithAccessKeyInner>() { }.getType())
                 .register(200, new TypeToken<RedisResourceWithAccessKeyInner>() { }.getType())
@@ -206,10 +272,11 @@ public final class RedisInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
+     * @throws InterruptedException exception thrown when long running operation is interrupted
+     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(resourceGroupName, name).toBlocking().single();
+    public ServiceResponse<Void> delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteAsync(resourceGroupName, name).toBlocking().last();
     }
 
     /**
@@ -229,7 +296,7 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
@@ -244,12 +311,62 @@ public final class RedisInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a redis cache. This operation takes a while to complete.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @throws CloudException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public ServiceResponse<Void> beginDelete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return beginDeleteAsync(resourceGroupName, name).toBlocking().single();
+    }
+
+    /**
+     * Deletes a redis cache. This operation takes a while to complete.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginDeleteAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Deletes a redis cache. This operation takes a while to complete.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -258,7 +375,7 @@ public final class RedisInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
