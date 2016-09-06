@@ -27,6 +27,8 @@ import com.microsoft.azure.batch.protocol.models.TaskListNextOptions;
 import com.microsoft.azure.batch.protocol.models.TaskListOptions;
 import com.microsoft.azure.batch.protocol.models.TaskListSubtasksHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskListSubtasksOptions;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateHeaders;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateOptions;
 import com.microsoft.azure.batch.protocol.models.TaskTerminateHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.TaskUpdateHeaders;
@@ -483,6 +485,66 @@ public interface Tasks {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions) throws BatchErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
 
     /**
      * Lists all of the tasks that are associated with the specified job.
