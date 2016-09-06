@@ -174,7 +174,7 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentExportResult exportTemplate() throws CloudException, IOException {
-        DeploymentExportResultInner inner = client.exportTemplate(resourceGroupName(), name()).getBody();
+        DeploymentExportResultInner inner = client.exportTemplate(resourceGroupName(), name());
         return new DeploymentExportResultImpl(inner);
     }
 

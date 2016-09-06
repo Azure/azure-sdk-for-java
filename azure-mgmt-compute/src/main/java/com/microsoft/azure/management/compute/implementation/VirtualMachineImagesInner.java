@@ -86,10 +86,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineImageInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineImageInner object if successful.
      */
-    public ServiceResponse<VirtualMachineImageInner> get(String location, String publisherName, String offer, String skus, String version) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(location, publisherName, offer, skus, version).toBlocking().single();
+    public VirtualMachineImageInner get(String location, String publisherName, String offer, String skus, String version) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).toBlocking().single().getBody();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version, final ServiceCallback<VirtualMachineImageInner> serviceCallback) {
-        return ServiceCall.create(getAsync(location, publisherName, offer, skus, version), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(location, publisherName, offer, skus, version), serviceCallback);
     }
 
     /**
@@ -117,7 +117,26 @@ public final class VirtualMachineImagesInner {
      * @param version the String value
      * @return the observable to the VirtualMachineImageInner object
      */
-    public Observable<ServiceResponse<VirtualMachineImageInner>> getAsync(String location, String publisherName, String offer, String skus, String version) {
+    public Observable<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version) {
+        return getWithServiceResponseAsync(location, publisherName, offer, skus, version).map(new Func1<ServiceResponse<VirtualMachineImageInner>, VirtualMachineImageInner>() {
+            @Override
+            public VirtualMachineImageInner call(ServiceResponse<VirtualMachineImageInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a virtual machine image.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param version the String value
+     * @return the observable to the VirtualMachineImageInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineImageInner>> getWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String version) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -170,10 +189,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResourceInner>> list(String location, String publisherName, String offer, String skus) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(location, publisherName, offer, skus).toBlocking().single();
+    public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus).toBlocking().single().getBody();
     }
 
     /**
@@ -187,7 +206,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listAsync(location, publisherName, offer, skus), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(location, publisherName, offer, skus), serviceCallback);
     }
 
     /**
@@ -199,7 +218,25 @@ public final class VirtualMachineImagesInner {
      * @param skus the String value
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listAsync(String location, String publisherName, String offer, String skus) {
+    public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus) {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+            @Override
+            public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -248,10 +285,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResourceInner>> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single();
+    public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().getBody();
     }
 
     /**
@@ -268,7 +305,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
     }
 
     /**
@@ -283,7 +320,28 @@ public final class VirtualMachineImagesInner {
      * @param orderby the String value
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
+    public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+            @Override
+            public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of virtual machine images.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @param skus the String value
+     * @param filter The filter to apply on the operation.
+     * @param top the Integer value
+     * @param orderby the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -331,10 +389,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResourceInner>> listOffers(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
-        return listOffersAsync(location, publisherName).toBlocking().single();
+    public List<VirtualMachineImageResourceInner> listOffers(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
+        return listOffersWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
     }
 
     /**
@@ -346,7 +404,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listOffersAsync(location, publisherName), serviceCallback);
+        return ServiceCall.create(listOffersWithServiceResponseAsync(location, publisherName), serviceCallback);
     }
 
     /**
@@ -356,7 +414,23 @@ public final class VirtualMachineImagesInner {
      * @param publisherName the String value
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listOffersAsync(String location, String publisherName) {
+    public Observable<List<VirtualMachineImageResourceInner>> listOffersAsync(String location, String publisherName) {
+        return listOffersWithServiceResponseAsync(location, publisherName).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+            @Override
+            public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of virtual machine image offers.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listOffersWithServiceResponseAsync(String location, String publisherName) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -397,10 +471,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResourceInner>> listPublishers(String location) throws CloudException, IOException, IllegalArgumentException {
-        return listPublishersAsync(location).toBlocking().single();
+    public List<VirtualMachineImageResourceInner> listPublishers(String location) throws CloudException, IOException, IllegalArgumentException {
+        return listPublishersWithServiceResponseAsync(location).toBlocking().single().getBody();
     }
 
     /**
@@ -411,7 +485,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listPublishersAsync(location), serviceCallback);
+        return ServiceCall.create(listPublishersWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -420,7 +494,22 @@ public final class VirtualMachineImagesInner {
      * @param location the String value
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listPublishersAsync(String location) {
+    public Observable<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location) {
+        return listPublishersWithServiceResponseAsync(location).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+            @Override
+            public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of virtual machine image publishers.
+     *
+     * @param location the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listPublishersWithServiceResponseAsync(String location) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -460,10 +549,10 @@ public final class VirtualMachineImagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineImageResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineImageResourceInner>> listSkus(String location, String publisherName, String offer) throws CloudException, IOException, IllegalArgumentException {
-        return listSkusAsync(location, publisherName, offer).toBlocking().single();
+    public List<VirtualMachineImageResourceInner> listSkus(String location, String publisherName, String offer) throws CloudException, IOException, IllegalArgumentException {
+        return listSkusWithServiceResponseAsync(location, publisherName, offer).toBlocking().single().getBody();
     }
 
     /**
@@ -476,7 +565,7 @@ public final class VirtualMachineImagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceCall.create(listSkusAsync(location, publisherName, offer), serviceCallback);
+        return ServiceCall.create(listSkusWithServiceResponseAsync(location, publisherName, offer), serviceCallback);
     }
 
     /**
@@ -487,7 +576,24 @@ public final class VirtualMachineImagesInner {
      * @param offer the String value
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listSkusAsync(String location, String publisherName, String offer) {
+    public Observable<List<VirtualMachineImageResourceInner>> listSkusAsync(String location, String publisherName, String offer) {
+        return listSkusWithServiceResponseAsync(location, publisherName, offer).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+            @Override
+            public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of virtual machine image skus.
+     *
+     * @param location the String value
+     * @param publisherName the String value
+     * @param offer the String value
+     * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listSkusWithServiceResponseAsync(String location, String publisherName, String offer) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }

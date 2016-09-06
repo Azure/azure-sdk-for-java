@@ -102,10 +102,9 @@ public final class SubnetsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last();
+    public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().getBody();
     }
 
     /**
@@ -118,7 +117,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -129,7 +128,24 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete subnet operation deletes the specified subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -158,10 +174,9 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +189,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -185,7 +200,24 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete subnet operation deletes the specified subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -232,10 +264,10 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SubnetInner object if successful.
      */
-    public ServiceResponse<SubnetInner> get(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single();
+    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
     }
 
     /**
@@ -248,7 +280,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName), serviceCallback);
     }
 
     /**
@@ -259,7 +291,24 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @return the observable to the SubnetInner object
      */
-    public Observable<ServiceResponse<SubnetInner>> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public Observable<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
+            @Override
+            public SubnetInner call(ServiceResponse<SubnetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get subnet operation retrieves information about the specified subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @return the observable to the SubnetInner object
+     */
+    public Observable<ServiceResponse<SubnetInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -300,10 +349,10 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SubnetInner object if successful.
      */
-    public ServiceResponse<SubnetInner> get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single();
+    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -317,7 +366,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, virtualNetworkName, subnetName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand), serviceCallback);
     }
 
     /**
@@ -329,7 +378,25 @@ public final class SubnetsInner {
      * @param expand expand references resources.
      * @return the observable to the SubnetInner object
      */
-    public Observable<ServiceResponse<SubnetInner>> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
+    public Observable<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
+            @Override
+            public SubnetInner call(ServiceResponse<SubnetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get subnet operation retrieves information about the specified subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param expand expand references resources.
+     * @return the observable to the SubnetInner object
+     */
+    public Observable<ServiceResponse<SubnetInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -377,10 +444,10 @@ public final class SubnetsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SubnetInner object wrapped in ServiceResponse if successful.
+     * @return the SubnetInner object if successful.
      */
-    public ServiceResponse<SubnetInner> createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last();
+    public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().getBody();
     }
 
     /**
@@ -394,7 +461,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
     }
 
     /**
@@ -406,7 +473,25 @@ public final class SubnetsInner {
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SubnetInner>> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public Observable<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
+            @Override
+            public SubnetInner call(ServiceResponse<SubnetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SubnetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -440,10 +525,10 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubnetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SubnetInner object if successful.
      */
-    public ServiceResponse<SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single();
+    public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().getBody();
     }
 
     /**
@@ -457,7 +542,7 @@ public final class SubnetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, final ServiceCallback<SubnetInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters), serviceCallback);
     }
 
     /**
@@ -469,7 +554,25 @@ public final class SubnetsInner {
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
      * @return the observable to the SubnetInner object
      */
-    public Observable<ServiceResponse<SubnetInner>> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public Observable<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).map(new Func1<ServiceResponse<SubnetInner>, SubnetInner>() {
+            @Override
+            public SubnetInner call(ServiceResponse<SubnetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @return the observable to the SubnetInner object
+     */
+    public Observable<ServiceResponse<SubnetInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -519,17 +622,16 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SubnetInner>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SubnetInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        PagedList<SubnetInner> pagedList = new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.getBody()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SubnetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -557,15 +659,35 @@ public final class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @return the observable to the List&lt;SubnetInner&gt; object
+     * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubnetInner>>> listAsync(final String resourceGroupName, final String virtualNetworkName) {
+    public Observable<Page<SubnetInner>> listAsync(final String resourceGroupName, final String virtualNetworkName) {
+        return listWithServiceResponseAsync(resourceGroupName, virtualNetworkName)
+            .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
+                @Override
+                public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List subnets operation retrieves all the subnets in a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @return the observable to the PagedList&lt;SubnetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SubnetInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String virtualNetworkName) {
         return listSinglePageAsync(resourceGroupName, virtualNetworkName)
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -575,7 +697,7 @@ public final class SubnetsInner {
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SubnetInner>> * @param virtualNetworkName The name of the virtual network.
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
         if (resourceGroupName == null) {
@@ -618,17 +740,16 @@ public final class SubnetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SubnetInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubnetInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SubnetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SubnetInner> pagedList = new PagedList<SubnetInner>(response.getBody()) {
+        return new PagedList<SubnetInner>(response.getBody()) {
             @Override
             public Page<SubnetInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SubnetInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -655,15 +776,34 @@ public final class SubnetsInner {
      * The List subnets operation retrieves all the subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SubnetInner&gt; object
+     * @return the observable to the PagedList&lt;SubnetInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubnetInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<SubnetInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SubnetInner>>, Page<SubnetInner>>() {
+                @Override
+                public Page<SubnetInner> call(ServiceResponse<Page<SubnetInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List subnets operation retrieves all the subnets in a virtual network.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SubnetInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SubnetInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SubnetInner>>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(ServiceResponse<Page<SubnetInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -672,7 +812,7 @@ public final class SubnetsInner {
      * The List subnets operation retrieves all the subnets in a virtual network.
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubnetInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

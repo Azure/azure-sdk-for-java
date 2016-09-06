@@ -8,11 +8,11 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.resources.GenericResource;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,7 +38,7 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.serviceClient.resourceGroups().listResources(groupName).getBody());
+        return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
     }
 
     @Override
@@ -59,7 +59,7 @@ final class GenericResourcesImpl
                 parentResourcePath,
                 resourceType,
                 resourceName,
-                apiVersion).getBody();
+                apiVersion);
     }
 
     @Override
@@ -109,7 +109,7 @@ final class GenericResourcesImpl
                 parentResourcePath,
                 resourceType,
                 resourceName,
-                apiVersion).getBody();
+                apiVersion);
         GenericResourceImpl resource = new GenericResourceImpl(
                 resourceName,
                 inner,

@@ -66,10 +66,10 @@ public final class QueryKeysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ListQueryKeysResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ListQueryKeysResultInner object if successful.
      */
-    public ServiceResponse<ListQueryKeysResultInner> list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(resourceGroupName, serviceName).toBlocking().single();
+    public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class QueryKeysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<ListQueryKeysResultInner> serviceCallback) {
-        return ServiceCall.create(listAsync(resourceGroupName, serviceName), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -91,7 +91,23 @@ public final class QueryKeysInner {
      * @param serviceName The name of the Search service for which to list query keys.
      * @return the observable to the ListQueryKeysResultInner object
      */
-    public Observable<ServiceResponse<ListQueryKeysResultInner>> listAsync(String resourceGroupName, String serviceName) {
+    public Observable<ListQueryKeysResultInner> listAsync(String resourceGroupName, String serviceName) {
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<ListQueryKeysResultInner>, ListQueryKeysResultInner>() {
+            @Override
+            public ListQueryKeysResultInner call(ServiceResponse<ListQueryKeysResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns the list of query API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @param serviceName The name of the Search service for which to list query keys.
+     * @return the observable to the ListQueryKeysResultInner object
+     */
+    public Observable<ServiceResponse<ListQueryKeysResultInner>> listWithServiceResponseAsync(String resourceGroupName, String serviceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

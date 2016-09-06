@@ -102,10 +102,9 @@ public final class VirtualNetworkPeeringsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last();
+    public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().getBody();
     }
 
     /**
@@ -118,7 +117,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -129,7 +128,24 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete virtual network peering operation deletes the specified peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -158,10 +174,9 @@ public final class VirtualNetworkPeeringsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +189,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -185,7 +200,24 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete virtual network peering operation deletes the specified peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -232,10 +264,10 @@ public final class VirtualNetworkPeeringsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualNetworkPeeringInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public ServiceResponse<VirtualNetworkPeeringInner> get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single();
+    public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
     }
 
     /**
@@ -248,7 +280,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName), serviceCallback);
     }
 
     /**
@@ -259,7 +291,24 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @return the observable to the VirtualNetworkPeeringInner object
      */
-    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Observable<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+        return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
+            @Override
+            public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get virtual network peering operation retrieves information about the specified virtual network peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
+     * @return the observable to the VirtualNetworkPeeringInner object
+     */
+    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -307,10 +356,10 @@ public final class VirtualNetworkPeeringsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the VirtualNetworkPeeringInner object wrapped in ServiceResponse if successful.
+     * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public ServiceResponse<VirtualNetworkPeeringInner> createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last();
+    public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().getBody();
     }
 
     /**
@@ -324,7 +373,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
@@ -336,7 +385,25 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+    public Observable<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
+            @Override
+            public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -370,10 +437,10 @@ public final class VirtualNetworkPeeringsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualNetworkPeeringInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public ServiceResponse<VirtualNetworkPeeringInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single();
+    public VirtualNetworkPeeringInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().getBody();
     }
 
     /**
@@ -387,7 +454,7 @@ public final class VirtualNetworkPeeringsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters, final ServiceCallback<VirtualNetworkPeeringInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters), serviceCallback);
     }
 
     /**
@@ -399,7 +466,25 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
      * @return the observable to the VirtualNetworkPeeringInner object
      */
-    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+    public Observable<VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).map(new Func1<ServiceResponse<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner>() {
+            @Override
+            public VirtualNetworkPeeringInner call(ServiceResponse<VirtualNetworkPeeringInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put virtual network peering operation creates/updates a peering in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
+     * @return the observable to the VirtualNetworkPeeringInner object
+     */
+    public Observable<ServiceResponse<VirtualNetworkPeeringInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -449,17 +534,16 @@ public final class VirtualNetworkPeeringsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualNetworkPeeringInner>> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkPeeringInner> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
-        PagedList<VirtualNetworkPeeringInner> pagedList = new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualNetworkPeeringInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -487,15 +571,35 @@ public final class VirtualNetworkPeeringsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @return the observable to the List&lt;VirtualNetworkPeeringInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listAsync(final String resourceGroupName, final String virtualNetworkName) {
+    public Observable<Page<VirtualNetworkPeeringInner>> listAsync(final String resourceGroupName, final String virtualNetworkName) {
+        return listWithServiceResponseAsync(resourceGroupName, virtualNetworkName)
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
+                @Override
+                public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String virtualNetworkName) {
         return listSinglePageAsync(resourceGroupName, virtualNetworkName)
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -505,7 +609,7 @@ public final class VirtualNetworkPeeringsInner {
      *
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param virtualNetworkName The name of the virtual network.
-     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listSinglePageAsync(final String resourceGroupName, final String virtualNetworkName) {
         if (resourceGroupName == null) {
@@ -548,17 +652,16 @@ public final class VirtualNetworkPeeringsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualNetworkPeeringInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkPeeringInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<VirtualNetworkPeeringInner> pagedList = new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
+        return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
             @Override
             public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualNetworkPeeringInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -585,15 +688,34 @@ public final class VirtualNetworkPeeringsInner {
      * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;VirtualNetworkPeeringInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<VirtualNetworkPeeringInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Page<VirtualNetworkPeeringInner>>() {
+                @Override
+                public Page<VirtualNetworkPeeringInner> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List virtual network peerings operation retrieves all the peerings in a virtual network.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualNetworkPeeringInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<VirtualNetworkPeeringInner>>, Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> call(ServiceResponse<Page<VirtualNetworkPeeringInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -602,7 +724,7 @@ public final class VirtualNetworkPeeringsInner {
      * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
     ServiceResponse<PageImpl<VirtualNetworkPeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualNetworkPeeringInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

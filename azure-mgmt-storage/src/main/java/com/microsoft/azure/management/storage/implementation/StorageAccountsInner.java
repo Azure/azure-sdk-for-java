@@ -110,10 +110,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CheckNameAvailabilityResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CheckNameAvailabilityResultInner object if successful.
      */
-    public ServiceResponse<CheckNameAvailabilityResultInner> checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
-        return checkNameAvailabilityAsync(name).toBlocking().single();
+    public CheckNameAvailabilityResultInner checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
+        return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
     /**
@@ -124,7 +124,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name, final ServiceCallback<CheckNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityAsync(name), serviceCallback);
+        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -133,7 +133,22 @@ public final class StorageAccountsInner {
      * @param name the String value
      * @return the observable to the CheckNameAvailabilityResultInner object
      */
-    public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityAsync(String name) {
+    public Observable<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
+        return checkNameAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<CheckNameAvailabilityResultInner>, CheckNameAvailabilityResultInner>() {
+            @Override
+            public CheckNameAvailabilityResultInner call(ServiceResponse<CheckNameAvailabilityResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks that account name is valid and is not in use.
+     *
+     * @param name the String value
+     * @return the observable to the CheckNameAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithServiceResponseAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -176,10 +191,10 @@ public final class StorageAccountsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the StorageAccountInner object wrapped in ServiceResponse if successful.
+     * @return the StorageAccountInner object if successful.
      */
-    public ServiceResponse<StorageAccountInner> create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createAsync(resourceGroupName, accountName, parameters).toBlocking().last();
+    public StorageAccountInner create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -192,7 +207,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountInner> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) {
-        return ServiceCall.create(createAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -203,7 +218,24 @@ public final class StorageAccountsInner {
      * @param parameters The parameters to provide for the created account.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<StorageAccountInner>> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
+    public Observable<StorageAccountInner> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+            @Override
+            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and subsequent create or update request is issued with exact same set of properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters to provide for the created account.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<StorageAccountInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -233,10 +265,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object if successful.
      */
-    public ServiceResponse<StorageAccountInner> beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateAsync(resourceGroupName, accountName, parameters).toBlocking().single();
+    public StorageAccountInner beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -249,7 +281,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountInner> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) {
-        return ServiceCall.create(beginCreateAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -260,7 +292,24 @@ public final class StorageAccountsInner {
      * @param parameters The parameters to provide for the created account.
      * @return the observable to the StorageAccountInner object
      */
-    public Observable<ServiceResponse<StorageAccountInner>> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
+    public Observable<StorageAccountInner> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+            @Override
+            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and subsequent create or update request is issued with exact same set of properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters to provide for the created account.
+     * @return the observable to the StorageAccountInner object
+     */
+    public Observable<ServiceResponse<StorageAccountInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -307,10 +356,9 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(resourceGroupName, accountName).toBlocking().single();
+    public void delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -322,7 +370,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -332,7 +380,23 @@ public final class StorageAccountsInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String accountName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a storage account in Microsoft Azure.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -374,10 +438,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object if successful.
      */
-    public ServiceResponse<StorageAccountInner> getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return getPropertiesAsync(resourceGroupName, accountName).toBlocking().single();
+    public StorageAccountInner getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -389,7 +453,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountInner> getPropertiesAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccountInner> serviceCallback) {
-        return ServiceCall.create(getPropertiesAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(getPropertiesWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -399,7 +463,23 @@ public final class StorageAccountsInner {
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @return the observable to the StorageAccountInner object
      */
-    public Observable<ServiceResponse<StorageAccountInner>> getPropertiesAsync(String resourceGroupName, String accountName) {
+    public Observable<StorageAccountInner> getPropertiesAsync(String resourceGroupName, String accountName) {
+        return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+            @Override
+            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, account type, location, and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @return the observable to the StorageAccountInner object
+     */
+    public Observable<ServiceResponse<StorageAccountInner>> getPropertiesWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -442,10 +522,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountInner object if successful.
      */
-    public ServiceResponse<StorageAccountInner> update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return updateAsync(resourceGroupName, accountName, parameters).toBlocking().single();
+    public StorageAccountInner update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -458,7 +538,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountInner> updateAsync(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters, final ServiceCallback<StorageAccountInner> serviceCallback) {
-        return ServiceCall.create(updateAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -469,7 +549,24 @@ public final class StorageAccountsInner {
      * @param parameters The parameters to provide for the updated account.
      * @return the observable to the StorageAccountInner object
      */
-    public Observable<ServiceResponse<StorageAccountInner>> updateAsync(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) {
+    public Observable<StorageAccountInner> updateAsync(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+            @Override
+            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The update operation can be used to update the account type, encryption, or tags for a storage account. It can also be used to map the account to a custom domain. Only one custom domain is supported per storage account and. replacement/change of custom domain is not supported. In order to replace an old custom domain, the old value must be cleared/unregistered before a new value may be set. Update of multiple properties is supported. This call does not change the storage keys for the account. If you want to change storage account keys, use the regenerate keys operation.  The location and name of the storage account cannot be changed after creation.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters to provide for the updated account.
+     * @return the observable to the StorageAccountInner object
+     */
+    public Observable<ServiceResponse<StorageAccountInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -513,10 +610,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StorageAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
-    public ServiceResponse<List<StorageAccountInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        return listAsync().toBlocking().single();
+    public List<StorageAccountInner> list() throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -526,7 +623,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<StorageAccountInner>> listAsync(final ServiceCallback<List<StorageAccountInner>> serviceCallback) {
-        return ServiceCall.create(listAsync(), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -534,7 +631,21 @@ public final class StorageAccountsInner {
      *
      * @return the observable to the List&lt;StorageAccountInner&gt; object
      */
-    public Observable<ServiceResponse<List<StorageAccountInner>>> listAsync() {
+    public Observable<List<StorageAccountInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
+            @Override
+            public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
+     *
+     * @return the observable to the List&lt;StorageAccountInner&gt; object
+     */
+    public Observable<ServiceResponse<List<StorageAccountInner>>> listWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -570,10 +681,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StorageAccountInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
-    public ServiceResponse<List<StorageAccountInner>> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
-        return listByResourceGroupAsync(resourceGroupName).toBlocking().single();
+    public List<StorageAccountInner> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
     /**
@@ -584,7 +695,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<StorageAccountInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<StorageAccountInner>> serviceCallback) {
-        return ServiceCall.create(listByResourceGroupAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.create(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -593,7 +704,22 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @return the observable to the List&lt;StorageAccountInner&gt; object
      */
-    public Observable<ServiceResponse<List<StorageAccountInner>>> listByResourceGroupAsync(String resourceGroupName) {
+    public Observable<List<StorageAccountInner>> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<StorageAccountInner>>, List<StorageAccountInner>>() {
+            @Override
+            public List<StorageAccountInner> call(ServiceResponse<List<StorageAccountInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @return the observable to the List&lt;StorageAccountInner&gt; object
+     */
+    public Observable<ServiceResponse<List<StorageAccountInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -633,10 +759,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountListKeysResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountListKeysResultInner object if successful.
      */
-    public ServiceResponse<StorageAccountListKeysResultInner> listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return listKeysAsync(resourceGroupName, accountName).toBlocking().single();
+    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -648,7 +774,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<StorageAccountListKeysResultInner> serviceCallback) {
-        return ServiceCall.create(listKeysAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(listKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -658,7 +784,23 @@ public final class StorageAccountsInner {
      * @param accountName The name of the storage account.
      * @return the observable to the StorageAccountListKeysResultInner object
      */
-    public Observable<ServiceResponse<StorageAccountListKeysResultInner>> listKeysAsync(String resourceGroupName, String accountName) {
+    public Observable<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName) {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<StorageAccountListKeysResultInner>, StorageAccountListKeysResultInner>() {
+            @Override
+            public StorageAccountListKeysResultInner call(ServiceResponse<StorageAccountListKeysResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists the access keys for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the storage account.
+     * @return the observable to the StorageAccountListKeysResultInner object
+     */
+    public Observable<ServiceResponse<StorageAccountListKeysResultInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -701,10 +843,10 @@ public final class StorageAccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StorageAccountListKeysResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StorageAccountListKeysResultInner object if successful.
      */
-    public ServiceResponse<StorageAccountListKeysResultInner> regenerateKey(String resourceGroupName, String accountName, String keyName) throws CloudException, IOException, IllegalArgumentException {
-        return regenerateKeyAsync(resourceGroupName, accountName, keyName).toBlocking().single();
+    public StorageAccountListKeysResultInner regenerateKey(String resourceGroupName, String accountName, String keyName) throws CloudException, IOException, IllegalArgumentException {
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
     }
 
     /**
@@ -717,7 +859,7 @@ public final class StorageAccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StorageAccountListKeysResultInner> regenerateKeyAsync(String resourceGroupName, String accountName, String keyName, final ServiceCallback<StorageAccountListKeysResultInner> serviceCallback) {
-        return ServiceCall.create(regenerateKeyAsync(resourceGroupName, accountName, keyName), serviceCallback);
+        return ServiceCall.create(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
     }
 
     /**
@@ -728,7 +870,24 @@ public final class StorageAccountsInner {
      * @param keyName the String value
      * @return the observable to the StorageAccountListKeysResultInner object
      */
-    public Observable<ServiceResponse<StorageAccountListKeysResultInner>> regenerateKeyAsync(String resourceGroupName, String accountName, String keyName) {
+    public Observable<StorageAccountListKeysResultInner> regenerateKeyAsync(String resourceGroupName, String accountName, String keyName) {
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).map(new Func1<ServiceResponse<StorageAccountListKeysResultInner>, StorageAccountListKeysResultInner>() {
+            @Override
+            public StorageAccountListKeysResultInner call(ServiceResponse<StorageAccountListKeysResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Regenerates the access keys for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param keyName the String value
+     * @return the observable to the StorageAccountListKeysResultInner object
+     */
+    public Observable<ServiceResponse<StorageAccountListKeysResultInner>> regenerateKeyWithServiceResponseAsync(String resourceGroupName, String accountName, String keyName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

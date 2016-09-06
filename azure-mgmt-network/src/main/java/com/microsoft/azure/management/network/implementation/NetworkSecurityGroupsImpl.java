@@ -35,17 +35,17 @@ class NetworkSecurityGroupsImpl
 
     @Override
     public PagedList<NetworkSecurityGroup> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll());
     }
 
     @Override
     public PagedList<NetworkSecurityGroup> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
     public NetworkSecurityGroupImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override

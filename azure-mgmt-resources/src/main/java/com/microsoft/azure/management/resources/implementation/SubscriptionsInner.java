@@ -83,10 +83,10 @@ public final class SubscriptionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;LocationInner&gt; object if successful.
      */
-    public ServiceResponse<List<LocationInner>> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
-        return listLocationsAsync(subscriptionId).toBlocking().single();
+    public List<LocationInner> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
+        return listLocationsWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
     }
 
     /**
@@ -97,7 +97,7 @@ public final class SubscriptionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<LocationInner>> listLocationsAsync(String subscriptionId, final ServiceCallback<List<LocationInner>> serviceCallback) {
-        return ServiceCall.create(listLocationsAsync(subscriptionId), serviceCallback);
+        return ServiceCall.create(listLocationsWithServiceResponseAsync(subscriptionId), serviceCallback);
     }
 
     /**
@@ -106,7 +106,22 @@ public final class SubscriptionsInner {
      * @param subscriptionId Id of the subscription
      * @return the observable to the List&lt;LocationInner&gt; object
      */
-    public Observable<ServiceResponse<List<LocationInner>>> listLocationsAsync(String subscriptionId) {
+    public Observable<List<LocationInner>> listLocationsAsync(String subscriptionId) {
+        return listLocationsWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<List<LocationInner>>, List<LocationInner>>() {
+            @Override
+            public List<LocationInner> call(ServiceResponse<List<LocationInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of the subscription locations.
+     *
+     * @param subscriptionId Id of the subscription
+     * @return the observable to the List&lt;LocationInner&gt; object
+     */
+    public Observable<ServiceResponse<List<LocationInner>>> listLocationsWithServiceResponseAsync(String subscriptionId) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -142,10 +157,10 @@ public final class SubscriptionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubscriptionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SubscriptionInner object if successful.
      */
-    public ServiceResponse<SubscriptionInner> get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(subscriptionId).toBlocking().single();
+    public SubscriptionInner get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
     }
 
     /**
@@ -156,7 +171,7 @@ public final class SubscriptionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubscriptionInner> getAsync(String subscriptionId, final ServiceCallback<SubscriptionInner> serviceCallback) {
-        return ServiceCall.create(getAsync(subscriptionId), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(subscriptionId), serviceCallback);
     }
 
     /**
@@ -165,7 +180,22 @@ public final class SubscriptionsInner {
      * @param subscriptionId Id of the subscription.
      * @return the observable to the SubscriptionInner object
      */
-    public Observable<ServiceResponse<SubscriptionInner>> getAsync(String subscriptionId) {
+    public Observable<SubscriptionInner> getAsync(String subscriptionId) {
+        return getWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<SubscriptionInner>, SubscriptionInner>() {
+            @Override
+            public SubscriptionInner call(ServiceResponse<SubscriptionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets details about particular subscription.
+     *
+     * @param subscriptionId Id of the subscription.
+     * @return the observable to the SubscriptionInner object
+     */
+    public Observable<ServiceResponse<SubscriptionInner>> getWithServiceResponseAsync(String subscriptionId) {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
@@ -199,17 +229,16 @@ public final class SubscriptionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SubscriptionInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubscriptionInner> list() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SubscriptionInner>> response = listSinglePageAsync().toBlocking().single();
-        PagedList<SubscriptionInner> pagedList = new PagedList<SubscriptionInner>(response.getBody()) {
+        return new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
             public Page<SubscriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SubscriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -233,15 +262,14 @@ public final class SubscriptionsInner {
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @return the observable to the List&lt;SubscriptionInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubscriptionInner>>> listAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
+    public Observable<Page<SubscriptionInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -249,7 +277,26 @@ public final class SubscriptionsInner {
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of the subscriptionIds.
+     *
+     * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
@@ -283,17 +330,16 @@ public final class SubscriptionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SubscriptionInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubscriptionInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SubscriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SubscriptionInner> pagedList = new PagedList<SubscriptionInner>(response.getBody()) {
+        return new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
             public Page<SubscriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SubscriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -320,15 +366,34 @@ public final class SubscriptionsInner {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SubscriptionInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<SubscriptionInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SubscriptionInner>>, Page<SubscriptionInner>>() {
+                @Override
+                public Page<SubscriptionInner> call(ServiceResponse<Page<SubscriptionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of the subscriptionIds.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SubscriptionInner>>, Observable<ServiceResponse<Page<SubscriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubscriptionInner>>> call(ServiceResponse<Page<SubscriptionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -337,7 +402,7 @@ public final class SubscriptionsInner {
      * Gets a list of the subscriptionIds.
      *
     ServiceResponse<PageImpl1<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SubscriptionInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

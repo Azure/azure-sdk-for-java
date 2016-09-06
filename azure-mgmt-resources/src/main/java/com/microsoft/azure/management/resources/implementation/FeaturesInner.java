@@ -91,17 +91,16 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<FeatureResultInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<FeatureResultInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -125,15 +124,14 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
-     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
-    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+    public Observable<Page<FeatureResultInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -141,7 +139,26 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+     * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -178,17 +195,16 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<FeatureResultInner>> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<FeatureResultInner>> response = listSinglePageAsync(resourceProviderNamespace).toBlocking().single();
-        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -214,15 +230,34 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
-    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAsync(final String resourceProviderNamespace) {
+    public Observable<Page<FeatureResultInner>> listAsync(final String resourceProviderNamespace) {
+        return listWithServiceResponseAsync(resourceProviderNamespace)
+            .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
+                @Override
+                public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listWithServiceResponseAsync(final String resourceProviderNamespace) {
         return listSinglePageAsync(resourceProviderNamespace)
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -231,7 +266,7 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param resourceProviderNamespace The namespace of the resource provider.
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listSinglePageAsync(final String resourceProviderNamespace) {
         if (resourceProviderNamespace == null) {
@@ -272,10 +307,10 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the FeatureResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the FeatureResultInner object if successful.
      */
-    public ServiceResponse<FeatureResultInner> get(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceProviderNamespace, featureName).toBlocking().single();
+    public FeatureResultInner get(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
     }
 
     /**
@@ -287,7 +322,7 @@ public final class FeaturesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceProviderNamespace, featureName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
@@ -297,7 +332,23 @@ public final class FeaturesInner {
      * @param featureName Previewed feature name in the resource provider.
      * @return the observable to the FeatureResultInner object
      */
-    public Observable<ServiceResponse<FeatureResultInner>> getAsync(String resourceProviderNamespace, String featureName) {
+    public Observable<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
+        return getWithServiceResponseAsync(resourceProviderNamespace, featureName).map(new Func1<ServiceResponse<FeatureResultInner>, FeatureResultInner>() {
+            @Override
+            public FeatureResultInner call(ServiceResponse<FeatureResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get all features under the subscription.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param featureName Previewed feature name in the resource provider.
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<ServiceResponse<FeatureResultInner>> getWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -339,10 +390,10 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the FeatureResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the FeatureResultInner object if successful.
      */
-    public ServiceResponse<FeatureResultInner> register(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
-        return registerAsync(resourceProviderNamespace, featureName).toBlocking().single();
+    public FeatureResultInner register(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
+        return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
     }
 
     /**
@@ -354,7 +405,7 @@ public final class FeaturesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName, final ServiceCallback<FeatureResultInner> serviceCallback) {
-        return ServiceCall.create(registerAsync(resourceProviderNamespace, featureName), serviceCallback);
+        return ServiceCall.create(registerWithServiceResponseAsync(resourceProviderNamespace, featureName), serviceCallback);
     }
 
     /**
@@ -364,7 +415,23 @@ public final class FeaturesInner {
      * @param featureName Previewed feature name in the resource provider.
      * @return the observable to the FeatureResultInner object
      */
-    public Observable<ServiceResponse<FeatureResultInner>> registerAsync(String resourceProviderNamespace, String featureName) {
+    public Observable<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
+        return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).map(new Func1<ServiceResponse<FeatureResultInner>, FeatureResultInner>() {
+            @Override
+            public FeatureResultInner call(ServiceResponse<FeatureResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Registers for a previewed feature of a resource provider.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param featureName Previewed feature name in the resource provider.
+     * @return the observable to the FeatureResultInner object
+     */
+    public Observable<ServiceResponse<FeatureResultInner>> registerWithServiceResponseAsync(String resourceProviderNamespace, String featureName) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -405,17 +472,16 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<FeatureResultInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<FeatureResultInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -442,15 +508,34 @@ public final class FeaturesInner {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
-    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<FeatureResultInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
+                @Override
+                public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features for all the providers in the current subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -459,7 +544,7 @@ public final class FeaturesInner {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -493,17 +578,16 @@ public final class FeaturesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<FeatureResultInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<FeatureResultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<FeatureResultInner> pagedList = new PagedList<FeatureResultInner>(response.getBody()) {
+        return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
             public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<FeatureResultInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -530,15 +614,34 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;FeatureResultInner&gt; object
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
      */
-    public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<FeatureResultInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<FeatureResultInner>>, Page<FeatureResultInner>>() {
+                @Override
+                public Page<FeatureResultInner> call(ServiceResponse<Page<FeatureResultInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of previewed features of a resource provider.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;FeatureResultInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<FeatureResultInner>>, Observable<ServiceResponse<Page<FeatureResultInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<FeatureResultInner>>> call(ServiceResponse<Page<FeatureResultInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -547,7 +650,7 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
     ServiceResponse<PageImpl<FeatureResultInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;FeatureResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<FeatureResultInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
