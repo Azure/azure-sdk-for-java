@@ -33,8 +33,8 @@ class NetworkSecurityGroupImpl
         NetworkSecurityGroup.Update {
 
     private final NetworkSecurityGroupsInner innerCollection;
-    private final Map<String, NetworkSecurityRule> rules = new TreeMap<>();
-    private final Map<String, NetworkSecurityRule> defaultRules = new TreeMap<>();
+    private Map<String, NetworkSecurityRule> rules;
+    private Map<String, NetworkSecurityRule> defaultRules;
 
     NetworkSecurityGroupImpl(
             final String name,
@@ -47,7 +47,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected void initializeChildrenFromInner() {
-        this.rules.clear();
+        this.rules = new TreeMap<>();
         List<SecurityRuleInner> inners = this.inner().securityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
@@ -55,7 +55,7 @@ class NetworkSecurityGroupImpl
             }
         }
 
-        this.defaultRules.clear();
+        this.defaultRules = new TreeMap<>();
         inners = this.inner().defaultSecurityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
@@ -139,12 +139,16 @@ class NetworkSecurityGroupImpl
     protected void afterCreating() {
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    @Override
+    protected Observable<ServiceResponse<NetworkSecurityGroupInner>> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
     @Override
     public Observable<NetworkSecurityGroup> createResourceAsync() {
         final NetworkSecurityGroupImpl self = this;
         beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return createInner()
                 .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
                     @Override
                     public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {

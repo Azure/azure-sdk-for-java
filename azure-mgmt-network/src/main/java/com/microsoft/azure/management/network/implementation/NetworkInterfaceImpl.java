@@ -46,7 +46,7 @@ class NetworkInterfaceImpl
         NetworkInterface.Definition,
         NetworkInterface.Update {
     // Clients
-    private final NetworkInterfacesInner client;
+    private final NetworkInterfacesInner innerCollection;
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
@@ -55,7 +55,7 @@ class NetworkInterfaceImpl
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
 
     // references to all ip configuration
-    private final Map<String, NicIpConfiguration> nicIpConfigurations = new TreeMap<>();
+    private Map<String, NicIpConfiguration> nicIpConfigurations;
 
     // unique key of a creatable network security group to be associated with the network interface
     private String creatableNetworkSecurityGroupKey;
@@ -71,7 +71,7 @@ class NetworkInterfaceImpl
                          final NetworkInterfacesInner client,
                          final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.client = client;
+        this.innerCollection = client;
         this.nicName = name;
         this.namer = new ResourceNamer(this.nicName);
         initializeChildrenFromInner();
@@ -82,7 +82,7 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterface refresh() throws Exception {
         ServiceResponse<NetworkInterfaceInner> response =
-                this.client.get(this.resourceGroupName(), this.name());
+                this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response.getBody());
         clearCachedRelatedResources();
         initializeChildrenFromInner();
@@ -382,14 +382,16 @@ class NetworkInterfaceImpl
         clearCachedRelatedResources();
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    @Override
+    protected Observable<ServiceResponse<NetworkInterfaceInner>> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
     @Override
     public Observable<NetworkInterface> createResourceAsync() {
         final NetworkInterfaceImpl self = this;
         beforeCreating();
-        return this.client.createOrUpdateAsync(this.resourceGroupName(),
-                this.nicName,
-                this.inner())
+        return createInner()
                 .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
                     @Override
                     public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
@@ -417,7 +419,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected void initializeChildrenFromInner() {
-        this.nicIpConfigurations.clear();
+        this.nicIpConfigurations = new TreeMap<>();
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIPConfigurationInner inner : inners) {

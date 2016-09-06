@@ -33,7 +33,7 @@ class NetworkImpl
         Network.Update {
 
     private final VirtualNetworksInner innerCollection;
-    private final Map<String, Subnet> subnets = new TreeMap<>();
+    private Map<String, Subnet> subnets;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
@@ -45,7 +45,7 @@ class NetworkImpl
 
     @Override
     protected void initializeChildrenFromInner() {
-        this.subnets.clear();
+        this.subnets = new TreeMap<>();
         List<SubnetInner> inners = this.inner().subnets();
         if (inners != null) {
             for (SubnetInner inner : inners) {
@@ -171,10 +171,15 @@ class NetworkImpl
     }
 
     @Override
+    protected Observable<ServiceResponse<VirtualNetworkInner>> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
     public Observable<Network> createResourceAsync() {
         final NetworkImpl self = this;
         beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return createInner()
                 .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
                     @Override
                     public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {

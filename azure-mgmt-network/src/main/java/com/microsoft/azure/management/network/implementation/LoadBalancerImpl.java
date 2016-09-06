@@ -54,13 +54,13 @@ class LoadBalancerImpl
     private final LoadBalancersInner innerCollection;
     private final HashMap<String, String> nicsInBackends = new HashMap<>();
     private final HashMap<String, String> creatablePIPKeys = new HashMap<>();
-    private final Map<String, Backend> backends = new TreeMap<>();
-    private final Map<String, TcpProbe> tcpProbes = new TreeMap<>();
-    private final Map<String, HttpProbe> httpProbes = new TreeMap<>();
-    private final Map<String, LoadBalancingRule> loadBalancingRules = new TreeMap<>();
-    private final Map<String, Frontend> frontends = new TreeMap<>();
-    private final Map<String, InboundNatRule> inboundNatRules = new TreeMap<>();
-    private final Map<String, InboundNatPool> inboundNatPools = new TreeMap<>();
+    private Map<String, Backend> backends;
+    private Map<String, TcpProbe> tcpProbes;
+    private Map<String, HttpProbe> httpProbes;
+    private Map<String, LoadBalancingRule> loadBalancingRules;
+    private Map<String, Frontend> frontends;
+    private Map<String, InboundNatRule> inboundNatRules;
+    private Map<String, InboundNatPool> inboundNatPools;
 
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
@@ -192,10 +192,15 @@ class LoadBalancerImpl
     }
 
     @Override
+    protected Observable<ServiceResponse<LoadBalancerInner>> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
     public Observable<LoadBalancer> createResourceAsync()  {
         final LoadBalancer self = this;
         beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return createInner()
                 .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
                     @Override
                     public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
@@ -212,7 +217,7 @@ class LoadBalancerImpl
     }
 
     private void initializeFrontendsFromInner() {
-        this.frontends.clear();
+        this.frontends = new TreeMap<>();
         List<FrontendIPConfigurationInner> frontendsInner = this.inner().frontendIPConfigurations();
         if (frontendsInner != null) {
             for (FrontendIPConfigurationInner frontendInner : frontendsInner) {
@@ -223,7 +228,7 @@ class LoadBalancerImpl
     }
 
     private void initializeBackendsFromInner() {
-        this.backends.clear();
+        this.backends = new TreeMap<>();
         List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
         if (backendsInner != null) {
             for (BackendAddressPoolInner backendInner : backendsInner) {
@@ -234,8 +239,8 @@ class LoadBalancerImpl
     }
 
     private void initializeProbesFromInner() {
-        this.httpProbes.clear();
-        this.tcpProbes.clear();
+        this.httpProbes = new TreeMap<>();
+        this.tcpProbes = new TreeMap<>();
         if (this.inner().probes() != null) {
             for (ProbeInner probeInner : this.inner().probes()) {
                 ProbeImpl probe = new ProbeImpl(probeInner, this);
@@ -249,7 +254,7 @@ class LoadBalancerImpl
     }
 
     private void initializeLoadBalancingRulesFromInner() {
-        this.loadBalancingRules.clear();
+        this.loadBalancingRules = new TreeMap<>();
         List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
         if (rulesInner != null) {
             for (LoadBalancingRuleInner ruleInner : rulesInner) {
@@ -260,7 +265,7 @@ class LoadBalancerImpl
     }
 
     private void initializeInboundNatPoolsFromInner() {
-        this.inboundNatPools.clear();
+        this.inboundNatPools = new TreeMap<>();
         List<InboundNatPoolInner> inners = this.inner().inboundNatPools();
         if (inners != null) {
             for (InboundNatPoolInner inner : inners) {
@@ -271,7 +276,7 @@ class LoadBalancerImpl
     }
 
     private void initializeInboundNatRulesFromInner() {
-        this.inboundNatRules.clear();
+        this.inboundNatRules = new TreeMap<>();
         List<InboundNatRuleInner> rulesInner = this.inner().inboundNatRules();
         if (rulesInner != null) {
             for (InboundNatRuleInner ruleInner : rulesInner) {
