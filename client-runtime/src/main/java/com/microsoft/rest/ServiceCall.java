@@ -8,6 +8,7 @@
 package com.microsoft.rest;
 
 import com.google.common.util.concurrent.AbstractFuture;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -19,7 +20,7 @@ import rx.functions.Action1;
  *
  * @param <T> the type of the returning object
  */
-public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
+public class ServiceCall<T> extends AbstractFuture<T> {
     /**
      * The Retrofit method invocation.
      */
@@ -42,7 +43,7 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
             .subscribe(new Action1<ServiceResponse<T>>() {
                 @Override
                 public void call(ServiceResponse<T> t) {
-                    serviceCall.set(t);
+                    serviceCall.set(t.getBody());
                 }
             }, new Action1<Throwable>() {
                 @Override
@@ -69,9 +70,9 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
                 @Override
                 public void call(ServiceResponse<T> t) {
                     if (callback != null) {
-                        callback.success(t);
+                        callback.success(t.getBody());
                     }
-                    serviceCall.set(t);
+                    serviceCall.set(t.getBody());
                 }
             }, new Action1<Throwable>() {
                 @Override
@@ -102,9 +103,9 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
                 @Override
                 public void call(ServiceResponse<T> t) {
                     if (callback != null) {
-                        callback.success(t);
+                        callback.success(t.getBody());
                     }
-                    serviceCall.set(t);
+                    serviceCall.set(t.getBody());
                 }
             }, new Action1<Throwable>() {
                 @Override
@@ -127,17 +128,6 @@ public class ServiceCall<T> extends AbstractFuture<ServiceResponse<T>> {
 
     protected void setSubscription(Subscription subscription) {
         this.subscription = subscription;
-    }
-
-    /**
-     * Invoke this method to report completed, allowing
-     * {@link AbstractFuture#get()} to be unblocked.
-     *
-     * @param result the service response returned.
-     * @return true if successfully reported; false otherwise.
-     */
-    public boolean success(ServiceResponse<T> result) {
-        return set(result);
     }
 
     @Override

@@ -10,11 +10,12 @@ package com.microsoft.azure;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+
+import java.util.List;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
-
-import java.util.List;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.
@@ -116,7 +117,7 @@ public final class AzureServiceCall<T> extends ServiceCall<T> {
                 }
             }
             if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.getBody().getNextPageLink() == null) {
-                serviceCall.set(new ServiceResponse<>(lastResponse.getBody().getItems(), lastResponse.getResponse()));
+                serviceCall.set(lastResponse.getBody().getItems());
             } else {
                 serviceCall.setSubscription(next.call(serviceResponse.getBody().getNextPageLink()).single().subscribe(this));
             }
