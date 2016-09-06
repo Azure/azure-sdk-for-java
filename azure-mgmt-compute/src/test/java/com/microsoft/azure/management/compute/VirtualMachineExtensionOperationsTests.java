@@ -39,7 +39,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3)
                 .create();
 
-        // Using VMAccess Linux extension to reset the password for the existing user
+        // Using VMAccess Linux extension to reset the password for the existing user 'Foo12'
         // https://github.com/Azure/azure-linux-extensions/blob/master/VMAccess/README.md
         //
         vm.update()
@@ -55,6 +55,16 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         Assert.assertTrue(vm.extensions().size() > 0);
         Assert.assertTrue(vm.extensions().containsKey("VMAccessForLinux"));
+
+        // Update the VMAccess Linux extension to reset password again for the user 'Foo12'
+        //
+        vm.update()
+                .updateExtension("VMAccessForLinux")
+                    .withProtectedSetting("username", "Foo12")
+                    .withProtectedSetting("password", "muy!234OR")
+                    .withProtectedSetting("reset_ssh", "true")
+                .parent()
+                .apply();
     }
 
     @Test

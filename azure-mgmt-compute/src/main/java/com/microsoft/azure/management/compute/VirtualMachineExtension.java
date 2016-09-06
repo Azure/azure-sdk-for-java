@@ -480,6 +480,15 @@ public interface VirtualMachineExtension extends
             Update withPublicSetting(String key, Object value);
 
             /**
+             * Specifies a private settings entry.
+             *
+             * @param key the key of a private settings entry
+             * @param value the value of the private settings entry
+             * @return the next stage of the update
+             */
+            Update withProtectedSetting(String key, Object value);
+
+            /**
              * Specifies public settings.
              *
              * @param settings the public settings

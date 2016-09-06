@@ -7,6 +7,7 @@ import java.util.List;
 class PulletsImpl extends ExternalChildResourcesImpl<PulletImpl, Pullet, Object, ChickenImpl> {
     PulletsImpl(ChickenImpl parent) {
         super(parent, "Pullet");
+        initializeCollection();
     }
 
     public PulletImpl define(String name) {

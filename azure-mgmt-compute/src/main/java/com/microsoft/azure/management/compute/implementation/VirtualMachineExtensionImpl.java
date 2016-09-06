@@ -35,18 +35,7 @@ class VirtualMachineExtensionImpl
                                 VirtualMachineExtensionsInner client) {
         super(name, parent, inner);
         this.client = client;
-
-        if (this.inner().settings() == null) {
-            this.publicSettings = new LinkedHashMap<>();
-            this.inner().withSettings(this.publicSettings);
-        } else {
-            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
-        }
-
-        if (this.inner().protectedSettings() == null) {
-            this.protectedSettings = new LinkedHashMap<>();
-            this.inner().withProtectedSettings(this.protectedSettings);
-        }
+        initializeSettings();
     }
 
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(String name,
@@ -230,6 +219,7 @@ class VirtualMachineExtensionImpl
                     @Override
                     public VirtualMachineExtension call(ServiceResponse<VirtualMachineExtensionInner> response) {
                         self.setInner(response.getBody());
+                        self.initializeSettings();
                         return self;
                     }
                 });
@@ -260,6 +250,22 @@ class VirtualMachineExtensionImpl
         }
         if (this.protectedSettings.size() == 0) {
             this.inner().withProtectedSettings(null);
+        }
+    }
+
+    private void initializeSettings() {
+        if (this.inner().settings() == null) {
+            this.publicSettings = new LinkedHashMap<>();
+            this.inner().withSettings(this.publicSettings);
+        } else {
+            this.publicSettings = (LinkedHashMap<String, Object>) this.inner().settings();
+        }
+
+        if (this.inner().protectedSettings() == null) {
+            this.protectedSettings = new LinkedHashMap<>();
+            this.inner().withProtectedSettings(this.protectedSettings);
+        } else {
+            this.protectedSettings = (LinkedHashMap<String, Object>) this.inner().protectedSettings();
         }
     }
 }

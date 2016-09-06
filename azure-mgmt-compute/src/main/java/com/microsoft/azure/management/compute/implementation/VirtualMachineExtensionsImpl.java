@@ -25,6 +25,7 @@ class VirtualMachineExtensionsImpl extends
     VirtualMachineExtensionsImpl(VirtualMachineExtensionsInner client, VirtualMachineImpl parent) {
         super(parent, "VirtualMachineExtension");
         this.client = client;
+        this.initializeCollection();
     }
 
     /**

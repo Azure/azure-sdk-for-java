@@ -43,7 +43,6 @@ public abstract class ExternalChildResourcesImpl<
     protected ExternalChildResourcesImpl(ParentImplT parent, String childResourceName) {
         this.parent = parent;
         this.childResourceName = childResourceName;
-        this.initializeCollection();
     }
 
     /**
@@ -281,6 +280,16 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
+     * Initializes the child resource collection.
+     */
+    protected void initializeCollection() {
+        this.collection.clear();
+        for (FluentModelTImpl childResource : this.listChildResources()) {
+            this.collection.put(childResource.name(), childResource);
+        }
+    }
+
+    /**
      * Gets the list of external child resources.
      *
      * @return the list of external child resources
@@ -308,15 +317,5 @@ public abstract class ExternalChildResourcesImpl<
             }
         }
         return null;
-    }
-
-    /**
-     * Initializes the child resource collection.
-     */
-    private void initializeCollection() {
-        this.collection.clear();
-        for (FluentModelTImpl childResource : this.listChildResources()) {
-            this.collection.put(childResource.name(), childResource);
-        }
     }
 }
