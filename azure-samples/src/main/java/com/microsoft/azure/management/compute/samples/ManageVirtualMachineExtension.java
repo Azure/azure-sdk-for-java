@@ -124,12 +124,12 @@ public final class ManageVirtualMachineExtension {
 
                 vm.update()
                         .defineNewExtension(vmAccessExtensionName)
-                        .withPublisher(vmAccessExtensionPublisherName)
-                        .withType(vmAccessExtensionTypeName)
-                        .withVersion(vmAccessExtensionVersionName)
-                        .withProtectedSetting("username", secondUserName)
-                        .withProtectedSetting("password", secondUserPassword)
-                        .withProtectedSetting("expiration", secondUserExpiration)
+                            .withPublisher(vmAccessExtensionPublisherName)
+                            .withType(vmAccessExtensionTypeName)
+                            .withVersion(vmAccessExtensionVersionName)
+                            .withProtectedSetting("username", secondUserName)
+                            .withProtectedSetting("password", secondUserPassword)
+                            .withProtectedSetting("expiration", secondUserExpiration)
                         .attach()
                         .apply();
 
@@ -141,10 +141,10 @@ public final class ManageVirtualMachineExtension {
 
                 vm.update()
                         .defineNewExtension(vmAccessExtensionName)
-                        .withPublisher(vmAccessExtensionPublisherName)
-                        .withType(vmAccessExtensionTypeName)
-                        .withVersion(vmAccessExtensionVersionName)
-                        .withProtectedSetting("remove_user", secondUserName)
+                            .withPublisher(vmAccessExtensionPublisherName)
+                            .withType(vmAccessExtensionTypeName)
+                            .withVersion(vmAccessExtensionVersionName)
+                            .withProtectedSetting("remove_user", secondUserName)
                         .attach()
                         .apply();
 
