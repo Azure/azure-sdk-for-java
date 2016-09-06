@@ -136,7 +136,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param result the service response returned.
      * @return true if successfully reported; false otherwise.
      */
-    public boolean success(ServiceResponse<T> result) {
+    public boolean success(T result) {
         return set(result);
     }
 
