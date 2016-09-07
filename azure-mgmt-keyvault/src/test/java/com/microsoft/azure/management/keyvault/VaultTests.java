@@ -83,7 +83,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
         }
         vault.update()
                 .defineAccessPolicy()
-                    .forServicePrincipal("http://clientapp")
+                    .forServicePrincipal("https://graphapp")
                     .allowKeyAllPermissions()
                     .attach()
                 .apply();
