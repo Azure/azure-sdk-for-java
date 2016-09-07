@@ -74,7 +74,7 @@ public final class ManageVirtualMachineExtension {
 
             try {
                 //=============================================================
-                // Create a Linux VM with root (sudo) user name and password
+                // Create a Linux VM with root (sudo) user and install MySQL using custom script extension
 
                 System.out.println("Creating a Linux VM");
 
@@ -123,14 +123,11 @@ public final class ManageVirtualMachineExtension {
                 // Creates a new sudo user account with ssh password using VMAccess extension
 
                 vm.update()
-                        .defineNewExtension(vmAccessExtensionName)
-                            .withPublisher(vmAccessExtensionPublisherName)
-                            .withType(vmAccessExtensionTypeName)
-                            .withVersion(vmAccessExtensionVersionName)
+                        .updateExtension(vmAccessExtensionName)
                             .withProtectedSetting("username", secondUserName)
                             .withProtectedSetting("password", secondUserPassword)
                             .withProtectedSetting("expiration", secondUserExpiration)
-                        .attach()
+                            .parent()
                         .apply();
 
                 System.out.println("Added a new user to the virtual machine");
@@ -140,14 +137,10 @@ public final class ManageVirtualMachineExtension {
                 // Removes the second sudo user account using VMAccess extension
 
                 vm.update()
-                        .defineNewExtension(vmAccessExtensionName)
-                            .withPublisher(vmAccessExtensionPublisherName)
-                            .withType(vmAccessExtensionTypeName)
-                            .withVersion(vmAccessExtensionVersionName)
+                        .updateExtension(vmAccessExtensionName)
                             .withProtectedSetting("remove_user", secondUserName)
-                        .attach()
+                        .parent()
                         .apply();
-
 
                 //=============================================================
                 // Removes the custom script extension
