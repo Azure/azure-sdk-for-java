@@ -21,7 +21,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -77,9 +76,8 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterface refresh() throws Exception {
-        ServiceResponse<NetworkInterfaceInner> response =
-                this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        NetworkInterfaceInner response = this.client.get(this.resourceGroupName(), this.name());
+        this.setInner(response);
         clearCachedRelatedResources();
         initializeNicIpConfigurations();
         return this;
@@ -371,10 +369,10 @@ class NetworkInterfaceImpl
         return this.client.createOrUpdateAsync(this.resourceGroupName(),
                 this.nicName,
                 this.inner())
-                .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
+                .map(new Func1<NetworkInterfaceInner, NetworkInterface>() {
                     @Override
-                    public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
-                        self.setInner(networkInterfaceInner.getBody());
+                    public NetworkInterface call(NetworkInterfaceInner networkInterfaceInner) {
+                        self.setInner(networkInterfaceInner);
                         clearCachedRelatedResources();
                         initializeNicIpConfigurations();
                         return self;

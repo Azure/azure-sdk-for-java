@@ -67,10 +67,9 @@ public final class GlobalResourceGroupsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return moveResourcesAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single();
+    public void moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -81,7 +80,7 @@ public final class GlobalResourceGroupsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(moveResourcesAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+        return ServiceCall.create(moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
     }
 
     /**
@@ -90,7 +89,22 @@ public final class GlobalResourceGroupsInner {
      * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
+    public Observable<Void> moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
+        return moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> moveResourcesWithServiceResponseAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

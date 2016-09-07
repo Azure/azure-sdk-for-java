@@ -23,6 +23,9 @@ public final class VirtualNetworkGatewaySkuTier {
     /** Static value Standard for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier STANDARD = new VirtualNetworkGatewaySkuTier("Standard");
 
+    /** Static value UltraPerformance for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier ULTRA_PERFORMANCE = new VirtualNetworkGatewaySkuTier("UltraPerformance");
+
     private String value;
 
     /**

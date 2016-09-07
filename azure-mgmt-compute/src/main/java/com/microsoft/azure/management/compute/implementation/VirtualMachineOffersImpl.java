@@ -36,6 +36,6 @@ class VirtualMachineOffersImpl
 
     @Override
     public PagedList<VirtualMachineOffer> list() throws CloudException, IllegalArgumentException, IOException {
-        return wrapList(innerCollection.listOffers(publisher.region().toString(), publisher.name()).getBody());
+        return wrapList(innerCollection.listOffers(publisher.region().toString(), publisher.name()));
     }
 }

@@ -100,17 +100,16 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DomainInner>> getDomains(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getDomains(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DomainInner>> response = getDomainsSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.getBody()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -136,15 +135,34 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
      * @param resourceGroupName Name of the resource group
-     * @return the observable to the List&lt;DomainInner&gt; object
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DomainInner>>> getDomainsAsync(final String resourceGroupName) {
+    public Observable<Page<DomainInner>> getDomainsAsync(final String resourceGroupName) {
+        return getDomainsWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
+                @Override
+                public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists domains under a resource group.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getDomainsWithServiceResponseAsync(final String resourceGroupName) {
         return getDomainsSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDomainsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDomainsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -153,7 +171,7 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param resourceGroupName Name of the resource group
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getDomainsSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -194,10 +212,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainInner object if successful.
      */
-    public ServiceResponse<DomainInner> getDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
-        return getDomainAsync(resourceGroupName, domainName).toBlocking().single();
+    public DomainInner getDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
+        return getDomainWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
     }
 
     /**
@@ -209,7 +227,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> getDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(getDomainAsync(resourceGroupName, domainName), serviceCallback);
+        return ServiceCall.create(getDomainWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -219,7 +237,23 @@ public final class DomainsInner {
      * @param domainName Name of the domain
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> getDomainAsync(String resourceGroupName, String domainName) {
+    public Observable<DomainInner> getDomainAsync(String resourceGroupName, String domainName) {
+        return getDomainWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+            @Override
+            public DomainInner call(ServiceResponse<DomainInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets details of a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @return the observable to the DomainInner object
+     */
+    public Observable<ServiceResponse<DomainInner>> getDomainWithServiceResponseAsync(String resourceGroupName, String domainName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -262,10 +296,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainInner object if successful.
      */
-    public ServiceResponse<DomainInner> createOrUpdateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateDomainAsync(resourceGroupName, domainName, domain).toBlocking().single();
+    public DomainInner createOrUpdateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
     }
 
     /**
@@ -278,7 +312,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> createOrUpdateDomainAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateDomainAsync(resourceGroupName, domainName, domain), serviceCallback);
+        return ServiceCall.create(createOrUpdateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -289,7 +323,24 @@ public final class DomainsInner {
      * @param domain Domain registration information
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> createOrUpdateDomainAsync(String resourceGroupName, String domainName, DomainInner domain) {
+    public Observable<DomainInner> createOrUpdateDomainAsync(String resourceGroupName, String domainName, DomainInner domain) {
+        return createOrUpdateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+            @Override
+            public DomainInner call(ServiceResponse<DomainInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a domain.
+     *
+     * @param resourceGroupName &amp;gt;Name of the resource group
+     * @param domainName Name of the domain
+     * @param domain Domain registration information
+     * @return the observable to the DomainInner object
+     */
+    public Observable<ServiceResponse<DomainInner>> createOrUpdateDomainWithServiceResponseAsync(String resourceGroupName, String domainName, DomainInner domain) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -336,10 +387,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteDomainAsync(resourceGroupName, domainName).toBlocking().single();
+    public Object deleteDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
     }
 
     /**
@@ -351,7 +402,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteDomainAsync(String resourceGroupName, String domainName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteDomainAsync(resourceGroupName, domainName), serviceCallback);
+        return ServiceCall.create(deleteDomainWithServiceResponseAsync(resourceGroupName, domainName), serviceCallback);
     }
 
     /**
@@ -361,7 +412,23 @@ public final class DomainsInner {
      * @param domainName Name of the domain
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteDomainAsync(String resourceGroupName, String domainName) {
+    public Observable<Object> deleteDomainAsync(String resourceGroupName, String domainName) {
+        return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteDomainWithServiceResponseAsync(String resourceGroupName, String domainName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -398,10 +465,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteDomain(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) throws CloudException, IOException, IllegalArgumentException {
-        return deleteDomainAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single();
+    public Object deleteDomain(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) throws CloudException, IOException, IllegalArgumentException {
+        return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().getBody();
     }
 
     /**
@@ -414,7 +481,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteDomainAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteDomainAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
+        return ServiceCall.create(deleteDomainWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain), serviceCallback);
     }
 
     /**
@@ -425,7 +492,24 @@ public final class DomainsInner {
      * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteDomainAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
+    public Observable<Object> deleteDomainAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
+        return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a domain.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteDomainWithServiceResponseAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -468,10 +552,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainInner object if successful.
      */
-    public ServiceResponse<DomainInner> updateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
-        return updateDomainAsync(resourceGroupName, domainName, domain).toBlocking().single();
+    public DomainInner updateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
+        return updateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
     }
 
     /**
@@ -484,7 +568,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> updateDomainAsync(String resourceGroupName, String domainName, DomainInner domain, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(updateDomainAsync(resourceGroupName, domainName, domain), serviceCallback);
+        return ServiceCall.create(updateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain), serviceCallback);
     }
 
     /**
@@ -495,7 +579,24 @@ public final class DomainsInner {
      * @param domain Domain registration information
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> updateDomainAsync(String resourceGroupName, String domainName, DomainInner domain) {
+    public Observable<DomainInner> updateDomainAsync(String resourceGroupName, String domainName, DomainInner domain) {
+        return updateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+            @Override
+            public DomainInner call(ServiceResponse<DomainInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a domain.
+     *
+     * @param resourceGroupName &amp;gt;Name of the resource group
+     * @param domainName Name of the domain
+     * @param domain Domain registration information
+     * @return the observable to the DomainInner object
+     */
+    public Observable<ServiceResponse<DomainInner>> updateDomainWithServiceResponseAsync(String resourceGroupName, String domainName, DomainInner domain) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -543,10 +644,10 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainInner object if successful.
      */
-    public ServiceResponse<DomainInner> getDomainOperation(String resourceGroupName, String domainName, String operationId) throws CloudException, IOException, IllegalArgumentException {
-        return getDomainOperationAsync(resourceGroupName, domainName, operationId).toBlocking().single();
+    public DomainInner getDomainOperation(String resourceGroupName, String domainName, String operationId) throws CloudException, IOException, IllegalArgumentException {
+        return getDomainOperationWithServiceResponseAsync(resourceGroupName, domainName, operationId).toBlocking().single().getBody();
     }
 
     /**
@@ -559,7 +660,7 @@ public final class DomainsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainInner> getDomainOperationAsync(String resourceGroupName, String domainName, String operationId, final ServiceCallback<DomainInner> serviceCallback) {
-        return ServiceCall.create(getDomainOperationAsync(resourceGroupName, domainName, operationId), serviceCallback);
+        return ServiceCall.create(getDomainOperationWithServiceResponseAsync(resourceGroupName, domainName, operationId), serviceCallback);
     }
 
     /**
@@ -570,7 +671,24 @@ public final class DomainsInner {
      * @param operationId Domain purchase operation Id
      * @return the observable to the DomainInner object
      */
-    public Observable<ServiceResponse<DomainInner>> getDomainOperationAsync(String resourceGroupName, String domainName, String operationId) {
+    public Observable<DomainInner> getDomainOperationAsync(String resourceGroupName, String domainName, String operationId) {
+        return getDomainOperationWithServiceResponseAsync(resourceGroupName, domainName, operationId).map(new Func1<ServiceResponse<DomainInner>, DomainInner>() {
+            @Override
+            public DomainInner call(ServiceResponse<DomainInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves the latest status of a domain purchase operation.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param domainName Name of the domain
+     * @param operationId Domain purchase operation Id
+     * @return the observable to the DomainInner object
+     */
+    public Observable<ServiceResponse<DomainInner>> getDomainOperationWithServiceResponseAsync(String resourceGroupName, String domainName, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -616,17 +734,16 @@ public final class DomainsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DomainInner>> getDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DomainInner>> response = getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.getBody()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -653,15 +770,34 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DomainInner&gt; object
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DomainInner>>> getDomainsNextAsync(final String nextPageLink) {
+    public Observable<Page<DomainInner>> getDomainsNextAsync(final String nextPageLink) {
+        return getDomainsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
+                @Override
+                public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists domains under a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getDomainsNextWithServiceResponseAsync(final String nextPageLink) {
         return getDomainsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDomainsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDomainsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -670,7 +806,7 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getDomainsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

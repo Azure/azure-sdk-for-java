@@ -93,17 +93,16 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SourceControlInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SourceControlInner>> getSourceControls() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SourceControlInner> getSourceControls() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SourceControlInner>> response = getSourceControlsSinglePageAsync().toBlocking().single();
-        PagedList<SourceControlInner> pagedList = new PagedList<SourceControlInner>(response.getBody()) {
+        return new PagedList<SourceControlInner>(response.getBody()) {
             @Override
             public Page<SourceControlInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SourceControlInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -127,15 +126,14 @@ public final class ProvidersInner {
     /**
      * Gets the source controls available for Azure websites.
      *
-     * @return the observable to the List&lt;SourceControlInner&gt; object
+     * @return the observable to the PagedList&lt;SourceControlInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsAsync() {
-        return getSourceControlsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<SourceControlInner>>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
+    public Observable<Page<SourceControlInner>> getSourceControlsAsync() {
+        return getSourceControlsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<SourceControlInner>>, Page<SourceControlInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SourceControlInner>>> call(ServiceResponse<Page<SourceControlInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSourceControlsNextSinglePageAsync(nextPageLink);
+                public Page<SourceControlInner> call(ServiceResponse<Page<SourceControlInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -143,7 +141,26 @@ public final class ProvidersInner {
     /**
      * Gets the source controls available for Azure websites.
      *
-     * @return the List&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SourceControlInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsWithServiceResponseAsync() {
+        return getSourceControlsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<SourceControlInner>>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SourceControlInner>>> call(ServiceResponse<Page<SourceControlInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSourceControlsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the source controls available for Azure websites.
+     *
+     * @return the PagedList&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsSinglePageAsync() {
         if (this.client.apiVersion() == null) {
@@ -177,10 +194,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SourceControlInner object if successful.
      */
-    public ServiceResponse<SourceControlInner> getSourceControl(String sourceControlType) throws CloudException, IOException, IllegalArgumentException {
-        return getSourceControlAsync(sourceControlType).toBlocking().single();
+    public SourceControlInner getSourceControl(String sourceControlType) throws CloudException, IOException, IllegalArgumentException {
+        return getSourceControlWithServiceResponseAsync(sourceControlType).toBlocking().single().getBody();
     }
 
     /**
@@ -191,7 +208,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SourceControlInner> getSourceControlAsync(String sourceControlType, final ServiceCallback<SourceControlInner> serviceCallback) {
-        return ServiceCall.create(getSourceControlAsync(sourceControlType), serviceCallback);
+        return ServiceCall.create(getSourceControlWithServiceResponseAsync(sourceControlType), serviceCallback);
     }
 
     /**
@@ -200,7 +217,22 @@ public final class ProvidersInner {
      * @param sourceControlType Type of source control
      * @return the observable to the SourceControlInner object
      */
-    public Observable<ServiceResponse<SourceControlInner>> getSourceControlAsync(String sourceControlType) {
+    public Observable<SourceControlInner> getSourceControlAsync(String sourceControlType) {
+        return getSourceControlWithServiceResponseAsync(sourceControlType).map(new Func1<ServiceResponse<SourceControlInner>, SourceControlInner>() {
+            @Override
+            public SourceControlInner call(ServiceResponse<SourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets source control token.
+     *
+     * @param sourceControlType Type of source control
+     * @return the observable to the SourceControlInner object
+     */
+    public Observable<ServiceResponse<SourceControlInner>> getSourceControlWithServiceResponseAsync(String sourceControlType) {
         if (sourceControlType == null) {
             throw new IllegalArgumentException("Parameter sourceControlType is required and cannot be null.");
         }
@@ -236,10 +268,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SourceControlInner object if successful.
      */
-    public ServiceResponse<SourceControlInner> updateSourceControl(String sourceControlType, SourceControlInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
-        return updateSourceControlAsync(sourceControlType, requestMessage).toBlocking().single();
+    public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+        return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).toBlocking().single().getBody();
     }
 
     /**
@@ -251,7 +283,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage, final ServiceCallback<SourceControlInner> serviceCallback) {
-        return ServiceCall.create(updateSourceControlAsync(sourceControlType, requestMessage), serviceCallback);
+        return ServiceCall.create(updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage), serviceCallback);
     }
 
     /**
@@ -261,7 +293,23 @@ public final class ProvidersInner {
      * @param requestMessage Source control token information
      * @return the observable to the SourceControlInner object
      */
-    public Observable<ServiceResponse<SourceControlInner>> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage) {
+    public Observable<SourceControlInner> updateSourceControlAsync(String sourceControlType, SourceControlInner requestMessage) {
+        return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).map(new Func1<ServiceResponse<SourceControlInner>, SourceControlInner>() {
+            @Override
+            public SourceControlInner call(ServiceResponse<SourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates source control token.
+     *
+     * @param sourceControlType Type of source control
+     * @param requestMessage Source control token information
+     * @return the observable to the SourceControlInner object
+     */
+    public Observable<ServiceResponse<SourceControlInner>> updateSourceControlWithServiceResponseAsync(String sourceControlType, SourceControlInner requestMessage) {
         if (sourceControlType == null) {
             throw new IllegalArgumentException("Parameter sourceControlType is required and cannot be null.");
         }
@@ -299,10 +347,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> getPublishingUser() throws CloudException, IOException, IllegalArgumentException {
-        return getPublishingUserAsync().toBlocking().single();
+    public UserInner getPublishingUser() throws CloudException, IOException, IllegalArgumentException {
+        return getPublishingUserWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -312,7 +360,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getPublishingUserAsync(final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(getPublishingUserAsync(), serviceCallback);
+        return ServiceCall.create(getPublishingUserWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -320,7 +368,21 @@ public final class ProvidersInner {
      *
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> getPublishingUserAsync() {
+    public Observable<UserInner> getPublishingUserAsync() {
+        return getPublishingUserWithServiceResponseAsync().map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets publishing user.
+     *
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> getPublishingUserWithServiceResponseAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -352,10 +414,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> updatePublishingUser(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
-        return updatePublishingUserAsync(requestMessage).toBlocking().single();
+    public UserInner updatePublishingUser(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+        return updatePublishingUserWithServiceResponseAsync(requestMessage).toBlocking().single().getBody();
     }
 
     /**
@@ -366,7 +428,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> updatePublishingUserAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(updatePublishingUserAsync(requestMessage), serviceCallback);
+        return ServiceCall.create(updatePublishingUserWithServiceResponseAsync(requestMessage), serviceCallback);
     }
 
     /**
@@ -375,7 +437,22 @@ public final class ProvidersInner {
      * @param requestMessage Details of publishing user
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> updatePublishingUserAsync(UserInner requestMessage) {
+    public Observable<UserInner> updatePublishingUserAsync(UserInner requestMessage) {
+        return updatePublishingUserWithServiceResponseAsync(requestMessage).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates publishing user.
+     *
+     * @param requestMessage Details of publishing user
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> updatePublishingUserWithServiceResponseAsync(UserInner requestMessage) {
         if (requestMessage == null) {
             throw new IllegalArgumentException("Parameter requestMessage is required and cannot be null.");
         }
@@ -411,17 +488,16 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SourceControlInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SourceControlInner>> getSourceControlsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SourceControlInner> getSourceControlsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SourceControlInner>> response = getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SourceControlInner> pagedList = new PagedList<SourceControlInner>(response.getBody()) {
+        return new PagedList<SourceControlInner>(response.getBody()) {
             @Override
             public Page<SourceControlInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SourceControlInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -448,15 +524,34 @@ public final class ProvidersInner {
      * Gets the source controls available for Azure websites.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SourceControlInner&gt; object
+     * @return the observable to the PagedList&lt;SourceControlInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsNextAsync(final String nextPageLink) {
+    public Observable<Page<SourceControlInner>> getSourceControlsNextAsync(final String nextPageLink) {
+        return getSourceControlsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SourceControlInner>>, Page<SourceControlInner>>() {
+                @Override
+                public Page<SourceControlInner> call(ServiceResponse<Page<SourceControlInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the source controls available for Azure websites.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SourceControlInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSourceControlsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SourceControlInner>>, Observable<ServiceResponse<Page<SourceControlInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlInner>>> call(ServiceResponse<Page<SourceControlInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSourceControlsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSourceControlsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -465,7 +560,7 @@ public final class ProvidersInner {
      * Gets the source controls available for Azure websites.
      *
     ServiceResponse<PageImpl<SourceControlInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SourceControlInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SourceControlInner>>> getSourceControlsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

@@ -68,10 +68,10 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getUsage(String resourceGroupName, String environmentName, String lastId, int batchSize) throws CloudException, IOException, IllegalArgumentException {
-        return getUsageAsync(resourceGroupName, environmentName, lastId, batchSize).toBlocking().single();
+    public Object getUsage(String resourceGroupName, String environmentName, String lastId, int batchSize) throws CloudException, IOException, IllegalArgumentException {
+        return getUsageWithServiceResponseAsync(resourceGroupName, environmentName, lastId, batchSize).toBlocking().single().getBody();
     }
 
     /**
@@ -85,7 +85,7 @@ public final class UsagesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getUsageAsync(String resourceGroupName, String environmentName, String lastId, int batchSize, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getUsageAsync(resourceGroupName, environmentName, lastId, batchSize), serviceCallback);
+        return ServiceCall.create(getUsageWithServiceResponseAsync(resourceGroupName, environmentName, lastId, batchSize), serviceCallback);
     }
 
     /**
@@ -97,7 +97,25 @@ public final class UsagesInner {
      * @param batchSize size of the batch to be returned.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getUsageAsync(String resourceGroupName, String environmentName, String lastId, int batchSize) {
+    public Observable<Object> getUsageAsync(String resourceGroupName, String environmentName, String lastId, int batchSize) {
+        return getUsageWithServiceResponseAsync(resourceGroupName, environmentName, lastId, batchSize).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns usage records for specified subscription and resource groups.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param environmentName Environment name
+     * @param lastId Last marker that was returned from the batch
+     * @param batchSize size of the batch to be returned.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getUsageWithServiceResponseAsync(String resourceGroupName, String environmentName, String lastId, int batchSize) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

@@ -81,17 +81,16 @@ public final class GlobalCertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderInner>> getAllCertificateOrders() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getAllCertificateOrders() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersSinglePageAsync().toBlocking().single();
-        PagedList<CertificateOrderInner> pagedList = new PagedList<CertificateOrderInner>(response.getBody()) {
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -115,15 +114,14 @@ public final class GlobalCertificateOrdersInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @return the observable to the List&lt;CertificateOrderInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersAsync() {
-        return getAllCertificateOrdersSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+    public Observable<Page<CertificateOrderInner>> getAllCertificateOrdersAsync() {
+        return getAllCertificateOrdersWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllCertificateOrdersNextSinglePageAsync(nextPageLink);
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -131,7 +129,26 @@ public final class GlobalCertificateOrdersInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersWithServiceResponseAsync() {
+        return getAllCertificateOrdersSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -168,10 +185,10 @@ public final class GlobalCertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) throws CloudException, IOException, IllegalArgumentException {
-        return validateCertificatePurchaseInformationAsync(certificateOrder).toBlocking().single();
+    public Object validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) throws CloudException, IOException, IllegalArgumentException {
+        return validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder).toBlocking().single().getBody();
     }
 
     /**
@@ -182,7 +199,7 @@ public final class GlobalCertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(validateCertificatePurchaseInformationAsync(certificateOrder), serviceCallback);
+        return ServiceCall.create(validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder), serviceCallback);
     }
 
     /**
@@ -191,7 +208,22 @@ public final class GlobalCertificateOrdersInner {
      * @param certificateOrder Certificate order
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder) {
+    public Observable<Object> validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder) {
+        return validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Validate certificate purchase information.
+     *
+     * @param certificateOrder Certificate order
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> validateCertificatePurchaseInformationWithServiceResponseAsync(CertificateOrderInner certificateOrder) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -230,17 +262,16 @@ public final class GlobalCertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderInner>> getAllCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getAllCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CertificateOrderInner> pagedList = new PagedList<CertificateOrderInner>(response.getBody()) {
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -267,15 +298,34 @@ public final class GlobalCertificateOrdersInner {
      * Lists all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CertificateOrderInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextAsync(final String nextPageLink) {
+    public Observable<Page<CertificateOrderInner>> getAllCertificateOrdersNextAsync(final String nextPageLink) {
+        return getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
+                @Override
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllCertificateOrdersNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllCertificateOrdersNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -284,7 +334,7 @@ public final class GlobalCertificateOrdersInner {
      * Lists all domains in a subscription.
      *
     ServiceResponse<PageImpl<CertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

@@ -130,10 +130,10 @@ public final class AccountsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the AccountResourceInner object wrapped in ServiceResponse if successful.
+     * @return the AccountResourceInner object if successful.
      */
-    public ServiceResponse<AccountResourceInner> create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createAsync(resourceGroupName, accountName, parameters).toBlocking().last();
+    public AccountResourceInner create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -146,7 +146,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AccountResourceInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<AccountResourceInner> serviceCallback) {
-        return ServiceCall.create(createAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -157,7 +157,24 @@ public final class AccountsInner {
      * @param parameters Additional parameters for account creation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<AccountResourceInner>> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+    public Observable<AccountResourceInner> createAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<AccountResourceInner>, AccountResourceInner>() {
+            @Override
+            public AccountResourceInner call(ServiceResponse<AccountResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
+     *
+     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
+     * @param parameters Additional parameters for account creation.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<AccountResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -187,10 +204,10 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AccountResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AccountResourceInner object if successful.
      */
-    public ServiceResponse<AccountResourceInner> beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateAsync(resourceGroupName, accountName, parameters).toBlocking().single();
+    public AccountResourceInner beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -203,7 +220,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AccountResourceInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters, final ServiceCallback<AccountResourceInner> serviceCallback) {
-        return ServiceCall.create(beginCreateAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -214,7 +231,24 @@ public final class AccountsInner {
      * @param parameters Additional parameters for account creation.
      * @return the observable to the AccountResourceInner object
      */
-    public Observable<ServiceResponse<AccountResourceInner>> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+    public Observable<AccountResourceInner> beginCreateAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<AccountResourceInner>, AccountResourceInner>() {
+            @Override
+            public AccountResourceInner call(ServiceResponse<AccountResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and should instead be updated with the Update Batch Account API.
+     *
+     * @param resourceGroupName The name of the resource group that contains the new Batch account.
+     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
+     * @param parameters Additional parameters for account creation.
+     * @return the observable to the AccountResourceInner object
+     */
+    public Observable<ServiceResponse<AccountResourceInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -262,10 +296,10 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AccountResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AccountResourceInner object if successful.
      */
-    public ServiceResponse<AccountResourceInner> update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return updateAsync(resourceGroupName, accountName, parameters).toBlocking().single();
+    public AccountResourceInner update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -278,7 +312,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AccountResourceInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters, final ServiceCallback<AccountResourceInner> serviceCallback) {
-        return ServiceCall.create(updateAsync(resourceGroupName, accountName, parameters), serviceCallback);
+        return ServiceCall.create(updateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
     /**
@@ -289,7 +323,24 @@ public final class AccountsInner {
      * @param parameters Additional parameters for account update.
      * @return the observable to the AccountResourceInner object
      */
-    public Observable<ServiceResponse<AccountResourceInner>> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
+    public Observable<AccountResourceInner> updateAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<AccountResourceInner>, AccountResourceInner>() {
+            @Override
+            public AccountResourceInner call(ServiceResponse<AccountResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the properties of an existing Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the account.
+     * @param parameters Additional parameters for account update.
+     * @return the observable to the AccountResourceInner object
+     */
+    public Observable<ServiceResponse<AccountResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -336,10 +387,9 @@ public final class AccountsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, accountName).toBlocking().last();
+    public void delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().getBody();
     }
 
     /**
@@ -351,7 +401,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -361,7 +411,23 @@ public final class AccountsInner {
      * @param accountName The name of the account to be deleted.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String accountName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
+     * @param accountName The name of the account to be deleted.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -386,10 +452,9 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, accountName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -401,7 +466,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -411,7 +476,23 @@ public final class AccountsInner {
      * @param accountName The name of the account to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String accountName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String accountName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
+     * @param accountName The name of the account to be deleted.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -454,10 +535,10 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AccountResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AccountResourceInner object if successful.
      */
-    public ServiceResponse<AccountResourceInner> get(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, accountName).toBlocking().single();
+    public AccountResourceInner get(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -469,7 +550,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AccountResourceInner> getAsync(String resourceGroupName, String accountName, final ServiceCallback<AccountResourceInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -479,7 +560,23 @@ public final class AccountsInner {
      * @param accountName The name of the account.
      * @return the observable to the AccountResourceInner object
      */
-    public Observable<ServiceResponse<AccountResourceInner>> getAsync(String resourceGroupName, String accountName) {
+    public Observable<AccountResourceInner> getAsync(String resourceGroupName, String accountName) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<AccountResourceInner>, AccountResourceInner>() {
+            @Override
+            public AccountResourceInner call(ServiceResponse<AccountResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the account.
+     * @return the observable to the AccountResourceInner object
+     */
+    public Observable<ServiceResponse<AccountResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -519,17 +616,16 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<AccountResourceInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> list() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<AccountResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        PagedList<AccountResourceInner> pagedList = new PagedList<AccountResourceInner>(response.getBody()) {
+        return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
             public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<AccountResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -553,15 +649,14 @@ public final class AccountsInner {
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
-     * @return the observable to the List&lt;AccountResourceInner&gt; object
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AccountResourceInner>>> listAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<AccountResourceInner>>, Observable<ServiceResponse<Page<AccountResourceInner>>>>() {
+    public Observable<Page<AccountResourceInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<AccountResourceInner>>, Page<AccountResourceInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<AccountResourceInner>>> call(ServiceResponse<Page<AccountResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<AccountResourceInner> call(ServiceResponse<Page<AccountResourceInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -569,7 +664,26 @@ public final class AccountsInner {
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AccountResourceInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<AccountResourceInner>>, Observable<ServiceResponse<Page<AccountResourceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AccountResourceInner>>> call(ServiceResponse<Page<AccountResourceInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets information about the Batch accounts associated with the subscription.
+     *
+     * @return the PagedList&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AccountResourceInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -606,17 +720,16 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<AccountResourceInner>> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<AccountResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<AccountResourceInner> pagedList = new PagedList<AccountResourceInner>(response.getBody()) {
+        return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
             public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<AccountResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -642,15 +755,34 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
-     * @return the observable to the List&lt;AccountResourceInner&gt; object
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupAsync(final String resourceGroupName) {
+    public Observable<Page<AccountResourceInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<AccountResourceInner>>, Page<AccountResourceInner>>() {
+                @Override
+                public Page<AccountResourceInner> call(ServiceResponse<Page<AccountResourceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets information about the Batch accounts associated within the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group whose Batch accounts to list.
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
         return listByResourceGroupSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<AccountResourceInner>>, Observable<ServiceResponse<Page<AccountResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AccountResourceInner>>> call(ServiceResponse<Page<AccountResourceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -659,7 +791,7 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
     ServiceResponse<PageImpl<AccountResourceInner>> * @param resourceGroupName The name of the resource group whose Batch accounts to list.
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -700,10 +832,9 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> synchronizeAutoStorageKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return synchronizeAutoStorageKeysAsync(resourceGroupName, accountName).toBlocking().single();
+    public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -715,7 +846,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(synchronizeAutoStorageKeysAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -725,7 +856,23 @@ public final class AccountsInner {
      * @param accountName The name of the Batch account.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName) {
+    public Observable<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName) {
+        return synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Synchronizes access keys for the auto storage account configured for the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> synchronizeAutoStorageKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -767,10 +914,10 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BatchAccountRegenerateKeyResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BatchAccountRegenerateKeyResultInner object if successful.
      */
-    public ServiceResponse<BatchAccountRegenerateKeyResultInner> regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) throws CloudException, IOException, IllegalArgumentException {
-        return regenerateKeyAsync(resourceGroupName, accountName, keyName).toBlocking().single();
+    public BatchAccountRegenerateKeyResultInner regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) throws CloudException, IOException, IllegalArgumentException {
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
     }
 
     /**
@@ -783,7 +930,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountRegenerateKeyResultInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName, final ServiceCallback<BatchAccountRegenerateKeyResultInner> serviceCallback) {
-        return ServiceCall.create(regenerateKeyAsync(resourceGroupName, accountName, keyName), serviceCallback);
+        return ServiceCall.create(regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName), serviceCallback);
     }
 
     /**
@@ -794,7 +941,24 @@ public final class AccountsInner {
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @return the observable to the BatchAccountRegenerateKeyResultInner object
      */
-    public Observable<ServiceResponse<BatchAccountRegenerateKeyResultInner>> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName) {
+    public Observable<BatchAccountRegenerateKeyResultInner> regenerateKeyAsync(String resourceGroupName, String accountName, AccountKeyType keyName) {
+        return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).map(new Func1<ServiceResponse<BatchAccountRegenerateKeyResultInner>, BatchAccountRegenerateKeyResultInner>() {
+            @Override
+            public BatchAccountRegenerateKeyResultInner call(ServiceResponse<BatchAccountRegenerateKeyResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Regenerates the specified account key for the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the account.
+     * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
+     * @return the observable to the BatchAccountRegenerateKeyResultInner object
+     */
+    public Observable<ServiceResponse<BatchAccountRegenerateKeyResultInner>> regenerateKeyWithServiceResponseAsync(String resourceGroupName, String accountName, AccountKeyType keyName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -841,10 +1005,10 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BatchAccountListKeyResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BatchAccountListKeyResultInner object if successful.
      */
-    public ServiceResponse<BatchAccountListKeyResultInner> listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
-        return listKeysAsync(resourceGroupName, accountName).toBlocking().single();
+    public BatchAccountListKeyResultInner listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
     /**
@@ -856,7 +1020,7 @@ public final class AccountsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BatchAccountListKeyResultInner> listKeysAsync(String resourceGroupName, String accountName, final ServiceCallback<BatchAccountListKeyResultInner> serviceCallback) {
-        return ServiceCall.create(listKeysAsync(resourceGroupName, accountName), serviceCallback);
+        return ServiceCall.create(listKeysWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
     /**
@@ -866,7 +1030,23 @@ public final class AccountsInner {
      * @param accountName The name of the account.
      * @return the observable to the BatchAccountListKeyResultInner object
      */
-    public Observable<ServiceResponse<BatchAccountListKeyResultInner>> listKeysAsync(String resourceGroupName, String accountName) {
+    public Observable<BatchAccountListKeyResultInner> listKeysAsync(String resourceGroupName, String accountName) {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<BatchAccountListKeyResultInner>, BatchAccountListKeyResultInner>() {
+            @Override
+            public BatchAccountListKeyResultInner call(ServiceResponse<BatchAccountListKeyResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists the account keys for the specified Batch account.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the account.
+     * @return the observable to the BatchAccountListKeyResultInner object
+     */
+    public Observable<ServiceResponse<BatchAccountListKeyResultInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -907,17 +1087,16 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<AccountResourceInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<AccountResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<AccountResourceInner> pagedList = new PagedList<AccountResourceInner>(response.getBody()) {
+        return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
             public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<AccountResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -944,15 +1123,34 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;AccountResourceInner&gt; object
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AccountResourceInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<AccountResourceInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AccountResourceInner>>, Page<AccountResourceInner>>() {
+                @Override
+                public Page<AccountResourceInner> call(ServiceResponse<Page<AccountResourceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets information about the Batch accounts associated with the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AccountResourceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<AccountResourceInner>>, Observable<ServiceResponse<Page<AccountResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AccountResourceInner>>> call(ServiceResponse<Page<AccountResourceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -961,7 +1159,7 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
     ServiceResponse<PageImpl<AccountResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AccountResourceInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -995,17 +1193,16 @@ public final class AccountsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<AccountResourceInner>> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<AccountResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<AccountResourceInner> pagedList = new PagedList<AccountResourceInner>(response.getBody()) {
+        return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
             public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<AccountResourceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1032,15 +1229,34 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;AccountResourceInner&gt; object
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupNextAsync(final String nextPageLink) {
+    public Observable<Page<AccountResourceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AccountResourceInner>>, Page<AccountResourceInner>>() {
+                @Override
+                public Page<AccountResourceInner> call(ServiceResponse<Page<AccountResourceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets information about the Batch accounts associated within the specified resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;AccountResourceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
         return listByResourceGroupNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<AccountResourceInner>>, Observable<ServiceResponse<Page<AccountResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AccountResourceInner>>> call(ServiceResponse<Page<AccountResourceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1049,7 +1265,7 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
     ServiceResponse<PageImpl<AccountResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;AccountResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AccountResourceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

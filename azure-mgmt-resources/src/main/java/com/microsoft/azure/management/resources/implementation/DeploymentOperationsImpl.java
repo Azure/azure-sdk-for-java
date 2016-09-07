@@ -31,12 +31,12 @@ final class DeploymentOperationsImpl
 
     @Override
     public PagedList<DeploymentOperation> list() throws CloudException, IOException {
-        return wrapList(client.list(deployment.resourceGroupName(), deployment.name()).getBody());
+        return wrapList(client.list(deployment.resourceGroupName(), deployment.name()));
     }
 
     @Override
     public DeploymentOperation getById(String operationId) throws CloudException, IllegalArgumentException, IOException {
-        return wrapModel(client.get(deployment.resourceGroupName(), deployment.name(), operationId).getBody());
+        return wrapModel(client.get(deployment.resourceGroupName(), deployment.name(), operationId));
     }
 
     @Override

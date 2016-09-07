@@ -147,10 +147,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderCertificateInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderCertificateInner object if successful.
      */
-    public ServiceResponse<CertificateOrderCertificateInner> getCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getCertificateAsync(resourceGroupName, certificateOrderName, name).toBlocking().single();
+    public CertificateOrderCertificateInner getCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -163,7 +163,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<CertificateOrderCertificateInner> serviceCallback) {
-        return ServiceCall.create(getCertificateAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+        return ServiceCall.create(getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -174,7 +174,24 @@ public final class CertificateOrdersInner {
      * @param name Certificate name
      * @return the observable to the CertificateOrderCertificateInner object
      */
-    public Observable<ServiceResponse<CertificateOrderCertificateInner>> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+    public Observable<CertificateOrderCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+        return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<CertificateOrderCertificateInner>, CertificateOrderCertificateInner>() {
+            @Override
+            public CertificateOrderCertificateInner call(ServiceResponse<CertificateOrderCertificateInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get certificate associated with the certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param certificateOrderName Certificate name
+     * @param name Certificate name
+     * @return the observable to the CertificateOrderCertificateInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderCertificateInner>> getCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -221,10 +238,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderCertificateInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderCertificateInner object if successful.
      */
-    public ServiceResponse<CertificateOrderCertificateInner> createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single();
+    public CertificateOrderCertificateInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().getBody();
     }
 
     /**
@@ -238,7 +255,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate, final ServiceCallback<CertificateOrderCertificateInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+        return ServiceCall.create(createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -250,7 +267,25 @@ public final class CertificateOrdersInner {
      * @param keyVaultCertificate Key Vault secret csm Id
      * @return the observable to the CertificateOrderCertificateInner object
      */
-    public Observable<ServiceResponse<CertificateOrderCertificateInner>> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
+    public Observable<CertificateOrderCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
+        return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<CertificateOrderCertificateInner>, CertificateOrderCertificateInner>() {
+            @Override
+            public CertificateOrderCertificateInner call(ServiceResponse<CertificateOrderCertificateInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param certificateOrderName Certificate name
+     * @param name Certificate name
+     * @param keyVaultCertificate Key Vault secret csm Id
+     * @return the observable to the CertificateOrderCertificateInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderCertificateInner>> createOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -300,10 +335,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteCertificateAsync(resourceGroupName, certificateOrderName, name).toBlocking().single();
+    public Object deleteCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -316,7 +351,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteCertificateAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
+        return ServiceCall.create(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
@@ -327,7 +362,24 @@ public final class CertificateOrdersInner {
      * @param name Certificate name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+    public Observable<Object> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+        return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes the certificate associated with the certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param certificateOrderName Certificate name
+     * @param name Certificate name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -374,10 +426,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderCertificateInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderCertificateInner object if successful.
      */
-    public ServiceResponse<CertificateOrderCertificateInner> updateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
-        return updateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single();
+    public CertificateOrderCertificateInner updateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
+        return updateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().getBody();
     }
 
     /**
@@ -391,7 +443,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderCertificateInner> updateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate, final ServiceCallback<CertificateOrderCertificateInner> serviceCallback) {
-        return ServiceCall.create(updateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
+        return ServiceCall.create(updateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate), serviceCallback);
     }
 
     /**
@@ -403,7 +455,25 @@ public final class CertificateOrdersInner {
      * @param keyVaultCertificate Key Vault secret csm Id
      * @return the observable to the CertificateOrderCertificateInner object
      */
-    public Observable<ServiceResponse<CertificateOrderCertificateInner>> updateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
+    public Observable<CertificateOrderCertificateInner> updateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
+        return updateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).map(new Func1<ServiceResponse<CertificateOrderCertificateInner>, CertificateOrderCertificateInner>() {
+            @Override
+            public CertificateOrderCertificateInner call(ServiceResponse<CertificateOrderCertificateInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param certificateOrderName Certificate name
+     * @param name Certificate name
+     * @param keyVaultCertificate Key Vault secret csm Id
+     * @return the observable to the CertificateOrderCertificateInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderCertificateInner>> updateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -452,10 +522,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderInner object if successful.
      */
-    public ServiceResponse<CertificateOrderInner> getCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getCertificateOrderAsync(resourceGroupName, name).toBlocking().single();
+    public CertificateOrderInner getCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -467,7 +537,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderInner> getCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<CertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(getCertificateOrderAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -477,7 +547,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate name
      * @return the observable to the CertificateOrderInner object
      */
-    public Observable<ServiceResponse<CertificateOrderInner>> getCertificateOrderAsync(String resourceGroupName, String name) {
+    public Observable<CertificateOrderInner> getCertificateOrderAsync(String resourceGroupName, String name) {
+        return getCertificateOrderWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<CertificateOrderInner>, CertificateOrderInner>() {
+            @Override
+            public CertificateOrderInner call(ServiceResponse<CertificateOrderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get a certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @return the observable to the CertificateOrderInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderInner>> getCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -520,10 +606,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderInner object if successful.
      */
-    public ServiceResponse<CertificateOrderInner> createOrUpdateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateCertificateOrderAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single();
+    public CertificateOrderInner createOrUpdateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single().getBody();
     }
 
     /**
@@ -536,7 +622,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderInner> createOrUpdateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName, final ServiceCallback<CertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateCertificateOrderAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+        return ServiceCall.create(createOrUpdateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -547,7 +633,24 @@ public final class CertificateOrdersInner {
      * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
      * @return the observable to the CertificateOrderInner object
      */
-    public Observable<ServiceResponse<CertificateOrderInner>> createOrUpdateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
+    public Observable<CertificateOrderInner> createOrUpdateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
+        return createOrUpdateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).map(new Func1<ServiceResponse<CertificateOrderInner>, CertificateOrderInner>() {
+            @Override
+            public CertificateOrderInner call(ServiceResponse<CertificateOrderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @return the observable to the CertificateOrderInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderInner>> createOrUpdateCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -593,10 +696,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteCertificateOrderAsync(resourceGroupName, name).toBlocking().single();
+    public Object deleteCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -608,7 +711,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteCertificateOrderAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -618,7 +721,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteCertificateOrderAsync(String resourceGroupName, String name) {
+    public Observable<Object> deleteCertificateOrderAsync(String resourceGroupName, String name) {
+        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete an existing certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -661,10 +780,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the CertificateOrderInner object if successful.
      */
-    public ServiceResponse<CertificateOrderInner> updateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
-        return updateCertificateOrderAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single();
+    public CertificateOrderInner updateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
+        return updateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single().getBody();
     }
 
     /**
@@ -677,7 +796,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<CertificateOrderInner> updateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName, final ServiceCallback<CertificateOrderInner> serviceCallback) {
-        return ServiceCall.create(updateCertificateOrderAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
+        return ServiceCall.create(updateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName), serviceCallback);
     }
 
     /**
@@ -688,7 +807,24 @@ public final class CertificateOrdersInner {
      * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
      * @return the observable to the CertificateOrderInner object
      */
-    public Observable<ServiceResponse<CertificateOrderInner>> updateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
+    public Observable<CertificateOrderInner> updateCertificateOrderAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
+        return updateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).map(new Func1<ServiceResponse<CertificateOrderInner>, CertificateOrderInner>() {
+            @Override
+            public CertificateOrderInner call(ServiceResponse<CertificateOrderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a certificate purchase order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @return the observable to the CertificateOrderInner object
+     */
+    public Observable<ServiceResponse<CertificateOrderInner>> updateCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -733,17 +869,16 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderInner>> getCertificateOrders(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getCertificateOrders(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderInner>> response = getCertificateOrdersSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<CertificateOrderInner> pagedList = new PagedList<CertificateOrderInner>(response.getBody()) {
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -769,15 +904,34 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param resourceGroupName Azure resource group name
-     * @return the observable to the List&lt;CertificateOrderInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersAsync(final String resourceGroupName) {
+    public Observable<Page<CertificateOrderInner>> getCertificateOrdersAsync(final String resourceGroupName) {
+        return getCertificateOrdersWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
+                @Override
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get certificate orders in a resource group.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersWithServiceResponseAsync(final String resourceGroupName) {
         return getCertificateOrdersSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getCertificateOrdersNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -786,7 +940,7 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
     ServiceResponse<PageImpl<CertificateOrderInner>> * @param resourceGroupName Azure resource group name
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -827,17 +981,16 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderCertificateInner>> getCertificates(final String resourceGroupName, final String certificateOrderName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderCertificateInner> getCertificates(final String resourceGroupName, final String certificateOrderName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderCertificateInner>> response = getCertificatesSinglePageAsync(resourceGroupName, certificateOrderName).toBlocking().single();
-        PagedList<CertificateOrderCertificateInner> pagedList = new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
+        return new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderCertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -865,15 +1018,35 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param certificateOrderName Certificate name
-     * @return the observable to the List&lt;CertificateOrderCertificateInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderCertificateInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
+    public Observable<Page<CertificateOrderCertificateInner>> getCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
+        return getCertificatesWithServiceResponseAsync(resourceGroupName, certificateOrderName)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderCertificateInner>>, Page<CertificateOrderCertificateInner>>() {
+                @Override
+                public Page<CertificateOrderCertificateInner> call(ServiceResponse<Page<CertificateOrderCertificateInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param certificateOrderName Certificate name
+     * @return the observable to the PagedList&lt;CertificateOrderCertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesWithServiceResponseAsync(final String resourceGroupName, final String certificateOrderName) {
         return getCertificatesSinglePageAsync(resourceGroupName, certificateOrderName)
             .concatMap(new Func1<ServiceResponse<Page<CertificateOrderCertificateInner>>, Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> call(ServiceResponse<Page<CertificateOrderCertificateInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getCertificatesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -883,7 +1056,7 @@ public final class CertificateOrdersInner {
      *
     ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param resourceGroupName Azure resource group name
     ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param certificateOrderName Certificate name
-     * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesSinglePageAsync(final String resourceGroupName, final String certificateOrderName) {
         if (resourceGroupName == null) {
@@ -928,10 +1101,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> reissueCertificateOrder(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
-        return reissueCertificateOrderAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single();
+    public Object reissueCertificateOrder(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
+        return reissueCertificateOrderWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single().getBody();
     }
 
     /**
@@ -944,7 +1117,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> reissueCertificateOrderAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(reissueCertificateOrderAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
+        return ServiceCall.create(reissueCertificateOrderWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -955,7 +1128,24 @@ public final class CertificateOrdersInner {
      * @param reissueCertificateOrderRequest Reissue parameters
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> reissueCertificateOrderAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+    public Observable<Object> reissueCertificateOrderAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+        return reissueCertificateOrderWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reissue an existing certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @param reissueCertificateOrderRequest Reissue parameters
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> reissueCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1002,10 +1192,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> renewCertificateOrder(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
-        return renewCertificateOrderAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single();
+    public Object renewCertificateOrder(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
+        return renewCertificateOrderWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single().getBody();
     }
 
     /**
@@ -1018,7 +1208,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> renewCertificateOrderAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(renewCertificateOrderAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
+        return ServiceCall.create(renewCertificateOrderWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
     }
 
     /**
@@ -1029,7 +1219,24 @@ public final class CertificateOrdersInner {
      * @param renewCertificateOrderRequest Renew parameters
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> renewCertificateOrderAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+    public Observable<Object> renewCertificateOrderAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+        return renewCertificateOrderWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Renew an existing certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate name
+     * @param renewCertificateOrderRequest Renew parameters
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> renewCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1075,10 +1282,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderActionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;CertificateOrderActionInner&gt; object if successful.
      */
-    public ServiceResponse<List<CertificateOrderActionInner>> retrieveCertificateActions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return retrieveCertificateActionsAsync(resourceGroupName, name).toBlocking().single();
+    public List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1090,7 +1297,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateOrderActionInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateActionsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1100,7 +1307,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
      */
-    public Observable<ServiceResponse<List<CertificateOrderActionInner>>> retrieveCertificateActionsAsync(String resourceGroupName, String name) {
+    public Observable<List<CertificateOrderActionInner>> retrieveCertificateActionsAsync(String resourceGroupName, String name) {
+        return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CertificateOrderActionInner>>, List<CertificateOrderActionInner>>() {
+            @Override
+            public List<CertificateOrderActionInner> call(ServiceResponse<List<CertificateOrderActionInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieve the list of certificate actions.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate order name
+     * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
+     */
+    public Observable<ServiceResponse<List<CertificateOrderActionInner>>> retrieveCertificateActionsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1142,10 +1365,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateEmailInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;CertificateEmailInner&gt; object if successful.
      */
-    public ServiceResponse<List<CertificateEmailInner>> retrieveCertificateEmailHistory(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return retrieveCertificateEmailHistoryAsync(resourceGroupName, name).toBlocking().single();
+    public List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1157,7 +1380,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name, final ServiceCallback<List<CertificateEmailInner>> serviceCallback) {
-        return ServiceCall.create(retrieveCertificateEmailHistoryAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1167,7 +1390,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateEmailInner&gt; object
      */
-    public Observable<ServiceResponse<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name) {
+    public Observable<List<CertificateEmailInner>> retrieveCertificateEmailHistoryAsync(String resourceGroupName, String name) {
+        return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<CertificateEmailInner>>, List<CertificateEmailInner>>() {
+            @Override
+            public List<CertificateEmailInner> call(ServiceResponse<List<CertificateEmailInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrive email history.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate order name
+     * @return the observable to the List&lt;CertificateEmailInner&gt; object
+     */
+    public Observable<ServiceResponse<List<CertificateEmailInner>>> retrieveCertificateEmailHistoryWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1209,10 +1448,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> resendCertificateEmail(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return resendCertificateEmailAsync(resourceGroupName, name).toBlocking().single();
+    public Object resendCertificateEmail(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1224,7 +1463,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> resendCertificateEmailAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(resendCertificateEmailAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1234,7 +1473,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate order name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> resendCertificateEmailAsync(String resourceGroupName, String name) {
+    public Observable<Object> resendCertificateEmailAsync(String resourceGroupName, String name) {
+        return resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Resend certificate email.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate order name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> resendCertificateEmailWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1276,10 +1531,10 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> verifyDomainOwnership(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return verifyDomainOwnershipAsync(resourceGroupName, name).toBlocking().single();
+    public Object verifyDomainOwnership(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1291,7 +1546,7 @@ public final class CertificateOrdersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(verifyDomainOwnershipAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1301,7 +1556,23 @@ public final class CertificateOrdersInner {
      * @param name Certificate order name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> verifyDomainOwnershipAsync(String resourceGroupName, String name) {
+    public Observable<Object> verifyDomainOwnershipAsync(String resourceGroupName, String name) {
+        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Verify domain ownership for this certificate order.
+     *
+     * @param resourceGroupName Azure resource group name
+     * @param name Certificate order name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> verifyDomainOwnershipWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1342,17 +1613,16 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderInner>> getCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderInner>> response = getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CertificateOrderInner> pagedList = new PagedList<CertificateOrderInner>(response.getBody()) {
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1379,15 +1649,34 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CertificateOrderInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersNextAsync(final String nextPageLink) {
+    public Observable<Page<CertificateOrderInner>> getCertificateOrdersNextAsync(final String nextPageLink) {
+        return getCertificateOrdersNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
+                @Override
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get certificate orders in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersNextWithServiceResponseAsync(final String nextPageLink) {
         return getCertificateOrdersNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getCertificateOrdersNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1396,7 +1685,7 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
     ServiceResponse<PageImpl<CertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderInner>>> getCertificateOrdersNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1430,17 +1719,16 @@ public final class CertificateOrdersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateOrderCertificateInner>> getCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderCertificateInner> getCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateOrderCertificateInner>> response = getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CertificateOrderCertificateInner> pagedList = new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
+        return new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
             @Override
             public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateOrderCertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1467,15 +1755,34 @@ public final class CertificateOrdersInner {
      * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CertificateOrderCertificateInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateOrderCertificateInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesNextAsync(final String nextPageLink) {
+    public Observable<Page<CertificateOrderCertificateInner>> getCertificatesNextAsync(final String nextPageLink) {
+        return getCertificatesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderCertificateInner>>, Page<CertificateOrderCertificateInner>>() {
+                @Override
+                public Page<CertificateOrderCertificateInner> call(ServiceResponse<Page<CertificateOrderCertificateInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateOrderCertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesNextWithServiceResponseAsync(final String nextPageLink) {
         return getCertificatesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CertificateOrderCertificateInner>>, Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> call(ServiceResponse<Page<CertificateOrderCertificateInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getCertificatesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getCertificatesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1484,7 +1791,7 @@ public final class CertificateOrdersInner {
      * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
      *
     ServiceResponse<PageImpl<CertificateOrderCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateOrderCertificateInner>>> getCertificatesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

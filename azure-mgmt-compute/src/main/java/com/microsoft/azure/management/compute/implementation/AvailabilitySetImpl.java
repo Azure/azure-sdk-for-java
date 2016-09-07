@@ -9,7 +9,6 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -73,8 +72,8 @@ class AvailabilitySetImpl
 
     @Override
     public AvailabilitySet refresh() throws Exception {
-        ServiceResponse<AvailabilitySetInner> response = client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        AvailabilitySetInner response = client.get(this.resourceGroupName(), this.name());
+        this.setInner(response);
         this.idOfVMsInSet = null;
         return this;
     }
@@ -102,10 +101,10 @@ class AvailabilitySetImpl
     public Observable<AvailabilitySet> createResourceAsync() {
         final AvailabilitySetImpl self = this;
         return this.client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySet>() {
+                .map(new Func1<AvailabilitySetInner, AvailabilitySet>() {
                     @Override
-                    public AvailabilitySet call(ServiceResponse<AvailabilitySetInner> availabilitySetInner) {
-                        self.setInner(availabilitySetInner.getBody());
+                    public AvailabilitySet call(AvailabilitySetInner availabilitySetInner) {
+                        self.setInner(availabilitySetInner);
                         idOfVMsInSet = null;
                         return self;
                     }
