@@ -19,6 +19,8 @@ import java.io.IOException;
 public interface AzureTokenCredentials extends ServiceClientCredentials {
     String getToken(String resource) throws IOException;
 
+    String getDomain();
+
     /**
      * @return the environment details the credential has access to.
      */
