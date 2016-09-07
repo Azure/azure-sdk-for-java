@@ -448,16 +448,20 @@ class NetworkInterfaceImpl
 
     @Override
     public Observable<NetworkInterface> createResourceAsync() {
-        final NetworkInterfaceImpl self = this;
+        final NetworkInterface self = this;
         beforeCreating();
         return createInner()
-                .map(new Func1<NetworkInterfaceInner, NetworkInterface>() {
+                .flatMap(new Func1<NetworkInterfaceInner, Observable<NetworkInterface>>() {
                     @Override
-                    public NetworkInterface call(NetworkInterfaceInner networkInterfaceInner) {
-                        self.setInner(networkInterfaceInner);
-                        initializeChildrenFromInner();
-                        afterCreating();
-                        return self;
+                    public Observable<NetworkInterface> call(NetworkInterfaceInner networkInterfaceInner) {
+                        setInner(networkInterfaceInner);
+                        try {
+                            initializeChildrenFromInner();
+                            afterCreating();
+                            return Observable.just(self);
+                        }  catch (Exception e) {
+                            return Observable.error(e);
+                        }
                     }
                 });
     }
