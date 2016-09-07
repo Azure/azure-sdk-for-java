@@ -42,7 +42,7 @@ class ServicePrincipalsImpl
 
     @Override
     public PagedList<ServicePrincipal> list() throws GraphErrorException, IOException {
-        return wrapList(this.innerCollection.list().getBody());
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
@@ -67,7 +67,7 @@ class ServicePrincipalsImpl
 
     @Override
     public ServicePrincipalImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
-        return new ServicePrincipalImpl(innerCollection.get(objectId).getBody(), innerCollection);
+        return new ServicePrincipalImpl(innerCollection.get(objectId), innerCollection);
     }
 
     @Override
@@ -77,7 +77,7 @@ class ServicePrincipalsImpl
 
     @Override
     public ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException {
-        List<ServicePrincipalInner> spList = innerCollection.list(String.format("servicePrincipalNames/any(c:c eq '%s')", spn)).getBody();
+        List<ServicePrincipalInner> spList = innerCollection.list(String.format("servicePrincipalNames/any(c:c eq '%s')", spn));
         if (spList == null || spList.isEmpty()) {
             return null;
         } else {
@@ -100,14 +100,13 @@ class ServicePrincipalsImpl
     @Override
     public Observable<ServicePrincipal> getByServicePrincipalNameAsync(final String spn) {
         return innerCollection.listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", spn))
-                .map(new Func1<ServiceResponse<Page<ServicePrincipalInner>>, ServicePrincipal>() {
+                .map(new Func1<Page<ServicePrincipalInner>, ServicePrincipal>() {
                     @Override
-                    public ServicePrincipal call(ServiceResponse<Page<ServicePrincipalInner>> result) {
-                        Page<ServicePrincipalInner> servicePrincipals = result.getBody();
-                        if (servicePrincipals == null || servicePrincipals.getItems() == null || servicePrincipals.getItems().isEmpty()) {
+                    public ServicePrincipal call(Page<ServicePrincipalInner> result) {
+                        if (result == null || result.getItems() == null || result.getItems().isEmpty()) {
                             throw new GraphErrorException("Service principal not found for SPN: " + spn);
                         }
-                        return new ServicePrincipalImpl(servicePrincipals.getItems().get(0), innerCollection);
+                        return new ServicePrincipalImpl(result.getItems().get(0), innerCollection);
                     }
                 });
     }

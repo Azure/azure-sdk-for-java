@@ -41,7 +41,7 @@ class UsersImpl
 
     @Override
     public PagedList<User> list() throws RestException, IOException {
-        return wrapList(this.innerCollection.list().getBody());
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
@@ -66,12 +66,12 @@ class UsersImpl
 
     @Override
     public UserImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
-        return new UserImpl(innerCollection.get(objectId).getBody(), innerCollection);
+        return new UserImpl(innerCollection.get(objectId), innerCollection);
     }
 
     @Override
     public UserImpl getByUserPrincipalName(String upn) throws GraphErrorException, IOException {
-        return new UserImpl(innerCollection.get(upn).getBody(), innerCollection);
+        return new UserImpl(innerCollection.get(upn), innerCollection);
     }
 
     @Override
@@ -89,10 +89,10 @@ class UsersImpl
     @Override
     public Observable<User> getByUserPrincipalNameAsync(String upn) {
         return innerCollection.getAsync(upn)
-                .map(new Func1<ServiceResponse<UserInner>, User>() {
+                .map(new Func1<UserInner, User>() {
                     @Override
-                    public User call(ServiceResponse<UserInner> userInnerServiceResponse) {
-                        return new UserImpl(userInnerServiceResponse.getBody(), innerCollection);
+                    public User call(UserInner userInnerServiceResponse) {
+                        return new UserImpl(userInnerServiceResponse, innerCollection);
                     }
                 });
     }

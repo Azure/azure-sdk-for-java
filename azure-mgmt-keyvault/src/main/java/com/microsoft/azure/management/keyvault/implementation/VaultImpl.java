@@ -16,7 +16,6 @@ import com.microsoft.azure.management.keyvault.SkuName;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -237,9 +236,9 @@ class VaultImpl
     @Override
     public Observable<Vault> createResourceAsync() {
         return populateAccessPolicies()
-                .flatMap(new Func1<Object, Observable<ServiceResponse<VaultInner>>>() {
+                .flatMap(new Func1<Object, Observable<VaultInner>>() {
                     @Override
-                    public Observable<ServiceResponse<VaultInner>> call(Object o) {
+                    public Observable<VaultInner> call(Object o) {
                         VaultCreateOrUpdateParametersInner parameters = new VaultCreateOrUpdateParametersInner();
                         parameters.withLocation(regionName());
                         parameters.withProperties(inner().properties());
@@ -256,7 +255,7 @@ class VaultImpl
 
     @Override
     public VaultImpl refresh() throws Exception {
-        setInner(client.get(resourceGroupName(), name()).getBody());
+        setInner(client.get(resourceGroupName(), name()));
         return this;
     }
 

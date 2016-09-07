@@ -46,17 +46,17 @@ class VaultsImpl
 
     @Override
     public PagedList<Vault> list() throws RestException, IOException {
-        return wrapList(this.innerCollection.list().getBody());
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
     public PagedList<Vault> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName).getBody());
+        return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override
     public Vault getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
