@@ -11,7 +11,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Accounts;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusNextOptions;
@@ -23,22 +22,21 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -68,11 +66,11 @@ public final class AccountsImpl implements Accounts {
     interface AccountsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("nodeagentskus")
-        Observable<Response<ResponseBody>> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNodeAgentSkusNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET
+        Call<ResponseBody> listNodeAgentSkusNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -85,56 +83,6 @@ public final class AccountsImpl implements Accounts {
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus() throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusSinglePageAsync().toBlocking().single();
-        PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
-            @Override
-            public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
-                return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNodeAgentSkusSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @return the observable to the List&lt;NodeAgentSku&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusAsync() {
-        return listNodeAgentSkusSinglePageAsync()
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
-                }
-            });
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync() {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -149,18 +97,63 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusDelegate(call.execute());
+        PagedList<NodeAgentSku> result = new PagedList<NodeAgentSku>(response.getBody()) {
+            @Override
+            public Page<NodeAgentSku> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                return listNodeAgentSkusNext(nextPageLink, null).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNodeAgentSkusAsync(final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions = null;
+        String filter = null;
+        Integer maxResults = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -173,80 +166,6 @@ public final class AccountsImpl implements Accounts {
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkus(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions).toBlocking().single();
-        PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
-            @Override
-            public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
-                AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
-                if (accountListNodeAgentSkusOptions != null) {
-                    accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
-                    accountListNodeAgentSkusNextOptions.withClientRequestId(accountListNodeAgentSkusOptions.clientRequestId());
-                    accountListNodeAgentSkusNextOptions.withReturnClientRequestId(accountListNodeAgentSkusOptions.returnClientRequestId());
-                    accountListNodeAgentSkusNextOptions.withOcpDate(accountListNodeAgentSkusOptions.ocpDate());
-                }
-                return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single().getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
-                    AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
-                    if (accountListNodeAgentSkusOptions != null) {
-                        accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
-                        accountListNodeAgentSkusNextOptions.withClientRequestId(accountListNodeAgentSkusOptions.clientRequestId());
-                        accountListNodeAgentSkusNextOptions.withReturnClientRequestId(accountListNodeAgentSkusOptions.returnClientRequestId());
-                        accountListNodeAgentSkusNextOptions.withOcpDate(accountListNodeAgentSkusOptions.ocpDate());
-                    }
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
-     * @return the observable to the List&lt;NodeAgentSku&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
-        return listNodeAgentSkusSinglePageAsync(accountListNodeAgentSkusOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
-                    if (accountListNodeAgentSkusOptions != null) {
-                        accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
-                        accountListNodeAgentSkusNextOptions.withClientRequestId(accountListNodeAgentSkusOptions.clientRequestId());
-                        accountListNodeAgentSkusNextOptions.withReturnClientRequestId(accountListNodeAgentSkusOptions.returnClientRequestId());
-                        accountListNodeAgentSkusNextOptions.withOcpDate(accountListNodeAgentSkusOptions.ocpDate());
-                    }
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
-                }
-            });
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusOptions Additional parameters for the operation
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -279,18 +198,96 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusDelegate(call.execute());
+        PagedList<NodeAgentSku> result = new PagedList<NodeAgentSku>(response.getBody()) {
+            @Override
+            public Page<NodeAgentSku> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
+                if (accountListNodeAgentSkusOptions != null) {
+                    accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
+                    accountListNodeAgentSkusNextOptions.withClientRequestId(accountListNodeAgentSkusOptions.clientRequestId());
+                    accountListNodeAgentSkusNextOptions.withReturnClientRequestId(accountListNodeAgentSkusOptions.returnClientRequestId());
+                    accountListNodeAgentSkusNextOptions.withOcpDate(accountListNodeAgentSkusOptions.ocpDate());
                 }
-            });
+                return listNodeAgentSkusNext(nextPageLink, accountListNodeAgentSkusNextOptions).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNodeAgentSkusAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(accountListNodeAgentSkusOptions, serviceCallback);
+        String filter = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            filter = accountListNodeAgentSkusOptions.filter();
+        }
+        Integer maxResults = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            maxResults = accountListNodeAgentSkusOptions.maxResults();
+        }
+        Integer timeout = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            timeout = accountListNodeAgentSkusOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            clientRequestId = accountListNodeAgentSkusOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            returnClientRequestId = accountListNodeAgentSkusOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (accountListNodeAgentSkusOptions != null) {
+            ocpDate = accountListNodeAgentSkusOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
+                        if (accountListNodeAgentSkusOptions != null) {
+                            accountListNodeAgentSkusNextOptions = new AccountListNodeAgentSkusNextOptions();
+                            accountListNodeAgentSkusNextOptions.withClientRequestId(accountListNodeAgentSkusOptions.clientRequestId());
+                            accountListNodeAgentSkusNextOptions.withReturnClientRequestId(accountListNodeAgentSkusOptions.returnClientRequestId());
+                            accountListNodeAgentSkusNextOptions.withOcpDate(accountListNodeAgentSkusOptions.ocpDate());
+                        }
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), accountListNodeAgentSkusNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -309,61 +306,7 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
-            @Override
-            public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
-                return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNodeAgentSkusNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NodeAgentSku&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextAsync(final String nextPageLink) {
-        return listNodeAgentSkusNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, null);
-                }
-            });
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink) {
+    public ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -375,18 +318,55 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNodeAgentSkusNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNodeAgentSkusNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -399,64 +379,7 @@ public final class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
-        ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> response = listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single();
-        PagedList<NodeAgentSku> pagedList = new PagedList<NodeAgentSku>(response.getBody()) {
-            @Override
-            public Page<NodeAgentSku> nextPage(String nextPageLink) throws RestException, IOException {
-                return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions).toBlocking().single().getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<PagedList<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(pagedList, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeAgentSku>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall<List<NodeAgentSku>> serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(String nextPageLink) {
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
-     * @return the observable to the List&lt;NodeAgentSku&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
-        return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNodeAgentSkusNextSinglePageAsync(nextPageLink, accountListNodeAgentSkusNextOptions);
-                }
-            });
-    }
-
-    /**
-     * Lists all node agent SKUs supported by the Azure Batch service.
-     *
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
-     * @return the List&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusNextSinglePageAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) {
+    public ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNext(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -477,18 +400,65 @@ public final class AccountsImpl implements Accounts {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNodeAgentSkusNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists all node agent SKUs supported by the Azure Batch service.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNodeAgentSkusNextAsync(final String nextPageLink, final AccountListNodeAgentSkusNextOptions accountListNodeAgentSkusNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeAgentSku> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(accountListNodeAgentSkusNextOptions, serviceCallback);
+        String clientRequestId = null;
+        if (accountListNodeAgentSkusNextOptions != null) {
+            clientRequestId = accountListNodeAgentSkusNextOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (accountListNodeAgentSkusNextOptions != null) {
+            returnClientRequestId = accountListNodeAgentSkusNextOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (accountListNodeAgentSkusNextOptions != null) {
+            ocpDate = accountListNodeAgentSkusNextOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNodeAgentSkusNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeAgentSku>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> result = listNodeAgentSkusNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNodeAgentSkusNextAsync(result.getBody().getNextPageLink(), accountListNodeAgentSkusNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> listNodeAgentSkusNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
