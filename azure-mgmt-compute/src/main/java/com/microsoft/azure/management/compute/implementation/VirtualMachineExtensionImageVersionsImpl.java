@@ -27,7 +27,7 @@ public class VirtualMachineExtensionImageVersionsImpl
     public PagedList<VirtualMachineExtensionImageVersion> list() throws CloudException, IOException {
         return wrapList(this.client.listVersions(this.type.regionName(),
                 this.type.publisher().name(),
-                this.type.name()).getBody());
+                this.type.name()));
     }
 
     @Override

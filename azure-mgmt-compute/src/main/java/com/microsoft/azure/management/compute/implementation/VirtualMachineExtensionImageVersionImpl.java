@@ -5,7 +5,6 @@ import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 
@@ -48,10 +47,10 @@ class VirtualMachineExtensionImageVersionImpl
 
     @Override
     public VirtualMachineExtensionImage image() throws CloudException, IOException {
-        ServiceResponse<VirtualMachineExtensionImageInner> response = this.client.get(this.regionName(),
+        VirtualMachineExtensionImageInner inner = this.client.get(this.regionName(),
                 this.type().publisher().name(),
                 this.type().name(),
                 this.name());
-        return new VirtualMachineExtensionImageImpl(this, response.getBody());
+        return new VirtualMachineExtensionImageImpl(this, inner);
     }
 }

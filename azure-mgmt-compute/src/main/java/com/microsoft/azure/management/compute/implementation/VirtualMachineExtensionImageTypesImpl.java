@@ -25,7 +25,7 @@ class VirtualMachineExtensionImageTypesImpl
 
     @Override
     public PagedList<VirtualMachineExtensionImageType> list() throws CloudException, IOException {
-        return wrapList(this.client.listTypes(this.publisher.region().toString(), this.publisher.name()).getBody());
+        return wrapList(this.client.listTypes(this.publisher.region().toString(), this.publisher.name()));
     }
 
     @Override

@@ -18,7 +18,6 @@ import com.microsoft.azure.management.storage.Sku;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.rest.ServiceResponse;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Action1;
@@ -124,28 +123,25 @@ class StorageAccountImpl
 
     @Override
     public List<StorageAccountKey> refreshKeys() throws CloudException, IOException {
-        ServiceResponse<StorageAccountListKeysResultInner> response =
+        StorageAccountListKeysResultInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
-        StorageAccountListKeysResultInner resultInner = response.getBody();
-        cachedAccountKeys = resultInner.keys();
+        cachedAccountKeys = response.keys();
         return cachedAccountKeys;
     }
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException {
-        ServiceResponse<StorageAccountListKeysResultInner> response =
+        StorageAccountListKeysResultInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
-        StorageAccountListKeysResultInner resultInner = response.getBody();
-        cachedAccountKeys = resultInner.keys();
+        cachedAccountKeys = response.keys();
         return cachedAccountKeys;
     }
 
     @Override
     public StorageAccountImpl refresh() throws Exception {
-        ServiceResponse<StorageAccountInner> response =
+        StorageAccountInner response =
             this.client.getProperties(this.resourceGroupName(), this.name());
-        StorageAccountInner storageAccountInner = response.getBody();
-        this.setInner(storageAccountInner);
+        this.setInner(response);
         clearWrapperProperties();
         return this;
     }
@@ -243,9 +239,9 @@ class StorageAccountImpl
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         return this.client.createAsync(this.resourceGroupName(), this.name(), createParameters)
-                .flatMap(new Func1<ServiceResponse<StorageAccountInner>, Observable<ServiceResponse<StorageAccountInner>>>() {
+                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
                     @Override
-                    public Observable<ServiceResponse<StorageAccountInner>> call(ServiceResponse<StorageAccountInner> storageAccountInner) {
+                    public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
                         return client.getPropertiesAsync(resourceGroupName(), name());
                     }
                 })

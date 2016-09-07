@@ -49,7 +49,6 @@ import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -146,9 +145,9 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() throws Exception {
-        ServiceResponse<VirtualMachineInner> response =
+        VirtualMachineInner response =
                 this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
         this.virtualMachineExtensions.refresh();
@@ -193,7 +192,7 @@ class VirtualMachineImpl
     @Override
     public PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()).getBody());
+        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
@@ -208,17 +207,17 @@ class VirtualMachineImpl
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
-        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
-        return mapper.writeValueAsString(captureResult.getBody().output());
+        return mapper.writeValueAsString(captureResult.output());
     }
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
         this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
                 this.name(),
-                InstanceViewTypes.INSTANCE_VIEW).getBody().instanceView();
+                InstanceViewTypes.INSTANCE_VIEW).instanceView();
         return this.virtualMachineInstanceView;
     }
 
@@ -888,10 +887,10 @@ class VirtualMachineImpl
                         handleNetworkSettings();
                         handleAvailabilitySettings();
                         return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
-                                .map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachine>() {
+                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                                     @Override
-                                    public VirtualMachine call(ServiceResponse<VirtualMachineInner> virtualMachineInner) {
-                                        self.setInner(virtualMachineInner.getBody());
+                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
+                                        self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
                                         initializeDataDisks();
                                         return self;

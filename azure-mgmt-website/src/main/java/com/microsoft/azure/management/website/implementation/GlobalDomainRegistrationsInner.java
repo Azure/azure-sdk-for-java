@@ -97,17 +97,16 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DomainInner>> getAllDomains() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getAllDomains() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DomainInner>> response = getAllDomainsSinglePageAsync().toBlocking().single();
-        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.getBody()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -131,15 +130,14 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @return the observable to the List&lt;DomainInner&gt; object
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsAsync() {
-        return getAllDomainsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+    public Observable<Page<DomainInner>> getAllDomainsAsync() {
+        return getAllDomainsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -147,7 +145,26 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsWithServiceResponseAsync() {
+        return getAllDomainsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllDomainsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -183,10 +200,10 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainControlCenterSsoRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainControlCenterSsoRequestInner object if successful.
      */
-    public ServiceResponse<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequest() throws CloudException, IOException, IllegalArgumentException {
-        return getDomainControlCenterSsoRequestAsync().toBlocking().single();
+    public DomainControlCenterSsoRequestInner getDomainControlCenterSsoRequest() throws CloudException, IOException, IllegalArgumentException {
+        return getDomainControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -196,7 +213,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequestAsync(final ServiceCallback<DomainControlCenterSsoRequestInner> serviceCallback) {
-        return ServiceCall.create(getDomainControlCenterSsoRequestAsync(), serviceCallback);
+        return ServiceCall.create(getDomainControlCenterSsoRequestWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -204,7 +221,21 @@ public final class GlobalDomainRegistrationsInner {
      *
      * @return the observable to the DomainControlCenterSsoRequestInner object
      */
-    public Observable<ServiceResponse<DomainControlCenterSsoRequestInner>> getDomainControlCenterSsoRequestAsync() {
+    public Observable<DomainControlCenterSsoRequestInner> getDomainControlCenterSsoRequestAsync() {
+        return getDomainControlCenterSsoRequestWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainControlCenterSsoRequestInner>, DomainControlCenterSsoRequestInner>() {
+            @Override
+            public DomainControlCenterSsoRequestInner call(ServiceResponse<DomainControlCenterSsoRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Generates a single sign on request for domain management portal.
+     *
+     * @return the observable to the DomainControlCenterSsoRequestInner object
+     */
+    public Observable<ServiceResponse<DomainControlCenterSsoRequestInner>> getDomainControlCenterSsoRequestWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -239,10 +270,10 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> validateDomainPurchaseInformation(DomainRegistrationInputInner domainRegistrationInput) throws CloudException, IOException, IllegalArgumentException {
-        return validateDomainPurchaseInformationAsync(domainRegistrationInput).toBlocking().single();
+    public Object validateDomainPurchaseInformation(DomainRegistrationInputInner domainRegistrationInput) throws CloudException, IOException, IllegalArgumentException {
+        return validateDomainPurchaseInformationWithServiceResponseAsync(domainRegistrationInput).toBlocking().single().getBody();
     }
 
     /**
@@ -253,7 +284,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> validateDomainPurchaseInformationAsync(DomainRegistrationInputInner domainRegistrationInput, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(validateDomainPurchaseInformationAsync(domainRegistrationInput), serviceCallback);
+        return ServiceCall.create(validateDomainPurchaseInformationWithServiceResponseAsync(domainRegistrationInput), serviceCallback);
     }
 
     /**
@@ -262,7 +293,22 @@ public final class GlobalDomainRegistrationsInner {
      * @param domainRegistrationInput Domain registration information
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> validateDomainPurchaseInformationAsync(DomainRegistrationInputInner domainRegistrationInput) {
+    public Observable<Object> validateDomainPurchaseInformationAsync(DomainRegistrationInputInner domainRegistrationInput) {
+        return validateDomainPurchaseInformationWithServiceResponseAsync(domainRegistrationInput).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Validates domain registration information.
+     *
+     * @param domainRegistrationInput Domain registration information
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> validateDomainPurchaseInformationWithServiceResponseAsync(DomainRegistrationInputInner domainRegistrationInput) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -300,10 +346,10 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainAvailablilityCheckResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainAvailablilityCheckResultInner object if successful.
      */
-    public ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException {
-        return checkDomainAvailabilityAsync().toBlocking().single();
+    public DomainAvailablilityCheckResultInner checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException {
+        return checkDomainAvailabilityWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -313,7 +359,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync(final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkDomainAvailabilityAsync(), serviceCallback);
+        return ServiceCall.create(checkDomainAvailabilityWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -321,7 +367,21 @@ public final class GlobalDomainRegistrationsInner {
      *
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
-    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityAsync() {
+    public Observable<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync() {
+        return checkDomainAvailabilityWithServiceResponseAsync().map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
+            @Override
+            public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @return the observable to the DomainAvailablilityCheckResultInner object
+     */
+    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -352,10 +412,10 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DomainAvailablilityCheckResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DomainAvailablilityCheckResultInner object if successful.
      */
-    public ServiceResponse<DomainAvailablilityCheckResultInner> checkDomainAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
-        return checkDomainAvailabilityAsync(name).toBlocking().single();
+    public DomainAvailablilityCheckResultInner checkDomainAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
+        return checkDomainAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
     /**
@@ -366,7 +426,7 @@ public final class GlobalDomainRegistrationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync(String name, final ServiceCallback<DomainAvailablilityCheckResultInner> serviceCallback) {
-        return ServiceCall.create(checkDomainAvailabilityAsync(name), serviceCallback);
+        return ServiceCall.create(checkDomainAvailabilityWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -375,7 +435,22 @@ public final class GlobalDomainRegistrationsInner {
      * @param name Name of the object
      * @return the observable to the DomainAvailablilityCheckResultInner object
      */
-    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityAsync(String name) {
+    public Observable<DomainAvailablilityCheckResultInner> checkDomainAvailabilityAsync(String name) {
+        return checkDomainAvailabilityWithServiceResponseAsync(name).map(new Func1<ServiceResponse<DomainAvailablilityCheckResultInner>, DomainAvailablilityCheckResultInner>() {
+            @Override
+            public DomainAvailablilityCheckResultInner call(ServiceResponse<DomainAvailablilityCheckResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks if a domain is available for registration.
+     *
+     * @param name Name of the object
+     * @return the observable to the DomainAvailablilityCheckResultInner object
+     */
+    public Observable<ServiceResponse<DomainAvailablilityCheckResultInner>> checkDomainAvailabilityWithServiceResponseAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -412,17 +487,16 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NameIdentifierInner>> listDomainRecommendations(final DomainRecommendationSearchParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NameIdentifierInner> listDomainRecommendations(final DomainRecommendationSearchParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsSinglePageAsync(parameters).toBlocking().single();
-        PagedList<NameIdentifierInner> pagedList = new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.getBody()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NameIdentifierInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -448,15 +522,34 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
      * @param parameters Domain recommendation search parameters
-     * @return the observable to the List&lt;NameIdentifierInner&gt; object
+     * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters) {
+    public Observable<Page<NameIdentifierInner>> listDomainRecommendationsAsync(final DomainRecommendationSearchParametersInner parameters) {
+        return listDomainRecommendationsWithServiceResponseAsync(parameters)
+            .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
+                @Override
+                public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters
+     * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsWithServiceResponseAsync(final DomainRecommendationSearchParametersInner parameters) {
         return listDomainRecommendationsSinglePageAsync(parameters)
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listDomainRecommendationsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -465,7 +558,7 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
     ServiceResponse<PageImpl<NameIdentifierInner>> * @param parameters Domain recommendation search parameters
-     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsSinglePageAsync(final DomainRecommendationSearchParametersInner parameters) {
         if (this.client.subscriptionId() == null) {
@@ -506,17 +599,16 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DomainInner>> getAllDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getAllDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DomainInner>> response = getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DomainInner> pagedList = new PagedList<DomainInner>(response.getBody()) {
+        return new PagedList<DomainInner>(response.getBody()) {
             @Override
             public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DomainInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -543,15 +635,34 @@ public final class GlobalDomainRegistrationsInner {
      * Lists all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DomainInner&gt; object
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextAsync(final String nextPageLink) {
+    public Observable<Page<DomainInner>> getAllDomainsNextAsync(final String nextPageLink) {
+        return getAllDomainsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DomainInner>>, Page<DomainInner>>() {
+                @Override
+                public Page<DomainInner> call(ServiceResponse<Page<DomainInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DomainInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllDomainsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DomainInner>>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DomainInner>>> call(ServiceResponse<Page<DomainInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllDomainsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllDomainsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -560,7 +671,7 @@ public final class GlobalDomainRegistrationsInner {
      * Lists all domains in a subscription.
      *
     ServiceResponse<PageImpl<DomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DomainInner>>> getAllDomainsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -594,17 +705,16 @@ public final class GlobalDomainRegistrationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NameIdentifierInner>> listDomainRecommendationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NameIdentifierInner> listDomainRecommendationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NameIdentifierInner> pagedList = new PagedList<NameIdentifierInner>(response.getBody()) {
+        return new PagedList<NameIdentifierInner>(response.getBody()) {
             @Override
             public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NameIdentifierInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -631,15 +741,34 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NameIdentifierInner&gt; object
+     * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextAsync(final String nextPageLink) {
+    public Observable<Page<NameIdentifierInner>> listDomainRecommendationsNextAsync(final String nextPageLink) {
+        return listDomainRecommendationsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Page<NameIdentifierInner>>() {
+                @Override
+                public Page<NameIdentifierInner> call(ServiceResponse<Page<NameIdentifierInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists domain recommendations based on keywords.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NameIdentifierInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextWithServiceResponseAsync(final String nextPageLink) {
         return listDomainRecommendationsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<NameIdentifierInner>>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NameIdentifierInner>>> call(ServiceResponse<Page<NameIdentifierInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listDomainRecommendationsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listDomainRecommendationsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -648,7 +777,7 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
     ServiceResponse<PageImpl<NameIdentifierInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NameIdentifierInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NameIdentifierInner>>> listDomainRecommendationsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

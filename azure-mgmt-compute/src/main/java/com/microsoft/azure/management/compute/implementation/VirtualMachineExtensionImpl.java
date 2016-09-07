@@ -4,7 +4,6 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -200,9 +199,9 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl refresh() throws Exception {
-        ServiceResponse<VirtualMachineExtensionInner> response =
+        VirtualMachineExtensionInner inner =
                 this.client.get(this.parent.resourceGroupName(), this.parent.name(), this.name());
-        this.setInner(response.getBody());
+        this.setInner(inner);
         return this;
     }
 
@@ -215,10 +214,10 @@ class VirtualMachineExtensionImpl
                 this.parent.name(),
                 this.name(),
                 this.inner())
-                .map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtension>() {
+                .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtension>() {
                     @Override
-                    public VirtualMachineExtension call(ServiceResponse<VirtualMachineExtensionInner> response) {
-                        self.setInner(response.getBody());
+                    public VirtualMachineExtension call(VirtualMachineExtensionInner inner) {
+                        self.setInner(inner);
                         self.initializeSettings();
                         return self;
                     }
@@ -234,10 +233,10 @@ class VirtualMachineExtensionImpl
     public Observable<Void> deleteAsync() {
         return this.client.deleteAsync(this.parent.resourceGroupName(),
                 this.parent.name(),
-                this.name()).map(new Func1<ServiceResponse<Void>, Void>() {
+                this.name()).map(new Func1<Void, Void>() {
             @Override
-            public Void call(ServiceResponse<Void> voidServiceResponse) {
-                return voidServiceResponse.getBody();
+            public Void call(Void result) {
+                return result;
             }
         });
     }

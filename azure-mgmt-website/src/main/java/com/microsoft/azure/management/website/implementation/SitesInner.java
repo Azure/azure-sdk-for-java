@@ -849,10 +849,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> getSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot).toBlocking().single();
+    public VnetInfoInner getSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -866,7 +866,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> getSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+        return ServiceCall.create(getSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -878,7 +878,25 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> getSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
+    public Observable<VnetInfoInner> getSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
+        return getSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a specific Virtual Network Connection associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param slot The name of the slot for this web app.
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> getSiteVNETConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -929,10 +947,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> createOrUpdateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single();
+    public VnetInfoInner createOrUpdateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -947,7 +965,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> createOrUpdateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -960,7 +978,26 @@ public final class SitesInner {
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
+    public Observable<VnetInfoInner> createOrUpdateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
+        return createOrUpdateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param slot The name of the slot for this web app.
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateSiteVNETConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1014,10 +1051,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot).toBlocking().single();
+    public Object deleteSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -1031,7 +1068,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
+        return ServiceCall.create(deleteSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot), serviceCallback);
     }
 
     /**
@@ -1043,7 +1080,25 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
+    public Observable<Object> deleteSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
+        return deleteSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Removes the specified Virtual Network Connection association from this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param slot The name of the slot for this web app.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteVNETConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1094,10 +1149,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> updateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single();
+    public VnetInfoInner updateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -1112,7 +1167,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> updateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(updateSiteVNETConnectionSlotAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -1125,7 +1180,26 @@ public final class SitesInner {
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> updateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
+    public Observable<VnetInfoInner> updateSiteVNETConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
+        return updateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param slot The name of the slot for this web app.
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> updateSiteVNETConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1178,10 +1252,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> getSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVNETConnectionAsync(resourceGroupName, name, vnetName).toBlocking().single();
+    public VnetInfoInner getSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
     /**
@@ -1194,7 +1268,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(getSiteVNETConnectionAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.create(getSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -1205,7 +1279,24 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName) {
+    public Observable<VnetInfoInner> getSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName) {
+        return getSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a specific Virtual Network Connection associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> getSiteVNETConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1252,10 +1343,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteVNETConnectionAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single();
+    public VnetInfoInner createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -1269,7 +1360,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteVNETConnectionAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -1281,7 +1372,25 @@ public final class SitesInner {
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
+    public Observable<VnetInfoInner> createOrUpdateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
+        return createOrUpdateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> createOrUpdateSiteVNETConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1331,10 +1440,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteVNETConnectionAsync(resourceGroupName, name, vnetName).toBlocking().single();
+    public Object deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
     /**
@@ -1347,7 +1456,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteVNETConnectionAsync(resourceGroupName, name, vnetName), serviceCallback);
+        return ServiceCall.create(deleteSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
@@ -1358,7 +1467,24 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName) {
+    public Observable<Object> deleteSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName) {
+        return deleteSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Removes the specified Virtual Network Connection association from this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteVNETConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1405,10 +1531,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteVNETConnectionAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single();
+    public VnetInfoInner updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -1422,7 +1548,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetInfoInner> updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, final ServiceCallback<VnetInfoInner> serviceCallback) {
-        return ServiceCall.create(updateSiteVNETConnectionAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -1434,7 +1560,25 @@ public final class SitesInner {
      * @param connectionEnvelope The properties of this Virtual Network Connection
      * @return the observable to the VnetInfoInner object
      */
-    public Observable<ServiceResponse<VnetInfoInner>> updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
+    public Observable<VnetInfoInner> updateSiteVNETConnectionAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
+        return updateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a Virtual Network Connection or updates it's properties.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param connectionEnvelope The properties of this Virtual Network Connection
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> updateSiteVNETConnectionWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1485,10 +1629,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkFeaturesInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkFeaturesInner object if successful.
      */
-    public ServiceResponse<NetworkFeaturesInner> getSiteNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteNetworkFeaturesSlotAsync(resourceGroupName, name, view, slot).toBlocking().single();
+    public NetworkFeaturesInner getSiteNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -1502,7 +1646,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkFeaturesInner> getSiteNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.create(getSiteNetworkFeaturesSlotAsync(resourceGroupName, name, view, slot), serviceCallback);
+        return ServiceCall.create(getSiteNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot), serviceCallback);
     }
 
     /**
@@ -1514,7 +1658,25 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @return the observable to the NetworkFeaturesInner object
      */
-    public Observable<ServiceResponse<NetworkFeaturesInner>> getSiteNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot) {
+    public Observable<NetworkFeaturesInner> getSiteNetworkFeaturesSlotAsync(String resourceGroupName, String name, String view, String slot) {
+        return getSiteNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
+            @Override
+            public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a view of all network features in use on this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param view The type of view. This can either be "summary" or "detailed".
+     * @param slot The name of the slot for this web app.
+     * @return the observable to the NetworkFeaturesInner object
+     */
+    public Observable<ServiceResponse<NetworkFeaturesInner>> getSiteNetworkFeaturesSlotWithServiceResponseAsync(String resourceGroupName, String name, String view, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1564,10 +1726,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkFeaturesInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkFeaturesInner object if successful.
      */
-    public ServiceResponse<NetworkFeaturesInner> getSiteNetworkFeatures(String resourceGroupName, String name, String view) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteNetworkFeaturesAsync(resourceGroupName, name, view).toBlocking().single();
+    public NetworkFeaturesInner getSiteNetworkFeatures(String resourceGroupName, String name, String view) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().getBody();
     }
 
     /**
@@ -1580,7 +1742,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkFeaturesInner> getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view, final ServiceCallback<NetworkFeaturesInner> serviceCallback) {
-        return ServiceCall.create(getSiteNetworkFeaturesAsync(resourceGroupName, name, view), serviceCallback);
+        return ServiceCall.create(getSiteNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view), serviceCallback);
     }
 
     /**
@@ -1591,7 +1753,24 @@ public final class SitesInner {
      * @param view The type of view. This can either be "summary" or "detailed".
      * @return the observable to the NetworkFeaturesInner object
      */
-    public Observable<ServiceResponse<NetworkFeaturesInner>> getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view) {
+    public Observable<NetworkFeaturesInner> getSiteNetworkFeaturesAsync(String resourceGroupName, String name, String view) {
+        return getSiteNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).map(new Func1<ServiceResponse<NetworkFeaturesInner>, NetworkFeaturesInner>() {
+            @Override
+            public NetworkFeaturesInner call(ServiceResponse<NetworkFeaturesInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a view of all network features in use on this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param view The type of view. This can either be "summary" or "detailed".
+     * @return the observable to the NetworkFeaturesInner object
+     */
+    public Observable<ServiceResponse<NetworkFeaturesInner>> getSiteNetworkFeaturesWithServiceResponseAsync(String resourceGroupName, String name, String view) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1639,10 +1818,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteOperationSlot(String resourceGroupName, String name, String operationId, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteOperationSlotAsync(resourceGroupName, name, operationId, slot).toBlocking().single();
+    public Object getSiteOperationSlot(String resourceGroupName, String name, String operationId, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -1656,7 +1835,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteOperationSlotAsync(resourceGroupName, name, operationId, slot), serviceCallback);
+        return ServiceCall.create(getSiteOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
     }
 
     /**
@@ -1668,7 +1847,25 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<Object> getSiteOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        return getSiteOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the operation for a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param operationId Id of an operation
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteOperationSlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1717,10 +1914,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteOperationAsync(resourceGroupName, name, operationId).toBlocking().single();
+    public Object getSiteOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
     /**
@@ -1733,7 +1930,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteOperationAsync(resourceGroupName, name, operationId), serviceCallback);
+        return ServiceCall.create(getSiteOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
     }
 
     /**
@@ -1744,7 +1941,24 @@ public final class SitesInner {
      * @param operationId Id of an operation
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteOperationAsync(String resourceGroupName, String name, String operationId) {
+    public Observable<Object> getSiteOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getSiteOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the operation for a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param operationId Id of an operation
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1791,10 +2005,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return swapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last();
+    public Object swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().getBody();
     }
 
     /**
@@ -1807,7 +2021,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(swapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -1818,7 +2032,24 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+        return swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> swapSlotWithProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1848,10 +2079,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
-        return beginSwapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
+    public Object beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        return beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -1864,7 +2095,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginSwapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -1875,7 +2106,24 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> beginSwapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+        return beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginSwapSlotWithProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1925,10 +2173,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return swapSlotsSlotAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last();
+    public Object swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return swapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().getBody();
     }
 
     /**
@@ -1942,7 +2190,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(swapSlotsSlotAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(swapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -1954,7 +2202,25 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> swapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+        return swapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of source slot for the swap
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> swapSlotsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1988,10 +2254,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginSwapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
-        return beginSwapSlotsSlotAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
+    public Object beginSwapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        return beginSwapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -2005,7 +2271,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginSwapSlotsSlotAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(beginSwapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -2017,7 +2283,25 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> beginSwapSlotsSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+        return beginSwapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Swaps web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of source slot for the swap
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginSwapSlotsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2068,17 +2352,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SlotDifferenceInner>> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
-        PagedList<SlotDifferenceInner> pagedList = new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2108,15 +2391,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
-     * @return the observable to the List&lt;SlotDifferenceInner&gt; object
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
+        return getSlotsDifferencesFromProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity)
+            .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
+                @Override
+                public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get the difference in configuration settings between two web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionWithServiceResponseAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         return getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2127,7 +2431,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of web app
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity Request body that contains the target slot name
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionSinglePageAsync(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
@@ -2177,17 +2481,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SlotDifferenceInner>> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
-        PagedList<SlotDifferenceInner> pagedList = new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2219,15 +2522,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of the source slot
      * @param slotSwapEntity Request body that contains the target slot name
-     * @return the observable to the List&lt;SlotDifferenceInner&gt; object
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
+        return getSlotsDifferencesSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity)
+            .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
+                @Override
+                public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get the difference in configuration settings between two web app slots.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of the source slot
+     * @param slotSwapEntity Request body that contains the target slot name
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         return getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2239,7 +2564,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param name Name of web app
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slot Name of the source slot
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param slotSwapEntity Request body that contains the target slot name
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
@@ -2291,10 +2616,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
-        return applySlotConfigToProductionAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
+    public Object applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        return applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -2307,7 +2632,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(applySlotConfigToProductionAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -2318,7 +2643,24 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> applySlotConfigToProductionAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
+        return applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Applies the configuration settings from the target slot onto the current slot.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> applySlotConfigToProductionWithServiceResponseAsync(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2366,10 +2708,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> applySlotConfigSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
-        return applySlotConfigSlotAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
+    public Object applySlotConfigSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+        return applySlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -2383,7 +2725,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> applySlotConfigSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(applySlotConfigSlotAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
+        return ServiceCall.create(applySlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity), serviceCallback);
     }
 
     /**
@@ -2395,7 +2737,25 @@ public final class SitesInner {
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> applySlotConfigSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+    public Observable<Object> applySlotConfigSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
+        return applySlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Applies the configuration settings from the target slot onto the current slot.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of the source slot. Settings from the target slot will be applied onto this slot
+     * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> applySlotConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2444,10 +2804,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> resetProductionSlotConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return resetProductionSlotConfigAsync(resourceGroupName, name).toBlocking().single();
+    public Object resetProductionSlotConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -2459,7 +2819,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> resetProductionSlotConfigAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(resetProductionSlotConfigAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2469,7 +2829,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> resetProductionSlotConfigAsync(String resourceGroupName, String name) {
+    public Observable<Object> resetProductionSlotConfigAsync(String resourceGroupName, String name) {
+        return resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> resetProductionSlotConfigWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2512,10 +2888,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> resetSlotConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return resetSlotConfigSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object resetSlotConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return resetSlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -2528,7 +2904,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> resetSlotConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(resetSlotConfigSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(resetSlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -2539,7 +2915,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> resetSlotConfigSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> resetSlotConfigSlotAsync(String resourceGroupName, String name, String slot) {
+        return resetSlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Resets the configuration settings of the current slot if they were previously modified by calling ApplySlotConfig API.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> resetSlotConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2584,10 +2977,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SlotConfigNamesResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SlotConfigNamesResourceInner object if successful.
      */
-    public ServiceResponse<SlotConfigNamesResourceInner> getSlotConfigNames(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSlotConfigNamesAsync(resourceGroupName, name).toBlocking().single();
+    public SlotConfigNamesResourceInner getSlotConfigNames(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -2599,7 +2992,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SlotConfigNamesResourceInner> getSlotConfigNamesAsync(String resourceGroupName, String name, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.create(getSlotConfigNamesAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -2609,7 +3002,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SlotConfigNamesResourceInner object
      */
-    public Observable<ServiceResponse<SlotConfigNamesResourceInner>> getSlotConfigNamesAsync(String resourceGroupName, String name) {
+    public Observable<SlotConfigNamesResourceInner> getSlotConfigNamesAsync(String resourceGroupName, String name) {
+        return getSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
+            @Override
+            public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the names of application settings and connection string that remain with the slot during swap operation.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SlotConfigNamesResourceInner object
+     */
+    public Observable<ServiceResponse<SlotConfigNamesResourceInner>> getSlotConfigNamesWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2652,10 +3061,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SlotConfigNamesResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SlotConfigNamesResourceInner object if successful.
      */
-    public ServiceResponse<SlotConfigNamesResourceInner> updateSlotConfigNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) throws CloudException, IOException, IllegalArgumentException {
-        return updateSlotConfigNamesAsync(resourceGroupName, name, slotConfigNames).toBlocking().single();
+    public SlotConfigNamesResourceInner updateSlotConfigNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) throws CloudException, IOException, IllegalArgumentException {
+        return updateSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().getBody();
     }
 
     /**
@@ -2668,7 +3077,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SlotConfigNamesResourceInner> updateSlotConfigNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames, final ServiceCallback<SlotConfigNamesResourceInner> serviceCallback) {
-        return ServiceCall.create(updateSlotConfigNamesAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
+        return ServiceCall.create(updateSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames), serviceCallback);
     }
 
     /**
@@ -2679,7 +3088,24 @@ public final class SitesInner {
      * @param slotConfigNames Request body containing the names of application settings and connection strings
      * @return the observable to the SlotConfigNamesResourceInner object
      */
-    public Observable<ServiceResponse<SlotConfigNamesResourceInner>> updateSlotConfigNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
+    public Observable<SlotConfigNamesResourceInner> updateSlotConfigNamesAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
+        return updateSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).map(new Func1<ServiceResponse<SlotConfigNamesResourceInner>, SlotConfigNamesResourceInner>() {
+            @Override
+            public SlotConfigNamesResourceInner call(ServiceResponse<SlotConfigNamesResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the names of application settings and connection string that remain with the slot during swap operation.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slotConfigNames Request body containing the names of application settings and connection strings
+     * @return the observable to the SlotConfigNamesResourceInner object
+     */
+    public Observable<ServiceResponse<SlotConfigNamesResourceInner>> updateSlotConfigNamesWithServiceResponseAsync(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2725,17 +3151,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSiteSlots(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2763,15 +3188,14 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsAsync(final String resourceGroupName, final String name) {
-        return getSiteSlotsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+    public Observable<Page<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name) {
+        return getSiteSlotsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteSlotsNextSinglePageAsync(nextPageLink);
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -2781,7 +3205,28 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getSiteSlotsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteSlotsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -2820,17 +3265,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSiteSlots(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2860,15 +3304,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param propertiesToInclude List of app properties to include in the response
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+    public Observable<Page<SiteInner>> getSiteSlotsAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+        return getSiteSlotsWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param propertiesToInclude List of app properties to include in the response
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsWithServiceResponseAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         return getSiteSlotsSinglePageAsync(resourceGroupName, name, propertiesToInclude)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteSlotsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteSlotsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2879,7 +3344,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of web app
     ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude List of app properties to include in the response
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         if (resourceGroupName == null) {
@@ -2922,17 +3387,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSitesSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2958,15 +3422,14 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSitesAsync(final String resourceGroupName) {
-        return getSitesSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+    public Observable<Page<SiteInner>> getSitesAsync(final String resourceGroupName) {
+        return getSitesWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSitesNextSinglePageAsync(nextPageLink);
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -2975,7 +3438,27 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSitesWithServiceResponseAsync(final String resourceGroupName) {
+        return getSitesSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSitesSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -3014,17 +3497,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3056,15 +3538,37 @@ public final class SitesInner {
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
      * @param includeSlots Whether or not to include deployments slots in results
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
+    public Observable<Page<SiteInner>> getSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
+        return getSitesWithServiceResponseAsync(resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param propertiesToInclude Additional web app properties included in the response
+     * @param includeSiteTypes Types of apps included in the response
+     * @param includeSlots Whether or not to include deployments slots in results
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSitesWithServiceResponseAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
         return getSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3076,7 +3580,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Additional web app properties included in the response
     ServiceResponse<PageImpl<SiteInner>> * @param includeSiteTypes Types of apps included in the response
     ServiceResponse<PageImpl<SiteInner>> * @param includeSlots Whether or not to include deployments slots in results
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSitesSinglePageAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
         if (resourceGroupName == null) {
@@ -3117,10 +3621,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> getSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteAsync(resourceGroupName, name).toBlocking().single();
+    public SiteInner getSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -3132,7 +3636,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getSiteAsync(String resourceGroupName, String name, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getSiteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3142,7 +3646,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> getSiteAsync(String resourceGroupName, String name) {
+    public Observable<SiteInner> getSiteAsync(String resourceGroupName, String name) {
+        return getSiteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> getSiteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3179,10 +3699,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> getSite(String resourceGroupName, String name, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
+    public SiteInner getSite(String resourceGroupName, String name, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single().getBody();
     }
 
     /**
@@ -3195,7 +3715,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getSiteAsync(String resourceGroupName, String name, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getSiteAsync(resourceGroupName, name, propertiesToInclude), serviceCallback);
+        return ServiceCall.create(getSiteWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude), serviceCallback);
     }
 
     /**
@@ -3206,7 +3726,24 @@ public final class SitesInner {
      * @param propertiesToInclude Additional web app properties included in the response
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> getSiteAsync(String resourceGroupName, String name, String propertiesToInclude) {
+    public Observable<SiteInner> getSiteAsync(String resourceGroupName, String name, String propertiesToInclude) {
+        return getSiteWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param propertiesToInclude Additional web app properties included in the response
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> getSiteWithServiceResponseAsync(String resourceGroupName, String name, String propertiesToInclude) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3250,10 +3787,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object  if successful.
      */
-    public ServiceResponse<SiteInner> createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope).toBlocking().last();
+    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -3266,7 +3803,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -3277,7 +3814,24 @@ public final class SitesInner {
      * @param siteEnvelope Details of web app if it exists already
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
+    public Observable<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
+        return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3316,10 +3870,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last();
+    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
     }
 
     /**
@@ -3337,7 +3891,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -3353,7 +3907,29 @@ public final class SitesInner {
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+    public Observable<SiteInner> createOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+        return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
+                 only used for app creation
+     * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
+     * @param forceDnsRegistration If true, web app hostname is force registered with DNS
+     * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3383,10 +3959,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope).toBlocking().single();
+    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -3399,7 +3975,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -3410,7 +3986,24 @@ public final class SitesInner {
      * @param siteEnvelope Details of web app if it exists already
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
+    public Observable<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
+        return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3459,10 +4052,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single();
+    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
     }
 
     /**
@@ -3480,7 +4073,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSiteAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -3496,7 +4089,29 @@ public final class SitesInner {
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+    public Observable<SiteInner> beginCreateOrUpdateSiteAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+        return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param siteEnvelope Details of web app if it exists already
+     * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
+                 only used for app creation
+     * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
+     * @param forceDnsRegistration If true, web app hostname is force registered with DNS
+     * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteWithServiceResponseAsync(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3543,10 +4158,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteAsync(resourceGroupName, name).toBlocking().single();
+    public Object deleteSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -3558,7 +4173,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteSiteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3568,7 +4183,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteAsync(String resourceGroupName, String name) {
+    public Observable<Object> deleteSiteAsync(String resourceGroupName, String name) {
+        return deleteSiteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3611,10 +4242,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSite(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single();
+    public Object deleteSite(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single().getBody();
     }
 
     /**
@@ -3630,7 +4261,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots), serviceCallback);
+        return ServiceCall.create(deleteSiteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots), serviceCallback);
     }
 
     /**
@@ -3644,7 +4275,27 @@ public final class SitesInner {
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
+    public Observable<Object> deleteSiteAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
+        return deleteSiteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param deleteMetrics If true, web app metrics are also deleted
+     * @param deleteEmptyServerFarm If true and App Service Plan is empty after web app deletion, App Service Plan is also deleted
+     * @param skipDnsRegistration If true, DNS registration is skipped
+     * @param deleteAllSlots If true, all slots associated with web app are also deleted
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteWithServiceResponseAsync(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3687,10 +4338,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> getSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -3703,7 +4354,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getSiteSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -3714,7 +4365,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> getSiteSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> getSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3755,10 +4423,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> getSiteSlot(String resourceGroupName, String name, String slot, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSlotAsync(resourceGroupName, name, slot, propertiesToInclude).toBlocking().single();
+    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, propertiesToInclude).toBlocking().single().getBody();
     }
 
     /**
@@ -3772,7 +4440,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(getSiteSlotAsync(resourceGroupName, name, slot, propertiesToInclude), serviceCallback);
+        return ServiceCall.create(getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, propertiesToInclude), serviceCallback);
     }
 
     /**
@@ -3784,7 +4452,25 @@ public final class SitesInner {
      * @param propertiesToInclude Additional web app properties included in the response
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude) {
+    public Observable<SiteInner> getSiteSlotAsync(String resourceGroupName, String name, String slot, String propertiesToInclude) {
+        return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, propertiesToInclude).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get details of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param propertiesToInclude Additional web app properties included in the response
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> getSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String propertiesToInclude) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3832,10 +4518,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object  if successful.
      */
-    public ServiceResponse<SiteInner> createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last();
+    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -3849,7 +4535,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -3861,7 +4547,25 @@ public final class SitesInner {
      * @param siteEnvelope Details of web app if it exists already
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
+    public Observable<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
+        return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3904,10 +4608,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last();
+    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
     }
 
     /**
@@ -3926,7 +4630,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -3943,7 +4647,30 @@ public final class SitesInner {
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+    public Observable<SiteInner> createOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+        return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
+                 only used for app creation
+     * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
+     * @param forceDnsRegistration If true, web app hostname is force registered with DNS
+     * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> createOrUpdateSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3977,10 +4704,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single();
+    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -3994,7 +4721,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope), serviceCallback);
     }
 
     /**
@@ -4006,7 +4733,25 @@ public final class SitesInner {
      * @param siteEnvelope Details of web app if it exists already
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
+    public Observable<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
+        return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4059,10 +4804,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single();
+    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
     }
 
     /**
@@ -4081,7 +4826,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateSiteSlotAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds), serviceCallback);
     }
 
     /**
@@ -4098,7 +4843,30 @@ public final class SitesInner {
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+    public Observable<SiteInner> beginCreateOrUpdateSiteSlotAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
+        return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteEnvelope Details of web app if it exists already
+     * @param skipDnsRegistration If true web app hostname is not registered with DNS on creation. This parameter is
+                 only used for app creation
+     * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
+     * @param forceDnsRegistration If true, web app hostname is force registered with DNS
+     * @param ttlInSeconds Time to live in seconds for web app's default domain name
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginCreateOrUpdateSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4149,10 +4917,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object deleteSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -4165,7 +4933,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -4176,7 +4944,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot) {
+        return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4223,10 +5008,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteSlot(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteSlotAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single();
+    public Object deleteSiteSlot(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single().getBody();
     }
 
     /**
@@ -4243,7 +5028,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteSlotAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots), serviceCallback);
+        return ServiceCall.create(deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots), serviceCallback);
     }
 
     /**
@@ -4258,7 +5043,28 @@ public final class SitesInner {
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
+    public Observable<Object> deleteSiteSlotAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
+        return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param deleteMetrics If true, web app metrics are also deleted
+     * @param deleteEmptyServerFarm If true and App Service Plan is empty after web app deletion, App Service Plan is also deleted
+     * @param skipDnsRegistration If true, DNS registration is skipped
+     * @param deleteAllSlots If true, all slots associated with web app are also deleted
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4303,10 +5109,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCloneabilityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteCloneabilityInner object if successful.
      */
-    public ServiceResponse<SiteCloneabilityInner> isSiteCloneable(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return isSiteCloneableAsync(resourceGroupName, name).toBlocking().single();
+    public SiteCloneabilityInner isSiteCloneable(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return isSiteCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -4318,7 +5124,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteCloneabilityInner> isSiteCloneableAsync(String resourceGroupName, String name, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.create(isSiteCloneableAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(isSiteCloneableWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4328,7 +5134,23 @@ public final class SitesInner {
      * @param name Name of the web app
      * @return the observable to the SiteCloneabilityInner object
      */
-    public Observable<ServiceResponse<SiteCloneabilityInner>> isSiteCloneableAsync(String resourceGroupName, String name) {
+    public Observable<SiteCloneabilityInner> isSiteCloneableAsync(String resourceGroupName, String name) {
+        return isSiteCloneableWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
+            @Override
+            public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @return the observable to the SiteCloneabilityInner object
+     */
+    public Observable<ServiceResponse<SiteCloneabilityInner>> isSiteCloneableWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4371,10 +5193,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteCloneabilityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteCloneabilityInner object if successful.
      */
-    public ServiceResponse<SiteCloneabilityInner> isSiteCloneableSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return isSiteCloneableSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteCloneabilityInner isSiteCloneableSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return isSiteCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -4387,7 +5209,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteCloneabilityInner> isSiteCloneableSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteCloneabilityInner> serviceCallback) {
-        return ServiceCall.create(isSiteCloneableSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(isSiteCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -4398,7 +5220,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteCloneabilityInner object
      */
-    public Observable<ServiceResponse<SiteCloneabilityInner>> isSiteCloneableSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteCloneabilityInner> isSiteCloneableSlotAsync(String resourceGroupName, String name, String slot) {
+        return isSiteCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteCloneabilityInner>, SiteCloneabilityInner>() {
+            @Override
+            public SiteCloneabilityInner call(ServiceResponse<SiteCloneabilityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new web app or modifies an existing web app.
+     *
+     * @param resourceGroupName Name of the resource group
+     * @param name Name of the web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteCloneabilityInner object
+     */
+    public Observable<ServiceResponse<SiteCloneabilityInner>> isSiteCloneableSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4445,10 +5284,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> recoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return recoverSiteAsync(resourceGroupName, name, recoveryEntity).toBlocking().last();
+    public SiteInner recoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return recoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().getBody();
     }
 
     /**
@@ -4461,7 +5300,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(recoverSiteAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+        return ServiceCall.create(recoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -4472,7 +5311,24 @@ public final class SitesInner {
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<SiteInner> recoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+        return recoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Recovers a deleted web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> recoverSiteWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4502,10 +5358,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginRecoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
-        return beginRecoverSiteAsync(resourceGroupName, name, recoveryEntity).toBlocking().single();
+    public SiteInner beginRecoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
+        return beginRecoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -4518,7 +5374,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginRecoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginRecoverSiteAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
+        return ServiceCall.create(beginRecoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -4529,7 +5385,24 @@ public final class SitesInner {
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginRecoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<SiteInner> beginRecoverSiteAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
+        return beginRecoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Recovers a deleted web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginRecoverSiteWithServiceResponseAsync(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4579,10 +5452,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SiteInner object wrapped in ServiceResponse if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> recoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return recoverSiteSlotAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last();
+    public SiteInner recoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return recoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().getBody();
     }
 
     /**
@@ -4596,7 +5469,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(recoverSiteSlotAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+        return ServiceCall.create(recoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -4608,7 +5481,25 @@ public final class SitesInner {
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SiteInner>> recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<SiteInner> recoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+        return recoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Recovers a deleted web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SiteInner>> recoverSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4642,10 +5533,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteInner object if successful.
      */
-    public ServiceResponse<SiteInner> beginRecoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
-        return beginRecoverSiteSlotAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single();
+    public SiteInner beginRecoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
+        return beginRecoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().getBody();
     }
 
     /**
@@ -4659,7 +5550,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteInner> beginRecoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity, final ServiceCallback<SiteInner> serviceCallback) {
-        return ServiceCall.create(beginRecoverSiteSlotAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
+        return ServiceCall.create(beginRecoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity), serviceCallback);
     }
 
     /**
@@ -4671,7 +5562,25 @@ public final class SitesInner {
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
      * @return the observable to the SiteInner object
      */
-    public Observable<ServiceResponse<SiteInner>> beginRecoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+    public Observable<SiteInner> beginRecoverSiteSlotAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
+        return beginRecoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).map(new Func1<ServiceResponse<SiteInner>, SiteInner>() {
+            @Override
+            public SiteInner call(ServiceResponse<SiteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Recovers a deleted web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
+     * @return the observable to the SiteInner object
+     */
+    public Observable<ServiceResponse<SiteInner>> beginRecoverSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4721,10 +5630,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteSnapshots(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSnapshotsAsync(resourceGroupName, name).toBlocking().single();
+    public Object getSiteSnapshots(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSnapshotsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -4736,7 +5645,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteSnapshotsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteSnapshotsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteSnapshotsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -4746,7 +5655,23 @@ public final class SitesInner {
      * @param name Website Name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteSnapshotsAsync(String resourceGroupName, String name) {
+    public Observable<Object> getSiteSnapshotsAsync(String resourceGroupName, String name) {
+        return getSiteSnapshotsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns all Snapshots to the user.
+     *
+     * @param resourceGroupName Webspace
+     * @param name Website Name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteSnapshotsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4789,10 +5714,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteSnapshotsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSnapshotsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object getSiteSnapshotsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSnapshotsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -4805,7 +5730,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteSnapshotsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteSnapshotsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteSnapshotsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -4816,7 +5741,24 @@ public final class SitesInner {
      * @param slot Website Slot
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteSnapshotsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> getSiteSnapshotsSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteSnapshotsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns all Snapshots to the user.
+     *
+     * @param resourceGroupName Webspace
+     * @param name Website Name
+     * @param slot Website Slot
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteSnapshotsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4860,17 +5802,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeletedSiteInner>> getDeletedSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<DeletedSiteInner> pagedList = new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4896,15 +5837,14 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of resource group
-     * @return the observable to the List&lt;DeletedSiteInner&gt; object
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesAsync(final String resourceGroupName) {
-        return getDeletedSitesSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
+    public Observable<Page<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName) {
+        return getDeletedSitesWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeletedSitesNextSinglePageAsync(nextPageLink);
+                public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -4913,7 +5853,27 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of resource group
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesWithServiceResponseAsync(final String resourceGroupName) {
+        return getDeletedSitesSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeletedSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -4950,17 +5910,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeletedSiteInner>> getDeletedSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes).toBlocking().single();
-        PagedList<DeletedSiteInner> pagedList = new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4990,15 +5949,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
-     * @return the observable to the List&lt;DeletedSiteInner&gt; object
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
+    public Observable<Page<DeletedSiteInner>> getDeletedSitesAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
+        return getDeletedSitesWithServiceResponseAsync(resourceGroupName, propertiesToInclude, includeSiteTypes)
+            .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
+                @Override
+                public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param propertiesToInclude Additional web app properties included in the response
+     * @param includeSiteTypes Types of apps included in the response
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesWithServiceResponseAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
         return getDeletedSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes)
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeletedSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeletedSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5009,7 +5989,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param propertiesToInclude Additional web app properties included in the response
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param includeSiteTypes Types of apps included in the response
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesSinglePageAsync(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
         if (resourceGroupName == null) {
@@ -5050,17 +6030,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getDeployments(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeployments(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5088,15 +6067,35 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<DeploymentInner>> getDeploymentsAsync(final String resourceGroupName, final String name) {
+        return getDeploymentsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getDeploymentsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeploymentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeploymentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5106,7 +6105,7 @@ public final class SitesInner {
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -5151,17 +6150,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getDeploymentsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5191,15 +6189,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+    public Observable<Page<DeploymentInner>> getDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getDeploymentsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
         return getDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeploymentsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeploymentsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5210,7 +6229,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
     ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -5258,17 +6277,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5298,15 +6316,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param instanceId Id of web app instance
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId) {
+    public Observable<Page<DeploymentInner>> getInstanceDeploymentsAsync(final String resourceGroupName, final String name, final String instanceId) {
+        return getInstanceDeploymentsWithServiceResponseAsync(resourceGroupName, name, instanceId)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param instanceId Id of web app instance
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsWithServiceResponseAsync(final String resourceGroupName, final String name, final String instanceId) {
         return getInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getInstanceDeploymentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getInstanceDeploymentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5317,7 +6356,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
     ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId Id of web app instance
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSinglePageAsync(final String resourceGroupName, final String name, final String instanceId) {
         if (resourceGroupName == null) {
@@ -5366,17 +6405,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5408,15 +6446,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
+    public Observable<Page<DeploymentInner>> getInstanceDeploymentsSlotAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
+        return getInstanceDeploymentsSlotWithServiceResponseAsync(resourceGroupName, name, slot, instanceId)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
         return getInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getInstanceDeploymentsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5428,7 +6488,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<DeploymentInner>> * @param name Name of web app
     ServiceResponse<PageImpl<DeploymentInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
     ServiceResponse<PageImpl<DeploymentInner>> * @param instanceId Id of web app instance
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String instanceId) {
         if (resourceGroupName == null) {
@@ -5480,10 +6540,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        return getInstanceDeploymentAsync(resourceGroupName, name, id, instanceId).toBlocking().single();
+    public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
     }
 
     /**
@@ -5497,7 +6557,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getInstanceDeploymentAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+        return ServiceCall.create(getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -5509,7 +6569,25 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
+    public Observable<DeploymentInner> getInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
+        return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5560,10 +6638,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
-        return createInstanceDeploymentAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single();
+    public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().getBody();
     }
 
     /**
@@ -5578,7 +6656,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createInstanceDeploymentAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
+        return ServiceCall.create(createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -5591,7 +6669,26 @@ public final class SitesInner {
      * @param deployment Details of deployment
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
+    public Observable<DeploymentInner> createInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
+        return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @param deployment Details of deployment
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5645,10 +6742,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        return deleteInstanceDeploymentAsync(resourceGroupName, name, id, instanceId).toBlocking().single();
+    public Object deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        return deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
     }
 
     /**
@@ -5662,7 +6759,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteInstanceDeploymentAsync(resourceGroupName, name, id, instanceId), serviceCallback);
+        return ServiceCall.create(deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId), serviceCallback);
     }
 
     /**
@@ -5674,7 +6771,25 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
+    public Observable<Object> deleteInstanceDeploymentAsync(String resourceGroupName, String name, String id, String instanceId) {
+        return deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param instanceId Id of web app instance
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteInstanceDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, String instanceId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5723,10 +6838,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> getDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
-        return getDeploymentAsync(resourceGroupName, name, id).toBlocking().single();
+    public DeploymentInner getDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
     }
 
     /**
@@ -5739,7 +6854,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getDeploymentAsync(resourceGroupName, name, id), serviceCallback);
+        return ServiceCall.create(getDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -5750,7 +6865,24 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> getDeploymentAsync(String resourceGroupName, String name, String id) {
+    public Observable<DeploymentInner> getDeploymentAsync(String resourceGroupName, String name, String id) {
+        return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> getDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5797,10 +6929,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
-        return createDeploymentAsync(resourceGroupName, name, id, deployment).toBlocking().single();
+    public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().getBody();
     }
 
     /**
@@ -5814,7 +6946,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createDeploymentAsync(resourceGroupName, name, id, deployment), serviceCallback);
+        return ServiceCall.create(createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment), serviceCallback);
     }
 
     /**
@@ -5826,7 +6958,25 @@ public final class SitesInner {
      * @param deployment Details of deployment
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment) {
+    public Observable<DeploymentInner> createDeploymentAsync(String resourceGroupName, String name, String id, DeploymentInner deployment) {
+        return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param deployment Details of deployment
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> createDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id, DeploymentInner deployment) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5876,10 +7026,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
-        return deleteDeploymentAsync(resourceGroupName, name, id).toBlocking().single();
+    public Object deleteDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+        return deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
     }
 
     /**
@@ -5892,7 +7042,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteDeploymentAsync(String resourceGroupName, String name, String id, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteDeploymentAsync(resourceGroupName, name, id), serviceCallback);
+        return ServiceCall.create(deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id), serviceCallback);
     }
 
     /**
@@ -5903,7 +7053,24 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteDeploymentAsync(String resourceGroupName, String name, String id) {
+    public Observable<Object> deleteDeploymentAsync(String resourceGroupName, String name, String id) {
+        return deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteDeploymentWithServiceResponseAsync(String resourceGroupName, String name, String id) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -5950,10 +7117,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> getDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getDeploymentSlotAsync(resourceGroupName, name, id, slot).toBlocking().single();
+    public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -5967,7 +7134,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getDeploymentSlotAsync(resourceGroupName, name, id, slot), serviceCallback);
+        return ServiceCall.create(getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -5979,7 +7146,25 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
+    public Observable<DeploymentInner> getDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
+        return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> getDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6030,10 +7215,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
-        return createDeploymentSlotAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single();
+    public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().getBody();
     }
 
     /**
@@ -6048,7 +7233,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createDeploymentSlotAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
+        return ServiceCall.create(createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment), serviceCallback);
     }
 
     /**
@@ -6061,7 +7246,26 @@ public final class SitesInner {
      * @param deployment Details of deployment
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
+    public Observable<DeploymentInner> createDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
+        return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param deployment Details of deployment
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> createDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6115,10 +7319,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteDeploymentSlotAsync(resourceGroupName, name, id, slot).toBlocking().single();
+    public Object deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -6132,7 +7336,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteDeploymentSlotAsync(resourceGroupName, name, id, slot), serviceCallback);
+        return ServiceCall.create(deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot), serviceCallback);
     }
 
     /**
@@ -6144,7 +7348,25 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
+    public Observable<Object> deleteDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot) {
+        return deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6195,10 +7417,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        return getInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single();
+    public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
     }
 
     /**
@@ -6213,7 +7435,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(getInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+        return ServiceCall.create(getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -6226,7 +7448,26 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
+    public Observable<DeploymentInner> getInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
+        return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> getInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6281,10 +7522,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentInner object if successful.
      */
-    public ServiceResponse<DeploymentInner> createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
-        return createInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single();
+    public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().getBody();
     }
 
     /**
@@ -6300,7 +7541,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment, final ServiceCallback<DeploymentInner> serviceCallback) {
-        return ServiceCall.create(createInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
+        return ServiceCall.create(createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment), serviceCallback);
     }
 
     /**
@@ -6314,7 +7555,27 @@ public final class SitesInner {
      * @param deployment Details of deployment
      * @return the observable to the DeploymentInner object
      */
-    public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
+    public Observable<DeploymentInner> createInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
+        return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).map(new Func1<ServiceResponse<DeploymentInner>, DeploymentInner>() {
+            @Override
+            public DeploymentInner call(ServiceResponse<DeploymentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @param deployment Details of deployment
+     * @return the observable to the DeploymentInner object
+     */
+    public Observable<ServiceResponse<DeploymentInner>> createInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6372,10 +7633,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
-        return deleteInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single();
+    public Object deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+        return deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
     }
 
     /**
@@ -6390,7 +7651,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteInstanceDeploymentSlotAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
+        return ServiceCall.create(deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId), serviceCallback);
     }
 
     /**
@@ -6403,7 +7664,26 @@ public final class SitesInner {
      * @param instanceId Id of web app instance
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
+    public Observable<Object> deleteInstanceDeploymentSlotAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
+        return deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete the deployment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param id Id of the deployment
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param instanceId Id of web app instance
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteInstanceDeploymentSlotWithServiceResponseAsync(String resourceGroupName, String name, String id, String slot, String instanceId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6454,17 +7734,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInstanceInner>> getSiteInstanceIdentifiers(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiers(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInstanceInner> pagedList = new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6492,15 +7771,35 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;SiteInstanceInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SiteInstanceInner>> getSiteInstanceIdentifiersAsync(final String resourceGroupName, final String name) {
+        return getSiteInstanceIdentifiersWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
+                @Override
+                public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all instance of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getSiteInstanceIdentifiersSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteInstanceIdentifiersNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6510,7 +7809,7 @@ public final class SitesInner {
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of web app
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -6555,17 +7854,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInstanceInner>> getSiteInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<SiteInstanceInner> pagedList = new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6595,15 +7893,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;SiteInstanceInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot) {
+    public Observable<Page<SiteInstanceInner>> getSiteInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteInstanceIdentifiersSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
+                @Override
+                public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all instance of a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
         return getSiteInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot)
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteInstanceIdentifiersSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6614,7 +7933,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param name Name of web app
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -6661,17 +7980,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostNameBindingInner>> getSiteHostNameBindings(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindings(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<HostNameBindingInner> pagedList = new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6699,15 +8017,35 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;HostNameBindingInner&gt; object
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<HostNameBindingInner>> getSiteHostNameBindingsAsync(final String resourceGroupName, final String name) {
+        return getSiteHostNameBindingsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
+                @Override
+                public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getSiteHostNameBindingsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteHostNameBindingsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6717,7 +8055,7 @@ public final class SitesInner {
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of web app
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -6762,17 +8100,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostNameBindingInner>> getSiteHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<HostNameBindingInner> pagedList = new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6802,15 +8139,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;HostNameBindingInner&gt; object
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+    public Observable<Page<HostNameBindingInner>> getSiteHostNameBindingsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteHostNameBindingsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
+                @Override
+                public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
         return getSiteHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot)
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteHostNameBindingsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6821,7 +8179,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param name Name of web app
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -6869,10 +8227,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostNameBindingInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostNameBindingInner object if successful.
      */
-    public ServiceResponse<HostNameBindingInner> getSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteHostNameBindingAsync(resourceGroupName, name, hostName).toBlocking().single();
+    public HostNameBindingInner getSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
     }
 
     /**
@@ -6885,7 +8243,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> getSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(getSiteHostNameBindingAsync(resourceGroupName, name, hostName), serviceCallback);
+        return ServiceCall.create(getSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -6896,7 +8254,24 @@ public final class SitesInner {
      * @param hostName Name of host
      * @return the observable to the HostNameBindingInner object
      */
-    public Observable<ServiceResponse<HostNameBindingInner>> getSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
+    public Observable<HostNameBindingInner> getSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
+        return getSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
+            @Override
+            public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get web app binding for a hostname.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param hostName Name of host
+     * @return the observable to the HostNameBindingInner object
+     */
+    public Observable<ServiceResponse<HostNameBindingInner>> getSiteHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -6943,10 +8318,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostNameBindingInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostNameBindingInner object if successful.
      */
-    public ServiceResponse<HostNameBindingInner> createOrUpdateSiteHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteHostNameBindingAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single();
+    public HostNameBindingInner createOrUpdateSiteHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().getBody();
     }
 
     /**
@@ -6960,7 +8335,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> createOrUpdateSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteHostNameBindingAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -6972,7 +8347,25 @@ public final class SitesInner {
      * @param hostNameBinding Host name binding information
      * @return the observable to the HostNameBindingInner object
      */
-    public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
+    public Observable<HostNameBindingInner> createOrUpdateSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
+        return createOrUpdateSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
+            @Override
+            public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a web app hostname binding.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param hostName Name of host
+     * @param hostNameBinding Host name binding information
+     * @return the observable to the HostNameBindingInner object
+     */
+    public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateSiteHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7022,10 +8415,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteHostNameBindingAsync(resourceGroupName, name, hostName).toBlocking().single();
+    public Object deleteSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
     }
 
     /**
@@ -7038,7 +8431,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteHostNameBindingAsync(resourceGroupName, name, hostName), serviceCallback);
+        return ServiceCall.create(deleteSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName), serviceCallback);
     }
 
     /**
@@ -7049,7 +8442,24 @@ public final class SitesInner {
      * @param hostName Name of host
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
+    public Observable<Object> deleteSiteHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
+        return deleteSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a host name binding.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param hostName Name of host
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteHostNameBindingWithServiceResponseAsync(String resourceGroupName, String name, String hostName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7096,10 +8506,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostNameBindingInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostNameBindingInner object if successful.
      */
-    public ServiceResponse<HostNameBindingInner> getSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteHostNameBindingSlotAsync(resourceGroupName, name, slot, hostName).toBlocking().single();
+    public HostNameBindingInner getSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
     }
 
     /**
@@ -7113,7 +8523,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> getSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(getSiteHostNameBindingSlotAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+        return ServiceCall.create(getSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -7125,7 +8535,25 @@ public final class SitesInner {
      * @param hostName Name of host
      * @return the observable to the HostNameBindingInner object
      */
-    public Observable<ServiceResponse<HostNameBindingInner>> getSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
+    public Observable<HostNameBindingInner> getSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
+        return getSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
+            @Override
+            public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get web app binding for a hostname.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param hostName Name of host
+     * @return the observable to the HostNameBindingInner object
+     */
+    public Observable<ServiceResponse<HostNameBindingInner>> getSiteHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String hostName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7176,10 +8604,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostNameBindingInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostNameBindingInner object if successful.
      */
-    public ServiceResponse<HostNameBindingInner> createOrUpdateSiteHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteHostNameBindingSlotAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single();
+    public HostNameBindingInner createOrUpdateSiteHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().getBody();
     }
 
     /**
@@ -7194,7 +8622,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostNameBindingInner> createOrUpdateSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding, final ServiceCallback<HostNameBindingInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteHostNameBindingSlotAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding), serviceCallback);
     }
 
     /**
@@ -7207,7 +8635,26 @@ public final class SitesInner {
      * @param hostNameBinding Host name binding information
      * @return the observable to the HostNameBindingInner object
      */
-    public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
+    public Observable<HostNameBindingInner> createOrUpdateSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
+        return createOrUpdateSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).map(new Func1<ServiceResponse<HostNameBindingInner>, HostNameBindingInner>() {
+            @Override
+            public HostNameBindingInner call(ServiceResponse<HostNameBindingInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a web app hostname binding.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param hostName Name of host
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param hostNameBinding Host name binding information
+     * @return the observable to the HostNameBindingInner object
+     */
+    public Observable<ServiceResponse<HostNameBindingInner>> createOrUpdateSiteHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7261,10 +8708,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteHostNameBindingSlotAsync(resourceGroupName, name, slot, hostName).toBlocking().single();
+    public Object deleteSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
     }
 
     /**
@@ -7278,7 +8725,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteHostNameBindingSlotAsync(resourceGroupName, name, slot, hostName), serviceCallback);
+        return ServiceCall.create(deleteSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName), serviceCallback);
     }
 
     /**
@@ -7290,7 +8737,25 @@ public final class SitesInner {
      * @param hostName Name of host
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
+    public Observable<Object> deleteSiteHostNameBindingSlotAsync(String resourceGroupName, String name, String slot, String hostName) {
+        return deleteSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a host name binding.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param hostName Name of host
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteHostNameBindingSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String hostName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7338,10 +8803,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> getSiteConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteConfigAsync(resourceGroupName, name).toBlocking().single();
+    public SiteConfigInner getSiteConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -7353,7 +8818,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> getSiteConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(getSiteConfigAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -7363,7 +8828,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getSiteConfigAsync(String resourceGroupName, String name) {
+    public Observable<SiteConfigInner> getSiteConfigAsync(String resourceGroupName, String name) {
+        return getSiteConfigWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the configuration of the web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> getSiteConfigWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7406,10 +8887,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteConfigAsync(resourceGroupName, name, siteConfig).toBlocking().single();
+    public SiteConfigInner createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -7422,7 +8903,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> createOrUpdateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteConfigAsync(resourceGroupName, name, siteConfig), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -7433,7 +8914,24 @@ public final class SitesInner {
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public Observable<SiteConfigInner> createOrUpdateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+        return createOrUpdateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteConfig Request body that contains the configuraiton setting for the web app
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateSiteConfigWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7480,10 +8978,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> updateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteConfigAsync(resourceGroupName, name, siteConfig).toBlocking().single();
+    public SiteConfigInner updateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -7496,7 +8994,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> updateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(updateSiteConfigAsync(resourceGroupName, name, siteConfig), serviceCallback);
+        return ServiceCall.create(updateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig), serviceCallback);
     }
 
     /**
@@ -7507,7 +9005,24 @@ public final class SitesInner {
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> updateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+    public Observable<SiteConfigInner> updateSiteConfigAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+        return updateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteConfig Request body that contains the configuraiton setting for the web app
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> updateSiteConfigWithServiceResponseAsync(String resourceGroupName, String name, SiteConfigInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7554,10 +9069,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> getSiteConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteConfigSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteConfigInner getSiteConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -7570,7 +9085,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> getSiteConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(getSiteConfigSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -7581,7 +9096,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> getSiteConfigSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteConfigInner> getSiteConfigSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the configuration of the web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> getSiteConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7628,10 +9160,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> createOrUpdateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteConfigSlotAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single();
+    public SiteConfigInner createOrUpdateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -7645,7 +9177,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> createOrUpdateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteConfigSlotAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -7657,7 +9189,25 @@ public final class SitesInner {
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public Observable<SiteConfigInner> createOrUpdateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+        return createOrUpdateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteConfig Request body that contains the configuraiton setting for the web app
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> createOrUpdateSiteConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7708,10 +9258,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteConfigInner object if successful.
      */
-    public ServiceResponse<SiteConfigInner> updateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteConfigSlotAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single();
+    public SiteConfigInner updateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -7725,7 +9275,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteConfigInner> updateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig, final ServiceCallback<SiteConfigInner> serviceCallback) {
-        return ServiceCall.create(updateSiteConfigSlotAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
+        return ServiceCall.create(updateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig), serviceCallback);
     }
 
     /**
@@ -7737,7 +9287,25 @@ public final class SitesInner {
      * @param siteConfig Request body that contains the configuraiton setting for the web app
      * @return the observable to the SiteConfigInner object
      */
-    public Observable<ServiceResponse<SiteConfigInner>> updateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+    public Observable<SiteConfigInner> updateSiteConfigSlotAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
+        return updateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).map(new Func1<ServiceResponse<SiteConfigInner>, SiteConfigInner>() {
+            @Override
+            public SiteConfigInner call(ServiceResponse<SiteConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteConfig Request body that contains the configuraiton setting for the web app
+     * @return the observable to the SiteConfigInner object
+     */
+    public Observable<ServiceResponse<SiteConfigInner>> updateSiteConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7786,10 +9354,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> getSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSourceControlAsync(resourceGroupName, name).toBlocking().single();
+    public SiteSourceControlInner getSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -7801,7 +9369,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> getSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(getSiteSourceControlAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -7811,7 +9379,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> getSiteSourceControlAsync(String resourceGroupName, String name) {
+    public Observable<SiteSourceControlInner> getSiteSourceControlAsync(String resourceGroupName, String name) {
+        return getSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> getSiteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7854,10 +9438,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteSourceControlAsync(resourceGroupName, name, siteSourceControl).toBlocking().single();
+    public SiteSourceControlInner createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
     }
 
     /**
@@ -7870,7 +9454,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteSourceControlAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -7881,7 +9465,24 @@ public final class SitesInner {
      * @param siteSourceControl Request body that contains the source control parameters
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
+    public Observable<SiteSourceControlInner> createOrUpdateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
+        return createOrUpdateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSiteSourceControlWithServiceResponseAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7927,10 +9528,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteSourceControlAsync(resourceGroupName, name).toBlocking().single();
+    public Object deleteSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -7942,7 +9543,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteSourceControlAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteSourceControlAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteSiteSourceControlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -7952,7 +9553,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteSourceControlAsync(String resourceGroupName, String name) {
+    public Observable<Object> deleteSiteSourceControlAsync(String resourceGroupName, String name) {
+        return deleteSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteSourceControlWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -7995,10 +9612,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteSourceControlAsync(resourceGroupName, name, siteSourceControl).toBlocking().single();
+    public SiteSourceControlInner updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
     }
 
     /**
@@ -8011,7 +9628,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(updateSiteSourceControlAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
+        return ServiceCall.create(updateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -8022,7 +9639,24 @@ public final class SitesInner {
      * @param siteSourceControl Request body that contains the source control parameters
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
+    public Observable<SiteSourceControlInner> updateSiteSourceControlAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
+        return updateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> updateSiteSourceControlWithServiceResponseAsync(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8069,10 +9703,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> getSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteSourceControlSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteSourceControlInner getSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -8085,7 +9719,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> getSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(getSiteSourceControlSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -8096,7 +9730,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> getSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteSourceControlInner> getSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> getSiteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8143,10 +9794,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> createOrUpdateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteSourceControlSlotAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single();
+    public SiteSourceControlInner createOrUpdateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
     }
 
     /**
@@ -8160,7 +9811,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> createOrUpdateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteSourceControlSlotAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -8172,7 +9823,25 @@ public final class SitesInner {
      * @param siteSourceControl Request body that contains the source control parameters
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
+    public Observable<SiteSourceControlInner> createOrUpdateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
+        return createOrUpdateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> createOrUpdateSiteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8222,10 +9891,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteSourceControlSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object deleteSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -8238,7 +9907,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteSourceControlSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(deleteSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -8249,7 +9918,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> deleteSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot) {
+        return deleteSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8296,10 +9982,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteSourceControlInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteSourceControlInner object if successful.
      */
-    public ServiceResponse<SiteSourceControlInner> updateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteSourceControlSlotAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single();
+    public SiteSourceControlInner updateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
     }
 
     /**
@@ -8313,7 +9999,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteSourceControlInner> updateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, final ServiceCallback<SiteSourceControlInner> serviceCallback) {
-        return ServiceCall.create(updateSiteSourceControlSlotAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
+        return ServiceCall.create(updateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl), serviceCallback);
     }
 
     /**
@@ -8325,7 +10011,25 @@ public final class SitesInner {
      * @param siteSourceControl Request body that contains the source control parameters
      * @return the observable to the SiteSourceControlInner object
      */
-    public Observable<ServiceResponse<SiteSourceControlInner>> updateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
+    public Observable<SiteSourceControlInner> updateSiteSourceControlSlotAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
+        return updateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).map(new Func1<ServiceResponse<SiteSourceControlInner>, SiteSourceControlInner>() {
+            @Override
+            public SiteSourceControlInner call(ServiceResponse<SiteSourceControlInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update the source control configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteSourceControl Request body that contains the source control parameters
+     * @return the observable to the SiteSourceControlInner object
+     */
+    public Observable<ServiceResponse<SiteSourceControlInner>> updateSiteSourceControlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8375,10 +10079,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> listSiteAppSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteAppSettingsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public StringDictionaryInner listSiteAppSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -8391,7 +10095,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteAppSettingsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -8402,7 +10106,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> listSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<StringDictionaryInner> listSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the application settings of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listSiteAppSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8447,10 +10168,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> listSiteAppSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteAppSettingsAsync(resourceGroupName, name).toBlocking().single();
+    public StringDictionaryInner listSiteAppSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -8462,7 +10183,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listSiteAppSettingsAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteAppSettingsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8472,7 +10193,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> listSiteAppSettingsAsync(String resourceGroupName, String name) {
+    public Observable<StringDictionaryInner> listSiteAppSettingsAsync(String resourceGroupName, String name) {
+        return listSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the application settings of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listSiteAppSettingsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8515,10 +10252,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> updateSiteAppSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteAppSettingsAsync(resourceGroupName, name, appSettings).toBlocking().single();
+    public StringDictionaryInner updateSiteAppSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().getBody();
     }
 
     /**
@@ -8531,7 +10268,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateSiteAppSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteAppSettingsAsync(resourceGroupName, name, appSettings), serviceCallback);
+        return ServiceCall.create(updateSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings), serviceCallback);
     }
 
     /**
@@ -8542,7 +10279,24 @@ public final class SitesInner {
      * @param appSettings Application settings of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteAppSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings) {
+    public Observable<StringDictionaryInner> updateSiteAppSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings) {
+        return updateSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the application settings of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param appSettings Application settings of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteAppSettingsWithServiceResponseAsync(String resourceGroupName, String name, StringDictionaryInner appSettings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8590,10 +10344,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> updateSiteAppSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteAppSettingsSlotAsync(resourceGroupName, name, slot, appSettings).toBlocking().single();
+    public StringDictionaryInner updateSiteAppSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().getBody();
     }
 
     /**
@@ -8607,7 +10361,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteAppSettingsSlotAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
+        return ServiceCall.create(updateSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings), serviceCallback);
     }
 
     /**
@@ -8619,7 +10373,25 @@ public final class SitesInner {
      * @param appSettings Application settings of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
+    public Observable<StringDictionaryInner> updateSiteAppSettingsSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
+        return updateSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the application settings of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param appSettings Application settings of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteAppSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8668,10 +10440,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionStringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ServiceResponse<ConnectionStringDictionaryInner> listSiteConnectionStrings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteConnectionStringsAsync(resourceGroupName, name).toBlocking().single();
+    public ConnectionStringDictionaryInner listSiteConnectionStrings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -8683,7 +10455,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> listSiteConnectionStringsAsync(String resourceGroupName, String name, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteConnectionStringsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8693,7 +10465,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the ConnectionStringDictionaryInner object
      */
-    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listSiteConnectionStringsAsync(String resourceGroupName, String name) {
+    public Observable<ConnectionStringDictionaryInner> listSiteConnectionStringsAsync(String resourceGroupName, String name) {
+        return listSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
+            @Override
+            public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the connection strings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the ConnectionStringDictionaryInner object
+     */
+    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listSiteConnectionStringsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8736,10 +10524,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionStringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ServiceResponse<ConnectionStringDictionaryInner> listSiteConnectionStringsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteConnectionStringsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public ConnectionStringDictionaryInner listSiteConnectionStringsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -8752,7 +10540,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> listSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteConnectionStringsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -8763,7 +10551,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the ConnectionStringDictionaryInner object
      */
-    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ConnectionStringDictionaryInner> listSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
+            @Override
+            public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the connection strings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the ConnectionStringDictionaryInner object
+     */
+    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> listSiteConnectionStringsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8809,10 +10614,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionStringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ServiceResponse<ConnectionStringDictionaryInner> updateSiteConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteConnectionStringsAsync(resourceGroupName, name, connectionStrings).toBlocking().single();
+    public ConnectionStringDictionaryInner updateSiteConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().getBody();
     }
 
     /**
@@ -8825,7 +10630,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> updateSiteConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteConnectionStringsAsync(resourceGroupName, name, connectionStrings), serviceCallback);
+        return ServiceCall.create(updateSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings), serviceCallback);
     }
 
     /**
@@ -8836,7 +10641,24 @@ public final class SitesInner {
      * @param connectionStrings Connection strings associated with web app
      * @return the observable to the ConnectionStringDictionaryInner object
      */
-    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateSiteConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
+    public Observable<ConnectionStringDictionaryInner> updateSiteConnectionStringsAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
+        return updateSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
+            @Override
+            public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the connection strings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param connectionStrings Connection strings associated with web app
+     * @return the observable to the ConnectionStringDictionaryInner object
+     */
+    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateSiteConnectionStringsWithServiceResponseAsync(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8884,10 +10706,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ConnectionStringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ServiceResponse<ConnectionStringDictionaryInner> updateSiteConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteConnectionStringsSlotAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single();
+    public ConnectionStringDictionaryInner updateSiteConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().getBody();
     }
 
     /**
@@ -8901,7 +10723,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ConnectionStringDictionaryInner> updateSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings, final ServiceCallback<ConnectionStringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteConnectionStringsSlotAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
+        return ServiceCall.create(updateSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings), serviceCallback);
     }
 
     /**
@@ -8913,7 +10735,25 @@ public final class SitesInner {
      * @param connectionStrings Connection strings associated with web app
      * @return the observable to the ConnectionStringDictionaryInner object
      */
-    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
+    public Observable<ConnectionStringDictionaryInner> updateSiteConnectionStringsSlotAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
+        return updateSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).map(new Func1<ServiceResponse<ConnectionStringDictionaryInner>, ConnectionStringDictionaryInner>() {
+            @Override
+            public ConnectionStringDictionaryInner call(ServiceResponse<ConnectionStringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the connection strings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param connectionStrings Connection strings associated with web app
+     * @return the observable to the ConnectionStringDictionaryInner object
+     */
+    public Observable<ServiceResponse<ConnectionStringDictionaryInner>> updateSiteConnectionStringsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -8962,10 +10802,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteAuthSettingsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteAuthSettingsInner object if successful.
      */
-    public ServiceResponse<SiteAuthSettingsInner> listSiteAuthSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteAuthSettingsAsync(resourceGroupName, name).toBlocking().single();
+    public SiteAuthSettingsInner listSiteAuthSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -8977,7 +10817,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> listSiteAuthSettingsAsync(String resourceGroupName, String name, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(listSiteAuthSettingsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -8987,7 +10827,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SiteAuthSettingsInner object
      */
-    public Observable<ServiceResponse<SiteAuthSettingsInner>> listSiteAuthSettingsAsync(String resourceGroupName, String name) {
+    public Observable<SiteAuthSettingsInner> listSiteAuthSettingsAsync(String resourceGroupName, String name) {
+        return listSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
+            @Override
+            public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the Authentication / Authorization settings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SiteAuthSettingsInner object
+     */
+    public Observable<ServiceResponse<SiteAuthSettingsInner>> listSiteAuthSettingsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9030,10 +10886,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteAuthSettingsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteAuthSettingsInner object if successful.
      */
-    public ServiceResponse<SiteAuthSettingsInner> listSiteAuthSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteAuthSettingsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteAuthSettingsInner listSiteAuthSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -9046,7 +10902,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> listSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(listSiteAuthSettingsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -9057,7 +10913,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteAuthSettingsInner object
      */
-    public Observable<ServiceResponse<SiteAuthSettingsInner>> listSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteAuthSettingsInner> listSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
+            @Override
+            public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the Authentication / Authorization settings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteAuthSettingsInner object
+     */
+    public Observable<ServiceResponse<SiteAuthSettingsInner>> listSiteAuthSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9103,10 +10976,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteAuthSettingsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteAuthSettingsInner object if successful.
      */
-    public ServiceResponse<SiteAuthSettingsInner> updateSiteAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteAuthSettingsAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single();
+    public SiteAuthSettingsInner updateSiteAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().getBody();
     }
 
     /**
@@ -9119,7 +10992,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> updateSiteAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateSiteAuthSettingsAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
+        return ServiceCall.create(updateSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -9130,7 +11003,24 @@ public final class SitesInner {
      * @param siteAuthSettings Auth settings associated with web app
      * @return the observable to the SiteAuthSettingsInner object
      */
-    public Observable<ServiceResponse<SiteAuthSettingsInner>> updateSiteAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
+    public Observable<SiteAuthSettingsInner> updateSiteAuthSettingsAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
+        return updateSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
+            @Override
+            public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Authentication / Authorization settings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteAuthSettings Auth settings associated with web app
+     * @return the observable to the SiteAuthSettingsInner object
+     */
+    public Observable<ServiceResponse<SiteAuthSettingsInner>> updateSiteAuthSettingsWithServiceResponseAsync(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9178,10 +11068,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteAuthSettingsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteAuthSettingsInner object if successful.
      */
-    public ServiceResponse<SiteAuthSettingsInner> updateSiteAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteAuthSettingsSlotAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single();
+    public SiteAuthSettingsInner updateSiteAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().getBody();
     }
 
     /**
@@ -9195,7 +11085,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteAuthSettingsInner> updateSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings, final ServiceCallback<SiteAuthSettingsInner> serviceCallback) {
-        return ServiceCall.create(updateSiteAuthSettingsSlotAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
+        return ServiceCall.create(updateSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings), serviceCallback);
     }
 
     /**
@@ -9207,7 +11097,25 @@ public final class SitesInner {
      * @param siteAuthSettings Auth settings associated with web app
      * @return the observable to the SiteAuthSettingsInner object
      */
-    public Observable<ServiceResponse<SiteAuthSettingsInner>> updateSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
+    public Observable<SiteAuthSettingsInner> updateSiteAuthSettingsSlotAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
+        return updateSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).map(new Func1<ServiceResponse<SiteAuthSettingsInner>, SiteAuthSettingsInner>() {
+            @Override
+            public SiteAuthSettingsInner call(ServiceResponse<SiteAuthSettingsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Authentication / Authorization settings associated with web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteAuthSettings Auth settings associated with web app
+     * @return the observable to the SiteAuthSettingsInner object
+     */
+    public Observable<ServiceResponse<SiteAuthSettingsInner>> updateSiteAuthSettingsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9257,10 +11165,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the UserInner object wrapped in ServiceResponse if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> listSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return listSitePublishingCredentialsAsync(resourceGroupName, name).toBlocking().last();
+    public UserInner listSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return listSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
     /**
@@ -9272,7 +11180,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> listSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(listSitePublishingCredentialsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9282,7 +11190,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<UserInner>> listSitePublishingCredentialsAsync(String resourceGroupName, String name) {
+    public Observable<UserInner> listSitePublishingCredentialsAsync(String resourceGroupName, String name) {
+        return listSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app publishing credentials.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<UserInner>> listSitePublishingCredentialsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9307,10 +11231,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> beginListSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return beginListSitePublishingCredentialsAsync(resourceGroupName, name).toBlocking().single();
+    public UserInner beginListSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return beginListSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -9322,7 +11246,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> beginListSitePublishingCredentialsAsync(String resourceGroupName, String name, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(beginListSitePublishingCredentialsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(beginListSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9332,7 +11256,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> beginListSitePublishingCredentialsAsync(String resourceGroupName, String name) {
+    public Observable<UserInner> beginListSitePublishingCredentialsAsync(String resourceGroupName, String name) {
+        return beginListSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app publishing credentials.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> beginListSitePublishingCredentialsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9376,10 +11316,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the UserInner object wrapped in ServiceResponse if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> listSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return listSitePublishingCredentialsSlotAsync(resourceGroupName, name, slot).toBlocking().last();
+    public UserInner listSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return listSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().getBody();
     }
 
     /**
@@ -9392,7 +11332,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(listSitePublishingCredentialsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -9403,7 +11343,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<UserInner>> listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<UserInner> listSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app publishing credentials.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<UserInner>> listSitePublishingCredentialsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9432,10 +11389,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> beginListSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return beginListSitePublishingCredentialsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public UserInner beginListSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return beginListSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -9448,7 +11405,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> beginListSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(beginListSitePublishingCredentialsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(beginListSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -9459,7 +11416,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> beginListSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<UserInner> beginListSitePublishingCredentialsSlotAsync(String resourceGroupName, String name, String slot) {
+        return beginListSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app publishing credentials.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> beginListSitePublishingCredentialsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9504,10 +11478,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> listSiteMetadata(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteMetadataAsync(resourceGroupName, name).toBlocking().single();
+    public StringDictionaryInner listSiteMetadata(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -9519,7 +11493,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listSiteMetadataAsync(String resourceGroupName, String name, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteMetadataAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSiteMetadataWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9529,7 +11503,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> listSiteMetadataAsync(String resourceGroupName, String name) {
+    public Observable<StringDictionaryInner> listSiteMetadataAsync(String resourceGroupName, String name) {
+        return listSiteMetadataWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app meta data.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listSiteMetadataWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9572,10 +11562,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> listSiteMetadataSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteMetadataSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public StringDictionaryInner listSiteMetadataSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -9588,7 +11578,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> listSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(listSiteMetadataSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -9599,7 +11589,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> listSiteMetadataSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<StringDictionaryInner> listSiteMetadataSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app meta data.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listSiteMetadataSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9645,10 +11652,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> updateSiteMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteMetadataAsync(resourceGroupName, name, metadata).toBlocking().single();
+    public StringDictionaryInner updateSiteMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().getBody();
     }
 
     /**
@@ -9661,7 +11668,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateSiteMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteMetadataAsync(resourceGroupName, name, metadata), serviceCallback);
+        return ServiceCall.create(updateSiteMetadataWithServiceResponseAsync(resourceGroupName, name, metadata), serviceCallback);
     }
 
     /**
@@ -9672,7 +11679,24 @@ public final class SitesInner {
      * @param metadata Meta data of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata) {
+    public Observable<StringDictionaryInner> updateSiteMetadataAsync(String resourceGroupName, String name, StringDictionaryInner metadata) {
+        return updateSiteMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the meta data for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param metadata Meta data of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteMetadataWithServiceResponseAsync(String resourceGroupName, String name, StringDictionaryInner metadata) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9720,10 +11744,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the StringDictionaryInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the StringDictionaryInner object if successful.
      */
-    public ServiceResponse<StringDictionaryInner> updateSiteMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteMetadataSlotAsync(resourceGroupName, name, slot, metadata).toBlocking().single();
+    public StringDictionaryInner updateSiteMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().getBody();
     }
 
     /**
@@ -9737,7 +11761,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<StringDictionaryInner> updateSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata, final ServiceCallback<StringDictionaryInner> serviceCallback) {
-        return ServiceCall.create(updateSiteMetadataSlotAsync(resourceGroupName, name, slot, metadata), serviceCallback);
+        return ServiceCall.create(updateSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata), serviceCallback);
     }
 
     /**
@@ -9749,7 +11773,25 @@ public final class SitesInner {
      * @param metadata Meta data of web app
      * @return the observable to the StringDictionaryInner object
      */
-    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
+    public Observable<StringDictionaryInner> updateSiteMetadataSlotAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
+        return updateSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the meta data for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param metadata Meta data of web app
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> updateSiteMetadataSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9798,10 +11840,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteLogsConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteLogsConfigInner object if successful.
      */
-    public ServiceResponse<SiteLogsConfigInner> getSiteLogsConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteLogsConfigAsync(resourceGroupName, name).toBlocking().single();
+    public SiteLogsConfigInner getSiteLogsConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -9813,7 +11855,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> getSiteLogsConfigAsync(String resourceGroupName, String name, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(getSiteLogsConfigAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -9823,7 +11865,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the SiteLogsConfigInner object
      */
-    public Observable<ServiceResponse<SiteLogsConfigInner>> getSiteLogsConfigAsync(String resourceGroupName, String name) {
+    public Observable<SiteLogsConfigInner> getSiteLogsConfigAsync(String resourceGroupName, String name) {
+        return getSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
+            @Override
+            public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app logs configuration.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the SiteLogsConfigInner object
+     */
+    public Observable<ServiceResponse<SiteLogsConfigInner>> getSiteLogsConfigWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9866,10 +11924,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteLogsConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteLogsConfigInner object if successful.
      */
-    public ServiceResponse<SiteLogsConfigInner> updateSiteLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteLogsConfigAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single();
+    public SiteLogsConfigInner updateSiteLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -9882,7 +11940,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> updateSiteLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(updateSiteLogsConfigAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
+        return ServiceCall.create(updateSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -9893,7 +11951,24 @@ public final class SitesInner {
      * @param siteLogsConfig Site logs configuration
      * @return the observable to the SiteLogsConfigInner object
      */
-    public Observable<ServiceResponse<SiteLogsConfigInner>> updateSiteLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
+    public Observable<SiteLogsConfigInner> updateSiteLogsConfigAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
+        return updateSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
+            @Override
+            public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the meta data for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param siteLogsConfig Site logs configuration
+     * @return the observable to the SiteLogsConfigInner object
+     */
+    public Observable<ServiceResponse<SiteLogsConfigInner>> updateSiteLogsConfigWithServiceResponseAsync(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9940,10 +12015,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteLogsConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteLogsConfigInner object if successful.
      */
-    public ServiceResponse<SiteLogsConfigInner> getSiteLogsConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteLogsConfigSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public SiteLogsConfigInner getSiteLogsConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -9956,7 +12031,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> getSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(getSiteLogsConfigSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -9967,7 +12042,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the SiteLogsConfigInner object
      */
-    public Observable<ServiceResponse<SiteLogsConfigInner>> getSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<SiteLogsConfigInner> getSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
+            @Override
+            public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the web app logs configuration.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the SiteLogsConfigInner object
+     */
+    public Observable<ServiceResponse<SiteLogsConfigInner>> getSiteLogsConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10014,10 +12106,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SiteLogsConfigInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SiteLogsConfigInner object if successful.
      */
-    public ServiceResponse<SiteLogsConfigInner> updateSiteLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteLogsConfigSlotAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single();
+    public SiteLogsConfigInner updateSiteLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().getBody();
     }
 
     /**
@@ -10031,7 +12123,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SiteLogsConfigInner> updateSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig, final ServiceCallback<SiteLogsConfigInner> serviceCallback) {
-        return ServiceCall.create(updateSiteLogsConfigSlotAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
+        return ServiceCall.create(updateSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig), serviceCallback);
     }
 
     /**
@@ -10043,7 +12135,25 @@ public final class SitesInner {
      * @param siteLogsConfig Site logs configuration
      * @return the observable to the SiteLogsConfigInner object
      */
-    public Observable<ServiceResponse<SiteLogsConfigInner>> updateSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
+    public Observable<SiteLogsConfigInner> updateSiteLogsConfigSlotAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
+        return updateSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).map(new Func1<ServiceResponse<SiteLogsConfigInner>, SiteLogsConfigInner>() {
+            @Override
+            public SiteLogsConfigInner call(ServiceResponse<SiteLogsConfigInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the meta data for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param siteLogsConfig Site logs configuration
+     * @return the observable to the SiteLogsConfigInner object
+     */
+    public Observable<ServiceResponse<SiteLogsConfigInner>> updateSiteLogsConfigSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10091,10 +12201,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> listSitePremierAddOns(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePremierAddOnsAsync(resourceGroupName, name).toBlocking().single();
+    public Object listSitePremierAddOns(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -10105,7 +12215,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> listSitePremierAddOnsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(listSitePremierAddOnsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSitePremierAddOnsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -10114,7 +12224,22 @@ public final class SitesInner {
      * @param name the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> listSitePremierAddOnsAsync(String resourceGroupName, String name) {
+    public Observable<Object> listSitePremierAddOnsAsync(String resourceGroupName, String name) {
+        return listSitePremierAddOnsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> listSitePremierAddOnsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10156,10 +12281,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> listSitePremierAddOnsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePremierAddOnsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object listSitePremierAddOnsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -10171,7 +12296,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> listSitePremierAddOnsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(listSitePremierAddOnsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSitePremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10181,7 +12306,23 @@ public final class SitesInner {
      * @param slot the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> listSitePremierAddOnsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> listSitePremierAddOnsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSitePremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param slot the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> listSitePremierAddOnsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10226,10 +12367,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
-        return getSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName).toBlocking().single();
+    public Object getSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
+        return getSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
     }
 
     /**
@@ -10241,7 +12382,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+        return ServiceCall.create(getSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -10251,7 +12392,23 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
+    public Observable<Object> getSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
+        return getSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSitePremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10297,10 +12454,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> addSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
-        return addSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single();
+    public Object addSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
+        return addSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().getBody();
     }
 
     /**
@@ -10313,7 +12470,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> addSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(addSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
+        return ServiceCall.create(addSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn), serviceCallback);
     }
 
     /**
@@ -10324,7 +12481,24 @@ public final class SitesInner {
      * @param premierAddOn the PremierAddOnRequestInner value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> addSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) {
+    public Observable<Object> addSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) {
+        return addSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @param premierAddOn the PremierAddOnRequestInner value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> addSitePremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10373,10 +12547,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName).toBlocking().single();
+    public Object deleteSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
     }
 
     /**
@@ -10388,7 +12562,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSitePremierAddOnAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
+        return ServiceCall.create(deleteSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName), serviceCallback);
     }
 
     /**
@@ -10398,7 +12572,23 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
+    public Observable<Object> deleteSitePremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
+        return deleteSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSitePremierAddOnWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10444,10 +12634,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single();
+    public Object getSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -10460,7 +12650,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+        return ServiceCall.create(getSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -10471,7 +12661,24 @@ public final class SitesInner {
      * @param slot the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
+    public Observable<Object> getSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
+        return getSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @param slot the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSitePremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10521,10 +12728,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> addSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
-        return addSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single();
+    public Object addSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
+        return addSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().getBody();
     }
 
     /**
@@ -10538,7 +12745,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> addSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(addSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
+        return ServiceCall.create(addSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn), serviceCallback);
     }
 
     /**
@@ -10550,7 +12757,25 @@ public final class SitesInner {
      * @param premierAddOn the PremierAddOnRequestInner value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> addSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) {
+    public Observable<Object> addSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) {
+        return addSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @param slot the String value
+     * @param premierAddOn the PremierAddOnRequestInner value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> addSitePremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10603,10 +12828,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single();
+    public Object deleteSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -10619,7 +12844,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSitePremierAddOnSlotAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
+        return ServiceCall.create(deleteSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot), serviceCallback);
     }
 
     /**
@@ -10630,7 +12855,24 @@ public final class SitesInner {
      * @param slot the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
+    public Observable<Object> deleteSitePremierAddOnSlotAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
+        return deleteSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param premierAddOnName the String value
+     * @param slot the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSitePremierAddOnSlotWithServiceResponseAsync(String resourceGroupName, String name, String premierAddOnName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10678,10 +12920,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupRequestInner object if successful.
      */
-    public ServiceResponse<BackupRequestInner> getSiteBackupConfiguration(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupConfigurationAsync(resourceGroupName, name).toBlocking().single();
+    public BackupRequestInner getSiteBackupConfiguration(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -10693,7 +12935,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> getSiteBackupConfigurationAsync(String resourceGroupName, String name, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupConfigurationAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -10703,7 +12945,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the BackupRequestInner object
      */
-    public Observable<ServiceResponse<BackupRequestInner>> getSiteBackupConfigurationAsync(String resourceGroupName, String name) {
+    public Observable<BackupRequestInner> getSiteBackupConfigurationAsync(String resourceGroupName, String name) {
+        return getSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
+            @Override
+            public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backup configuration for a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the BackupRequestInner object
+     */
+    public Observable<ServiceResponse<BackupRequestInner>> getSiteBackupConfigurationWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10746,10 +13004,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupRequestInner object if successful.
      */
-    public ServiceResponse<BackupRequestInner> getSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupConfigurationSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public BackupRequestInner getSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -10762,7 +13020,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> getSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupConfigurationSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -10773,7 +13031,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the BackupRequestInner object
      */
-    public Observable<ServiceResponse<BackupRequestInner>> getSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<BackupRequestInner> getSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
+            @Override
+            public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backup configuration for a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the BackupRequestInner object
+     */
+    public Observable<ServiceResponse<BackupRequestInner>> getSiteBackupConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10819,10 +13094,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupRequestInner object if successful.
      */
-    public ServiceResponse<BackupRequestInner> updateSiteBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteBackupConfigurationAsync(resourceGroupName, name, request).toBlocking().single();
+    public BackupRequestInner updateSiteBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
     /**
@@ -10835,7 +13110,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> updateSiteBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(updateSiteBackupConfigurationAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.create(updateSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -10846,7 +13121,24 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupRequestInner object
      */
-    public Observable<ServiceResponse<BackupRequestInner>> updateSiteBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request) {
+    public Observable<BackupRequestInner> updateSiteBackupConfigurationAsync(String resourceGroupName, String name, BackupRequestInner request) {
+        return updateSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
+            @Override
+            public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates backup configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param request Information on backup request
+     * @return the observable to the BackupRequestInner object
+     */
+    public Observable<ServiceResponse<BackupRequestInner>> updateSiteBackupConfigurationWithServiceResponseAsync(String resourceGroupName, String name, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10894,10 +13186,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupRequestInner object if successful.
      */
-    public ServiceResponse<BackupRequestInner> updateSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteBackupConfigurationSlotAsync(resourceGroupName, name, slot, request).toBlocking().single();
+    public BackupRequestInner updateSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
     /**
@@ -10911,7 +13203,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupRequestInner> updateSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupRequestInner> serviceCallback) {
-        return ServiceCall.create(updateSiteBackupConfigurationSlotAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.create(updateSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -10923,7 +13215,25 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupRequestInner object
      */
-    public Observable<ServiceResponse<BackupRequestInner>> updateSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
+    public Observable<BackupRequestInner> updateSiteBackupConfigurationSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
+        return updateSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupRequestInner>, BackupRequestInner>() {
+            @Override
+            public BackupRequestInner call(ServiceResponse<BackupRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates backup configuration of web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on backup request
+     * @return the observable to the BackupRequestInner object
+     */
+    public Observable<ServiceResponse<BackupRequestInner>> updateSiteBackupConfigurationSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -10973,10 +13283,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> backupSite(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return backupSiteAsync(resourceGroupName, name, request).toBlocking().single();
+    public BackupItemInner backupSite(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return backupSiteWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
     /**
@@ -10989,7 +13299,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> backupSiteAsync(String resourceGroupName, String name, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(backupSiteAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.create(backupSiteWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -11000,7 +13310,24 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> backupSiteAsync(String resourceGroupName, String name, BackupRequestInner request) {
+    public Observable<BackupItemInner> backupSiteAsync(String resourceGroupName, String name, BackupRequestInner request) {
+        return backupSiteWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates web app backup.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param request Information on backup request
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> backupSiteWithServiceResponseAsync(String resourceGroupName, String name, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11048,10 +13375,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> backupSiteSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return backupSiteSlotAsync(resourceGroupName, name, slot, request).toBlocking().single();
+    public BackupItemInner backupSiteSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return backupSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
     /**
@@ -11065,7 +13392,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> backupSiteSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(backupSiteSlotAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.create(backupSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11077,7 +13404,25 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> backupSiteSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
+    public Observable<BackupItemInner> backupSiteSlotAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
+        return backupSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates web app backup.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on backup request
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> backupSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11127,10 +13472,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RestoreRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RestoreRequestInner object if successful.
      */
-    public ServiceResponse<RestoreRequestInner> discoverSiteRestore(String resourceGroupName, String name, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return discoverSiteRestoreAsync(resourceGroupName, name, request).toBlocking().single();
+    public RestoreRequestInner discoverSiteRestore(String resourceGroupName, String name, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return discoverSiteRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
     /**
@@ -11143,7 +13488,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreRequestInner> discoverSiteRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.create(discoverSiteRestoreAsync(resourceGroupName, name, request), serviceCallback);
+        return ServiceCall.create(discoverSiteRestoreWithServiceResponseAsync(resourceGroupName, name, request), serviceCallback);
     }
 
     /**
@@ -11154,7 +13499,24 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable to the RestoreRequestInner object
      */
-    public Observable<ServiceResponse<RestoreRequestInner>> discoverSiteRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request) {
+    public Observable<RestoreRequestInner> discoverSiteRestoreAsync(String resourceGroupName, String name, RestoreRequestInner request) {
+        return discoverSiteRestoreWithServiceResponseAsync(resourceGroupName, name, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
+            @Override
+            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Discovers existing web app backups that can be restored.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param request Information on restore request
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<ServiceResponse<RestoreRequestInner>> discoverSiteRestoreWithServiceResponseAsync(String resourceGroupName, String name, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11202,10 +13564,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RestoreRequestInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RestoreRequestInner object if successful.
      */
-    public ServiceResponse<RestoreRequestInner> discoverSiteRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return discoverSiteRestoreSlotAsync(resourceGroupName, name, slot, request).toBlocking().single();
+    public RestoreRequestInner discoverSiteRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return discoverSiteRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
     /**
@@ -11219,7 +13581,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreRequestInner> discoverSiteRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request, final ServiceCallback<RestoreRequestInner> serviceCallback) {
-        return ServiceCall.create(discoverSiteRestoreSlotAsync(resourceGroupName, name, slot, request), serviceCallback);
+        return ServiceCall.create(discoverSiteRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request), serviceCallback);
     }
 
     /**
@@ -11231,7 +13593,25 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable to the RestoreRequestInner object
      */
-    public Observable<ServiceResponse<RestoreRequestInner>> discoverSiteRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+    public Observable<RestoreRequestInner> discoverSiteRestoreSlotAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
+        return discoverSiteRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).map(new Func1<ServiceResponse<RestoreRequestInner>, RestoreRequestInner>() {
+            @Override
+            public RestoreRequestInner call(ServiceResponse<RestoreRequestInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Discovers existing web app backups that can be restored.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on restore request
+     * @return the observable to the RestoreRequestInner object
+     */
+    public Observable<ServiceResponse<RestoreRequestInner>> discoverSiteRestoreSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11280,17 +13660,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<BackupItemInner>> listSiteBackups(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackups(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<BackupItemInner> pagedList = new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -11318,15 +13697,35 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;BackupItemInner&gt; object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<BackupItemInner>> listSiteBackupsAsync(final String resourceGroupName, final String name) {
+        return listSiteBackupsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listSiteBackupsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listSiteBackupsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -11336,7 +13735,7 @@ public final class SitesInner {
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of web app
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -11381,17 +13780,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<BackupItemInner>> listSiteBackupsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<BackupItemInner> pagedList = new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -11421,15 +13819,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;BackupItemInner&gt; object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+    public Observable<Page<BackupItemInner>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSiteBackupsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
         return listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot)
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listSiteBackupsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -11440,7 +13859,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of web app
     ServiceResponse<PageImpl<BackupItemInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -11488,10 +13907,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> getSiteBackupStatus(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupStatusAsync(resourceGroupName, name, backupId).toBlocking().single();
+    public BackupItemInner getSiteBackupStatus(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
     }
 
     /**
@@ -11504,7 +13923,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getSiteBackupStatusAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupStatusAsync(resourceGroupName, name, backupId), serviceCallback);
+        return ServiceCall.create(getSiteBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -11515,7 +13934,24 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusAsync(String resourceGroupName, String name, String backupId) {
+    public Observable<BackupItemInner> getSiteBackupStatusAsync(String resourceGroupName, String name, String backupId) {
+        return getSiteBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusWithServiceResponseAsync(String resourceGroupName, String name, String backupId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11561,10 +13997,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> deleteBackup(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
-        return deleteBackupAsync(resourceGroupName, name, backupId).toBlocking().single();
+    public BackupItemInner deleteBackup(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
+        return deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
     }
 
     /**
@@ -11577,7 +14013,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> deleteBackupAsync(String resourceGroupName, String name, String backupId, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(deleteBackupAsync(resourceGroupName, name, backupId), serviceCallback);
+        return ServiceCall.create(deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId), serviceCallback);
     }
 
     /**
@@ -11588,7 +14024,24 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> deleteBackupAsync(String resourceGroupName, String name, String backupId) {
+    public Observable<BackupItemInner> deleteBackupAsync(String resourceGroupName, String name, String backupId) {
+        return deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a backup from Azure Storage.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> deleteBackupWithServiceResponseAsync(String resourceGroupName, String name, String backupId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11635,10 +14088,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> getSiteBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupStatusSlotAsync(resourceGroupName, name, backupId, slot).toBlocking().single();
+    public BackupItemInner getSiteBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -11652,7 +14105,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getSiteBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupStatusSlotAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+        return ServiceCall.create(getSiteBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11664,7 +14117,25 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
+    public Observable<BackupItemInner> getSiteBackupStatusSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
+        return getSiteBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11714,10 +14185,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteBackupSlotAsync(resourceGroupName, name, backupId, slot).toBlocking().single();
+    public BackupItemInner deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -11731,7 +14202,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(deleteBackupSlotAsync(resourceGroupName, name, backupId, slot), serviceCallback);
+        return ServiceCall.create(deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot), serviceCallback);
     }
 
     /**
@@ -11743,7 +14214,25 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
+    public Observable<BackupItemInner> deleteBackupSlotAsync(String resourceGroupName, String name, String backupId, String slot) {
+        return deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a backup from Azure Storage.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> deleteBackupSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11794,10 +14283,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> getSiteBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupStatusSecretsSlotAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single();
+    public BackupItemInner getSiteBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
     }
 
     /**
@@ -11812,7 +14301,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getSiteBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupStatusSecretsSlotAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.create(getSiteBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -11825,7 +14314,26 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
+    public Observable<BackupItemInner> getSiteBackupStatusSecretsSlotAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
+        return getSiteBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on backup request
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11879,10 +14387,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the BackupItemInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the BackupItemInner object if successful.
      */
-    public ServiceResponse<BackupItemInner> getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteBackupStatusSecretsAsync(resourceGroupName, name, backupId, request).toBlocking().single();
+    public BackupItemInner getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
     }
 
     /**
@@ -11896,7 +14404,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<BackupItemInner> getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request, final ServiceCallback<BackupItemInner> serviceCallback) {
-        return ServiceCall.create(getSiteBackupStatusSecretsAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.create(getSiteBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -11908,7 +14416,25 @@ public final class SitesInner {
      * @param request Information on backup request
      * @return the observable to the BackupItemInner object
      */
-    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
+    public Observable<BackupItemInner> getSiteBackupStatusSecretsAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
+        return getSiteBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<BackupItemInner>, BackupItemInner>() {
+            @Override
+            public BackupItemInner call(ServiceResponse<BackupItemInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the request body.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup
+     * @param request Information on backup request
+     * @return the observable to the BackupItemInner object
+     */
+    public Observable<ServiceResponse<BackupItemInner>> getSiteBackupStatusSecretsWithServiceResponseAsync(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -11960,10 +14486,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the RestoreResponseInner object wrapped in ServiceResponse if successful.
+     * @return the RestoreResponseInner object if successful.
      */
-    public ServiceResponse<RestoreResponseInner> restoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return restoreSiteAsync(resourceGroupName, name, backupId, request).toBlocking().last();
+    public RestoreResponseInner restoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return restoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().getBody();
     }
 
     /**
@@ -11977,7 +14503,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(restoreSiteAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.create(restoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -11989,7 +14515,25 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RestoreResponseInner>> restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
+    public Observable<RestoreResponseInner> restoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
+        return restoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
+            @Override
+            public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restores a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup to restore
+     * @param request Information on restore request
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<RestoreResponseInner>> restoreSiteWithServiceResponseAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -12023,10 +14567,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RestoreResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RestoreResponseInner object if successful.
      */
-    public ServiceResponse<RestoreResponseInner> beginRestoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return beginRestoreSiteAsync(resourceGroupName, name, backupId, request).toBlocking().single();
+    public RestoreResponseInner beginRestoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return beginRestoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
     }
 
     /**
@@ -12040,7 +14584,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> beginRestoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRestoreSiteAsync(resourceGroupName, name, backupId, request), serviceCallback);
+        return ServiceCall.create(beginRestoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request), serviceCallback);
     }
 
     /**
@@ -12052,7 +14596,25 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable to the RestoreResponseInner object
      */
-    public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
+    public Observable<RestoreResponseInner> beginRestoreSiteAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
+        return beginRestoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
+            @Override
+            public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restores a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup to restore
+     * @param request Information on restore request
+     * @return the observable to the RestoreResponseInner object
+     */
+    public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreSiteWithServiceResponseAsync(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -12105,10 +14667,10 @@ public final class SitesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the RestoreResponseInner object wrapped in ServiceResponse if successful.
+     * @return the RestoreResponseInner object if successful.
      */
-    public ServiceResponse<RestoreResponseInner> restoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return restoreSiteSlotAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last();
+    public RestoreResponseInner restoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return restoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().getBody();
     }
 
     /**
@@ -12123,7 +14685,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(restoreSiteSlotAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.create(restoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -12136,7 +14698,26 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RestoreResponseInner>> restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
+    public Observable<RestoreResponseInner> restoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
+        return restoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
+            @Override
+            public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restores a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup to restore
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on restore request
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<RestoreResponseInner>> restoreSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -12174,10 +14755,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RestoreResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RestoreResponseInner object if successful.
      */
-    public ServiceResponse<RestoreResponseInner> beginRestoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return beginRestoreSiteSlotAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single();
+    public RestoreResponseInner beginRestoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return beginRestoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
     }
 
     /**
@@ -12192,7 +14773,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RestoreResponseInner> beginRestoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request, final ServiceCallback<RestoreResponseInner> serviceCallback) {
-        return ServiceCall.create(beginRestoreSiteSlotAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
+        return ServiceCall.create(beginRestoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request), serviceCallback);
     }
 
     /**
@@ -12205,7 +14786,26 @@ public final class SitesInner {
      * @param request Information on restore request
      * @return the observable to the RestoreResponseInner object
      */
-    public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
+    public Observable<RestoreResponseInner> beginRestoreSiteSlotAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
+        return beginRestoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).map(new Func1<ServiceResponse<RestoreResponseInner>, RestoreResponseInner>() {
+            @Override
+            public RestoreResponseInner call(ServiceResponse<RestoreResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restores a web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param backupId Id of backup to restore
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param request Information on restore request
+     * @return the observable to the RestoreResponseInner object
+     */
+    public Observable<ServiceResponse<RestoreResponseInner>> beginRestoreSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -12257,17 +14857,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12295,15 +14894,14 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesAsync(final String resourceGroupName, final String name) {
-        return getSiteUsagesSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name) {
+        return getSiteUsagesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesNextSinglePageAsync(nextPageLink);
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -12313,7 +14911,28 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getSiteUsagesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -12352,17 +14971,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12392,15 +15010,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesAsync(final String resourceGroupName, final String name, final String filter) {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesAsync(final String resourceGroupName, final String name, final String filter) {
+        return getSiteUsagesWithServiceResponseAsync(resourceGroupName, name, filter)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String filter) {
         return getSiteUsagesSinglePageAsync(resourceGroupName, name, filter)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -12411,7 +15050,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of web app
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
         if (resourceGroupName == null) {
@@ -12456,17 +15095,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12496,15 +15134,14 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot) {
-        return getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot)
-            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteUsagesSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesSlotNextSinglePageAsync(nextPageLink);
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -12515,7 +15152,29 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -12558,17 +15217,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12600,15 +15258,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesSlotAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
+        return getSiteUsagesSlotWithServiceResponseAsync(resourceGroupName, name, slot, filter)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
         return getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -12620,7 +15300,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of web app
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final String filter) {
         if (resourceGroupName == null) {
@@ -12667,17 +15347,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12705,15 +15384,14 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsAsync(final String resourceGroupName, final String name) {
-        return getSiteMetricsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name) {
+        return getSiteMetricsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsNextSinglePageAsync(nextPageLink);
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -12723,7 +15401,28 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getSiteMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -12764,17 +15463,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12806,15 +15504,37 @@ public final class SitesInner {
      * @param name Name of web app
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        return getSiteMetricsWithServiceResponseAsync(resourceGroupName, name, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param details If true, metric details are included in response
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         return getSiteMetricsSinglePageAsync(resourceGroupName, name, details, filter)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -12826,7 +15546,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of web app
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metric details are included in response
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
@@ -12871,17 +15591,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -12911,15 +15630,14 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot) {
-        return getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot)
-            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteMetricsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsSlotNextSinglePageAsync(nextPageLink);
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -12930,7 +15648,29 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -12975,17 +15715,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13019,15 +15758,38 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsSlotAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
+        return getSiteMetricsSlotWithServiceResponseAsync(resourceGroupName, name, slot, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param details If true, metric details are included in response
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
         return getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -13040,7 +15802,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metric details are included in response
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
@@ -13088,17 +15850,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getSiteMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13128,15 +15889,36 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+    public Observable<Page<MetricDefinitionInner>> getSiteMetricDefinitionsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return getSiteMetricDefinitionsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metric definitions for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
         return getSiteMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricDefinitionsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -13147,7 +15929,7 @@ public final class SitesInner {
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of web app
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
@@ -13194,17 +15976,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getSiteMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -13232,15 +16013,35 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<MetricDefinitionInner>> getSiteMetricDefinitionsAsync(final String resourceGroupName, final String name) {
+        return getSiteMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metric definitions for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getSiteMetricDefinitionsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -13250,7 +16051,7 @@ public final class SitesInner {
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of web app
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -13294,10 +16095,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     * @return the InputStream object if successful.
      */
-    public ServiceResponse<InputStream> listSitePublishingProfileXml(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePublishingProfileXmlAsync(resourceGroupName, name).toBlocking().single();
+    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -13309,7 +16110,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listSitePublishingProfileXmlAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -13319,7 +16120,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlAsync(String resourceGroupName, String name) {
+    public Observable<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name) {
+        return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13361,10 +16178,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     * @return the InputStream object if successful.
      */
-    public ServiceResponse<InputStream> listSitePublishingProfileXml(String resourceGroupName, String name, String format) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePublishingProfileXmlAsync(resourceGroupName, name, format).toBlocking().single();
+    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name, String format) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().getBody();
     }
 
     /**
@@ -13380,7 +16197,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listSitePublishingProfileXmlAsync(resourceGroupName, name, format), serviceCallback);
+        return ServiceCall.create(listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name, format), serviceCallback);
     }
 
     /**
@@ -13394,7 +16211,27 @@ public final class SitesInner {
                  Ftp
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format) {
+    public Observable<InputStream> listSitePublishingProfileXmlAsync(String resourceGroupName, String name, String format) {
+        return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param format Name of the format. Valid values are: 
+                 FileZilla3
+                 WebDeploy -- default
+                 Ftp
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlWithServiceResponseAsync(String resourceGroupName, String name, String format) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13439,10 +16276,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     * @return the InputStream object if successful.
      */
-    public ServiceResponse<InputStream> listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePublishingProfileXmlSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -13455,7 +16292,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listSitePublishingProfileXmlSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13466,7 +16303,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13512,10 +16366,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponse} if successful.
+     * @return the InputStream object if successful.
      */
-    public ServiceResponse<InputStream> listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot, String format) throws CloudException, IOException, IllegalArgumentException {
-        return listSitePublishingProfileXmlSlotAsync(resourceGroupName, name, slot, format).toBlocking().single();
+    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot, String format) throws CloudException, IOException, IllegalArgumentException {
+        return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().getBody();
     }
 
     /**
@@ -13532,7 +16386,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, String format, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.create(listSitePublishingProfileXmlSlotAsync(resourceGroupName, name, slot, format), serviceCallback);
+        return ServiceCall.create(listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot, format), serviceCallback);
     }
 
     /**
@@ -13547,7 +16401,28 @@ public final class SitesInner {
                  Ftp
      * @return the observable to the InputStream object
      */
-    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, String format) {
+    public Observable<InputStream> listSitePublishingProfileXmlSlotAsync(String resourceGroupName, String name, String slot, String format) {
+        return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the publishing profile for web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param format Name of the format. Valid values are: 
+                 FileZilla3
+                 WebDeploy -- default
+                 Ftp
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> listSitePublishingProfileXmlSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, String format) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13595,10 +16470,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return restartSiteSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object restartSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -13611,7 +16486,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(restartSiteSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13622,7 +16497,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> restartSiteSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot) {
+        return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13665,10 +16557,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSiteSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
-        return restartSiteSlotAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single();
+    public Object restartSiteSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
+        return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().getBody();
     }
 
     /**
@@ -13683,7 +16575,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(restartSiteSlotAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
+        return ServiceCall.create(restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -13696,7 +16588,26 @@ public final class SitesInner {
      * @param synchronous If true then the API will block until the app has been restarted
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> restartSiteSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
+    public Observable<Object> restartSiteSlotAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
+        return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
+     * @param synchronous If true then the API will block until the app has been restarted
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13741,10 +16652,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return restartSiteAsync(resourceGroupName, name).toBlocking().single();
+    public Object restartSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return restartSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -13756,7 +16667,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> restartSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(restartSiteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(restartSiteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -13766,7 +16677,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> restartSiteAsync(String resourceGroupName, String name) {
+    public Observable<Object> restartSiteAsync(String resourceGroupName, String name) {
+        return restartSiteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSiteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13805,10 +16732,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSite(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
-        return restartSiteAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single();
+    public Object restartSite(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
+        return restartSiteWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().getBody();
     }
 
     /**
@@ -13822,7 +16749,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(restartSiteAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
+        return ServiceCall.create(restartSiteWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous), serviceCallback);
     }
 
     /**
@@ -13834,7 +16761,25 @@ public final class SitesInner {
      * @param synchronous If true then the API will block until the app has been restarted
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
+    public Observable<Object> restartSiteAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
+        return restartSiteWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
+     * @param synchronous If true then the API will block until the app has been restarted
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSiteWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13876,10 +16821,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> startSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return startSiteAsync(resourceGroupName, name).toBlocking().single();
+    public Object startSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return startSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -13891,7 +16836,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> startSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(startSiteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(startSiteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -13901,7 +16846,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> startSiteAsync(String resourceGroupName, String name) {
+    public Observable<Object> startSiteAsync(String resourceGroupName, String name) {
+        return startSiteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Starts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> startSiteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -13944,10 +16905,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> startSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return startSiteSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object startSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return startSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -13960,7 +16921,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> startSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(startSiteSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(startSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -13971,7 +16932,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> startSiteSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> startSiteSlotAsync(String resourceGroupName, String name, String slot) {
+        return startSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Starts web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> startSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14016,10 +16994,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> stopSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return stopSiteAsync(resourceGroupName, name).toBlocking().single();
+    public Object stopSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return stopSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -14031,7 +17009,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> stopSiteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(stopSiteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(stopSiteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -14041,7 +17019,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> stopSiteAsync(String resourceGroupName, String name) {
+    public Observable<Object> stopSiteAsync(String resourceGroupName, String name) {
+        return stopSiteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Stops web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> stopSiteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14084,10 +17078,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> stopSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return stopSiteSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object stopSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return stopSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -14100,7 +17094,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> stopSiteSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(stopSiteSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(stopSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -14111,7 +17105,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> stopSiteSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> stopSiteSlotAsync(String resourceGroupName, String name, String slot) {
+        return stopSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Stops web app.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> stopSiteSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14155,10 +17166,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> syncSiteRepository(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return syncSiteRepositoryAsync(resourceGroupName, name).toBlocking().single();
+    public Object syncSiteRepository(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return syncSiteRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -14169,7 +17180,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> syncSiteRepositoryAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(syncSiteRepositoryAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(syncSiteRepositoryWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -14178,7 +17189,22 @@ public final class SitesInner {
      * @param name the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> syncSiteRepositoryAsync(String resourceGroupName, String name) {
+    public Observable<Object> syncSiteRepositoryAsync(String resourceGroupName, String name) {
+        return syncSiteRepositoryWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> syncSiteRepositoryWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14220,10 +17246,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> syncSiteRepositorySlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return syncSiteRepositorySlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object syncSiteRepositorySlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return syncSiteRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -14235,7 +17261,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> syncSiteRepositorySlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(syncSiteRepositorySlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(syncSiteRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -14245,7 +17271,23 @@ public final class SitesInner {
      * @param slot the String value
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> syncSiteRepositorySlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> syncSiteRepositorySlotAsync(String resourceGroupName, String name, String slot) {
+        return syncSiteRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param name the String value
+     * @param slot the String value
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> syncSiteRepositorySlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14291,10 +17333,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return generateNewSitePublishingPasswordSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public Object generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -14307,7 +17349,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(generateNewSitePublishingPasswordSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -14318,7 +17360,24 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<Object> generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot) {
+        return generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Generates new random app publishing password.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> generateNewSitePublishingPasswordSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14363,10 +17422,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> generateNewSitePublishingPassword(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return generateNewSitePublishingPasswordAsync(resourceGroupName, name).toBlocking().single();
+    public Object generateNewSitePublishingPassword(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -14378,7 +17437,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(generateNewSitePublishingPasswordAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -14388,7 +17447,23 @@ public final class SitesInner {
      * @param name Name of web app
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name) {
+    public Observable<Object> generateNewSitePublishingPasswordAsync(String resourceGroupName, String name) {
+        return generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Generates new random app publishing password.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of web app
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> generateNewSitePublishingPasswordWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14431,10 +17506,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> getSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName).toBlocking().single();
+    public RelayServiceConnectionEntityInner getSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
     }
 
     /**
@@ -14447,7 +17522,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(getSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName), serviceCallback);
+        return ServiceCall.create(getSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -14458,7 +17533,24 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
+    public Observable<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
+        return getSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a Biztalk Hybrid Connection identified by its entity name.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getSiteRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14505,10 +17597,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single();
+    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -14522,7 +17614,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -14534,7 +17626,25 @@ public final class SitesInner {
      * @param connectionEnvelope The details of the Hybrid Connection
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
+    public Observable<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
+        return createOrUpdateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new association to a Biztalk Hybrid Connection, or updates an existing one.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param connectionEnvelope The details of the Hybrid Connection
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateSiteRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14584,10 +17694,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName).toBlocking().single();
+    public Object deleteSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
     }
 
     /**
@@ -14600,7 +17710,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName), serviceCallback);
+        return ServiceCall.create(deleteSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName), serviceCallback);
     }
 
     /**
@@ -14611,7 +17721,24 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
+    public Observable<Object> deleteSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName) {
+        return deleteSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Removes the association to a Biztalk Hybrid Connection, identified by its entity name.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14658,10 +17785,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single();
+    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -14675,7 +17802,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(updateSiteRelayServiceConnectionAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -14687,7 +17814,25 @@ public final class SitesInner {
      * @param connectionEnvelope The details of the Hybrid Connection
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
+    public Observable<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
+        return updateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new association to a Biztalk Hybrid Connection, or updates an existing one.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param connectionEnvelope The details of the Hybrid Connection
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateSiteRelayServiceConnectionWithServiceResponseAsync(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14738,10 +17883,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot).toBlocking().single();
+    public RelayServiceConnectionEntityInner getSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -14755,7 +17900,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(getSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+        return ServiceCall.create(getSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -14767,7 +17912,25 @@ public final class SitesInner {
      * @param slot The name of the slot for the web app.
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
+    public Observable<RelayServiceConnectionEntityInner> getSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
+        return getSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a Biztalk Hybrid Connection identified by its entity name.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param slot The name of the slot for the web app.
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> getSiteRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14818,10 +17981,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single();
+    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -14836,7 +17999,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -14849,7 +18012,26 @@ public final class SitesInner {
      * @param connectionEnvelope The details of the Hybrid Connection
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
+    public Observable<RelayServiceConnectionEntityInner> createOrUpdateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
+        return createOrUpdateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new association to a Biztalk Hybrid Connection, or updates an existing one.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param slot The name of the slot for the web app.
+     * @param connectionEnvelope The details of the Hybrid Connection
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> createOrUpdateSiteRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14903,10 +18085,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return deleteSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot).toBlocking().single();
+    public Object deleteSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return deleteSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -14920,7 +18102,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot), serviceCallback);
+        return ServiceCall.create(deleteSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot), serviceCallback);
     }
 
     /**
@@ -14932,7 +18114,25 @@ public final class SitesInner {
      * @param slot The name of the slot for the web app.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> deleteSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
+    public Observable<Object> deleteSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot) {
+        return deleteSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Removes the association to a Biztalk Hybrid Connection, identified by its entity name.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param slot The name of the slot for the web app.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteSiteRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -14983,10 +18183,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single();
+    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -15001,7 +18201,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(updateSiteRelayServiceConnectionSlotAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15014,7 +18214,26 @@ public final class SitesInner {
      * @param connectionEnvelope The details of the Hybrid Connection
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
+    public Observable<RelayServiceConnectionEntityInner> updateSiteRelayServiceConnectionSlotAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
+        return updateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new association to a Biztalk Hybrid Connection, or updates an existing one.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param entityName The name by which the Hybrid Connection is identified
+     * @param slot The name of the slot for the web app.
+     * @param connectionEnvelope The details of the Hybrid Connection
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> updateSiteRelayServiceConnectionSlotWithServiceResponseAsync(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15067,10 +18286,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteRelayServiceConnectionsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public RelayServiceConnectionEntityInner listSiteRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -15083,7 +18302,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(listSiteRelayServiceConnectionsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(listSiteRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15094,7 +18313,24 @@ public final class SitesInner {
      * @param slot The name of the slot for the web app.
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listSiteRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSiteRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param slot The name of the slot for the web app.
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listSiteRelayServiceConnectionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15139,10 +18375,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RelayServiceConnectionEntityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public ServiceResponse<RelayServiceConnectionEntityInner> listSiteRelayServiceConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return listSiteRelayServiceConnectionsAsync(resourceGroupName, name).toBlocking().single();
+    public RelayServiceConnectionEntityInner listSiteRelayServiceConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return listSiteRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -15154,7 +18390,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<RelayServiceConnectionEntityInner> serviceCallback) {
-        return ServiceCall.create(listSiteRelayServiceConnectionsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(listSiteRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -15164,7 +18400,23 @@ public final class SitesInner {
      * @param name The name of the web app
      * @return the observable to the RelayServiceConnectionEntityInner object
      */
-    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name) {
+    public Observable<RelayServiceConnectionEntityInner> listSiteRelayServiceConnectionsAsync(String resourceGroupName, String name) {
+        return listSiteRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RelayServiceConnectionEntityInner>, RelayServiceConnectionEntityInner>() {
+            @Override
+            public RelayServiceConnectionEntityInner call(ServiceResponse<RelayServiceConnectionEntityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves all Biztalk Hybrid Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @return the observable to the RelayServiceConnectionEntityInner object
+     */
+    public Observable<ServiceResponse<RelayServiceConnectionEntityInner>> listSiteRelayServiceConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15209,10 +18461,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteVnetGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVnetGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single();
+    public Object getSiteVnetGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVnetGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -15227,7 +18479,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteVnetGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteVnetGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
+        return ServiceCall.create(getSiteVnetGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot), serviceCallback);
     }
 
     /**
@@ -15240,7 +18492,26 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteVnetGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
+    public Observable<Object> getSiteVnetGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
+        return getSiteVnetGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param slot The name of the slot for this web app.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteVnetGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15296,10 +18567,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteVNETConnectionGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single();
+    public VnetGatewayInner createOrUpdateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -15315,7 +18586,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteVNETConnectionGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15329,7 +18600,27 @@ public final class SitesInner {
      * @param connectionEnvelope The properties to update this gateway with.
      * @return the observable to the VnetGatewayInner object
      */
-    public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
+    public Observable<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
+        return createOrUpdateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param slot The name of the slot for this web app.
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15388,10 +18679,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> updateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteVNETConnectionGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single();
+    public VnetGatewayInner updateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -15407,7 +18698,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> updateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateSiteVNETConnectionGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15421,7 +18712,27 @@ public final class SitesInner {
      * @param connectionEnvelope The properties to update this gateway with.
      * @return the observable to the VnetGatewayInner object
      */
-    public Observable<ServiceResponse<VnetGatewayInner>> updateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
+    public Observable<VnetGatewayInner> updateSiteVNETConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
+        return updateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param slot The name of the slot for this web app.
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> updateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15478,10 +18789,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVnetGatewayAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single();
+    public Object getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -15495,7 +18806,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getSiteVnetGatewayAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+        return ServiceCall.create(getSiteVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
     }
 
     /**
@@ -15507,7 +18818,25 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
+    public Observable<Object> getSiteVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
+        return getSiteVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a Virtual Network connection gateway associated with this web app and virtual network.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getSiteVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15559,10 +18888,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateSiteVNETConnectionGatewayAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single();
+    public VnetGatewayInner createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -15577,7 +18906,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateSiteVNETConnectionGatewayAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15590,7 +18919,26 @@ public final class SitesInner {
      * @param connectionEnvelope The properties to update this gateway with.
      * @return the observable to the VnetGatewayInner object
      */
-    public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+    public Observable<VnetGatewayInner> createOrUpdateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+        return createOrUpdateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> createOrUpdateSiteVNETConnectionGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15645,10 +18993,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return updateSiteVNETConnectionGatewayAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single();
+    public VnetGatewayInner updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return updateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -15663,7 +19011,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VnetGatewayInner> updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
-        return ServiceCall.create(updateSiteVNETConnectionGatewayAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+        return ServiceCall.create(updateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
     }
 
     /**
@@ -15676,7 +19024,26 @@ public final class SitesInner {
      * @param connectionEnvelope The properties to update this gateway with.
      * @return the observable to the VnetGatewayInner object
      */
-    public Observable<ServiceResponse<VnetGatewayInner>> updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+    public Observable<VnetGatewayInner> updateSiteVNETConnectionGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+        return updateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the Virtual Network Gateway.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param vnetName The name of the Virtual Network
+     * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
+     * @param connectionEnvelope The properties to update this gateway with.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> updateSiteVNETConnectionGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15728,10 +19095,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
-    public ServiceResponse<List<VnetInfoInner>> getSiteVNETConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVNETConnectionsAsync(resourceGroupName, name).toBlocking().single();
+    public List<VnetInfoInner> getSiteVNETConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVNETConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -15743,7 +19110,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetInfoInner>> getSiteVNETConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(getSiteVNETConnectionsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getSiteVNETConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -15753,7 +19120,23 @@ public final class SitesInner {
      * @param name The name of the web app
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
-    public Observable<ServiceResponse<List<VnetInfoInner>>> getSiteVNETConnectionsAsync(String resourceGroupName, String name) {
+    public Observable<List<VnetInfoInner>> getSiteVNETConnectionsAsync(String resourceGroupName, String name) {
+        return getSiteVNETConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
+            @Override
+            public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @return the observable to the List&lt;VnetInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VnetInfoInner>>> getSiteVNETConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15796,10 +19179,10 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
-    public ServiceResponse<List<VnetInfoInner>> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
-        return getSiteVNETConnectionsSlotAsync(resourceGroupName, name, slot).toBlocking().single();
+    public List<VnetInfoInner> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+        return getSiteVNETConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
     /**
@@ -15812,7 +19195,7 @@ public final class SitesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VnetInfoInner>> getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
-        return ServiceCall.create(getSiteVNETConnectionsSlotAsync(resourceGroupName, name, slot), serviceCallback);
+        return ServiceCall.create(getSiteVNETConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
     }
 
     /**
@@ -15823,7 +19206,24 @@ public final class SitesInner {
      * @param slot The name of the slot for this web app.
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
-    public Observable<ServiceResponse<List<VnetInfoInner>>> getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<List<VnetInfoInner>> getSiteVNETConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
+        return getSiteVNETConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
+            @Override
+            public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Retrieves a list of all Virtual Network Connections associated with this web app.
+     *
+     * @param resourceGroupName The resource group name
+     * @param name The name of the web app
+     * @param slot The name of the slot for this web app.
+     * @return the observable to the List&lt;VnetInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VnetInfoInner>>> getSiteVNETConnectionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -15867,17 +19267,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SlotDifferenceInner>> getSlotsDifferencesFromProductionNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SlotDifferenceInner> pagedList = new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -15904,15 +19303,34 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SlotDifferenceInner&gt; object
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink) {
+    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesFromProductionNextAsync(final String nextPageLink) {
+        return getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
+                @Override
+                public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get the difference in configuration settings between two web app slots.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextWithServiceResponseAsync(final String nextPageLink) {
         return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSlotsDifferencesFromProductionNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -15921,7 +19339,7 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesFromProductionNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -15955,17 +19373,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SlotDifferenceInner>> getSlotsDifferencesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SlotDifferenceInner> pagedList = new PagedList<SlotDifferenceInner>(response.getBody()) {
+        return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
             public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SlotDifferenceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -15992,15 +19409,34 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SlotDifferenceInner&gt; object
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<SlotDifferenceInner>> getSlotsDifferencesSlotNextAsync(final String nextPageLink) {
+        return getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Page<SlotDifferenceInner>>() {
+                @Override
+                public Page<SlotDifferenceInner> call(ServiceResponse<Page<SlotDifferenceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get the difference in configuration settings between two web app slots.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SlotDifferenceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SlotDifferenceInner>>, Observable<ServiceResponse<Page<SlotDifferenceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SlotDifferenceInner>>> call(ServiceResponse<Page<SlotDifferenceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSlotsDifferencesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16009,7 +19445,7 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
     ServiceResponse<PageImpl<SlotDifferenceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SlotDifferenceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SlotDifferenceInner>>> getSlotsDifferencesSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16043,17 +19479,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSiteSlotsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlotsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16080,15 +19515,34 @@ public final class SitesInner {
      * Gets all the slots for a web apps.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> getSiteSlotsNextAsync(final String nextPageLink) {
+        return getSiteSlotsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all the slots for a web apps.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteSlotsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteSlotsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteSlotsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16097,7 +19551,7 @@ public final class SitesInner {
      * Gets all the slots for a web apps.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSiteSlotsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16131,17 +19585,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16168,15 +19621,34 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getSitesNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> getSitesNextAsync(final String nextPageLink) {
+        return getSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the web apps for a subscription in the specified resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getSitesNextWithServiceResponseAsync(final String nextPageLink) {
         return getSitesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16185,7 +19657,7 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getSitesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16219,17 +19691,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeletedSiteInner>> getDeletedSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeletedSiteInner> pagedList = new PagedList<DeletedSiteInner>(response.getBody()) {
+        return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
             public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeletedSiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16256,15 +19727,34 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeletedSiteInner&gt; object
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesNextAsync(final String nextPageLink) {
+    public Observable<Page<DeletedSiteInner>> getDeletedSitesNextAsync(final String nextPageLink) {
+        return getDeletedSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Page<DeletedSiteInner>>() {
+                @Override
+                public Page<DeletedSiteInner> call(ServiceResponse<Page<DeletedSiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets deleted web apps in subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeletedSiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesNextWithServiceResponseAsync(final String nextPageLink) {
         return getDeletedSitesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeletedSiteInner>>, Observable<ServiceResponse<Page<DeletedSiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeletedSiteInner>>> call(ServiceResponse<Page<DeletedSiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeletedSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeletedSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16273,7 +19763,7 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
     ServiceResponse<PageImpl<DeletedSiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeletedSiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeletedSiteInner>>> getDeletedSitesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16307,17 +19797,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16344,15 +19833,34 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsNextAsync(final String nextPageLink) {
+    public Observable<Page<DeploymentInner>> getDeploymentsNextAsync(final String nextPageLink) {
+        return getDeploymentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getDeploymentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeploymentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeploymentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16361,7 +19869,7 @@ public final class SitesInner {
      * List deployments.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16395,17 +19903,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16432,15 +19939,34 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<DeploymentInner>> getDeploymentsSlotNextAsync(final String nextPageLink) {
+        return getDeploymentsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getDeploymentsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getDeploymentsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getDeploymentsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16449,7 +19975,7 @@ public final class SitesInner {
      * List deployments.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16483,17 +20009,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getInstanceDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16520,15 +20045,34 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsNextAsync(final String nextPageLink) {
+    public Observable<Page<DeploymentInner>> getInstanceDeploymentsNextAsync(final String nextPageLink) {
+        return getInstanceDeploymentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getInstanceDeploymentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getInstanceDeploymentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getInstanceDeploymentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16537,7 +20081,7 @@ public final class SitesInner {
      * List deployments.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16571,17 +20115,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentInner>> getInstanceDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeploymentInner> pagedList = new PagedList<DeploymentInner>(response.getBody()) {
+        return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
             public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16608,15 +20151,34 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeploymentInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<DeploymentInner>> getInstanceDeploymentsSlotNextAsync(final String nextPageLink) {
+        return getInstanceDeploymentsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeploymentInner>>, Page<DeploymentInner>>() {
+                @Override
+                public Page<DeploymentInner> call(ServiceResponse<Page<DeploymentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List deployments.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeploymentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentInner>>, Observable<ServiceResponse<Page<DeploymentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentInner>>> call(ServiceResponse<Page<DeploymentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getInstanceDeploymentsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16625,7 +20187,7 @@ public final class SitesInner {
      * List deployments.
      *
     ServiceResponse<PageImpl<DeploymentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentInner>>> getInstanceDeploymentsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16659,17 +20221,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInstanceInner>> getSiteInstanceIdentifiersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInstanceInner> pagedList = new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16696,15 +20257,34 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInstanceInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInstanceInner>> getSiteInstanceIdentifiersNextAsync(final String nextPageLink) {
+        return getSiteInstanceIdentifiersNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
+                @Override
+                public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all instance of a web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteInstanceIdentifiersNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16713,7 +20293,7 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16747,17 +20327,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInstanceInner>> getSiteInstanceIdentifiersSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInstanceInner> pagedList = new PagedList<SiteInstanceInner>(response.getBody()) {
+        return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
             public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInstanceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16784,15 +20363,34 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInstanceInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInstanceInner>> getSiteInstanceIdentifiersSlotNextAsync(final String nextPageLink) {
+        return getSiteInstanceIdentifiersSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Page<SiteInstanceInner>>() {
+                @Override
+                public Page<SiteInstanceInner> call(ServiceResponse<Page<SiteInstanceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all instance of a web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInstanceInner>>, Observable<ServiceResponse<Page<SiteInstanceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInstanceInner>>> call(ServiceResponse<Page<SiteInstanceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteInstanceIdentifiersSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16801,7 +20399,7 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
     ServiceResponse<PageImpl<SiteInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInstanceInner>>> getSiteInstanceIdentifiersSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16835,17 +20433,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostNameBindingInner>> getSiteHostNameBindingsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<HostNameBindingInner> pagedList = new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16872,15 +20469,34 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;HostNameBindingInner&gt; object
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsNextAsync(final String nextPageLink) {
+    public Observable<Page<HostNameBindingInner>> getSiteHostNameBindingsNextAsync(final String nextPageLink) {
+        return getSiteHostNameBindingsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
+                @Override
+                public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteHostNameBindingsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16889,7 +20505,7 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -16923,17 +20539,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostNameBindingInner>> getSiteHostNameBindingsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<HostNameBindingInner> pagedList = new PagedList<HostNameBindingInner>(response.getBody()) {
+        return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
             public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostNameBindingInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -16960,15 +20575,34 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;HostNameBindingInner&gt; object
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<HostNameBindingInner>> getSiteHostNameBindingsSlotNextAsync(final String nextPageLink) {
+        return getSiteHostNameBindingsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Page<HostNameBindingInner>>() {
+                @Override
+                public Page<HostNameBindingInner> call(ServiceResponse<Page<HostNameBindingInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get web app hostname bindings.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HostNameBindingInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<HostNameBindingInner>>, Observable<ServiceResponse<Page<HostNameBindingInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostNameBindingInner>>> call(ServiceResponse<Page<HostNameBindingInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteHostNameBindingsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -16977,7 +20611,7 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
     ServiceResponse<PageImpl<HostNameBindingInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostNameBindingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostNameBindingInner>>> getSiteHostNameBindingsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17011,17 +20645,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<BackupItemInner>> listSiteBackupsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<BackupItemInner> pagedList = new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17048,15 +20681,34 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;BackupItemInner&gt; object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextAsync(final String nextPageLink) {
+    public Observable<Page<BackupItemInner>> listSiteBackupsNextAsync(final String nextPageLink) {
+        return listSiteBackupsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextWithServiceResponseAsync(final String nextPageLink) {
         return listSiteBackupsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listSiteBackupsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17065,7 +20717,7 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17099,17 +20751,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<BackupItemInner>> listSiteBackupsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<BackupItemInner> pagedList = new PagedList<BackupItemInner>(response.getBody()) {
+        return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
             public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<BackupItemInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17136,15 +20787,34 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;BackupItemInner&gt; object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<BackupItemInner>> listSiteBackupsSlotNextAsync(final String nextPageLink) {
+        return listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all available backups for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return listSiteBackupsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listSiteBackupsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17153,7 +20823,7 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
     ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17187,17 +20857,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17224,15 +20893,34 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesNextAsync(final String nextPageLink) {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesNextAsync(final String nextPageLink) {
+        return getSiteUsagesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteUsagesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17241,7 +20929,7 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17275,17 +20963,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getSiteUsagesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17312,15 +20999,34 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<CsmUsageQuotaInner>> getSiteUsagesSlotNextAsync(final String nextPageLink) {
+        return getSiteUsagesSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the quota usage numbers for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteUsagesSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteUsagesSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteUsagesSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17329,7 +21035,7 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getSiteUsagesSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17363,17 +21069,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17400,15 +21105,34 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsNextAsync(final String nextPageLink) {
+        return getSiteMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteMetricsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17417,7 +21141,7 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17451,17 +21175,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getSiteMetricsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17488,15 +21211,34 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricInner>> getSiteMetricsSlotNextAsync(final String nextPageLink) {
+        return getSiteMetricsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metrics for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteMetricsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17505,7 +21247,7 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getSiteMetricsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17539,17 +21281,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getSiteMetricDefinitionsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17576,15 +21317,34 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotNextAsync(final String nextPageLink) {
+    public Observable<Page<MetricDefinitionInner>> getSiteMetricDefinitionsSlotNextAsync(final String nextPageLink) {
+        return getSiteMetricDefinitionsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metric definitions for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricDefinitionsSlotNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17593,7 +21353,7 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsSlotNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -17627,17 +21387,16 @@ public final class SitesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getSiteMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -17664,15 +21423,34 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsNextAsync(final String nextPageLink) {
+    public Observable<Page<MetricDefinitionInner>> getSiteMetricDefinitionsNextAsync(final String nextPageLink) {
+        return getSiteMetricDefinitionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets metric definitions for web app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSiteMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -17681,7 +21459,7 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getSiteMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

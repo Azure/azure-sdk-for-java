@@ -35,16 +35,16 @@ final class FeaturesInResourceProviderImpl
                 return new FeatureImpl(tenantInner);
             }
         };
-        return converter.convert(client.list(resourceProviderNamespace).getBody());
+        return converter.convert(client.list(resourceProviderNamespace));
     }
 
     @Override
     public Feature register(String featureName) throws IOException, CloudException {
-        return new FeatureImpl(client.register(resourceProviderNamespace, featureName).getBody());
+        return new FeatureImpl(client.register(resourceProviderNamespace, featureName));
     }
 
     @Override
     public Feature getByName(String name) throws CloudException, IOException {
-        return new FeatureImpl(client.get(resourceProviderNamespace, name).getBody());
+        return new FeatureImpl(client.get(resourceProviderNamespace, name));
     }
 }

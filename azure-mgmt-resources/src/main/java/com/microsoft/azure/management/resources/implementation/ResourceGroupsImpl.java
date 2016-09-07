@@ -35,12 +35,12 @@ final class ResourceGroupsImpl
 
     @Override
     public PagedList<ResourceGroup> list() throws CloudException, IOException {
-        return wrapList(client.list().getBody());
+        return wrapList(client.list());
     }
 
     @Override
     public ResourceGroupImpl getByName(String name) throws CloudException, IOException {
-        return wrapModel(client.get(name).getBody());
+        return wrapModel(client.get(name));
     }
 
     @Override
@@ -55,7 +55,7 @@ final class ResourceGroupsImpl
 
     @Override
     public boolean checkExistence(String name) throws CloudException, IOException {
-        return client.checkExistence(name).getBody();
+        return client.checkExistence(name);
     }
 
     @Override
