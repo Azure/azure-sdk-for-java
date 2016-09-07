@@ -144,16 +144,20 @@ class NetworkSecurityGroupImpl
 
     @Override
     public Observable<NetworkSecurityGroup> createResourceAsync() {
-        final NetworkSecurityGroupImpl self = this;
+        final NetworkSecurityGroup self = this;
         beforeCreating();
         return createInner()
-                .map(new Func1<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
+                .flatMap(new Func1<NetworkSecurityGroupInner, Observable<NetworkSecurityGroup>>() {
                     @Override
-                    public NetworkSecurityGroup call(NetworkSecurityGroupInner networkSecurityGroupInner) {
-                        self.setInner(networkSecurityGroupInner);
-                        initializeChildrenFromInner();
-                        afterCreating();
-                        return self;
+                    public Observable<NetworkSecurityGroup> call(NetworkSecurityGroupInner inner) {
+                        setInner(inner);
+                        try {
+                            initializeChildrenFromInner();
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
                     }
                 });
     }
