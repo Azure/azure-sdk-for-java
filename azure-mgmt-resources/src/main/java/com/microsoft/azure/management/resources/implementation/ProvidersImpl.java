@@ -28,22 +28,22 @@ final class ProvidersImpl
 
     @Override
     public PagedList<Provider> list() throws CloudException, IOException {
-        return wrapList(client.list().getBody());
+        return wrapList(client.list());
     }
 
     @Override
     public Provider unregister(String resourceProviderNamespace) throws CloudException, IOException {
-        return wrapModel(client.unregister(resourceProviderNamespace).getBody());
+        return wrapModel(client.unregister(resourceProviderNamespace));
     }
 
     @Override
     public Provider register(String resourceProviderNamespace) throws CloudException, IOException {
-        return wrapModel(client.register(resourceProviderNamespace).getBody());
+        return wrapModel(client.register(resourceProviderNamespace));
     }
 
     @Override
     public Provider getByName(String resourceProviderNamespace) throws CloudException, IOException {
-        return wrapModel(client.get(resourceProviderNamespace).getBody());
+        return wrapModel(client.get(resourceProviderNamespace));
     }
 
     @Override

@@ -39,6 +39,6 @@ class VirtualMachinePublishersImpl
 
     @Override
     public PagedList<VirtualMachinePublisher> listByRegion(String regionName) throws CloudException, IOException {
-        return wrapList(innerCollection.listPublishers(regionName).getBody());
+        return wrapList(innerCollection.listPublishers(regionName));
     }
 }

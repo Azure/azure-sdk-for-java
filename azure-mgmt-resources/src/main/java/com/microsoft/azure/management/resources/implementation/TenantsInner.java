@@ -73,17 +73,16 @@ public final class TenantsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<TenantIdDescriptionInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TenantIdDescriptionInner> list() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listSinglePageAsync().toBlocking().single();
-        PagedList<TenantIdDescriptionInner> pagedList = new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<TenantIdDescriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -107,15 +106,14 @@ public final class TenantsInner {
     /**
      * Gets a list of the tenantIds.
      *
-     * @return the observable to the List&lt;TenantIdDescriptionInner&gt; object
+     * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
+    public Observable<Page<TenantIdDescriptionInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -123,7 +121,26 @@ public final class TenantsInner {
     /**
      * Gets a list of the tenantIds.
      *
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of the tenantIds.
+     *
+     * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listSinglePageAsync() {
         if (this.client.apiVersion() == null) {
@@ -157,17 +174,16 @@ public final class TenantsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<TenantIdDescriptionInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TenantIdDescriptionInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<TenantIdDescriptionInner> pagedList = new PagedList<TenantIdDescriptionInner>(response.getBody()) {
+        return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
             public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<TenantIdDescriptionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -194,15 +210,34 @@ public final class TenantsInner {
      * Gets a list of the tenantIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;TenantIdDescriptionInner&gt; object
+     * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<TenantIdDescriptionInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Page<TenantIdDescriptionInner>>() {
+                @Override
+                public Page<TenantIdDescriptionInner> call(ServiceResponse<Page<TenantIdDescriptionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of the tenantIds.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<TenantIdDescriptionInner>>, Observable<ServiceResponse<Page<TenantIdDescriptionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> call(ServiceResponse<Page<TenantIdDescriptionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -211,7 +246,7 @@ public final class TenantsInner {
      * Gets a list of the tenantIds.
      *
     ServiceResponse<PageImpl1<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TenantIdDescriptionInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

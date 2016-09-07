@@ -62,7 +62,7 @@ final class SubscriptionImpl extends
                 return new LocationImpl(locationInner);
             }
         };
-        return converter.convert(toPagedList(client.listLocations(this.subscriptionId()).getBody()));
+        return converter.convert(toPagedList(client.listLocations(this.subscriptionId())));
     }
 
     private PagedList<LocationInner> toPagedList(List<LocationInner> list) {

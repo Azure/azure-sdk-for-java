@@ -8,7 +8,6 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -81,9 +80,8 @@ class NetworkSecurityGroupImpl
 
     @Override
     public NetworkSecurityGroupImpl refresh() throws Exception {
-        ServiceResponse<NetworkSecurityGroupInner> response =
-            this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        NetworkSecurityGroupInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(response);
         initializeChildrenFromInner();
         return this;
     }
@@ -140,7 +138,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    protected Observable<ServiceResponse<NetworkSecurityGroupInner>> createInner() {
+    protected Observable<NetworkSecurityGroupInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -149,10 +147,10 @@ class NetworkSecurityGroupImpl
         final NetworkSecurityGroupImpl self = this;
         beforeCreating();
         return createInner()
-                .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
+                .map(new Func1<NetworkSecurityGroupInner, NetworkSecurityGroup>() {
                     @Override
-                    public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
-                        self.setInner(networkSecurityGroupInner.getBody());
+                    public NetworkSecurityGroup call(NetworkSecurityGroupInner networkSecurityGroupInner) {
+                        self.setInner(networkSecurityGroupInner);
                         initializeChildrenFromInner();
                         afterCreating();
                         return self;

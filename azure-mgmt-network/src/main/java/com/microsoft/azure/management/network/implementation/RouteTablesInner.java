@@ -109,10 +109,9 @@ public final class RouteTablesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, routeTableName).toBlocking().last();
+    public void delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().getBody();
     }
 
     /**
@@ -124,7 +123,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
@@ -134,7 +133,23 @@ public final class RouteTablesInner {
      * @param routeTableName The name of the route table.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String routeTableName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String routeTableName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Delete RouteTable operation deletes the specified Route Table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -159,10 +174,9 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, routeTableName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +188,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String routeTableName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
@@ -184,7 +198,23 @@ public final class RouteTablesInner {
      * @param routeTableName The name of the route table.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String routeTableName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String routeTableName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Delete RouteTable operation deletes the specified Route Table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -227,10 +257,10 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RouteTableInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RouteTableInner object if successful.
      */
-    public ServiceResponse<RouteTableInner> get(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, routeTableName).toBlocking().single();
+    public RouteTableInner get(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
     }
 
     /**
@@ -242,7 +272,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, routeTableName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, routeTableName), serviceCallback);
     }
 
     /**
@@ -252,7 +282,23 @@ public final class RouteTablesInner {
      * @param routeTableName The name of the route table.
      * @return the observable to the RouteTableInner object
      */
-    public Observable<ServiceResponse<RouteTableInner>> getAsync(String resourceGroupName, String routeTableName) {
+    public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName) {
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+            @Override
+            public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get RouteTables operation retrieves information about the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @return the observable to the RouteTableInner object
+     */
+    public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -289,10 +335,10 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RouteTableInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RouteTableInner object if successful.
      */
-    public ServiceResponse<RouteTableInner> get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, routeTableName, expand).toBlocking().single();
+    public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -305,7 +351,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, routeTableName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, routeTableName, expand), serviceCallback);
     }
 
     /**
@@ -316,7 +362,24 @@ public final class RouteTablesInner {
      * @param expand expand references resources.
      * @return the observable to the RouteTableInner object
      */
-    public Observable<ServiceResponse<RouteTableInner>> getAsync(String resourceGroupName, String routeTableName, String expand) {
+    public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+            @Override
+            public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get RouteTables operation retrieves information about the specified route table.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param expand expand references resources.
+     * @return the observable to the RouteTableInner object
+     */
+    public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -360,10 +423,10 @@ public final class RouteTablesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the RouteTableInner object wrapped in ServiceResponse if successful.
+     * @return the RouteTableInner object if successful.
      */
-    public ServiceResponse<RouteTableInner> createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, routeTableName, parameters).toBlocking().last();
+    public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -376,7 +439,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
     }
 
     /**
@@ -387,7 +450,24 @@ public final class RouteTablesInner {
      * @param parameters Parameters supplied to the create/update Route Table operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RouteTableInner>> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
+    public Observable<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+            @Override
+            public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<RouteTableInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -417,10 +497,10 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RouteTableInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RouteTableInner object if successful.
      */
-    public ServiceResponse<RouteTableInner> beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters).toBlocking().single();
+    public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -433,7 +513,7 @@ public final class RouteTablesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters, final ServiceCallback<RouteTableInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters), serviceCallback);
     }
 
     /**
@@ -444,7 +524,24 @@ public final class RouteTablesInner {
      * @param parameters Parameters supplied to the create/update Route Table operation
      * @return the observable to the RouteTableInner object
      */
-    public Observable<ServiceResponse<RouteTableInner>> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
+    public Observable<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).map(new Func1<ServiceResponse<RouteTableInner>, RouteTableInner>() {
+            @Override
+            public RouteTableInner call(ServiceResponse<RouteTableInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @return the observable to the RouteTableInner object
+     */
+    public Observable<ServiceResponse<RouteTableInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -490,17 +587,16 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<RouteTableInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<RouteTableInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<RouteTableInner> pagedList = new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -526,15 +622,34 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;RouteTableInner&gt; object
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RouteTableInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<RouteTableInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
+                @Override
+                public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list RouteTables returns all route tables in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RouteTableInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -543,7 +658,7 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -582,17 +697,16 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<RouteTableInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<RouteTableInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<RouteTableInner> pagedList = new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -616,15 +730,14 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @return the observable to the List&lt;RouteTableInner&gt; object
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RouteTableInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
+    public Observable<Page<RouteTableInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -632,7 +745,26 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RouteTableInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The list RouteTables returns all route tables in a subscription.
+     *
+     * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -669,17 +801,16 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<RouteTableInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<RouteTableInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<RouteTableInner> pagedList = new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -706,15 +837,34 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;RouteTableInner&gt; object
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RouteTableInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<RouteTableInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
+                @Override
+                public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list RouteTables returns all route tables in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RouteTableInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -723,7 +873,7 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -757,17 +907,16 @@ public final class RouteTablesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<RouteTableInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<RouteTableInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<RouteTableInner> pagedList = new PagedList<RouteTableInner>(response.getBody()) {
+        return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
             public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<RouteTableInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -794,15 +943,34 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;RouteTableInner&gt; object
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
-    public Observable<ServiceResponse<Page<RouteTableInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<RouteTableInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RouteTableInner>>, Page<RouteTableInner>>() {
+                @Override
+                public Page<RouteTableInner> call(ServiceResponse<Page<RouteTableInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list RouteTables returns all route tables in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;RouteTableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RouteTableInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<RouteTableInner>>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(ServiceResponse<Page<RouteTableInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -811,7 +979,7 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a subscription.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<RouteTableInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

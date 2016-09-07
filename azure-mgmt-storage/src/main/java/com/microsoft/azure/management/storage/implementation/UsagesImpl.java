@@ -20,7 +20,7 @@ class UsagesImpl extends ReadableWrappersImpl<StorageUsage, UsageImpl, UsageInne
 
     @Override
     public PagedList<StorageUsage> list() throws CloudException, IOException {
-        return wrapList(client.usages().list().getBody());
+        return wrapList(client.usages().list());
     }
 
     @Override

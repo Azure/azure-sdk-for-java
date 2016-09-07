@@ -8,7 +8,6 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -59,9 +58,8 @@ class NetworkImpl
 
     @Override
     public NetworkImpl refresh() throws Exception {
-        ServiceResponse<VirtualNetworkInner> response =
-            this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
         initializeChildrenFromInner();
         return this;
     }
@@ -171,7 +169,7 @@ class NetworkImpl
     }
 
     @Override
-    protected Observable<ServiceResponse<VirtualNetworkInner>> createInner() {
+    protected Observable<VirtualNetworkInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -180,10 +178,10 @@ class NetworkImpl
         final NetworkImpl self = this;
         beforeCreating();
         return createInner()
-                .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
+                .map(new Func1<VirtualNetworkInner, Network>() {
                     @Override
-                    public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
-                        setInner(virtualNetworkInner.getBody());
+                    public Network call(VirtualNetworkInner virtualNetworkInner) {
+                        setInner(virtualNetworkInner);
                         initializeChildrenFromInner();
                         afterCreating();
                         return self;

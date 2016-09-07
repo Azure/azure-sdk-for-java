@@ -102,10 +102,9 @@ public final class SecurityRulesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last();
+    public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last().getBody();
     }
 
     /**
@@ -118,7 +117,7 @@ public final class SecurityRulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -129,7 +128,24 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete network security rule operation deletes the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -158,10 +174,9 @@ public final class SecurityRulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +189,7 @@ public final class SecurityRulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -185,7 +200,24 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete network security rule operation deletes the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -232,10 +264,10 @@ public final class SecurityRulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SecurityRuleInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SecurityRuleInner object if successful.
      */
-    public ServiceResponse<SecurityRuleInner> get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single();
+    public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
     }
 
     /**
@@ -248,7 +280,7 @@ public final class SecurityRulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName), serviceCallback);
     }
 
     /**
@@ -259,7 +291,24 @@ public final class SecurityRulesInner {
      * @param securityRuleName The name of the security rule.
      * @return the observable to the SecurityRuleInner object
      */
-    public Observable<ServiceResponse<SecurityRuleInner>> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+    public Observable<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
+        return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
+            @Override
+            public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get NetworkSecurityRule operation retrieves information about the specified network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @return the observable to the SecurityRuleInner object
+     */
+    public Observable<ServiceResponse<SecurityRuleInner>> getWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -307,10 +356,10 @@ public final class SecurityRulesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the SecurityRuleInner object wrapped in ServiceResponse if successful.
+     * @return the SecurityRuleInner object if successful.
      */
-    public ServiceResponse<SecurityRuleInner> createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().last();
+    public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().last().getBody();
     }
 
     /**
@@ -324,7 +373,7 @@ public final class SecurityRulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
     }
 
     /**
@@ -336,7 +385,25 @@ public final class SecurityRulesInner {
      * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<SecurityRuleInner>> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
+    public Observable<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
+            @Override
+            public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SecurityRuleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -370,10 +437,10 @@ public final class SecurityRulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SecurityRuleInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SecurityRuleInner object if successful.
      */
-    public ServiceResponse<SecurityRuleInner> beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().single();
+    public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().single().getBody();
     }
 
     /**
@@ -387,7 +454,7 @@ public final class SecurityRulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, final ServiceCallback<SecurityRuleInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters), serviceCallback);
     }
 
     /**
@@ -399,7 +466,25 @@ public final class SecurityRulesInner {
      * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
      * @return the observable to the SecurityRuleInner object
      */
-    public Observable<ServiceResponse<SecurityRuleInner>> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
+    public Observable<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).map(new Func1<ServiceResponse<SecurityRuleInner>, SecurityRuleInner>() {
+            @Override
+            public SecurityRuleInner call(ServiceResponse<SecurityRuleInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @return the observable to the SecurityRuleInner object
+     */
+    public Observable<ServiceResponse<SecurityRuleInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -449,17 +534,16 @@ public final class SecurityRulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SecurityRuleInner>> list(final String resourceGroupName, final String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SecurityRuleInner> list(final String resourceGroupName, final String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SecurityRuleInner>> response = listSinglePageAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single();
-        PagedList<SecurityRuleInner> pagedList = new PagedList<SecurityRuleInner>(response.getBody()) {
+        return new PagedList<SecurityRuleInner>(response.getBody()) {
             @Override
             public Page<SecurityRuleInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SecurityRuleInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -487,15 +571,35 @@ public final class SecurityRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @return the observable to the List&lt;SecurityRuleInner&gt; object
+     * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SecurityRuleInner>>> listAsync(final String resourceGroupName, final String networkSecurityGroupName) {
+    public Observable<Page<SecurityRuleInner>> listAsync(final String resourceGroupName, final String networkSecurityGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName)
+            .map(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Page<SecurityRuleInner>>() {
+                @Override
+                public Page<SecurityRuleInner> call(ServiceResponse<Page<SecurityRuleInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List network security rule operation retrieves all the security rules in a network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecurityRuleInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String networkSecurityGroupName) {
         return listSinglePageAsync(resourceGroupName, networkSecurityGroupName)
             .concatMap(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(ServiceResponse<Page<SecurityRuleInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -505,7 +609,7 @@ public final class SecurityRulesInner {
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param networkSecurityGroupName The name of the network security group.
-     * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listSinglePageAsync(final String resourceGroupName, final String networkSecurityGroupName) {
         if (resourceGroupName == null) {
@@ -548,17 +652,16 @@ public final class SecurityRulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SecurityRuleInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SecurityRuleInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SecurityRuleInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SecurityRuleInner> pagedList = new PagedList<SecurityRuleInner>(response.getBody()) {
+        return new PagedList<SecurityRuleInner>(response.getBody()) {
             @Override
             public Page<SecurityRuleInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SecurityRuleInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -585,15 +688,34 @@ public final class SecurityRulesInner {
      * The List network security rule operation retrieves all the security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SecurityRuleInner&gt; object
+     * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<SecurityRuleInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Page<SecurityRuleInner>>() {
+                @Override
+                public Page<SecurityRuleInner> call(ServiceResponse<Page<SecurityRuleInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List network security rule operation retrieves all the security rules in a network security group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SecurityRuleInner>>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(ServiceResponse<Page<SecurityRuleInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -602,7 +724,7 @@ public final class SecurityRulesInner {
      * The List network security rule operation retrieves all the security rules in a network security group.
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecurityRuleInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

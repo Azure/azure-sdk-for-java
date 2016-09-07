@@ -78,7 +78,7 @@ class ResourceGroupImpl extends
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
         ResourceGroupExportResultInner resultInner =
-                client.exportTemplate(name(), inner).getBody();
+                client.exportTemplate(name(), inner);
         return new ResourceGroupExportResultImpl(resultInner);
     }
 
@@ -121,7 +121,7 @@ class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl refresh() throws Exception {
-        this.setInner(client.get(this.key).getBody());
+        this.setInner(client.get(this.key));
         return this;
     }
 

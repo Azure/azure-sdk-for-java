@@ -21,7 +21,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -81,9 +80,8 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterface refresh() throws Exception {
-        ServiceResponse<NetworkInterfaceInner> response =
-                this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        NetworkInterfaceInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
         clearCachedRelatedResources();
         initializeChildrenFromInner();
         return this;
@@ -357,56 +355,6 @@ class NetworkInterfaceImpl
         return this.nicPrimaryIpConfiguration;
     }
 
-    @Override
-    protected void beforeCreating() {
-        NetworkSecurityGroup networkSecurityGroup = null;
-        if (creatableNetworkSecurityGroupKey != null) {
-            networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
-        } else if (existingNetworkSecurityGroupToAssociate != null) {
-            networkSecurityGroup = existingNetworkSecurityGroupToAssociate;
-        }
-
-        // Associate an NSG if needed
-        if (networkSecurityGroup != null) {
-            this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
-        }
-
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
-        
-        // Reset and update IP configs
-        this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
-    }
-
-    @Override
-    protected void afterCreating() {
-        clearCachedRelatedResources();
-    }
-
-    @Override
-    protected Observable<ServiceResponse<NetworkInterfaceInner>> createInner() {
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
-    }
-
-    @Override
-    public Observable<NetworkInterface> createResourceAsync() {
-        final NetworkInterfaceImpl self = this;
-        beforeCreating();
-        return createInner()
-                .map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterface>() {
-                    @Override
-                    public NetworkInterface call(ServiceResponse<NetworkInterfaceInner> networkInterfaceInner) {
-                        self.setInner(networkInterfaceInner.getBody());
-                        initializeChildrenFromInner();
-                        afterCreating();
-                        return self;
-                    }
-                });
-    }
-
-    /**************************************************.
-     * Helper methods
-     **************************************************/
-
     /**
      * @return the list of DNS server IPs from the DNS settings
      */
@@ -466,5 +414,51 @@ class NetworkInterfaceImpl
 
     Creatable<ResourceGroup> newGroup() {
         return this.creatableGroup;
+    }
+
+    @Override
+    protected Observable<NetworkInterfaceInner> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
+    protected void afterCreating() {
+        clearCachedRelatedResources();
+    }
+
+    @Override
+    protected void beforeCreating() {
+        NetworkSecurityGroup networkSecurityGroup = null;
+        if (creatableNetworkSecurityGroupKey != null) {
+            networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
+        } else if (existingNetworkSecurityGroupToAssociate != null) {
+            networkSecurityGroup = existingNetworkSecurityGroupToAssociate;
+        }
+
+        // Associate an NSG if needed
+        if (networkSecurityGroup != null) {
+            this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
+        }
+
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
+        
+        // Reset and update IP configs
+        this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
+    }
+
+    @Override
+    public Observable<NetworkInterface> createResourceAsync() {
+        final NetworkInterfaceImpl self = this;
+        beforeCreating();
+        return createInner()
+                .map(new Func1<NetworkInterfaceInner, NetworkInterface>() {
+                    @Override
+                    public NetworkInterface call(NetworkInterfaceInner networkInterfaceInner) {
+                        self.setInner(networkInterfaceInner);
+                        initializeChildrenFromInner();
+                        afterCreating();
+                        return self;
+                    }
+                });
     }
 }

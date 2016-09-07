@@ -37,22 +37,22 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
-        return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name).getBody());
+        return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name));
     }
 
     @Override
     public PagedList<StorageAccount> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.list().getBody());
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
     public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.listByResourceGroup(groupName).getBody());
+        return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override
     public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.getProperties(groupName, name).getBody());
+        return wrapModel(this.innerCollection.getProperties(groupName, name));
     }
 
     @Override

@@ -5,13 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Frontend;
@@ -23,18 +16,25 @@ import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.Probe;
-import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
+import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 /**
  * Implementation of the LoadBalancer interface.
@@ -74,9 +74,8 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl refresh() throws Exception {
-        ServiceResponse<LoadBalancerInner> response =
-            this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        LoadBalancerInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
         initializeChildrenFromInner();
         return this;
     }
@@ -192,7 +191,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    protected Observable<ServiceResponse<LoadBalancerInner>> createInner() {
+    protected Observable<LoadBalancerInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -201,10 +200,10 @@ class LoadBalancerImpl
         final LoadBalancer self = this;
         beforeCreating();
         return createInner()
-                .flatMap(new Func1<ServiceResponse<LoadBalancerInner>, Observable<LoadBalancer>>() {
+                .flatMap(new Func1<LoadBalancerInner, Observable<LoadBalancer>>() {
                     @Override
-                    public Observable<LoadBalancer> call(ServiceResponse<LoadBalancerInner> loadBalancerInner) {
-                        setInner(loadBalancerInner.getBody());
+                    public Observable<LoadBalancer> call(LoadBalancerInner loadBalancerInner) {
+                        setInner(loadBalancerInner);
                         try {
                             initializeChildrenFromInner();
                             afterCreating();

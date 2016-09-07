@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.rest.ServiceResponse;
 
 import rx.Observable;
 
@@ -40,7 +39,7 @@ public abstract class GroupableParentResourceImpl<
         initializeChildrenFromInner();
     }
 
-    protected abstract Observable<ServiceResponse<InnerModelT>> createInner();
+    protected abstract Observable<InnerModelT> createInner();
     protected abstract void initializeChildrenFromInner();
     protected abstract void beforeCreating();
     protected abstract void afterCreating();

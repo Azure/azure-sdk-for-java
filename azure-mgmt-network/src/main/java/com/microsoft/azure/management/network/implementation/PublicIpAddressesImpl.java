@@ -7,9 +7,9 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
@@ -35,17 +35,17 @@ class PublicIpAddressesImpl
 
     @Override
     public PagedList<PublicIpAddress> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll());
     }
 
     @Override
     public PagedList<PublicIpAddress> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
     public PublicIpAddressImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override

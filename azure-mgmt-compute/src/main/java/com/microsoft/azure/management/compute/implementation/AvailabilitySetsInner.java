@@ -88,10 +88,10 @@ public final class AvailabilitySetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AvailabilitySetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AvailabilitySetInner object if successful.
      */
-    public ServiceResponse<AvailabilitySetInner> createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateAsync(resourceGroupName, name, parameters).toBlocking().single();
+    public AvailabilitySetInner createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AvailabilitySetInner> createOrUpdateAsync(String resourceGroupName, String name, AvailabilitySetInner parameters, final ServiceCallback<AvailabilitySetInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, name, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
     }
 
     /**
@@ -115,7 +115,24 @@ public final class AvailabilitySetsInner {
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @return the observable to the AvailabilitySetInner object
      */
-    public Observable<ServiceResponse<AvailabilitySetInner>> createOrUpdateAsync(String resourceGroupName, String name, AvailabilitySetInner parameters) {
+    public Observable<AvailabilitySetInner> createOrUpdateAsync(String resourceGroupName, String name, AvailabilitySetInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
+            @Override
+            public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to create or update the availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name Parameters supplied to the Create Availability Set operation.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
+     * @return the observable to the AvailabilitySetInner object
+     */
+    public Observable<ServiceResponse<AvailabilitySetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AvailabilitySetInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -161,10 +178,9 @@ public final class AvailabilitySetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(resourceGroupName, availabilitySetName).toBlocking().single();
+    public void delete(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 
     /**
@@ -176,7 +192,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
@@ -186,7 +202,23 @@ public final class AvailabilitySetsInner {
      * @param availabilitySetName The name of the availability set.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String availabilitySetName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to delete the availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String availabilitySetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -228,10 +260,10 @@ public final class AvailabilitySetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AvailabilitySetInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AvailabilitySetInner object if successful.
      */
-    public ServiceResponse<AvailabilitySetInner> get(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, availabilitySetName).toBlocking().single();
+    public AvailabilitySetInner get(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 
     /**
@@ -243,7 +275,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AvailabilitySetInner> getAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<AvailabilitySetInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
@@ -253,7 +285,23 @@ public final class AvailabilitySetsInner {
      * @param availabilitySetName The name of the availability set.
      * @return the observable to the AvailabilitySetInner object
      */
-    public Observable<ServiceResponse<AvailabilitySetInner>> getAsync(String resourceGroupName, String availabilitySetName) {
+    public Observable<AvailabilitySetInner> getAsync(String resourceGroupName, String availabilitySetName) {
+        return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<AvailabilitySetInner>, AvailabilitySetInner>() {
+            @Override
+            public AvailabilitySetInner call(ServiceResponse<AvailabilitySetInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to get the availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @return the observable to the AvailabilitySetInner object
+     */
+    public Observable<ServiceResponse<AvailabilitySetInner>> getWithServiceResponseAsync(String resourceGroupName, String availabilitySetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -294,10 +342,10 @@ public final class AvailabilitySetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;AvailabilitySetInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;AvailabilitySetInner&gt; object if successful.
      */
-    public ServiceResponse<List<AvailabilitySetInner>> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(resourceGroupName).toBlocking().single();
+    public List<AvailabilitySetInner> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
     /**
@@ -308,7 +356,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<AvailabilitySetInner>> listAsync(String resourceGroupName, final ServiceCallback<List<AvailabilitySetInner>> serviceCallback) {
-        return ServiceCall.create(listAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -317,7 +365,22 @@ public final class AvailabilitySetsInner {
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;AvailabilitySetInner&gt; object
      */
-    public Observable<ServiceResponse<List<AvailabilitySetInner>>> listAsync(String resourceGroupName) {
+    public Observable<List<AvailabilitySetInner>> listAsync(String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<AvailabilitySetInner>>, List<AvailabilitySetInner>>() {
+            @Override
+            public List<AvailabilitySetInner> call(ServiceResponse<List<AvailabilitySetInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to list the availability sets.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the List&lt;AvailabilitySetInner&gt; object
+     */
+    public Observable<ServiceResponse<List<AvailabilitySetInner>>> listWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -357,10 +420,10 @@ public final class AvailabilitySetsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineSizeInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineSizeInner>> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
-        return listAvailableSizesAsync(resourceGroupName, availabilitySetName).toBlocking().single();
+    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 
     /**
@@ -372,7 +435,7 @@ public final class AvailabilitySetsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String availabilitySetName, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
-        return ServiceCall.create(listAvailableSizesAsync(resourceGroupName, availabilitySetName), serviceCallback);
+        return ServiceCall.create(listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName), serviceCallback);
     }
 
     /**
@@ -382,7 +445,23 @@ public final class AvailabilitySetsInner {
      * @param availabilitySetName The name of the availability set.
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listAvailableSizesAsync(String resourceGroupName, String availabilitySetName) {
+    public Observable<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String availabilitySetName) {
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
+            @Override
+            public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing availability set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param availabilitySetName The name of the availability set.
+     * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listAvailableSizesWithServiceResponseAsync(String resourceGroupName, String availabilitySetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

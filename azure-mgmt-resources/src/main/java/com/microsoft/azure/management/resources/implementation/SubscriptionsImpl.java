@@ -33,13 +33,13 @@ final class SubscriptionsImpl
                 return new SubscriptionImpl(subscriptionInner, client);
             }
         };
-        return converter.convert(client.list().getBody());
+        return converter.convert(client.list());
     }
 
     @Override
     // Gets a specific resource group
     public SubscriptionImpl getByName(String name) throws CloudException, IOException {
-        SubscriptionInner subscription = client.get(name).getBody();
+        SubscriptionInner subscription = client.get(name);
         return new SubscriptionImpl(subscription, client);
     }
 }
