@@ -49,6 +49,16 @@ public class VaultTests extends KeyVaultManagementTestBase {
         // GET
         vault = keyVaultManager.vaults().getByGroup(RG_NAME, VAULT_NAME);
         Assert.assertNotNull(vault);
+        for (AccessPolicy policy : vault.accessPolicies()) {
+            if (policy.objectId().toString().equals("8188d1e8-3090-4e3c-aa76-38cf2b5c7b3a")) {
+                Assert.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST }, policy.permissions().keys().toArray());
+                Assert.assertArrayEquals(new SecretPermissions[] { SecretPermissions.ALL }, policy.permissions().secrets().toArray());
+            }
+            if (policy.objectId().toString().equals("5963f50c-7c43-405c-af7e-53294de76abd")) {
+                Assert.assertArrayEquals(new KeyPermissions[] { KeyPermissions.ALL }, policy.permissions().keys().toArray());
+                Assert.assertArrayEquals(new SecretPermissions[] { SecretPermissions.ALL }, policy.permissions().secrets().toArray());
+            }
+        }
         // LIST
         List<Vault> vaults = keyVaultManager.vaults().listByGroup(RG_NAME);
         for (Vault v : vaults) {
@@ -65,9 +75,15 @@ public class VaultTests extends KeyVaultManagementTestBase {
                     .disallowSecretAllPermissions()
                     .parent()
                 .apply();
+        for (AccessPolicy policy : vault.accessPolicies()) {
+            if (policy.objectId().toString().equals("8188d1e8-3090-4e3c-aa76-38cf2b5c7b3a")) {
+                Assert.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST, KeyPermissions.ALL }, policy.permissions().keys().toArray());
+                Assert.assertArrayEquals(new SecretPermissions[] { }, policy.permissions().secrets().toArray());
+            }
+        }
         vault.update()
                 .defineAccessPolicy()
-                    .forServicePrincipal("http://nativeapp")
+                    .forServicePrincipal("http://clientapp")
                     .allowKeyAllPermissions()
                     .attach()
                 .apply();
