@@ -175,17 +175,21 @@ class NetworkImpl
 
     @Override
     public Observable<Network> createResourceAsync() {
-        final NetworkImpl self = this;
+        final Network self = this;
         beforeCreating();
         return createInner()
-                .map(new Func1<VirtualNetworkInner, Network>() {
+                .flatMap(new Func1<VirtualNetworkInner, Observable<Network>>() {
                     @Override
-                    public Network call(VirtualNetworkInner virtualNetworkInner) {
-                        setInner(virtualNetworkInner);
-                        initializeChildrenFromInner();
-                        afterCreating();
-                        return self;
+                    public Observable<Network> call(VirtualNetworkInner inner) {
+                        setInner(inner);
+                        try {
+                            initializeChildrenFromInner();
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
                     }
-                });
-    }
+        });
+   }
 }
