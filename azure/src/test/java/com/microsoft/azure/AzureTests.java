@@ -172,6 +172,14 @@ public class AzureTests {
             .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
+    @Test
+    public void testLoadBalancersInternalMinimum() throws Exception {
+        new TestLoadBalancer.InternalMinimal(
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
     /**
      * Tests the public IP address implementation
      * @throws Exception

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.Probe;
@@ -53,6 +54,7 @@ class LoadBalancerImpl
     private final LoadBalancersInner innerCollection;
     private final HashMap<String, String> nicsInBackends = new HashMap<>();
     private final HashMap<String, String> creatablePIPKeys = new HashMap<>();
+
     private Map<String, Backend> backends;
     private Map<String, TcpProbe> tcpProbes;
     private Map<String, HttpProbe> httpProbes;
@@ -353,8 +355,15 @@ class LoadBalancerImpl
             frontendName = DEFAULT;
         }
 
-        return this.defineInternetFrontend(frontendName)
+        return this.definePublicFrontend(frontendName)
                 .withExistingPublicIpAddress(resourceId)
+                .attach();
+    }
+
+    @Override
+    public LoadBalancerImpl withExistingSubnet(Network network, String subnetName) {
+        return this.definePrivateFrontend(DEFAULT)
+                .withExistingSubnet(network, subnetName)
                 .attach();
     }
 
@@ -478,7 +487,16 @@ class LoadBalancerImpl
     }
 
     @Override
-    public FrontendImpl defineInternetFrontend(String name) {
+    public FrontendImpl definePrivateFrontend(String name) {
+        return defineFrontend(name);
+    }
+
+    @Override
+    public FrontendImpl definePublicFrontend(String name) {
+        return defineFrontend(name);
+    }
+
+    private FrontendImpl defineFrontend(String name) {
         Frontend frontend = this.frontends.get(name);
         if (frontend == null) {
             FrontendIPConfigurationInner inner = new FrontendIPConfigurationInner()
@@ -486,7 +504,7 @@ class LoadBalancerImpl
             return new FrontendImpl(inner, this);
         } else {
             return (FrontendImpl) frontend;
-        }
+        }        
     }
 
     @Override
@@ -560,6 +578,11 @@ class LoadBalancerImpl
 
     @Override
     public FrontendImpl updateInternetFrontend(String name) {
+        return (FrontendImpl) this.frontends.get(name);
+    }
+
+    @Override
+    public FrontendImpl updateInternalFrontend(String name) {
         return (FrontendImpl) this.frontends.get(name);
     }
 
@@ -649,7 +672,10 @@ class LoadBalancerImpl
         List<String> publicIpAddressIds = new ArrayList<>();
         if (this.inner().frontendIPConfigurations() != null) {
             for (FrontendIPConfigurationInner frontEndIpConfig : this.inner().frontendIPConfigurations()) {
-                publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
+                SubResource pipReference = frontEndIpConfig.publicIPAddress();
+                if (pipReference != null) {
+                    publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
+                }
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);

@@ -11,32 +11,69 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.InternetFrontend;
+import com.microsoft.azure.management.network.PrivateFrontend;
+import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link InternetFrontend}.
+ *  Implementation for {@link PublicFrontend}.
  */
 class FrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl>
     implements
         Frontend,
-        InternetFrontend,
-        InternetFrontend.Definition<LoadBalancer.DefinitionStages.WithInternetFrontendOrBackend>,
-        InternetFrontend.UpdateDefinition<LoadBalancer.Update>,
-        InternetFrontend.Update {
+        PrivateFrontend,
+        PrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrBackend>,
+        PrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
+        PrivateFrontend.Update,
+        PublicFrontend,
+        PublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrBackend>,
+        PublicFrontend.UpdateDefinition<LoadBalancer.Update>,
+        PublicFrontend.Update {
 
     protected FrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
     // Getters
+
+    @Override
+    public String networkId() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String subnetName() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String privateIpAddress() {
+        return this.inner().privateIPAddress();
+    }
+
+    @Override
+    public IPAllocationMethod privateIpAllocationMethod() {
+        return this.inner().privateIPAllocationMethod();
+    }
 
     @Override
     public String name() {
@@ -49,7 +86,7 @@ class FrontendImpl
     }
 
     @Override
-    public boolean isInternetFacing() {
+    public boolean isPublic() {
         return (this.inner().publicIPAddress() != null);
     }
 
@@ -102,6 +139,14 @@ class FrontendImpl
     }
 
     // Fluent setters
+
+    @Override
+    public FrontendImpl withExistingSubnet(Network network, String subnetName) {
+        SubResource subnetRef = new SubResource()
+                .withId(network.id() + "/subnets/" + subnetName);
+        this.inner().withSubnet(subnetRef);
+        return this;
+    }
 
     @Override
     public FrontendImpl withExistingPublicIpAddress(PublicIpAddress pip) {
