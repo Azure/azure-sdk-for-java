@@ -331,4 +331,17 @@ public class TaskOperations implements IInheritedBehaviors {
 
         this._parentBatchClient.protocolLayer().tasks().terminate(jobId, taskId, options);
     }
+
+    public void  reactivateTask(String jobId, String taskId) throws BatchErrorException, IOException {
+        reactivateTask(jobId, taskId, null);
+    }
+
+    public void reactivateTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        TaskReactivateOptions options = new TaskReactivateOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        this._parentBatchClient.protocolLayer().tasks().reactivate(jobId, taskId, options);
+    }
+
 }
