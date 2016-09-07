@@ -26,7 +26,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -174,7 +173,7 @@ class LoadBalancerImpl
             String nicId = nicInBackend.getKey();
             String backendName = nicInBackend.getValue();
             try {
-                NetworkInterface nic = this.myManager().networkInterfaces().getById(nicId);
+                NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
                 NicIpConfiguration nicIp = nic.primaryIpConfiguration();
                 nic.update()
                     .updateIpConfiguration(nicIp.name())
@@ -193,26 +192,6 @@ class LoadBalancerImpl
     @Override
     protected Observable<LoadBalancerInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
-    }
-
-    @Override
-    public Observable<LoadBalancer> createResourceAsync()  {
-        final LoadBalancer self = this;
-        beforeCreating();
-        return createInner()
-                .flatMap(new Func1<LoadBalancerInner, Observable<LoadBalancer>>() {
-                    @Override
-                    public Observable<LoadBalancer> call(LoadBalancerInner loadBalancerInner) {
-                        setInner(loadBalancerInner);
-                        try {
-                            initializeChildrenFromInner();
-                            afterCreating();
-                            return Observable.just(self);
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
     }
 
     private void initializeFrontendsFromInner() {
@@ -285,7 +264,7 @@ class LoadBalancerImpl
         }
     }
 
-    NetworkManager myManager() {
+    NetworkManager manager() {
         return this.myManager;
     }
 
@@ -341,7 +320,7 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerImpl withNewPublicIpAddress(String dnsLeafLabel) {
-        WithGroup precreatablePIP = myManager().publicIpAddresses().define(dnsLeafLabel)
+        WithGroup precreatablePIP = manager().publicIpAddresses().define(dnsLeafLabel)
                 .withRegion(this.regionName());
         Creatable<PublicIpAddress> creatablePip;
         if (super.creatableGroup == null) {

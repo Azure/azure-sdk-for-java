@@ -22,7 +22,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -444,25 +443,5 @@ class NetworkInterfaceImpl
         
         // Reset and update IP configs
         this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
-    }
-
-    @Override
-    public Observable<NetworkInterface> createResourceAsync() {
-        final NetworkInterface self = this;
-        beforeCreating();
-        return createInner()
-                .flatMap(new Func1<NetworkInterfaceInner, Observable<NetworkInterface>>() {
-                    @Override
-                    public Observable<NetworkInterface> call(NetworkInterfaceInner networkInterfaceInner) {
-                        setInner(networkInterfaceInner);
-                        try {
-                            initializeChildrenFromInner();
-                            afterCreating();
-                            return Observable.just(self);
-                        }  catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
     }
 }

@@ -9,7 +9,6 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,24 +140,4 @@ class NetworkSecurityGroupImpl
     protected Observable<NetworkSecurityGroupInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
-
-    @Override
-    public Observable<NetworkSecurityGroup> createResourceAsync() {
-        final NetworkSecurityGroup self = this;
-        beforeCreating();
-        return createInner()
-                .flatMap(new Func1<NetworkSecurityGroupInner, Observable<NetworkSecurityGroup>>() {
-                    @Override
-                    public Observable<NetworkSecurityGroup> call(NetworkSecurityGroupInner inner) {
-                        setInner(inner);
-                        try {
-                            initializeChildrenFromInner();
-                            afterCreating();
-                            return Observable.just(self);
-                        } catch (Exception e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
-    }
- }
+}

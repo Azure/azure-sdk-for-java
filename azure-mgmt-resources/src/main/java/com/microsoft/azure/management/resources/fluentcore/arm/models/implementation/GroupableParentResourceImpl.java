@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for {@link GroupableResource}.
@@ -43,4 +44,25 @@ public abstract class GroupableParentResourceImpl<
     protected abstract void initializeChildrenFromInner();
     protected abstract void beforeCreating();
     protected abstract void afterCreating();
+
+    @Override
+    public Observable<FluentModelT> createResourceAsync() {
+        @SuppressWarnings("unchecked")
+        final FluentModelT self = (FluentModelT) this;
+        beforeCreating();
+        return createInner()
+                .flatMap(new Func1<InnerModelT, Observable<FluentModelT>>() {
+                    @Override
+                    public Observable<FluentModelT> call(InnerModelT inner) {
+                        setInner(inner);
+                        try {
+                            initializeChildrenFromInner();
+                            afterCreating();
+                            return Observable.just(self);
+                        } catch (Exception e) {
+                            return Observable.error(e);
+                        }
+                    }
+                });
+    }
 }
