@@ -6,9 +6,9 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AzureTests {
-    private static final ServiceClientCredentials CREDENTIALS = new ApplicationTokenCredentials(
+    private static final ApplicationTokenCredentials CREDENTIALS = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),

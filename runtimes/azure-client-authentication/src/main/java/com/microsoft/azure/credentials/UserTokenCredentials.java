@@ -71,6 +71,7 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
      *
      * @return the tenant or domain the containing the application.
      */
+    @Override
     public String getDomain() {
         return domain;
     }

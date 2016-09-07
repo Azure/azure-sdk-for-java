@@ -171,6 +171,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
      *
      * @return the tenant or domain the containing the application.
      */
+    @Override
     public String getDomain() {
         return domain;
     }
