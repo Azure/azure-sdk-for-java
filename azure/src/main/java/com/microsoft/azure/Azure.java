@@ -162,7 +162,7 @@ public final class Azure {
         @Override
         public Authenticated authenticate(File credentialsFile) throws IOException {
             ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-            return Azure.authenticate(buildRestClient(credentials), credentials.defaultSubscriptionId());
+            return Azure.authenticate(buildRestClient(credentials), credentials.getDomain(), credentials.defaultSubscriptionId());
         }
     }
 
@@ -387,7 +387,7 @@ public final class Azure {
         return this.networkManager.networkInterfaces();
     }
 
-    public Vaults vaults(String tenantId) {
+    public Vaults vaults() {
         return this.keyVaultManager.vaults();
     }
 }
