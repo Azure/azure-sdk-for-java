@@ -49,7 +49,8 @@ public interface PrivateFrontend extends
         interface WithSubnet<ParentT> {
             /**
              * Assigns the specified subnet to this private frontend of an internal load balancer.
-             * @param name the name of a subnet
+             * @param network the virtual network the subnet exists in
+             * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withExistingSubnet(Network network, String subnetName);
@@ -87,7 +88,8 @@ public interface PrivateFrontend extends
         interface WithSubnet {
             /**
              * Assigns the specified subnet to this private frontend of the internal load balancer.
-             * @param name the name of a subnet
+             * @param network the virtual network the subnet exists in
+             * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */
             Update withExistingSubnet(Network network, String subnetName);
@@ -121,7 +123,8 @@ public interface PrivateFrontend extends
         interface WithSubnet<ParentT> {
             /**
              * Assigns the specified subnet to this private frontend of the internal load balancer.
-             * @param name the name of a subnet
+             * @param network the virtual network the subnet exists in
+             * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withExistingSubnet(Network network, String subnetName);

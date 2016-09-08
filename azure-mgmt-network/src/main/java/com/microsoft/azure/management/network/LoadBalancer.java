@@ -269,6 +269,7 @@ public interface LoadBalancer extends
              * Adds a new public IP address as the default public frontend of the load balancer,
              * using the specified DNS leaf label, an automatically generated frontend name derived from the DNS label,
              * in the same resource group and region as the load balancer.
+             * @param dnsLeafLabel a DNS leaf label
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(String dnsLeafLabel);
