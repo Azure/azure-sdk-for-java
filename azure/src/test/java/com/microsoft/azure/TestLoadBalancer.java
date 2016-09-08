@@ -6,7 +6,6 @@
 package com.microsoft.azure;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -487,6 +486,7 @@ public class TestLoadBalancer {
             resource =  resource.update()
                     .updateInternalFrontend("default")
                         .withExistingSubnet(this.network, "subnet2")
+                        .withPrivateIpAddressStatic("10.0.0.13")
                         .parent()
                     .updateTcpProbe("default")
                         .withPort(22)
@@ -619,18 +619,15 @@ public class TestLoadBalancer {
                 .append("\n\tBackends: ").append(resource.backends().keySet().toString());
 
         // Show public IP addresses
-        info.append("\n\tPublic IP address IDs:");
-        List<String> pipIds = resource.publicIpAddressIds();
-        if (pipIds == null || pipIds.size() == 0) {
-            info.append(" (None)");
-        } else {
-            for (String pipId : resource.publicIpAddressIds()) {
-                info.append("\n\t\tPIP id: ").append(pipId);
-            }
+        info.append("\n\tPublic IP address IDs: ")
+            .append(resource.publicIpAddressIds().size());
+        for (String pipId : resource.publicIpAddressIds()) {
+            info.append("\n\t\tPIP id: ").append(pipId);
         }
 
         // Show TCP probes
-        info.append("\n\tTCP probes:");
+        info.append("\n\tTCP probes: ")
+            .append(resource.tcpProbes().size());
         for (TcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
@@ -638,14 +635,16 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
 
             // Show associated load balancing rules
-            info.append("\n\t\t\tReferenced from load balancing rules:");
+            info.append("\n\t\t\tReferenced from load balancing rules: ")
+                .append(probe.loadBalancingRules().size());
             for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
         }
 
         // Show HTTP probes
-        info.append("\n\tHTTP probes:");
+        info.append("\n\tHTTP probes: ")
+            .append(resource.httpProbes().size());
         for (HttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
@@ -654,14 +653,16 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
 
             // Show associated load balancing rules
-            info.append("\n\t\t\tReferenced from load balancing rules:");
+            info.append("\n\t\t\tReferenced from load balancing rules: ")
+                .append(probe.loadBalancingRules().size());
             for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
         }
 
         // Show load balancing rules
-        info.append("\n\tLoad balancing rules:");
+        info.append("\n\tLoad balancing rules: ")
+            .append(resource.loadBalancingRules().size());
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
             info.append("\n\t\tLB rule name: ").append(rule.name())
                 .append("\n\t\t\tProtocol: ").append(rule.protocol())
@@ -700,7 +701,7 @@ public class TestLoadBalancer {
 
         // Show frontends
         info.append("\n\tFrontends: ")
-            .append(resource.frontends().values());
+            .append(resource.frontends().size());
         for (Frontend frontend : resource.frontends().values()) {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                 .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
@@ -715,21 +716,21 @@ public class TestLoadBalancer {
 
             // Inbound NAT pool references
             info.append("\n\t\t\tReferenced inbound NAT pools: ")
-                .append(frontend.inboundNatPools().values().size());
+                .append(frontend.inboundNatPools().size());
             for (InboundNatPool pool : frontend.inboundNatPools().values()) {
                 info.append("\n\t\t\t\tName: ").append(pool.name());
             }
 
             // Inbound NAT rule references
             info.append("\n\t\t\tReferenced inbound NAT rules: ")
-                .append(frontend.inboundNatRules().values());
+                .append(frontend.inboundNatRules().size());
             for (InboundNatRule rule : frontend.inboundNatRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
 
             // Load balancing rule references
             info.append("\n\t\t\tReferenced load balancing rules: ")
-                .append(frontend.loadBalancingRules().values().size());
+                .append(frontend.loadBalancingRules().size());
             for (LoadBalancingRule rule : frontend.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
@@ -737,7 +738,7 @@ public class TestLoadBalancer {
 
         // Show inbound NAT rules
         info.append("\n\tInbound NAT rules: ")
-            .append(resource.inboundNatRules().values().size());
+            .append(resource.inboundNatRules().size());
         for (InboundNatRule natRule : resource.inboundNatRules().values()) {
             info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
                 .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
@@ -752,7 +753,7 @@ public class TestLoadBalancer {
 
         // Show inbound NAT pools
         info.append("\n\tInbound NAT pools: ")
-            .append(resource.inboundNatPools().values().size());
+            .append(resource.inboundNatPools().size());
         for (InboundNatPool natPool: resource.inboundNatPools().values()) {
             info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
                 .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
@@ -766,22 +767,21 @@ public class TestLoadBalancer {
 
         // Show backends
         info.append("\n\tBackends: ")
-            .append(resource.backends().values().size());
+            .append(resource.backends().size());
         for (Backend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs
-            info.append("\n\t\t\tAssigned NICs:");
+            info.append("\n\t\t\tReferenced NICs: ")
+                .append(backend.backendNicIpConfigurationNames().entrySet().size());
             for (Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                     .append(" - IP Config: ").append(entry.getValue());
             }
 
             // Show assigned load balancing rules
-            info.append("\n\t\t\tAssigned load balancing rule names:");
-            for (Entry<String, LoadBalancingRule> entry : backend.loadBalancingRules().entrySet()) {
-                info.append("\n\t\t\t\tLoad balancing rule name: ").append(entry.getKey());
-            }
+            info.append("\n\t\t\tReferenced load balancing rules: ")
+                .append(backend.loadBalancingRules().keySet().toArray(new String[0]));
         }
 
         System.out.println(info.toString());

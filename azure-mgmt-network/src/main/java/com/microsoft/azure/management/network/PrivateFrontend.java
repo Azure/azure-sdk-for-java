@@ -5,13 +5,16 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
  * An immutable client-side representation of a private frontend of an internal load balancer.
  */
-public interface PrivateFrontend extends Frontend {
+public interface PrivateFrontend extends
+    Frontend,
+    HasPrivateIpAddress {
 
     /**
      * @return the resource ID of the virtual network whose subnet is associated with this frontend
@@ -27,11 +30,6 @@ public interface PrivateFrontend extends Frontend {
      * @return the private IP allocation method within the associated subnet for this private frontend
      */
     IPAllocationMethod privateIpAllocationMethod();
-
-    /**
-     * @return the private IP address this frontend is available under within the associated subnet
-     */
-    String privateIpAddress();
 
     /**
      * Grouping of private frontend definition stages.
@@ -65,7 +63,8 @@ public interface PrivateFrontend extends Frontend {
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinitionAlt<ParentT> {
+            Attachable.InDefinitionAlt<ParentT>,
+            HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
         }
     }
 
@@ -100,7 +99,8 @@ public interface PrivateFrontend extends Frontend {
      */
     interface Update extends
         Settable<LoadBalancer.Update>,
-        UpdateStages.WithSubnet {
+        UpdateStages.WithSubnet,
+        HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
     }
 
     /**
@@ -134,7 +134,8 @@ public interface PrivateFrontend extends Frontend {
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdateAlt<ParentT> {
+            Attachable.InUpdateAlt<ParentT>,
+            HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
         }
     }
 
