@@ -14,9 +14,19 @@ import java.util.concurrent.CountDownLatch;
 public class ExternalChildResourceTests {
     @Test
     public void noCommitIfNoChange() throws InterruptedException {
-        ChickenImpl chicken = new ChickenImpl();
-        PulletsImpl pullets = chicken.pullets();
+        ChickenImpl chicken = new ChickenImpl(); // Parent resource
+        PulletsImpl pullets = chicken.pullets(); // Child resource collection
         final CountDownLatch monitor = new CountDownLatch(1);
+        // Note that commitAsync() won't be exposed to the end-user as it's a part of child resource impl
+        // pullets.commitAsync will be called from (Applicable)chicken.applyAsync() or (Creatable)chicken.createAsync().
+        //
+        // Observable<Chicken> Chicken::ApplyAsync() {
+        //      [1] update chicken
+        //      [2] update pullets by calling pullets.commitAsync()
+        // }
+        //
+        // In the unit test cases we call it directly as we testing external child resource here.
+        //
         pullets.commitAsync()
                 .subscribe(new Subscriber<PulletImpl>() {
                     @Override
@@ -40,7 +50,7 @@ public class ExternalChildResourceTests {
 
     @Test
     public void shouldCommitCreateUpdateAndDelete() throws InterruptedException {
-        ChickenImpl chicken = new ChickenImpl();
+        ChickenImpl chicken = new ChickenImpl(); // Parent resource
         chicken
             .defineNewPullet("alice")
                 .withAge(1)
@@ -52,6 +62,7 @@ public class ExternalChildResourceTests {
 
         final List<PulletImpl> changedPuppets = new ArrayList<>();
         final CountDownLatch monitor = new CountDownLatch(1);
+
         PulletsImpl pullets = chicken.pullets();
         pullets.commitAsync()
                 .subscribe(new Observer<PulletImpl>() {
@@ -80,7 +91,7 @@ public class ExternalChildResourceTests {
 
     @Test
     public void shouldEmitErrorAfterAllSuccessfulCommit() throws InterruptedException {
-        ChickenImpl chicken = new ChickenImpl();
+        ChickenImpl chicken = new ChickenImpl(); // Parent resource
         chicken
             .defineNewPullet("alice")
                 .withAge(1)

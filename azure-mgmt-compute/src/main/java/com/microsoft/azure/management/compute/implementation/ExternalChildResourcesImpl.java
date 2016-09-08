@@ -19,19 +19,29 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Externalized child resource collection abstract implementation.
+ * (Internal use only)
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
- * @param <FluentModelT> the type of the external child resource
- * @param <InnerModelT> the type of the external child resource inner
- * @param <ParentImplT> the type of parent of the external child resources
+ * @param <FluentModelT> the fluent model type of the child resource
+ * @param <InnerModelT> Azure inner resource class type representing the child resource
+ * @param <ParentImplT> the parent Azure resource class type of the child resources
  */
 public abstract class ExternalChildResourcesImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT>,
         FluentModelT extends ExternalChildResource,
         InnerModelT,
         ParentImplT> {
+    /**
+     * The parent resource of this collection of child resources.
+     */
     private final ParentImplT parent;
+    /**
+     * Used to construct error string, this is user friendly name of the child resource (e.g. Subnet, Extension).
+     */
     private final String childResourceName;
+    /**
+     * The child resource instances that this collection contains.
+     */
     private ConcurrentMap<String, FluentModelTImpl> collection = new ConcurrentHashMap<>();
 
     /**
@@ -46,7 +56,7 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * Refresh the collection from the parent.
+     * Refresh the collection.
      */
     public void refresh() {
         initializeCollection();
@@ -65,8 +75,8 @@ public abstract class ExternalChildResourcesImpl<
     public Observable<FluentModelTImpl> commitAsync() {
         final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT> self = this;
         List<FluentModelTImpl> items = new ArrayList<>();
-        for (FluentModelTImpl extension : this.collection.values()) {
-            items.add(extension);
+        for (FluentModelTImpl item : this.collection.values()) {
+            items.add(item);
         }
 
         final List<Throwable> exceptionsList = Collections.synchronizedList(new ArrayList<Throwable>());
@@ -216,16 +226,16 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * @return the collection
+     * @return the collection of external child resources.
      */
     protected Map<String, FluentModelTImpl> collection() {
         return this.collection;
     }
 
     /**
-     * Prepare for definition of a new child resource.
+     * Prepare for definition of a new external child resource.
      *
-     * @param name the name for the new child resource
+     * @param name the name for the new external child resource
      * @return the child resource
      */
     protected FluentModelTImpl prepareDefine(String name) {
@@ -238,10 +248,10 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * Prepare for a child resource update.
+     * Prepare for an external child resource update.
      *
-     * @param name the name of the child resource
-     * @return the child resource
+     * @param name the name of the external child resource
+     * @return the external child resource to be updated
      */
     protected FluentModelTImpl prepareUpdate(String name) {
         FluentModelTImpl childResource = find(name);
@@ -257,9 +267,9 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * Mark the child resource with given name as to be removed.
+     * Mark an external child resource with given name as to be removed.
      *
-     * @param name the name of the child resource
+     * @param name the name of the external child resource
      */
     protected void prepareRemove(String name) {
         FluentModelTImpl childResource = find(name);
@@ -271,16 +281,16 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * Adds a child resource to the collection.
+     * Adds an external child resource to the collection.
      *
-     * @param childResource the child resource
+     * @param childResource the external child resource
      */
     protected void addChildResource(FluentModelTImpl childResource) {
         this.collection.put(childResource.name(), childResource);
     }
 
     /**
-     * Initializes the child resource collection.
+     * Initializes the external child resource collection.
      */
     protected void initializeCollection() {
         this.collection.clear();

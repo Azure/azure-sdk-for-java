@@ -6,10 +6,17 @@ import rx.Observable;
 
 /**
  * Externalized child resource abstract implementation.
+ * Inorder to be eligible for an external child resource following criteria must be satisfied:
+ * 1. It's is always associated with a parent resource and has no existence without parent
+ *    i.e. if you delete parent then child resource will be deleted automatically.
+ * 2. Parent will contain collection of child resources. this is not a hard requirement.
+ * 3. It's has an ID and can be created, updated, fetched and deleted independent of the parent
+ *    i.e. CRUD on child resource does not require CRUD on the parent
  * (Internal use only)
+ *
  * @param <FluentModelT> the fluent model type of the child resource
- * @param <InnerModelT> Azure inner resource class type representing this child resource
- * @param <ParentImplT> the parent Azure resource class type of this child resource
+ * @param <InnerModelT> Azure inner resource class type representing the child resource
+ * @param <ParentImplT> the parent Azure resource class type of the child resource
  */
 public abstract class ExternalChildResourceImpl<
         FluentModelT extends ExternalChildResource,
@@ -17,12 +24,21 @@ public abstract class ExternalChildResourceImpl<
         ParentImplT>
         extends
         IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> {
+    /**
+     * State representing any pending action that needs to be performed on this child resource.
+     */
     private State state = State.None;
+    /**
+     * The child resource name.
+     */
     private final String name;
+    /**
+     * Reference to the parent of the child resource.
+     */
     protected final ParentImplT parent;
 
     /**
-     * Creates an external child resource.
+     * Creates an instance of external child resource in-memory.
      *
      * @param name the name of this external child resource
      * @param parent reference to the parent of this external child resource
@@ -42,7 +58,8 @@ public abstract class ExternalChildResourceImpl<
     }
 
     /**
-     * @return the in-memory state of this child resource
+     * @return the in-memory state of this child resource and state represents any pending action on the
+     * child resource.
      */
     public State state() {
         return this.state;
@@ -79,7 +96,7 @@ public abstract class ExternalChildResourceImpl<
     public abstract Observable<Void> deleteAsync();
 
     /**
-     * The possible state of an child resource in-memory.
+     * The possible states of a child resource in-memory.
      */
     public enum State {
         /**
@@ -87,15 +104,15 @@ public abstract class ExternalChildResourceImpl<
          */
         None,
         /**
-         * Resource required to be created.
+         * Child resource required to be created.
          */
         ToBeCreated,
         /**
-         * Resource required to be updated.
+         * Child resource required to be updated.
          */
         ToBeUpdated,
         /**
-         * Resource required to be deleted.
+         * Child resource required to be deleted.
          */
         ToBeRemoved
     }
