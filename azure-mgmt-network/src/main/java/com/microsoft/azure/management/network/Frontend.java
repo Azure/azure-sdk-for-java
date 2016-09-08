@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResou
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An immutable client-side representation of an HTTP load balancing rule.
+ * An immutable client-side representation of a load balancer frontend.
  */
 public interface Frontend extends
     Wrapper<FrontendIPConfigurationInner>,
@@ -21,9 +21,9 @@ public interface Frontend extends
     HasLoadBalancingRules {
 
     /**
-     * @return true if the front end is Internet-facing, i.e. it has a public IP address associated with it
+     * @return true if the frontend is public, i.e. it has a public IP address associated with it
      */
-    boolean isInternetFacing();
+    boolean isPublic();
 
     /**
      * @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names

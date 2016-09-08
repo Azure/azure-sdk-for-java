@@ -52,7 +52,7 @@ public interface TcpProbe extends Probe {
 
         /**
          * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT>
+         * @param <ParentT> the parent resource type
          */
         interface WithNumberOfProbes<ParentT> {
             /**
@@ -175,7 +175,7 @@ public interface TcpProbe extends Probe {
 
         /**
          * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT>
+         * @param <ParentT> the parent resource type
          */
         interface WithNumberOfProbes<ParentT> {
             /**

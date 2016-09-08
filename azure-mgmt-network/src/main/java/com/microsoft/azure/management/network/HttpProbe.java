@@ -78,7 +78,7 @@ public interface HttpProbe extends Probe {
 
         /**
          * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT>
+         * @param <ParentT> the parent type
          */
         interface WithNumberOfProbes<ParentT> {
             /**
@@ -218,7 +218,7 @@ public interface HttpProbe extends Probe {
 
         /**
          * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT>
+         * @param <ParentT> the parent type
          */
         interface WithNumberOfProbes<ParentT> {
             /**

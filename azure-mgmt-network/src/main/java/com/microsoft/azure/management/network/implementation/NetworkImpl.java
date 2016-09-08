@@ -7,9 +7,8 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.TreeMap;
  * Implementation for {@link Network} and its create and update interfaces.
  */
 class NetworkImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         Network,
         VirtualNetworkInner,
         NetworkImpl,
@@ -32,7 +31,7 @@ class NetworkImpl
         Network.Update {
 
     private final VirtualNetworksInner innerCollection;
-    private final Map<String, Subnet> subnets = new TreeMap<>();
+    private Map<String, Subnet> subnets;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
@@ -40,11 +39,11 @@ class NetworkImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeSubnetsFromInner();
     }
 
-    private void initializeSubnetsFromInner() {
-        this.subnets.clear();
+    @Override
+    protected void initializeChildrenFromInner() {
+        this.subnets = new TreeMap<>();
         List<SubnetInner> inners = this.inner().subnets();
         if (inners != null) {
             for (SubnetInner inner : inners) {
@@ -58,9 +57,9 @@ class NetworkImpl
 
     @Override
     public NetworkImpl refresh() throws Exception {
-        VirtualNetworkInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response);
-        initializeSubnetsFromInner();
+        VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -76,7 +75,7 @@ class NetworkImpl
         return this;
     }
 
-    NetworkManager myManager() {
+    NetworkManager manager() {
         return super.myManager;
     }
 
@@ -140,7 +139,8 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    private void beforeCreating() {
+    @Override
+    protected void beforeCreating() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
@@ -158,22 +158,17 @@ class NetworkImpl
     }
 
     @Override
+    protected void afterCreating() {
+        initializeChildrenFromInner();
+    }
+
+    @Override
     public SubnetImpl updateSubnet(String name) {
         return (SubnetImpl) this.subnets.get(name);
     }
 
     @Override
-    public Observable<Network> createResourceAsync() {
-        final NetworkImpl self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(new Func1<VirtualNetworkInner, Network>() {
-                    @Override
-                    public Network call(VirtualNetworkInner virtualNetworkInner) {
-                        setInner(virtualNetworkInner);
-                        initializeSubnetsFromInner();
-                        return self;
-                    }
-                });
+    protected Observable<VirtualNetworkInner> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }
