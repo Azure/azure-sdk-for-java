@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network.model;
 
+import com.microsoft.azure.management.network.IPAllocationMethod;
+
 /**
  * An interface representing a model's ability to reference a private IP address.
  */
@@ -13,6 +15,11 @@ public interface HasPrivateIpAddress  {
      * @return the protocol
      */
     String privateIpAddress();
+
+    /**
+     * @return the private IP address allocation method within the associated subnet
+     */
+    IPAllocationMethod privateIpAllocationMethod();
 
     /**
      * Grouping of definition stages involving specifying the private IP address.

@@ -54,11 +54,6 @@ public interface NicIpConfiguration extends
      */
     Network network() throws CloudException, IOException;
 
-    /**
-     * @return the private IP allocation method (Dynamic, Static)
-     */
-    IPAllocationMethod privateIpAllocationMethod();
-
     // Setters (fluent)
 
     /**
