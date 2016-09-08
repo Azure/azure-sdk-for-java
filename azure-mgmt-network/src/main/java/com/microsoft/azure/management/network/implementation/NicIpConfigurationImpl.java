@@ -113,7 +113,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public String privateIp() {
+    public String privateIpAddress() {
         return this.inner().privateIPAddress();
     }
 

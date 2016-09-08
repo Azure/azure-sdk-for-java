@@ -298,7 +298,7 @@ class NetworkInterfaceImpl
 
     @Override
     public String primaryPrivateIp() {
-        return this.primaryIpConfiguration().privateIp();
+        return this.primaryIpConfiguration().privateIpAddress();
     }
 
     @Override
