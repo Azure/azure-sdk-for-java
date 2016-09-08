@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.samples;
 
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -15,11 +16,12 @@ import java.util.List;
 
 /**
  * Azure Compute sample for managing virtual machine extensions. -
- *  - Create a virtual machine with custom script extension to install MySQL
- *  - Reset ssh password of an existing user using VMAccess extension
- *  - Creates a new sudo user account with ssh password using VMAccess extension
- *  - Removes a sudo user account by using VMAccess extension
- *  - Removes the custom script extension
+ *  - Create a Linux and Windows virtual machine
+ *  - Add three users (user names and passwords for windows, SSH keys for Linux)
+ *  - Resets user credentials
+ *  - Remove a user
+ *  - Install MySQL on Linux | something significant on Windows
+ *  - Remove extensions
  */
 public final class ManageVirtualMachineExtension {
     /**
@@ -29,31 +31,56 @@ public final class ManageVirtualMachineExtension {
     public static void main(String[] args) {
 
         final String linuxVmName = ResourceNamer.randomResourceName("lVM", 10);
+        final String windowsVmName = ResourceNamer.randomResourceName("wVM", 10);
         final String rgName = ResourceNamer.randomResourceName("rgCOMV", 15);
-        final String pipDnsLabel = ResourceNamer.randomResourceName("rgPip", 25);
+        final String pipDnsLabelLinuxVM = ResourceNamer.randomResourceName("rgPip1", 25);
+        final String pipDnsLabelWindowsVM = ResourceNamer.randomResourceName("rgPip2", 25);
 
-        final String firstUserName = "tirekicker";
-        final String firstUserPassword = "12NewPA$$w0rd!";
-        final String firstUserNewPassword = "muy!234OR";
+        // Linux configurations
+        //
+        final String firstLinuxUserName = "tirekicker";
+        final String firstLinuxUserPassword = "12NewPA$$w0rd!";
+        final String firstLinuxUserNewPassword = "muy!234OR";
 
-        final String secondUserName = "onemoreuser";
-        final String secondUserPassword = "B12a6@12xyz!";
-        final String secondUserExpiration = "2020-12-31";
+        final String secondLinuxUserName = "seconduser";
+        final String secondLinuxUserPassword = "B12a6@12xyz!";
+        final String secondLinuxUserExpiration = "2020-12-31";
 
-        final String customScriptExtensionName = "CustomScriptForLinux";
-        final String customScriptExtensionPublisherName = "Microsoft.OSTCExtensions";
-        final String customScriptExtensionTypeName = "CustomScriptForLinux";
-        final String customScriptExtensionVersionName = "1.4";
+        final String thirdLinuxUserName = "thirduser";
+        final String thirdLinuxUserPassword = "12xyz!B12a6@";
+        final String thirdLinuxUserExpiration = "2020-12-31";
 
-        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
-        final String scriptInstallCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
+        final String linuxCustomScriptExtensionName = "CustomScriptForLinux";
+        final String linuxCustomScriptExtensionPublisherName = "Microsoft.OSTCExtensions";
+        final String linuxCustomScriptExtensionTypeName = "CustomScriptForLinux";
+        final String linuxCustomScriptExtensionVersionName = "1.4";
+
+        final String mySqlLinuxInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
+        final String mySqlScriptInstallCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
         final List<String> fileUris = new ArrayList<>();
-        fileUris.add(mySqlInstallScript);
+        fileUris.add(mySqlLinuxInstallScript);
 
-        final String vmAccessExtensionName = "VMAccessForLinux";
-        final String vmAccessExtensionPublisherName = "Microsoft.OSTCExtensions";
-        final String vmAccessExtensionTypeName = "VMAccessForLinux";
-        final String vmAccessExtensionVersionName = "1.4";
+        final String linuxVmAccessExtensionName = "VMAccessForLinux";
+        final String linuxVmAccessExtensionPublisherName = "Microsoft.OSTCExtensions";
+        final String linuxVmAccessExtensionTypeName = "VMAccessForLinux";
+        final String linuxVmAccessExtensionVersionName = "1.4";
+
+        // Windows configurations
+        //
+        final String firstWindowsUserName = "tirekicker";
+        final String firstWindowsUserPassword = "12NewPA$$w0rd!";
+        final String firstWindowsUserNewPassword = "muy!234OR";
+
+        final String secondWindowsUserName = "seconduser";
+        final String secondWindowsUserPassword = "B12a6@12xyz!";
+
+        final String thirdWindowsUserName = "thirduser";
+        final String thirdWindowsUserPassword = "12xyz!B12a6@";
+
+        final String windowsVmAccessExtensionName = "VMAccessAgent";
+        final String windowsVmAccessExtensionPublisherName = "Microsoft.Compute";
+        final String windowsVmAccessExtensionTypeName = "VMAccessAgent";
+        final String windowsVmAccessExtensionVersionName = "2.3";
 
         try {
 
@@ -73,83 +100,174 @@ public final class ManageVirtualMachineExtension {
 
 
             try {
+
+
                 //=============================================================
-                // Create a Linux VM with root (sudo) user and install MySQL using custom script extension
+                // Create a Linux VM with root (sudo) user
 
                 System.out.println("Creating a Linux VM");
 
-                VirtualMachine vm = azure.virtualMachines().define(linuxVmName)
+                VirtualMachine linuxVM = azure.virtualMachines().define(linuxVmName)
                         .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(pipDnsLabel)
+                        .withNewPrimaryPublicIpAddress(pipDnsLabelLinuxVM)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                        .withRootUserName(firstUserName)
-                        .withPassword(firstUserPassword)
+                        .withRootUserName(firstLinuxUserName)
+                        .withPassword(firstLinuxUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                        .defineNewExtension(customScriptExtensionName)
-                            .withPublisher(customScriptExtensionPublisherName)
-                            .withType(customScriptExtensionTypeName)
-                            .withVersion(customScriptExtensionVersionName)
-                            .withAutoUpgradeMinorVersionEnabled()
-                            .withPublicSetting("fileUris", fileUris)
-                            .withPublicSetting("commandToExecute", scriptInstallCommand)
-                        .attach()
                         .create();
 
-                System.out.println("Created a Linux VM with MySQL" + vm.id());
-                Utils.print(vm);
+                System.out.println("Created a Linux VM with" + linuxVM.id());
+                Utils.print(linuxVM);
 
                 //=============================================================
-                // Reset ssh password of an existing user using VMAccess extension
+                // Add a second sudo user to Linux VM using VMAccess extension
 
-                vm.update()
-                        .defineNewExtension(vmAccessExtensionName)
-                            .withPublisher(vmAccessExtensionPublisherName)
-                            .withType(vmAccessExtensionTypeName)
-                            .withVersion(vmAccessExtensionVersionName)
-                            .withProtectedSetting("username", firstUserName)
-                            .withProtectedSetting("password", firstUserNewPassword)
+                linuxVM.update()
+                        .defineNewExtension(linuxVmAccessExtensionName)
+                            .withPublisher(linuxVmAccessExtensionPublisherName)
+                            .withType(linuxVmAccessExtensionTypeName)
+                            .withVersion(linuxVmAccessExtensionVersionName)
+                            .withProtectedSetting("username", secondLinuxUserName)
+                            .withProtectedSetting("password", secondLinuxUserPassword)
+                            .withProtectedSetting("expiration", secondLinuxUserExpiration)
+                            .attach()
+                        .apply();
+
+                System.out.println("Added a second sudo user to the Linux VM");
+
+                //=============================================================
+                // Add a third sudo user to Linux VM by updating VMAccess extension
+
+                linuxVM.update()
+                        .updateExtension(linuxVmAccessExtensionName)
+                            .withProtectedSetting("username", thirdLinuxUserName)
+                            .withProtectedSetting("password", thirdLinuxUserPassword)
+                            .withProtectedSetting("expiration", thirdLinuxUserExpiration)
+                        .parent()
+                        .apply();
+
+                System.out.println("Added a third sudo user to the Linux VM");
+
+                //=============================================================
+                // Reset ssh password of first user of Linux VM by updating VMAccess extension
+
+                linuxVM.update()
+                        .updateExtension(linuxVmAccessExtensionName)
+                            .withProtectedSetting("username", firstLinuxUserName)
+                            .withProtectedSetting("password", firstLinuxUserNewPassword)
                             .withProtectedSetting("reset_ssh", "true")
-                        .attach()
+                        .parent()
                         .apply();
 
-                System.out.println("Added VMAccess extension and reset password of first user");
-                Utils.print(vm);
-
+                System.out.println("Password of first user of Linux VM has been updated");
 
                 //=============================================================
-                // Creates a new sudo user account with ssh password using VMAccess extension
+                // Removes the second sudo user from Linux VM using VMAccess extension
 
-                vm.update()
-                        .updateExtension(vmAccessExtensionName)
-                            .withProtectedSetting("username", secondUserName)
-                            .withProtectedSetting("password", secondUserPassword)
-                            .withProtectedSetting("expiration", secondUserExpiration)
-                            .parent()
-                        .apply();
-
-                System.out.println("Added a new user to the virtual machine");
-                Utils.print(vm);
-
-                //=============================================================
-                // Removes the second sudo user account using VMAccess extension
-
-                vm.update()
-                        .updateExtension(vmAccessExtensionName)
-                            .withProtectedSetting("remove_user", secondUserName)
+                linuxVM.update()
+                        .updateExtension(linuxVmAccessExtensionName)
+                            .withProtectedSetting("remove_user", secondLinuxUserName)
                         .parent()
                         .apply();
 
                 //=============================================================
-                // Removes the custom script extension
+                // Install MySQL in Linux VM using CustomScript extension
 
-                vm.update()
-                        .withoutExtension(customScriptExtensionName)
+                linuxVM.update()
+                        .defineNewExtension(linuxCustomScriptExtensionName)
+                            .withPublisher(linuxCustomScriptExtensionPublisherName)
+                            .withType(linuxCustomScriptExtensionTypeName)
+                            .withVersion(linuxCustomScriptExtensionVersionName)
+                            .withAutoUpgradeMinorVersionEnabled()
+                            .withPublicSetting("fileUris", fileUris)
+                            .withPublicSetting("commandToExecute", mySqlScriptInstallCommand)
+                        .attach()
                         .apply();
-                System.out.println("Removed the custom script extension");
-                Utils.print(vm);
+
+                System.out.println("Installed MySql using custom script extension");
+                Utils.print(linuxVM);
+
+                //=============================================================
+                // Removes the extensions from Linux VM
+
+                linuxVM.update()
+                        .withoutExtension(linuxCustomScriptExtensionName)
+                        .withoutExtension(linuxVmAccessExtensionName)
+                        .apply();
+                System.out.println("Removed the custom script and VM Access extensions from Linux VM");
+                Utils.print(linuxVM);
+
+                //=============================================================
+                // Create a Windows VM with admin user
+
+                System.out.println("Creating a Windows VM");
+
+                VirtualMachine windowsVM = azure.virtualMachines().define(windowsVmName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .withNewPrimaryNetwork("10.0.0.0/28")
+                        .withPrimaryPrivateIpAddressDynamic()
+                        .withNewPrimaryPublicIpAddress(pipDnsLabelWindowsVM)
+                        .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                        .withAdminUserName(firstWindowsUserName)
+                        .withPassword(firstWindowsUserPassword)
+                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .create();
+
+                System.out.println("Created a Windows VM" + windowsVM.id());
+                Utils.print(windowsVM);
+
+                //=============================================================
+                // Add a second admin user to Windows VM using VMAccess extension
+
+                windowsVM.update()
+                        .defineNewExtension(windowsVmAccessExtensionName)
+                            .withPublisher(windowsVmAccessExtensionPublisherName)
+                            .withType(windowsVmAccessExtensionTypeName)
+                            .withVersion(windowsVmAccessExtensionVersionName)
+                            .withProtectedSetting("username", secondWindowsUserName)
+                            .withProtectedSetting("password", secondWindowsUserPassword)
+                        .attach()
+                        .apply();
+
+                System.out.println("Added a second admin user to the Windows VM");
+
+                //=============================================================
+                // Add a third admin user to Windows VM by updating VMAccess extension
+
+                windowsVM.update()
+                        .updateExtension(windowsVmAccessExtensionName)
+                            .withProtectedSetting("username", thirdWindowsUserName)
+                            .withProtectedSetting("password", thirdWindowsUserPassword)
+                        .parent()
+                        .apply();
+
+                System.out.println("Added a third admin user to the Windows VM");
+
+                //=============================================================
+                // Reset admin password of first user of Windows VM by updating VMAccess extension
+
+                windowsVM.update()
+                        .updateExtension(windowsVmAccessExtensionName)
+                            .withProtectedSetting("username", firstWindowsUserName)
+                            .withProtectedSetting("password", firstWindowsUserNewPassword)
+                        .parent()
+                        .apply();
+
+                System.out.println("Password of first user of Windows VM has been updated");
+
+                //=============================================================
+                // Removes the extensions from Linux VM
+
+                windowsVM.update()
+                        .withoutExtension(windowsVmAccessExtensionName)
+                        .apply();
+                System.out.println("Removed the VM Access extensions from Windows VM");
+                Utils.print(windowsVM);
+
             } catch (Exception f) {
 
                 System.out.println(f.getMessage());
