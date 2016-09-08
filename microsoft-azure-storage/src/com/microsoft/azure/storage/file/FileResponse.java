@@ -88,17 +88,6 @@ final class FileResponse extends BaseResponse {
     public static FileShareAttributes getFileShareAttributes(final HttpURLConnection request,
             final boolean usePathStyleUris) throws StorageException {
         final FileShareAttributes shareAttributes = new FileShareAttributes();
-        URI tempURI;
-        try {
-            tempURI = PathUtility.stripSingleURIQueryAndFragment(request.getURL().toURI());
-        }
-        catch (final URISyntaxException e) {
-            final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
-            throw wrappedUnexpectedException;
-        }
-
-        shareAttributes.setName(PathUtility.getShareNameFromUri(tempURI, usePathStyleUris));
-
         final FileShareProperties shareProperties = shareAttributes.getProperties();
         shareProperties.setEtag(BaseResponse.getEtag(request));
         shareProperties.setShareQuota(parseShareQuota(request));
