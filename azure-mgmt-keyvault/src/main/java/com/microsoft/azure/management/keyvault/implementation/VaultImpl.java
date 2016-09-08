@@ -66,11 +66,14 @@ class VaultImpl
     }
 
     @Override
-    public UUID tenantId() {
+    public String tenantId() {
         if (inner().properties() == null) {
             return null;
         }
-        return inner().properties().tenantId();
+        if (inner().properties().tenantId() == null) {
+            return null;
+        }
+        return inner().properties().tenantId().toString();
     }
 
     @Override

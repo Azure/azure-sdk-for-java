@@ -27,18 +27,18 @@ public interface AccessPolicy extends
      * @return The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
-    UUID tenantId();
+    String tenantId();
 
     /**
      * @return The object ID of a user or service principal in the Azure Active
      * Directory tenant for the vault.
      */
-    UUID objectId();
+    String objectId();
 
     /**
      * @return Application ID of the client making request on behalf of a principal.
      */
-    UUID applicationId();
+    String applicationId();
 
     /**
      * @return Permissions the identity has for keys and secrets.

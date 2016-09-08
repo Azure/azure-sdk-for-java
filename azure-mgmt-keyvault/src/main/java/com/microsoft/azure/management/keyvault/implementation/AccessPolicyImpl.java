@@ -39,21 +39,31 @@ class AccessPolicyImpl
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
         super(innerObject, parent);
+        inner().withTenantId(UUID.fromString(parent.tenantId()));
     }
 
     @Override
-    public UUID tenantId() {
-        return inner().tenantId();
+    public String tenantId() {
+        if (inner().tenantId() == null) {
+            return null;
+        }
+        return inner().tenantId().toString();
     }
 
     @Override
-    public UUID objectId() {
-        return inner().objectId();
+    public String objectId() {
+        if (inner().objectId() == null) {
+            return null;
+        }
+        return inner().objectId().toString();
     }
 
     @Override
-    public UUID applicationId() {
-        return inner().applicationId();
+    public String applicationId() {
+        if (inner().applicationId() == null) {
+            return null;
+        }
+        return inner().applicationId().toString();
     }
 
     @Override
@@ -121,14 +131,12 @@ class AccessPolicyImpl
     @Override
     public AccessPolicyImpl forObjectId(UUID objectId) {
         inner().withObjectId(objectId);
-        inner().withTenantId(parent().tenantId());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forUser(User user) {
         inner().withObjectId(UUID.fromString(user.objectId()));
-        inner().withTenantId(parent().tenantId());
         return this;
     }
 
@@ -141,14 +149,12 @@ class AccessPolicyImpl
     @Override
     public AccessPolicyImpl forGroup(Group group) {
         inner().withObjectId(UUID.fromString(group.objectId()));
-        inner().withTenantId(parent().tenantId());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forServicePrincipal(ServicePrincipal servicePrincipal) {
         inner().withObjectId(UUID.fromString(servicePrincipal.objectId()));
-        inner().withTenantId(parent().tenantId());
         return this;
     }
 

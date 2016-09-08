@@ -15,7 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * An immutable client-side representation of an Azure Key Vault.
@@ -34,7 +33,7 @@ public interface Vault extends
      * @return The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
-    UUID tenantId();
+    String tenantId();
 
     /**
      * @return SKU details.
