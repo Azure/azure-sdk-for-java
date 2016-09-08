@@ -25,4 +25,9 @@ public interface VirtualMachinePublisher {
      * @return the offers from this publisher
      */
     VirtualMachineOffers offers();
+
+    /**
+     * @return the virtual machine image extensions from this publisher.
+     */
+    VirtualMachineExtensionImageTypes extensionTypes();
 }

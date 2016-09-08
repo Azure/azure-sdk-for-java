@@ -21,7 +21,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
 
     @Test
     public void canListVirtualMachineImages() throws Exception {
-        int maxListing = 20;
+        final int maxListing = 20;
         int count = 0;
         PagedList<VirtualMachineImage> images = computeManager.virtualMachineImages()
                 .listByRegion(Region.US_EAST);
@@ -31,7 +31,6 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTestBas
             if (count >= maxListing) {
                 break;
             }
-            System.out.println(count + ":" + image.publisherName() + ":" + image.offer() + ":" + image.version());
         }
         Assert.assertTrue(count == maxListing);
 
