@@ -117,6 +117,20 @@ public abstract class PagedList<E> implements List<E> {
     }
 
     /**
+     * Sets the current page.
+     *
+     * @param currentPage the current page.
+     */
+    protected void setCurrentPage(Page<E> currentPage) {
+        this.currentPage = currentPage;
+        List<E> retrievedItems = currentPage.getItems();
+        if (retrievedItems != null) {
+            items.addAll(retrievedItems);
+        }
+        cachePage(currentPage.getNextPageLink());
+    }
+
+    /**
      * The implementation of {@link ListIterator} for PagedList.
      */
     private class ListItr implements ListIterator<E> {
