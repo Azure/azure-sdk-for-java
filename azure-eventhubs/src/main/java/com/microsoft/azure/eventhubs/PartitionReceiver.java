@@ -40,8 +40,6 @@ import com.microsoft.azure.servicebus.StringUtil;
  */
 public final class PartitionReceiver extends ClientEntity
 {
-	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
-	
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
 	private static final int MAXIMUM_PREFETCH_COUNT = 999;
 
@@ -57,7 +55,7 @@ public final class PartitionReceiver extends ClientEntity
 	private final MessagingFactory underlyingFactory;
 	private final String eventHubName;
 	private final String consumerGroupName;
-	private final Object receiveHandlerSync;
+	private final Object receiveHandlerLock;
 
 	private String startingOffset;
 	private boolean offsetInclusive;
@@ -65,11 +63,8 @@ public final class PartitionReceiver extends ClientEntity
 	private MessageReceiver internalReceiver; 
 	private Long epoch;
 	private boolean isEpochReceiver;
-	private PartitionReceiveHandler onReceiveHandler;
-	private boolean invokeHandlerOnTimeout;
-	private boolean isOnReceivePumpRunning;
-	private Thread onReceivePumpThread;
-
+	private ReceivePump receivePump;
+	
 	private PartitionReceiver(MessagingFactory factory, 
 			final String eventHubName, 
 			final String consumerGroupName, 
@@ -92,8 +87,7 @@ public final class PartitionReceiver extends ClientEntity
 		this.startingDateTime = dateTime;
 		this.epoch = epoch;
 		this.isEpochReceiver = isEpochReceiver;
-		this.receiveHandlerSync = new Object();
-		this.isOnReceivePumpRunning = false;
+		this.receiveHandlerLock = new Object();
 	}
 
 	static CompletableFuture<PartitionReceiver> create(MessagingFactory factory, 
@@ -300,9 +294,9 @@ public final class PartitionReceiver extends ClientEntity
 	 * 
 	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}. Setting this handler to <code>null</code> will stop the receive pump.
 	 */
-	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler)
+	public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler)
 	{
-		this.setReceiveHandler(receiveHandler, false);
+		return this.setReceiveHandler(receiveHandler, false);
 	}
 
 	/**
@@ -312,41 +306,69 @@ public final class PartitionReceiver extends ClientEntity
 	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}
 	 * @param invokeWhenNoEvents flag to indicate whether the {@link PartitionReceiveHandler#onReceive(Iterable)} should be invoked when the receive call times out
 	 */
-	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents)
+	public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents)
 	{
-		synchronized (this.receiveHandlerSync)
+		synchronized (this.receiveHandlerLock)
 		{
-			this.invokeHandlerOnTimeout = invokeWhenNoEvents;
-			
+			// user setting receiveHandler==null should stop the pump if its running
 			if (receiveHandler == null)
 			{
-				if (this.onReceiveHandler != null)
+				if (this.receivePump != null && this.receivePump.isRunning())
 				{
-					this.isOnReceivePumpRunning = false;
-					this.onReceivePumpThread.interrupt();
+					return this.receivePump.stop();
 				}
 			}
 			else
 			{
-				if (this.isOnReceivePumpRunning)
+				if (this.receivePump != null && this.receivePump.isRunning())
 					throw new IllegalArgumentException(
 					"Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
 
-				this.onReceiveHandler = receiveHandler;
-				this.startOnReceivePump();
+				this.receivePump = new ReceivePump(
+					new ReceivePump.IPartitionReceiver()
+					{
+						@Override
+						public Iterable<EventData> receive(int maxBatchSize) throws ServiceBusException
+						{
+							return PartitionReceiver.this.receiveSync(maxBatchSize);
+						}
+						
+						@Override
+						public String getPartitionId()
+						{
+							return PartitionReceiver.this.getPartitionId();
+						}
+					},
+					receiveHandler,
+					invokeWhenNoEvents);
+
+				final Thread onReceivePumpThread = new Thread(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							receivePump.run();
+						}
+					});
+				
+				onReceivePumpThread.start();
 			}
+
+			return CompletableFuture.completedFuture(null);
 		}
 	}
 
 	@Override
 	public CompletableFuture<Void> onClose()
 	{
-		this.isOnReceivePumpRunning = false;
-		if (this.onReceivePumpThread != null && !this.onReceivePumpThread.isInterrupted())
+		if (this.receivePump != null && this.receivePump.isRunning())
 		{
-			this.onReceivePumpThread.interrupt();
+			// set the state of receivePump to StopEventRaised
+			// - but don't actually wait until the current user-code completes
+			// if user intends to stop everything - setReceiveHandler(null) should be invoked before close
+			this.receivePump.stop();
 		}
-
+		
 		if (this.internalReceiver != null)
 		{
 			return this.internalReceiver.close();
@@ -355,106 +377,5 @@ public final class PartitionReceiver extends ClientEntity
 		{
 			return CompletableFuture.completedFuture(null);
 		}
-	}
-
-	private void startOnReceivePump()
-	{
-		this.onReceivePumpThread = new Thread(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				final boolean invokeOnTimeout;
-				synchronized (PartitionReceiver.this.receiveHandlerSync)
-				{
-					PartitionReceiver.this.isOnReceivePumpRunning = true;
-					invokeOnTimeout = PartitionReceiver.this.invokeHandlerOnTimeout;
-				}
-
-				while(PartitionReceiver.this.isOnReceivePumpRunning)
-				{
-					Iterable<EventData> receivedEvents = null;
-
-					try
-					{
-						receivedEvents = PartitionReceiver.this.receive(PartitionReceiver.this.onReceiveHandler.getMaxEventCount())
-								.get(PartitionReceiver.this.underlyingFactory.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
-					}
-					catch (InterruptedException|ExecutionException|TimeoutException clientException)
-					{
-						Throwable cause = clientException.getCause();
-
-						if (clientException instanceof TimeoutException)
-						{
-							receivedEvents = null;
-						}
-						else
-						{
-							if (((cause != null 
-										&& ((cause instanceof ServiceBusException && !((ServiceBusException) cause).getIsTransient())
-										|| cause instanceof RuntimeException))))
-							{
-								synchronized (PartitionReceiver.this.receiveHandlerSync)
-								{
-									PartitionReceiver.this.isOnReceivePumpRunning = false;
-								}
-	
-								PartitionReceiver.this.onReceiveHandler.onError(cause);
-							}
-	
-							if (clientException instanceof InterruptedException)
-							{
-								Thread.currentThread().interrupt();
-								if(TRACE_LOGGER.isLoggable(Level.FINE))
-								{
-									// This is the normal exit path so don't log it as severe.
-									TRACE_LOGGER.log(Level.FINE, String.format("Receive pump for partition %s interrupted", PartitionReceiver.this.partitionId));
-								}
-							}
-							else if (TRACE_LOGGER.isLoggable(Level.SEVERE))
-							{
-								TRACE_LOGGER.log(Level.SEVERE, String.format("Receive pump for partition %s exiting after receive exception %s", PartitionReceiver.this.partitionId, cause.toString()));
-							}
-							
-							return;
-						}
-					}
-
-					try
-					{
-						if (receivedEvents != null || (receivedEvents == null && invokeOnTimeout))
-						{
-							PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);	
-						}
-					}
-					catch (Throwable userCodeError)
-					{
-						synchronized (PartitionReceiver.this.receiveHandlerSync)
-						{
-							PartitionReceiver.this.isOnReceivePumpRunning = false;
-						}
-
-						PartitionReceiver.this.onReceiveHandler.onError(userCodeError);
-
-						if (userCodeError instanceof InterruptedException)
-						{
-							Thread.currentThread().interrupt();
-							if(TRACE_LOGGER.isLoggable(Level.FINE))
-							{
-								TRACE_LOGGER.log(Level.FINE, String.format("Receive pump for partition %s interrupted", PartitionReceiver.this.partitionId));
-							}
-						}
-						else if (TRACE_LOGGER.isLoggable(Level.SEVERE))
-						{
-							TRACE_LOGGER.log(Level.SEVERE, String.format("Receive pump for partition %s exiting after user exception %s", PartitionReceiver.this.partitionId, userCodeError.toString()));
-						}
-						
-						return;
-					}
-				}
-			}
-		});
-
-		this.onReceivePumpThread.start();
 	}
 }

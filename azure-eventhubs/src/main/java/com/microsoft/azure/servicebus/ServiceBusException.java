@@ -22,7 +22,7 @@ public class ServiceBusException extends Exception
 		this.isTransient = isTransient;
 	}
 
-	ServiceBusException(final boolean isTransient, final String message)
+	public ServiceBusException(final boolean isTransient, final String message)
 	{
 		super(message);
 		this.isTransient = isTransient;
