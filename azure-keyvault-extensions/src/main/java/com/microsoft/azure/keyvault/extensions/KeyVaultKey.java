@@ -35,7 +35,6 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import com.microsoft.rest.ServiceResponse;
 
 /**
  * The key vault key that performs cryptography operations.
@@ -45,22 +44,22 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of decrypt operation to byte array.
      */
-    class DecryptResultTransform implements Function<ServiceResponse<KeyOperationResult>, byte[]> {
+    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
 
         DecryptResultTransform() {
             super();
         }
 
         @Override
-        public byte[] apply(ServiceResponse<KeyOperationResult> result) {
-            return result.getBody().result();
+        public byte[] apply(KeyOperationResult result) {
+            return result.result();
         }
     }
 
     /**
      * Transforms the result of sign operation to byte array and algorithm pair.
      */
-    class SignResultTransform implements Function<ServiceResponse<KeyOperationResult>, Pair<byte[], String>> {
+    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
 
         private final String algorithm;
 
@@ -70,9 +69,9 @@ public class KeyVaultKey implements IKey {
         }
         
         @Override
-        public Pair<byte[], String> apply(ServiceResponse<KeyOperationResult> input) {
+        public Pair<byte[], String> apply(KeyOperationResult input) {
 
-            return Pair.of(input.getBody().result(), algorithm);
+            return Pair.of(input.result(), algorithm);
         }
     }
 
@@ -168,7 +167,7 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall =
+        ListenableFuture<KeyOperationResult> futureCall =
                 client.decryptAsync(
                         implementation.getKid(),
                         new JsonWebKeyEncryptionAlgorithm(algorithm),
@@ -206,7 +205,7 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall = 
+        ListenableFuture<KeyOperationResult> futureCall = 
                 client.unwrapKeyAsync(
                         implementation.getKid(),
                         new JsonWebKeyEncryptionAlgorithm(algorithm),
@@ -226,7 +225,7 @@ public class KeyVaultKey implements IKey {
         }
         
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>>  futureCall = 
+        ListenableFuture<KeyOperationResult>  futureCall = 
                 client.signAsync(
                         implementation.getKid(),
                         new JsonWebKeySignatureAlgorithm(algorithm),
