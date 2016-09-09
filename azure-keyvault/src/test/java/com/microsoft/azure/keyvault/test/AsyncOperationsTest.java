@@ -58,40 +58,40 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         String keyname = "mykey";
         
         CreateKeyRequest createKeyRequest = new CreateKeyRequest.Builder(vault, keyname, JsonWebKeyType.RSA).build();
-        KeyBundle keyBundle = keyVaultClient.createKeyAsync(createKeyRequest, null).get().getBody();
+        KeyBundle keyBundle = keyVaultClient.createKeyAsync(createKeyRequest, null).get();
         Assert.assertNotNull(keyBundle);
         
         UpdateKeyRequest updateKeyRequest = new UpdateKeyRequest.Builder(keyBundle.key().kid()).build();
-        keyBundle = keyVaultClient.updateKeyAsync(updateKeyRequest, null).get().getBody();        
+        keyBundle = keyVaultClient.updateKeyAsync(updateKeyRequest, null).get();        
         Assert.assertNotNull(keyBundle);
         
-        keyBundle = keyVaultClient.getKeyAsync(keyBundle.key().kid(), null).get().getBody();
+        keyBundle = keyVaultClient.getKeyAsync(keyBundle.key().kid(), null).get();
         Assert.assertNotNull(keyBundle);
         
-        List<KeyItem> keyItems = keyVaultClient.listKeysAsync(vault, 2, null).get().getBody();
+        List<KeyItem> keyItems = keyVaultClient.listKeysAsync(vault, 2, null).get();
         Assert.assertNotNull(keyItems);
         
-        List<KeyItem> keyVersionItems = keyVaultClient.listKeyVersionsAsync(getVaultUri(), keyname, 2, null).get().getBody();
+        List<KeyItem> keyVersionItems = keyVaultClient.listKeyVersionsAsync(getVaultUri(), keyname, 2, null).get();
         Assert.assertNotNull(keyVersionItems);
 
-        BackupKeyResult backupResult = keyVaultClient.backupKeyAsync(vault, keyname, null).get().getBody();
+        BackupKeyResult backupResult = keyVaultClient.backupKeyAsync(vault, keyname, null).get();
         Assert.assertNotNull(backupResult);        
 
         keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
         
-        KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get().getBody();
+        KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get();
         Assert.assertNotNull(restoreResult);
         
-        KeyOperationResult encryptResult = keyVaultClient.encryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get().getBody();
+        KeyOperationResult encryptResult = keyVaultClient.encryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get();
         Assert.assertNotNull(encryptResult);
         
-        KeyOperationResult decryptResult = keyVaultClient.decryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, encryptResult.result(), null).get().getBody();
+        KeyOperationResult decryptResult = keyVaultClient.decryptAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, encryptResult.result(), null).get();
         Assert.assertNotNull(decryptResult);
         
-        KeyOperationResult wrapResult = keyVaultClient.wrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get().getBody();
+        KeyOperationResult wrapResult = keyVaultClient.wrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, new byte[100], null).get();
         Assert.assertNotNull(wrapResult);
         
-        KeyOperationResult unwrapResult = keyVaultClient.unwrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, wrapResult.result(), null).get().getBody();
+        KeyOperationResult unwrapResult = keyVaultClient.unwrapKeyAsync(keyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, wrapResult.result(), null).get();
         Assert.assertNotNull(unwrapResult);
         
         byte[] plainText = new byte[100];
@@ -99,13 +99,13 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(plainText);
         byte[] digest = md.digest();
-        KeyOperationResult signResult = keyVaultClient.signAsync(keyBundle.key().kid(), JsonWebKeySignatureAlgorithm.RS256, digest, null).get().getBody();
+        KeyOperationResult signResult = keyVaultClient.signAsync(keyBundle.key().kid(), JsonWebKeySignatureAlgorithm.RS256, digest, null).get();
         Assert.assertNotNull(signResult);
         
-        KeyVerifyResult verifypResult = keyVaultClient.verifyAsync(keyBundle.key().kid(), JsonWebKeySignatureAlgorithm.RS256, digest, signResult.result(), null).get().getBody();
+        KeyVerifyResult verifypResult = keyVaultClient.verifyAsync(keyBundle.key().kid(), JsonWebKeySignatureAlgorithm.RS256, digest, signResult.result(), null).get();
         Assert.assertTrue(verifypResult.value());
 
-        keyBundle = keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get().getBody();
+        keyBundle = keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
         Assert.assertNotNull(keyBundle);
         
         //Get the unavailable key to throw exception -> it gets stuck
@@ -131,23 +131,23 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         String password = "password";
         
         SetSecretRequest setSecretRequest = new SetSecretRequest.Builder(vault, secretname, password).build();
-        SecretBundle secretBundle = keyVaultClient.setSecretAsync(setSecretRequest, null).get().getBody();
+        SecretBundle secretBundle = keyVaultClient.setSecretAsync(setSecretRequest, null).get();
         Assert.assertNotNull(secretBundle);
         
         UpdateSecretRequest updateSecretRequest = new UpdateSecretRequest.Builder(secretBundle.id()).build();
-        secretBundle = keyVaultClient.updateSecretAsync(updateSecretRequest, null).get().getBody();
+        secretBundle = keyVaultClient.updateSecretAsync(updateSecretRequest, null).get();
         Assert.assertNotNull(secretBundle);
         
-        secretBundle = keyVaultClient.getSecretAsync(secretBundle.id(), null).get().getBody();
+        secretBundle = keyVaultClient.getSecretAsync(secretBundle.id(), null).get();
         Assert.assertNotNull(secretBundle);
         
-        List<SecretItem> secretItems = keyVaultClient.listSecretsAsync(vault, 2, null).get().getBody();
+        List<SecretItem> secretItems = keyVaultClient.listSecretsAsync(vault, 2, null).get();
         Assert.assertNotNull(secretItems);
         
-        List<SecretItem> secretVersionItems = keyVaultClient.listSecretVersionsAsync(vault, secretname, 2, null).get().getBody();
+        List<SecretItem> secretVersionItems = keyVaultClient.listSecretVersionsAsync(vault, secretname, 2, null).get();
         Assert.assertNotNull(secretVersionItems);
         
-        secretBundle = keyVaultClient.deleteSecretAsync(vault, secretname, null).get().getBody();
+        secretBundle = keyVaultClient.deleteSecretAsync(vault, secretname, null).get();
         Assert.assertNotNull(secretBundle);
         
         try {
@@ -179,44 +179,44 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
                 .withSubject("CN=SelfSignedJavaPkcs12")
                 .withValidityInMonths(12)))
                 .build();
-        CertificateOperation certificateOperation = keyVaultClient.createCertificateAsync(createCertificateRequest, null).get().getBody();
+        CertificateOperation certificateOperation = keyVaultClient.createCertificateAsync(createCertificateRequest, null).get();
         Assert.assertNotNull(certificateOperation);
         
         UpdateCertificateOperationRequest updateCertificateOperationRequest = new UpdateCertificateOperationRequest.Builder(vault, certificateName, false).build();
-        certificateOperation = keyVaultClient.updateCertificateOperationAsync(updateCertificateOperationRequest, null).get().getBody();
+        certificateOperation = keyVaultClient.updateCertificateOperationAsync(updateCertificateOperationRequest, null).get();
         Assert.assertNotNull(certificateOperation);
         
         Map<String, String> tags = new HashMap<String, String>();
         tags.put("tag1", "foo");
         UpdateCertificateRequest updateCertificateRequest = new UpdateCertificateRequest.Builder(vault, certificateName).withTags(tags).build();
-        CertificateBundle certificateBundle = keyVaultClient.updateCertificateAsync(updateCertificateRequest, null).get().getBody();
+        CertificateBundle certificateBundle = keyVaultClient.updateCertificateAsync(updateCertificateRequest, null).get();
         Assert.assertNotNull(certificateBundle);
         
         UpdateCertificatePolicyRequest updateCertificatePolicyRequest = new UpdateCertificatePolicyRequest.Builder(vault, certificateName).build();
-        CertificatePolicy certificatePolicy = keyVaultClient.updateCertificatePolicyAsync(updateCertificatePolicyRequest, null).get().getBody();
+        CertificatePolicy certificatePolicy = keyVaultClient.updateCertificatePolicyAsync(updateCertificatePolicyRequest, null).get();
         Assert.assertNotNull(certificatePolicy);
         
-        certificatePolicy = keyVaultClient.getCertificatePolicyAsync(vault, certificateName, null).get().getBody();
+        certificatePolicy = keyVaultClient.getCertificatePolicyAsync(vault, certificateName, null).get();
         Assert.assertNotNull(certificatePolicy);
         
-        certificateOperation = keyVaultClient.getCertificateOperationAsync(vault, certificateName, null).get().getBody(); 
+        certificateOperation = keyVaultClient.getCertificateOperationAsync(vault, certificateName, null).get(); 
         Assert.assertNotNull(certificateOperation);
 
-        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, null).get().getBody(); 
+        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, null).get(); 
         Assert.assertNotNull(certificateBundle);
         
-        String cert = keyVaultClient.getPendingCertificateSigningRequestAsync(vault, certificateName, null).get().getBody();
+        String cert = keyVaultClient.getPendingCertificateSigningRequestAsync(vault, certificateName, null).get();
         Assert.assertTrue(!cert.isEmpty());
         
-        List<CertificateItem> certificateItem = keyVaultClient.listCertificatesAsync(vault, null).get().getBody();
+        List<CertificateItem> certificateItem = keyVaultClient.listCertificatesAsync(vault, null).get();
         Assert.assertNotNull(certificateItem);
         
-        List<CertificateItem> certificateVersionItem = keyVaultClient.listCertificateVersionsAsync(vault, certificateName, null).get().getBody();
+        List<CertificateItem> certificateVersionItem = keyVaultClient.listCertificateVersionsAsync(vault, certificateName, null).get();
         Assert.assertNotNull(certificateVersionItem);
 
         
-        keyVaultClient.deleteCertificateOperationAsync(vault, certificateName, null).get().getBody();        
-        keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get().getBody();
+        keyVaultClient.deleteCertificateOperationAsync(vault, certificateName, null).get();        
+        keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get();
         
         try {
             keyVaultClient.deleteCertificateAsync(vault, certificateName, null).get();
@@ -238,20 +238,20 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         String issuerName = "myIssuer";
         
         SetCertificateIssuerRequest setCertificateIssuerRequest = new SetCertificateIssuerRequest.Builder(vault, issuerName, "Test").build();
-        IssuerBundle certificateIssuer = keyVaultClient.setCertificateIssuerAsync(setCertificateIssuerRequest, null).get().getBody();
+        IssuerBundle certificateIssuer = keyVaultClient.setCertificateIssuerAsync(setCertificateIssuerRequest, null).get();
         Assert.assertNotNull(certificateIssuer);        
 
         UpdateCertificateIssuerRequest updateCertificateIssuerRequest = new UpdateCertificateIssuerRequest.Builder(vault, issuerName).withProvider("SslAdmin").build();
-        certificateIssuer = keyVaultClient.updateCertificateIssuerAsync(updateCertificateIssuerRequest, null).get().getBody();
+        certificateIssuer = keyVaultClient.updateCertificateIssuerAsync(updateCertificateIssuerRequest, null).get();
         Assert.assertNotNull(certificateIssuer);
         
-        certificateIssuer = keyVaultClient.getCertificateIssuerAsync(vault, issuerName, null).get().getBody();
+        certificateIssuer = keyVaultClient.getCertificateIssuerAsync(vault, issuerName, null).get();
         Assert.assertNotNull(certificateIssuer);
 
-        List<CertificateIssuerItem> issuers = keyVaultClient.listCertificateIssuersAsync(vault, null).get().getBody();
+        List<CertificateIssuerItem> issuers = keyVaultClient.listCertificateIssuersAsync(vault, null).get();
         Assert.assertNotNull(issuers);
         
-        keyVaultClient.deleteCertificateIssuerAsync(vault, issuerName, null).get().getBody();
+        keyVaultClient.deleteCertificateIssuerAsync(vault, issuerName, null).get();
     }
     
 
@@ -260,10 +260,10 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         String vault = getVaultUri();
         
-        Contacts contacts = keyVaultClient.setCertificateContactsAsync(vault, new Contacts(), null).get().getBody();
+        Contacts contacts = keyVaultClient.setCertificateContactsAsync(vault, new Contacts(), null).get();
         Assert.assertNotNull(contacts);
         
-        contacts = keyVaultClient.getCertificateContactsAsync(vault, null).get().getBody();
+        contacts = keyVaultClient.getCertificateContactsAsync(vault, null).get();
         Assert.assertNotNull(contacts);
         
         keyVaultClient.deleteCertificateContactsAsync(vault, null).get();
