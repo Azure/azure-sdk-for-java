@@ -31,12 +31,10 @@ class ResourceGroupImpl extends
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
-    private final ResourceManagementClientImpl serviceClient;
 
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
-        this.serviceClient = serviceClient;
     }
 
     @Override
@@ -80,7 +78,7 @@ class ResourceGroupImpl extends
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
         ResourceGroupExportResultInner resultInner =
-                client.exportTemplate(name(), inner).getBody();
+                client.exportTemplate(name(), inner);
         return new ResourceGroupExportResultImpl(resultInner);
     }
 
@@ -123,7 +121,7 @@ class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupImpl refresh() throws Exception {
-        this.setInner(client.get(this.key).getBody());
+        this.setInner(client.get(this.key));
         return this;
     }
 

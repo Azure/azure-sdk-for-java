@@ -89,10 +89,10 @@ public final class VirtualMachineExtensionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the VirtualMachineExtensionInner object wrapped in ServiceResponse if successful.
+     * @return the VirtualMachineExtensionInner object if successful.
      */
-    public ServiceResponse<VirtualMachineExtensionInner> createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().last();
+    public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().last().getBody();
     }
 
     /**
@@ -106,7 +106,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters, final ServiceCallback<VirtualMachineExtensionInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters), serviceCallback);
     }
 
     /**
@@ -118,7 +118,25 @@ public final class VirtualMachineExtensionsInner {
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<VirtualMachineExtensionInner>> createOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
+    public Observable<VirtualMachineExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
+            @Override
+            public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to create or update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be create or updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<VirtualMachineExtensionInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -152,10 +170,10 @@ public final class VirtualMachineExtensionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineExtensionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineExtensionInner object if successful.
      */
-    public ServiceResponse<VirtualMachineExtensionInner> beginCreateOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().single();
+    public VirtualMachineExtensionInner beginCreateOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().single().getBody();
     }
 
     /**
@@ -169,7 +187,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineExtensionInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters, final ServiceCallback<VirtualMachineExtensionInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters), serviceCallback);
     }
 
     /**
@@ -181,7 +199,25 @@ public final class VirtualMachineExtensionsInner {
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @return the observable to the VirtualMachineExtensionInner object
      */
-    public Observable<ServiceResponse<VirtualMachineExtensionInner>> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
+    public Observable<VirtualMachineExtensionInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
+            @Override
+            public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to create or update the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be create or updated.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
+     * @return the observable to the VirtualMachineExtensionInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineExtensionInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -233,10 +269,9 @@ public final class VirtualMachineExtensionsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last();
+    public void delete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().getBody();
     }
 
     /**
@@ -249,7 +284,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
     }
 
     /**
@@ -260,7 +295,24 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to delete the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be deleted.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -289,10 +341,9 @@ public final class VirtualMachineExtensionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
     }
 
     /**
@@ -305,7 +356,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
     }
 
     /**
@@ -316,7 +367,24 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to delete the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine where the extension should be deleted.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -362,10 +430,10 @@ public final class VirtualMachineExtensionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineExtensionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineExtensionInner object if successful.
      */
-    public ServiceResponse<VirtualMachineExtensionInner> get(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single();
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
     }
 
     /**
@@ -378,7 +446,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineExtensionInner> getAsync(String resourceGroupName, String vmName, String vmExtensionName, final ServiceCallback<VirtualMachineExtensionInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName), serviceCallback);
     }
 
     /**
@@ -389,7 +457,24 @@ public final class VirtualMachineExtensionsInner {
      * @param vmExtensionName The name of the virtual machine extension.
      * @return the observable to the VirtualMachineExtensionInner object
      */
-    public Observable<ServiceResponse<VirtualMachineExtensionInner>> getAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<VirtualMachineExtensionInner> getAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
+            @Override
+            public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @return the observable to the VirtualMachineExtensionInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineExtensionInner>> getWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -430,10 +515,10 @@ public final class VirtualMachineExtensionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineExtensionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineExtensionInner object if successful.
      */
-    public ServiceResponse<VirtualMachineExtensionInner> get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, vmName, vmExtensionName, expand).toBlocking().single();
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -447,7 +532,7 @@ public final class VirtualMachineExtensionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineExtensionInner> getAsync(String resourceGroupName, String vmName, String vmExtensionName, String expand, final ServiceCallback<VirtualMachineExtensionInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, vmName, vmExtensionName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand), serviceCallback);
     }
 
     /**
@@ -459,7 +544,25 @@ public final class VirtualMachineExtensionsInner {
      * @param expand The expand expression to apply on the operation.
      * @return the observable to the VirtualMachineExtensionInner object
      */
-    public Observable<ServiceResponse<VirtualMachineExtensionInner>> getAsync(String resourceGroupName, String vmName, String vmExtensionName, String expand) {
+    public Observable<VirtualMachineExtensionInner> getAsync(String resourceGroupName, String vmName, String vmExtensionName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).map(new Func1<ServiceResponse<VirtualMachineExtensionInner>, VirtualMachineExtensionInner>() {
+            @Override
+            public VirtualMachineExtensionInner call(ServiceResponse<VirtualMachineExtensionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @param vmExtensionName The name of the virtual machine extension.
+     * @param expand The expand expression to apply on the operation.
+     * @return the observable to the VirtualMachineExtensionInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineExtensionInner>> getWithServiceResponseAsync(String resourceGroupName, String vmName, String vmExtensionName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

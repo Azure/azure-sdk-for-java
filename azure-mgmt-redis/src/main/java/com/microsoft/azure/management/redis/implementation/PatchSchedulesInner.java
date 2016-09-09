@@ -81,10 +81,10 @@ public final class PatchSchedulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RedisPatchSchedulesResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RedisPatchSchedulesResponseInner object if successful.
      */
-    public ServiceResponse<RedisPatchSchedulesResponseInner> createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateAsync(resourceGroupName, name, scheduleEntries).toBlocking().single();
+    public RedisPatchSchedulesResponseInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().getBody();
     }
 
     /**
@@ -97,7 +97,7 @@ public final class PatchSchedulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisPatchSchedulesResponseInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries, final ServiceCallback<RedisPatchSchedulesResponseInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, name, scheduleEntries), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries), serviceCallback);
     }
 
     /**
@@ -108,7 +108,24 @@ public final class PatchSchedulesInner {
      * @param scheduleEntries List of patch schedules for redis cache.
      * @return the observable to the RedisPatchSchedulesResponseInner object
      */
-    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
+    public Observable<RedisPatchSchedulesResponseInner> createOrUpdateAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).map(new Func1<ServiceResponse<RedisPatchSchedulesResponseInner>, RedisPatchSchedulesResponseInner>() {
+            @Override
+            public RedisPatchSchedulesResponseInner call(ServiceResponse<RedisPatchSchedulesResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or replace the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param scheduleEntries List of patch schedules for redis cache.
+     * @return the observable to the RedisPatchSchedulesResponseInner object
+     */
+    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -156,10 +173,9 @@ public final class PatchSchedulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(resourceGroupName, name).toBlocking().single();
+    public void delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -171,7 +187,7 @@ public final class PatchSchedulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -181,7 +197,23 @@ public final class PatchSchedulesInner {
      * @param name The name of the redis cache.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String name) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String name) {
+        return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -222,10 +254,10 @@ public final class PatchSchedulesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the RedisPatchSchedulesResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the RedisPatchSchedulesResponseInner object if successful.
      */
-    public ServiceResponse<RedisPatchSchedulesResponseInner> get(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, name).toBlocking().single();
+    public RedisPatchSchedulesResponseInner get(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -237,7 +269,7 @@ public final class PatchSchedulesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<RedisPatchSchedulesResponseInner> getAsync(String resourceGroupName, String name, final ServiceCallback<RedisPatchSchedulesResponseInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -247,7 +279,23 @@ public final class PatchSchedulesInner {
      * @param name The name of the redis cache.
      * @return the observable to the RedisPatchSchedulesResponseInner object
      */
-    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> getAsync(String resourceGroupName, String name) {
+    public Observable<RedisPatchSchedulesResponseInner> getAsync(String resourceGroupName, String name) {
+        return getWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<RedisPatchSchedulesResponseInner>, RedisPatchSchedulesResponseInner>() {
+            @Override
+            public RedisPatchSchedulesResponseInner call(ServiceResponse<RedisPatchSchedulesResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the patching schedule for redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @return the observable to the RedisPatchSchedulesResponseInner object
+     */
+    public Observable<ServiceResponse<RedisPatchSchedulesResponseInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

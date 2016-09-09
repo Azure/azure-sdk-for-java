@@ -33,6 +33,6 @@ final class TenantsImpl
                 return new TenantImpl(tenantInner);
             }
         };
-        return converter.convert(client.list().getBody());
+        return converter.convert(client.list());
     }
 }

@@ -79,10 +79,10 @@ public final class ServicesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SearchServiceResourceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SearchServiceResourceInner object if successful.
      */
-    public ServiceResponse<SearchServiceResourceInner> createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateAsync(resourceGroupName, serviceName, parameters).toBlocking().single();
+    public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -95,7 +95,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters, final ServiceCallback<SearchServiceResourceInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, serviceName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters), serviceCallback);
     }
 
     /**
@@ -106,7 +106,24 @@ public final class ServicesInner {
      * @param parameters The properties to set or update on the Search service.
      * @return the observable to the SearchServiceResourceInner object
      */
-    public Observable<ServiceResponse<SearchServiceResourceInner>> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
+    public Observable<SearchServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).map(new Func1<ServiceResponse<SearchServiceResourceInner>, SearchServiceResourceInner>() {
+            @Override
+            public SearchServiceResourceInner call(ServiceResponse<SearchServiceResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a Search service in the given resource group. If the Search service already exists, all properties will be updated with the given values.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @param serviceName The name of the Search service to create or update.
+     * @param parameters The properties to set or update on the Search service.
+     * @return the observable to the SearchServiceResourceInner object
+     */
+    public Observable<ServiceResponse<SearchServiceResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -153,10 +170,9 @@ public final class ServicesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(resourceGroupName, serviceName).toBlocking().single();
+    public void delete(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 
     /**
@@ -168,7 +184,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String serviceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, serviceName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -178,7 +194,23 @@ public final class ServicesInner {
      * @param serviceName The name of the Search service to delete.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String serviceName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String serviceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Search service in the given resource group, along with its associated resources.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @param serviceName The name of the Search service to delete.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serviceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -220,10 +252,10 @@ public final class ServicesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SearchServiceListResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SearchServiceListResultInner object if successful.
      */
-    public ServiceResponse<SearchServiceListResultInner> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(resourceGroupName).toBlocking().single();
+    public SearchServiceListResultInner list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
     /**
@@ -234,7 +266,7 @@ public final class ServicesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SearchServiceListResultInner> listAsync(String resourceGroupName, final ServiceCallback<SearchServiceListResultInner> serviceCallback) {
-        return ServiceCall.create(listAsync(resourceGroupName), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName), serviceCallback);
     }
 
     /**
@@ -243,7 +275,22 @@ public final class ServicesInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @return the observable to the SearchServiceListResultInner object
      */
-    public Observable<ServiceResponse<SearchServiceListResultInner>> listAsync(String resourceGroupName) {
+    public Observable<SearchServiceListResultInner> listAsync(String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<SearchServiceListResultInner>, SearchServiceListResultInner>() {
+            @Override
+            public SearchServiceListResultInner call(ServiceResponse<SearchServiceListResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns a list of all Search services in the given resource group.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @return the observable to the SearchServiceListResultInner object
+     */
+    public Observable<ServiceResponse<SearchServiceListResultInner>> listWithServiceResponseAsync(String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

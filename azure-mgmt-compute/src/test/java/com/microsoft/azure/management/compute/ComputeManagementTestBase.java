@@ -5,6 +5,7 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.RestClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public abstract class ComputeManagementTestBase {
     protected static ResourceManager resourceManager;
@@ -19,7 +20,7 @@ public abstract class ComputeManagementTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                //.withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
 
         resourceManager = ResourceManager

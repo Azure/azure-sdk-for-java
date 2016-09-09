@@ -132,10 +132,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ManagedHostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ManagedHostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<ManagedHostingEnvironmentInner> getManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getManagedHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
+    public ManagedHostingEnvironmentInner getManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -147,7 +147,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ManagedHostingEnvironmentInner> getManagedHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<ManagedHostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(getManagedHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -157,7 +157,23 @@ public final class ManagedHostingEnvironmentsInner {
      * @param name Name of managed hosting environment
      * @return the observable to the ManagedHostingEnvironmentInner object
      */
-    public Observable<ServiceResponse<ManagedHostingEnvironmentInner>> getManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<ManagedHostingEnvironmentInner> getManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return getManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ManagedHostingEnvironmentInner>, ManagedHostingEnvironmentInner>() {
+            @Override
+            public ManagedHostingEnvironmentInner call(ServiceResponse<ManagedHostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get properties of a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable to the ManagedHostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<ManagedHostingEnvironmentInner>> getManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -201,10 +217,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the HostingEnvironmentInner object wrapped in ServiceResponse if successful.
+     * @return the HostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentInner> createOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateManagedHostingEnvironmentAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().last();
+    public HostingEnvironmentInner createOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -217,7 +233,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> createOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateManagedHostingEnvironmentAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -228,7 +244,24 @@ public final class ManagedHostingEnvironmentsInner {
      * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<HostingEnvironmentInner>> createOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
+    public Observable<HostingEnvironmentInner> createOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
+        return createOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).map(new Func1<ServiceResponse<HostingEnvironmentInner>, HostingEnvironmentInner>() {
+            @Override
+            public HostingEnvironmentInner call(ServiceResponse<HostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> createOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -258,10 +291,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentInner> beginCreateOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateManagedHostingEnvironmentAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().single();
+    public HostingEnvironmentInner beginCreateOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -274,7 +307,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> beginCreateOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateManagedHostingEnvironmentAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -285,7 +318,24 @@ public final class ManagedHostingEnvironmentsInner {
      * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
      * @return the observable to the HostingEnvironmentInner object
      */
-    public Observable<ServiceResponse<HostingEnvironmentInner>> beginCreateOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
+    public Observable<HostingEnvironmentInner> beginCreateOrUpdateManagedHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
+        return beginCreateOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).map(new Func1<ServiceResponse<HostingEnvironmentInner>, HostingEnvironmentInner>() {
+            @Override
+            public HostingEnvironmentInner call(ServiceResponse<HostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
+     * @return the observable to the HostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> beginCreateOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -335,10 +385,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object  if successful.
      */
-    public ServiceResponse<Object> deleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteManagedHostingEnvironmentAsync(resourceGroupName, name).toBlocking().last();
+    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
     /**
@@ -350,7 +400,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteManagedHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -360,7 +410,23 @@ public final class ManagedHostingEnvironmentsInner {
      * @param name Name of managed hosting environment
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<Object> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -387,10 +453,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteManagedHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().last();
+    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().last().getBody();
     }
 
     /**
@@ -403,7 +469,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteManagedHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+        return ServiceCall.create(deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -414,7 +480,24 @@ public final class ManagedHostingEnvironmentsInner {
      * @param forceDelete Delete even if the managed hosting environment contains resources
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+    public Observable<Object> deleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+        return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param forceDelete Delete even if the managed hosting environment contains resources
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -439,10 +522,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginDeleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteManagedHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
+    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -454,7 +537,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginDeleteManagedHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -464,7 +547,23 @@ public final class ManagedHostingEnvironmentsInner {
      * @param name Name of managed hosting environment
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<Object> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -501,10 +600,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginDeleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteManagedHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().single();
+    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
+        return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().single().getBody();
     }
 
     /**
@@ -517,7 +616,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginDeleteManagedHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+        return ServiceCall.create(beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -528,7 +627,24 @@ public final class ManagedHostingEnvironmentsInner {
      * @param forceDelete Delete even if the managed hosting environment contains resources
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+    public Observable<Object> beginDeleteManagedHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+        return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param forceDelete Delete even if the managed hosting environment contains resources
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -572,17 +688,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getManagedHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getManagedHostingEnvironmentsSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -608,15 +723,34 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsAsync(final String resourceGroupName) {
+    public Observable<Page<HostingEnvironmentInner>> getManagedHostingEnvironmentsAsync(final String resourceGroupName) {
+        return getManagedHostingEnvironmentsWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
+                @Override
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all managed hosting environments in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsWithServiceResponseAsync(final String resourceGroupName) {
         return getManagedHostingEnvironmentsSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -625,7 +759,7 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
     ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param resourceGroupName Name of resource group
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -666,10 +800,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AddressResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AddressResponseInner object if successful.
      */
-    public ServiceResponse<AddressResponseInner> getManagedHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getManagedHostingEnvironmentVipsAsync(resourceGroupName, name).toBlocking().single();
+    public AddressResponseInner getManagedHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getManagedHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -681,7 +815,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AddressResponseInner> getManagedHostingEnvironmentVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
-        return ServiceCall.create(getManagedHostingEnvironmentVipsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getManagedHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -691,7 +825,23 @@ public final class ManagedHostingEnvironmentsInner {
      * @param name Name of managed hosting environment
      * @return the observable to the AddressResponseInner object
      */
-    public Observable<ServiceResponse<AddressResponseInner>> getManagedHostingEnvironmentVipsAsync(String resourceGroupName, String name) {
+    public Observable<AddressResponseInner> getManagedHostingEnvironmentVipsAsync(String resourceGroupName, String name) {
+        return getManagedHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AddressResponseInner>, AddressResponseInner>() {
+            @Override
+            public AddressResponseInner call(ServiceResponse<AddressResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get list of ip addresses assigned to a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable to the AddressResponseInner object
+     */
+    public Observable<ServiceResponse<AddressResponseInner>> getManagedHostingEnvironmentVipsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -734,10 +884,10 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getManagedHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
-        return getManagedHostingEnvironmentOperationAsync(resourceGroupName, name, operationId).toBlocking().single();
+    public Object getManagedHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+        return getManagedHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
     /**
@@ -750,7 +900,7 @@ public final class ManagedHostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getManagedHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getManagedHostingEnvironmentOperationAsync(resourceGroupName, name, operationId), serviceCallback);
+        return ServiceCall.create(getManagedHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
     }
 
     /**
@@ -761,7 +911,24 @@ public final class ManagedHostingEnvironmentsInner {
      * @param operationId operation identifier GUID
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getManagedHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId) {
+    public Observable<Object> getManagedHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getManagedHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get status of an operation on a managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param operationId operation identifier GUID
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getManagedHostingEnvironmentOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -809,17 +976,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -847,15 +1013,14 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name) {
-        return getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+    public Observable<Page<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name) {
+        return getManagedHostingEnvironmentSitesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -865,7 +1030,28 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -904,17 +1090,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -944,15 +1129,36 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param propertiesToInclude Comma separated list of site properties to include
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+    public Observable<Page<SiteInner>> getManagedHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+        return getManagedHostingEnvironmentSitesWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @param propertiesToInclude Comma separated list of site properties to include
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesWithServiceResponseAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         return getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -963,7 +1169,7 @@ public final class ManagedHostingEnvironmentsInner {
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of managed hosting environment
     ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of site properties to include
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         if (resourceGroupName == null) {
@@ -1007,17 +1213,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1045,15 +1250,35 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name) {
+        return getManagedHostingEnvironmentWebHostingPlansWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1063,7 +1288,7 @@ public final class ManagedHostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of managed hosting environment
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1107,17 +1332,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1145,15 +1369,35 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name) {
+        return getManagedHostingEnvironmentServerFarmsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of managed hosting environment
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getManagedHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1163,7 +1407,7 @@ public final class ManagedHostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of managed hosting environment
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1206,17 +1450,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1243,15 +1486,34 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsNextAsync(final String nextPageLink) {
+    public Observable<Page<HostingEnvironmentInner>> getManagedHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
+                @Override
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all managed hosting environments in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1260,7 +1522,7 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
     ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getManagedHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1294,17 +1556,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getManagedHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1331,15 +1592,34 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all sites on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> getManagedHostingEnvironmentSitesNextAsync(final String nextPageLink) {
+        return getManagedHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the managed hosting environment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesNextWithServiceResponseAsync(final String nextPageLink) {
         return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1348,7 +1628,7 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all sites on the managed hosting environment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getManagedHostingEnvironmentSitesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1382,17 +1662,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1419,15 +1698,34 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink) {
+        return getManagedHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(final String nextPageLink) {
         return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1436,7 +1734,7 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1470,17 +1768,16 @@ public final class ManagedHostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1507,15 +1804,34 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsNextAsync(final String nextPageLink) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getManagedHostingEnvironmentServerFarmsNextAsync(final String nextPageLink) {
+        return getManagedHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the managed hosting environment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsNextWithServiceResponseAsync(final String nextPageLink) {
         return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getManagedHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1524,7 +1840,7 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

@@ -49,8 +49,7 @@ public final class ResourceUtils {
      * @return the parent resource path
      */
     public static String parentResourcePathFromResourceId(String id) {
-        String parent = id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
-        return extractFromResourceId(parent, resourceProviderFromResourceId(parent));
+        return id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
     }
 
     /**

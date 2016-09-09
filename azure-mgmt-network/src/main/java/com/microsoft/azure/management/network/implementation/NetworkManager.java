@@ -155,4 +155,4 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         }
         return this.loadBalancers;
     }
- }
+}

@@ -37,17 +37,17 @@ class NetworksImpl
 
     @Override
     public PagedList<Network> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll());
     }
 
     @Override
     public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
     public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override

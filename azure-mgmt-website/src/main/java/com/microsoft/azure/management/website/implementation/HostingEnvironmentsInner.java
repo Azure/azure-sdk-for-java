@@ -22,6 +22,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -329,10 +330,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentInner> getHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
+    public HostingEnvironmentInner getHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -344,7 +345,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> getHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -354,7 +355,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the HostingEnvironmentInner object
      */
-    public Observable<ServiceResponse<HostingEnvironmentInner>> getHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<HostingEnvironmentInner> getHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return getHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HostingEnvironmentInner>, HostingEnvironmentInner>() {
+            @Override
+            public HostingEnvironmentInner call(ServiceResponse<HostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get properties of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the HostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> getHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -398,10 +415,10 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the HostingEnvironmentInner object wrapped in ServiceResponse if successful.
+     * @return the HostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentInner> createOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last();
+    public HostingEnvironmentInner createOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -414,7 +431,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -425,7 +442,24 @@ public final class HostingEnvironmentsInner {
      * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<HostingEnvironmentInner>> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<HostingEnvironmentInner> createOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
+        return createOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<HostingEnvironmentInner>, HostingEnvironmentInner>() {
+            @Override
+            public HostingEnvironmentInner call(ServiceResponse<HostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> createOrUpdateHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -455,10 +489,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostingEnvironmentInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single();
+    public HostingEnvironmentInner beginCreateOrUpdateHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -471,7 +505,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope, final ServiceCallback<HostingEnvironmentInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope), serviceCallback);
     }
 
     /**
@@ -482,7 +516,24 @@ public final class HostingEnvironmentsInner {
      * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
      * @return the observable to the HostingEnvironmentInner object
      */
-    public Observable<ServiceResponse<HostingEnvironmentInner>> beginCreateOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
+    public Observable<HostingEnvironmentInner> beginCreateOrUpdateHostingEnvironmentAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
+        return beginCreateOrUpdateHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope).map(new Func1<ServiceResponse<HostingEnvironmentInner>, HostingEnvironmentInner>() {
+            @Override
+            public HostingEnvironmentInner call(ServiceResponse<HostingEnvironmentInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param hostingEnvironmentEnvelope Properties of hostingEnvironment (App Service Environment)
+     * @return the observable to the HostingEnvironmentInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentInner>> beginCreateOrUpdateHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, HostingEnvironmentInner hostingEnvironmentEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -533,10 +584,10 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object  if successful.
      */
-    public ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteHostingEnvironmentAsync(resourceGroupName, name).toBlocking().last();
+    public Object deleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
     /**
@@ -548,7 +599,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -558,7 +609,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -585,10 +652,10 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the Object object wrapped in ServiceResponse if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().last();
+    public Object deleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().last().getBody();
     }
 
     /**
@@ -601,7 +668,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(deleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+        return ServiceCall.create(deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -612,7 +679,24 @@ public final class HostingEnvironmentsInner {
      * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+    public Observable<Object> deleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+        return deleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Object>> deleteHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -637,10 +721,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
+    public Object beginDeleteHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -652,7 +736,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginDeleteHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -662,7 +746,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -699,10 +799,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> beginDeleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete).toBlocking().single();
+    public Object beginDeleteHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
+        return beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().single().getBody();
     }
 
     /**
@@ -715,7 +815,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(beginDeleteHostingEnvironmentAsync(resourceGroupName, name, forceDelete), serviceCallback);
+        return ServiceCall.create(beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete), serviceCallback);
     }
 
     /**
@@ -726,7 +826,24 @@ public final class HostingEnvironmentsInner {
      * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+    public Observable<Object> beginDeleteHostingEnvironmentAsync(String resourceGroupName, String name, Boolean forceDelete) {
+        return beginDeleteHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param forceDelete Delete even if the hostingEnvironment (App Service Environment) contains resources
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> beginDeleteHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, Boolean forceDelete) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -772,10 +889,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentDiagnosticsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;HostingEnvironmentDiagnosticsInner&gt; object if successful.
      */
-    public ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnostics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentDiagnosticsAsync(resourceGroupName, name).toBlocking().single();
+    public List<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnostics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentDiagnosticsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -787,7 +904,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsAsync(String resourceGroupName, String name, final ServiceCallback<List<HostingEnvironmentDiagnosticsInner>> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentDiagnosticsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentDiagnosticsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -797,7 +914,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the List&lt;HostingEnvironmentDiagnosticsInner&gt; object
      */
-    public Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>> getHostingEnvironmentDiagnosticsAsync(String resourceGroupName, String name) {
+    public Observable<List<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsAsync(String resourceGroupName, String name) {
+        return getHostingEnvironmentDiagnosticsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>, List<HostingEnvironmentDiagnosticsInner>>() {
+            @Override
+            public List<HostingEnvironmentDiagnosticsInner> call(ServiceResponse<List<HostingEnvironmentDiagnosticsInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get diagnostic information for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the List&lt;HostingEnvironmentDiagnosticsInner&gt; object
+     */
+    public Observable<ServiceResponse<List<HostingEnvironmentDiagnosticsInner>>> getHostingEnvironmentDiagnosticsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -840,10 +973,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the HostingEnvironmentDiagnosticsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the HostingEnvironmentDiagnosticsInner object if successful.
      */
-    public ServiceResponse<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItem(String resourceGroupName, String name, String diagnosticsName) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName).toBlocking().single();
+    public HostingEnvironmentDiagnosticsInner getHostingEnvironmentDiagnosticsItem(String resourceGroupName, String name, String diagnosticsName) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName).toBlocking().single().getBody();
     }
 
     /**
@@ -856,7 +989,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName, final ServiceCallback<HostingEnvironmentDiagnosticsInner> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName), serviceCallback);
     }
 
     /**
@@ -867,7 +1000,24 @@ public final class HostingEnvironmentsInner {
      * @param diagnosticsName Name of the diagnostics
      * @return the observable to the HostingEnvironmentDiagnosticsInner object
      */
-    public Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName) {
+    public Observable<HostingEnvironmentDiagnosticsInner> getHostingEnvironmentDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName) {
+        return getHostingEnvironmentDiagnosticsItemWithServiceResponseAsync(resourceGroupName, name, diagnosticsName).map(new Func1<ServiceResponse<HostingEnvironmentDiagnosticsInner>, HostingEnvironmentDiagnosticsInner>() {
+            @Override
+            public HostingEnvironmentDiagnosticsInner call(ServiceResponse<HostingEnvironmentDiagnosticsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get diagnostic information for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param diagnosticsName Name of the diagnostics
+     * @return the observable to the HostingEnvironmentDiagnosticsInner object
+     */
+    public Observable<ServiceResponse<HostingEnvironmentDiagnosticsInner>> getHostingEnvironmentDiagnosticsItemWithServiceResponseAsync(String resourceGroupName, String name, String diagnosticsName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -912,17 +1062,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;StampCapacityInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<StampCapacityInner>> getHostingEnvironmentCapacities(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<StampCapacityInner> getHostingEnvironmentCapacities(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<StampCapacityInner>> response = getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<StampCapacityInner> pagedList = new PagedList<StampCapacityInner>(response.getBody()) {
+        return new PagedList<StampCapacityInner>(response.getBody()) {
             @Override
             public Page<StampCapacityInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -950,15 +1099,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;StampCapacityInner&gt; object
+     * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
-    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<StampCapacityInner>> getHostingEnvironmentCapacitiesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentCapacitiesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<StampCapacityInner>>, Page<StampCapacityInner>>() {
+                @Override
+                public Page<StampCapacityInner> call(ServiceResponse<Page<StampCapacityInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getHostingEnvironmentCapacitiesSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentCapacitiesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -968,7 +1137,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<StampCapacityInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<StampCapacityInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1012,10 +1181,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AddressResponseInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AddressResponseInner object if successful.
      */
-    public ServiceResponse<AddressResponseInner> getHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentVipsAsync(resourceGroupName, name).toBlocking().single();
+    public AddressResponseInner getHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1027,7 +1196,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AddressResponseInner> getHostingEnvironmentVipsAsync(String resourceGroupName, String name, final ServiceCallback<AddressResponseInner> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentVipsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1037,7 +1206,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the AddressResponseInner object
      */
-    public Observable<ServiceResponse<AddressResponseInner>> getHostingEnvironmentVipsAsync(String resourceGroupName, String name) {
+    public Observable<AddressResponseInner> getHostingEnvironmentVipsAsync(String resourceGroupName, String name) {
+        return getHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<AddressResponseInner>, AddressResponseInner>() {
+            @Override
+            public AddressResponseInner call(ServiceResponse<AddressResponseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get IP addresses assigned to the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the AddressResponseInner object
+     */
+    public Observable<ServiceResponse<AddressResponseInner>> getHostingEnvironmentVipsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1078,17 +1263,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getHostingEnvironmentsSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1114,15 +1298,34 @@ public final class HostingEnvironmentsInner {
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsAsync(final String resourceGroupName) {
+    public Observable<Page<HostingEnvironmentInner>> getHostingEnvironmentsAsync(final String resourceGroupName) {
+        return getHostingEnvironmentsWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
+                @Override
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsWithServiceResponseAsync(final String resourceGroupName) {
         return getHostingEnvironmentsSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1131,7 +1334,7 @@ public final class HostingEnvironmentsInner {
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
     ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param resourceGroupName Name of resource group
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -1172,10 +1375,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> rebootHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return rebootHostingEnvironmentAsync(resourceGroupName, name).toBlocking().single();
+    public Object rebootHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return rebootHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1187,7 +1390,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> rebootHostingEnvironmentAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(rebootHostingEnvironmentAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(rebootHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1197,7 +1400,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> rebootHostingEnvironmentAsync(String resourceGroupName, String name) {
+    public Observable<Object> rebootHostingEnvironmentAsync(String resourceGroupName, String name) {
+        return rebootHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reboots all machines in a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> rebootHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1242,10 +1461,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getHostingEnvironmentOperations(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentOperationsAsync(resourceGroupName, name).toBlocking().single();
+    public Object getHostingEnvironmentOperations(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentOperationsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1257,7 +1476,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getHostingEnvironmentOperationsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentOperationsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentOperationsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1267,7 +1486,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationsAsync(String resourceGroupName, String name) {
+    public Observable<Object> getHostingEnvironmentOperationsAsync(String resourceGroupName, String name) {
+        return getHostingEnvironmentOperationsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * List all currently running operations on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1310,10 +1545,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentOperationAsync(resourceGroupName, name, operationId).toBlocking().single();
+    public Object getHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
     /**
@@ -1326,7 +1561,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentOperationAsync(resourceGroupName, name, operationId), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
     }
 
     /**
@@ -1337,7 +1572,24 @@ public final class HostingEnvironmentsInner {
      * @param operationId operation identifier GUID
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId) {
+    public Observable<Object> getHostingEnvironmentOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get status of an operation on a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param operationId operation identifier GUID
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getHostingEnvironmentOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1385,17 +1637,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1423,15 +1674,14 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name) {
-        return getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMetricsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -1441,7 +1691,28 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1482,17 +1753,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1524,15 +1794,37 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        return getHostingEnvironmentMetricsWithServiceResponseAsync(resourceGroupName, name, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         return getHostingEnvironmentMetricsSinglePageAsync(resourceGroupName, name, details, filter)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1544,7 +1836,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
@@ -1588,10 +1880,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the MetricDefinitionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the MetricDefinitionInner object if successful.
      */
-    public ServiceResponse<MetricDefinitionInner> getHostingEnvironmentMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getHostingEnvironmentMetricDefinitionsAsync(resourceGroupName, name).toBlocking().single();
+    public MetricDefinitionInner getHostingEnvironmentMetricDefinitions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getHostingEnvironmentMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -1603,7 +1895,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<MetricDefinitionInner> getHostingEnvironmentMetricDefinitionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionInner> serviceCallback) {
-        return ServiceCall.create(getHostingEnvironmentMetricDefinitionsAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getHostingEnvironmentMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -1613,7 +1905,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the MetricDefinitionInner object
      */
-    public Observable<ServiceResponse<MetricDefinitionInner>> getHostingEnvironmentMetricDefinitionsAsync(String resourceGroupName, String name) {
+    public Observable<MetricDefinitionInner> getHostingEnvironmentMetricDefinitionsAsync(String resourceGroupName, String name) {
+        return getHostingEnvironmentMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<MetricDefinitionInner>, MetricDefinitionInner>() {
+            @Override
+            public MetricDefinitionInner call(ServiceResponse<MetricDefinitionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get global metric definitions of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the MetricDefinitionInner object
+     */
+    public Observable<ServiceResponse<MetricDefinitionInner>> getHostingEnvironmentMetricDefinitionsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1655,17 +1963,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getHostingEnvironmentUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1693,15 +2000,14 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name) {
-        return getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+    public Observable<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentUsagesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -1711,7 +2017,28 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentUsagesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1750,17 +2077,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getHostingEnvironmentUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1790,15 +2116,36 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter) {
+    public Observable<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesAsync(final String resourceGroupName, final String name, final String filter) {
+        return getHostingEnvironmentUsagesWithServiceResponseAsync(resourceGroupName, name, filter)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String filter) {
         return getHostingEnvironmentUsagesSinglePageAsync(resourceGroupName, name, filter)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1809,7 +2156,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesSinglePageAsync(final String resourceGroupName, final String name, final String filter) {
         if (resourceGroupName == null) {
@@ -1853,17 +2200,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1891,15 +2237,14 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name) {
-        return getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleMetricsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -1909,7 +2254,28 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -1956,17 +2322,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMultiRoleMetrics(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2004,15 +2369,40 @@ public final class HostingEnvironmentsInner {
      * @param timeGrain Time granularity of metrics query
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
+        return getHostingEnvironmentMultiRoleMetricsWithServiceResponseAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param startTime Beginning time of metrics query
+     * @param endTime End time of metrics query
+     * @param timeGrain Time granularity of metrics query
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
         return getHostingEnvironmentMultiRoleMetricsSinglePageAsync(resourceGroupName, name, startTime, endTime, timeGrain, details, filter)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2027,7 +2417,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param timeGrain Time granularity of metrics query
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsSinglePageAsync(final String resourceGroupName, final String name, final String startTime, final String endTime, final String timeGrain, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
@@ -2072,17 +2462,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2112,15 +2501,14 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
-        return getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName)
-            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -2131,7 +2519,29 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
@@ -2176,17 +2586,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentWebWorkerMetrics(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2220,15 +2629,38 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @param details Include instance details
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
+        return getHostingEnvironmentWebWorkerMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
         return getHostingEnvironmentWebWorkerMetricsSinglePageAsync(resourceGroupName, name, workerPoolName, details, filter)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2241,7 +2673,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param workerPoolName Name of worker pool
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Include instance details
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
@@ -2288,17 +2720,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getHostingEnvironmentMultiRoleMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2326,15 +2757,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2344,7 +2795,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -2389,17 +2840,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitions(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getHostingEnvironmentWebWorkerMetricDefinitions(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2429,15 +2879,36 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+    public Observable<Page<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, workerPoolName)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         return getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2448,7 +2919,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param workerPoolName Name of worker pool
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
@@ -2495,17 +2966,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentMultiRoleUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> getHostingEnvironmentMultiRoleUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2533,15 +3003,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<UsageInner>> getHostingEnvironmentMultiRoleUsagesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentMultiRoleUsagesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getHostingEnvironmentMultiRoleUsagesSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2551,7 +3041,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -2596,17 +3086,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentWebWorkerUsages(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> getHostingEnvironmentWebWorkerUsages(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2636,15 +3125,36 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+    public Observable<Page<UsageInner>> getHostingEnvironmentWebWorkerUsagesAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getHostingEnvironmentWebWorkerUsagesWithServiceResponseAsync(resourceGroupName, name, workerPoolName)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         return getHostingEnvironmentWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2655,7 +3165,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<UsageInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<UsageInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<UsageInner>> * @param workerPoolName Name of worker pool
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
@@ -2702,17 +3212,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2740,15 +3249,14 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name) {
-        return getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+    public Observable<Page<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentSitesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -2758,7 +3266,28 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -2797,17 +3326,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2837,15 +3365,36 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param propertiesToInclude Comma separated list of site properties to include
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+    public Observable<Page<SiteInner>> getHostingEnvironmentSitesAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
+        return getHostingEnvironmentSitesWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param propertiesToInclude Comma separated list of site properties to include
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesWithServiceResponseAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         return getHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2856,7 +3405,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<SiteInner>> * @param propertiesToInclude Comma separated list of site properties to include
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesSinglePageAsync(final String resourceGroupName, final String name, final String propertiesToInclude) {
         if (resourceGroupName == null) {
@@ -2900,17 +3449,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -2938,15 +3486,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentWebHostingPlansWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -2956,7 +3524,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -3000,17 +3568,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3038,15 +3605,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsAsync(final String resourceGroupName, final String name) {
+        return getHostingEnvironmentServerFarmsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3056,7 +3643,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -3100,17 +3687,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<WorkerPoolInner>> getMultiRolePools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<WorkerPoolInner> getMultiRolePools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<WorkerPoolInner>> response = getMultiRolePoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+        return new PagedList<WorkerPoolInner>(response.getBody()) {
             @Override
             public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3138,15 +3724,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolInner>> getMultiRolePoolsAsync(final String resourceGroupName, final String name) {
+        return getMultiRolePoolsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+                @Override
+                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getMultiRolePoolsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getMultiRolePoolsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3156,7 +3762,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -3200,10 +3806,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> getMultiRolePool(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
-        return getMultiRolePoolAsync(resourceGroupName, name).toBlocking().single();
+    public WorkerPoolInner getMultiRolePool(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -3215,7 +3821,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(getMultiRolePoolAsync(resourceGroupName, name), serviceCallback);
+        return ServiceCall.create(getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
@@ -3225,7 +3831,23 @@ public final class HostingEnvironmentsInner {
      * @param name Name of hostingEnvironment (App Service Environment)
      * @return the observable to the WorkerPoolInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getMultiRolePoolAsync(String resourceGroupName, String name) {
+    public Observable<WorkerPoolInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
+        return getMultiRolePoolWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get properties of a multiRool pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> getMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3269,10 +3891,10 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the WorkerPoolInner object wrapped in ServiceResponse if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last();
+    public WorkerPoolInner createOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -3285,7 +3907,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -3296,7 +3918,24 @@ public final class HostingEnvironmentsInner {
      * @param multiRolePoolEnvelope Properties of multiRole pool
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<WorkerPoolInner> createOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+        return createOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param multiRolePoolEnvelope Properties of multiRole pool
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3326,10 +3965,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single();
+    public WorkerPoolInner beginCreateOrUpdateMultiRolePool(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -3342,7 +3981,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope), serviceCallback);
     }
 
     /**
@@ -3353,7 +3992,24 @@ public final class HostingEnvironmentsInner {
      * @param multiRolePoolEnvelope Properties of multiRole pool
      * @return the observable to the WorkerPoolInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+    public Observable<WorkerPoolInner> beginCreateOrUpdateMultiRolePoolAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
+        return beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(resourceGroupName, name, multiRolePoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param multiRolePoolEnvelope Properties of multiRole pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateMultiRolePoolWithServiceResponseAsync(String resourceGroupName, String name, WorkerPoolInner multiRolePoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3403,17 +4059,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SkuInfoInner>> getMultiRolePoolSkus(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SkuInfoInner> getMultiRolePoolSkus(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SkuInfoInner>> response = getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.getBody()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3441,15 +4096,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SkuInfoInner>> getMultiRolePoolSkusAsync(final String resourceGroupName, final String name) {
+        return getMultiRolePoolSkusWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
+                @Override
+                public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getMultiRolePoolSkusSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getMultiRolePoolSkusNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3459,7 +4134,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -3503,17 +4178,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<WorkerPoolInner>> getWorkerPools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<WorkerPoolInner> getWorkerPools(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<WorkerPoolInner>> response = getWorkerPoolsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+        return new PagedList<WorkerPoolInner>(response.getBody()) {
             @Override
             public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3541,15 +4215,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<WorkerPoolInner>> getWorkerPoolsAsync(final String resourceGroupName, final String name) {
+        return getWorkerPoolsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+                @Override
+                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return getWorkerPoolsSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getWorkerPoolsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3559,7 +4253,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -3604,10 +4298,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> getWorkerPool(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
-        return getWorkerPoolAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
+    public WorkerPoolInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).toBlocking().single().getBody();
     }
 
     /**
@@ -3620,7 +4314,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(getWorkerPoolAsync(resourceGroupName, name, workerPoolName), serviceCallback);
+        return ServiceCall.create(getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName), serviceCallback);
     }
 
     /**
@@ -3631,7 +4325,24 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolName Name of worker pool
      * @return the observable to the WorkerPoolInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
+    public Observable<WorkerPoolInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
+        return getWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> getWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3679,10 +4390,10 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the WorkerPoolInner object wrapped in ServiceResponse if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last();
+    public WorkerPoolInner createOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -3696,7 +4407,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+        return ServiceCall.create(createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -3708,7 +4419,25 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolEnvelope Properties of worker pool
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<WorkerPoolInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+        return createOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param workerPoolEnvelope Properties of worker pool
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> createOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3742,10 +4471,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the WorkerPoolInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the WorkerPoolInner object if successful.
      */
-    public ServiceResponse<WorkerPoolInner> beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single();
+    public WorkerPoolInner beginCreateOrUpdateWorkerPool(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).toBlocking().single().getBody();
     }
 
     /**
@@ -3759,7 +4488,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope, final ServiceCallback<WorkerPoolInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope), serviceCallback);
     }
 
     /**
@@ -3771,7 +4500,25 @@ public final class HostingEnvironmentsInner {
      * @param workerPoolEnvelope Properties of worker pool
      * @return the observable to the WorkerPoolInner object
      */
-    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+    public Observable<WorkerPoolInner> beginCreateOrUpdateWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
+        return beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).map(new Func1<ServiceResponse<WorkerPoolInner>, WorkerPoolInner>() {
+            @Override
+            public WorkerPoolInner call(ServiceResponse<WorkerPoolInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param workerPoolEnvelope Properties of worker pool
+     * @return the observable to the WorkerPoolInner object
+     */
+    public Observable<ServiceResponse<WorkerPoolInner>> beginCreateOrUpdateWorkerPoolWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, WorkerPoolInner workerPoolEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3825,17 +4572,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SkuInfoInner>> getWorkerPoolSkus(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SkuInfoInner> getWorkerPoolSkus(final String resourceGroupName, final String name, final String workerPoolName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SkuInfoInner>> response = getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName).toBlocking().single();
-        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.getBody()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -3865,15 +4611,36 @@ public final class HostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
      * @param workerPoolName Name of worker pool
-     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+    public Observable<Page<SkuInfoInner>> getWorkerPoolSkusAsync(final String resourceGroupName, final String name, final String workerPoolName) {
+        return getWorkerPoolSkusWithServiceResponseAsync(resourceGroupName, name, workerPoolName)
+            .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
+                @Override
+                public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusWithServiceResponseAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         return getWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName)
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getWorkerPoolSkusNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -3884,7 +4651,7 @@ public final class HostingEnvironmentsInner {
     ServiceResponse<PageImpl<SkuInfoInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SkuInfoInner>> * @param name Name of hostingEnvironment (App Service Environment)
     ServiceResponse<PageImpl<SkuInfoInner>> * @param workerPoolName Name of worker pool
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusSinglePageAsync(final String resourceGroupName, final String name, final String workerPoolName) {
         if (resourceGroupName == null) {
@@ -3933,10 +4700,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
-        return getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
+    public Object getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
+        return getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single().getBody();
     }
 
     /**
@@ -3950,7 +4717,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
+        return ServiceCall.create(getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
     }
 
     /**
@@ -3962,7 +4729,25 @@ public final class HostingEnvironmentsInner {
      * @param instance Name of instance in the worker pool
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
+    public Observable<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
+        return getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4009,10 +4794,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        return getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance, details, filter).toBlocking().single();
+    public Object getWorkerPoolInstanceMetrics(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
+        return getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance, details, filter).toBlocking().single().getBody();
     }
 
     /**
@@ -4028,7 +4813,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getWorkerPoolInstanceMetricsAsync(resourceGroupName, name, workerPoolName, instance, details, filter), serviceCallback);
+        return ServiceCall.create(getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance, details, filter), serviceCallback);
     }
 
     /**
@@ -4042,7 +4827,27 @@ public final class HostingEnvironmentsInner {
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) {
+    public Observable<Object> getWorkerPoolInstanceMetricsAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) {
+        return getWorkerPoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance, details, filter).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metrics for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @param details Include instance details
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricsWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, String instance, Boolean details, String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4092,10 +4897,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getWorkerPoolInstanceMetricDefinitions(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
-        return getWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single();
+    public Object getWorkerPoolInstanceMetricDefinitions(String resourceGroupName, String name, String workerPoolName, String instance) throws CloudException, IOException, IllegalArgumentException {
+        return getWorkerPoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance).toBlocking().single().getBody();
     }
 
     /**
@@ -4109,7 +4914,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getWorkerPoolInstanceMetricDefinitionsAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
+        return ServiceCall.create(getWorkerPoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance), serviceCallback);
     }
 
     /**
@@ -4121,7 +4926,25 @@ public final class HostingEnvironmentsInner {
      * @param instance Name of instance in the worker pool
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
+    public Observable<Object> getWorkerPoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
+        return getWorkerPoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, workerPoolName, instance).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param workerPoolName Name of worker pool
+     * @param instance Name of instance in the worker pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getWorkerPoolInstanceMetricDefinitionsWithServiceResponseAsync(String resourceGroupName, String name, String workerPoolName, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4170,10 +4993,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
-        return getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance).toBlocking().single();
+    public Object getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
+        return getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance).toBlocking().single().getBody();
     }
 
     /**
@@ -4186,7 +5009,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance), serviceCallback);
+        return ServiceCall.create(getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance), serviceCallback);
     }
 
     /**
@@ -4197,7 +5020,24 @@ public final class HostingEnvironmentsInner {
      * @param instance Name of instance in the multiRole pool
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance) {
+    public Observable<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance) {
+        return getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsWithServiceResponseAsync(String resourceGroupName, String name, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4238,10 +5078,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance, Boolean details) throws CloudException, IOException, IllegalArgumentException {
-        return getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance, details).toBlocking().single();
+    public Object getMultiRolePoolInstanceMetrics(String resourceGroupName, String name, String instance, Boolean details) throws CloudException, IOException, IllegalArgumentException {
+        return getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance, details).toBlocking().single().getBody();
     }
 
     /**
@@ -4255,7 +5095,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, Boolean details, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getMultiRolePoolInstanceMetricsAsync(resourceGroupName, name, instance, details), serviceCallback);
+        return ServiceCall.create(getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance, details), serviceCallback);
     }
 
     /**
@@ -4267,7 +5107,25 @@ public final class HostingEnvironmentsInner {
      * @param details Include instance details
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, Boolean details) {
+    public Observable<Object> getMultiRolePoolInstanceMetricsAsync(String resourceGroupName, String name, String instance, Boolean details) {
+        return getMultiRolePoolInstanceMetricsWithServiceResponseAsync(resourceGroupName, name, instance, details).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metrics for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool
+     * @param details Include instance details
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricsWithServiceResponseAsync(String resourceGroupName, String name, String instance, Boolean details) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4313,10 +5171,10 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> getMultiRolePoolInstanceMetricDefinitions(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
-        return getMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance).toBlocking().single();
+    public Object getMultiRolePoolInstanceMetricDefinitions(String resourceGroupName, String name, String instance) throws CloudException, IOException, IllegalArgumentException {
+        return getMultiRolePoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, instance).toBlocking().single().getBody();
     }
 
     /**
@@ -4329,7 +5187,7 @@ public final class HostingEnvironmentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> getMultiRolePoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String instance, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(getMultiRolePoolInstanceMetricDefinitionsAsync(resourceGroupName, name, instance), serviceCallback);
+        return ServiceCall.create(getMultiRolePoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, instance), serviceCallback);
     }
 
     /**
@@ -4340,7 +5198,24 @@ public final class HostingEnvironmentsInner {
      * @param instance Name of instance in the multiRole pool&amp;gt;
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String instance) {
+    public Observable<Object> getMultiRolePoolInstanceMetricDefinitionsAsync(String resourceGroupName, String name, String instance) {
+        return getMultiRolePoolInstanceMetricDefinitionsWithServiceResponseAsync(resourceGroupName, name, instance).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @param instance Name of instance in the multiRole pool&amp;gt;
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> getMultiRolePoolInstanceMetricDefinitionsWithServiceResponseAsync(String resourceGroupName, String name, String instance) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4386,17 +5261,16 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> suspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public PagedList<SiteInner> suspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         ServiceResponse<Page<SiteInner>> response = suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4424,15 +5298,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SiteInner>> suspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return suspendHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return suspendHostingEnvironmentSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(suspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4442,7 +5336,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -4487,17 +5381,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> beginSuspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> beginSuspendHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4525,15 +5418,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SiteInner>> beginSuspendHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return beginSuspendHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return beginSuspendHostingEnvironmentSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginSuspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4543,7 +5456,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -4589,17 +5502,16 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> resumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public PagedList<SiteInner> resumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         ServiceResponse<Page<SiteInner>> response = resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4627,15 +5539,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SiteInner>> resumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return resumeHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return resumeHostingEnvironmentSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(resumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4645,7 +5577,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -4690,17 +5622,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> beginResumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> beginResumeHostingEnvironment(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4728,15 +5659,35 @@ public final class HostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<SiteInner>> beginResumeHostingEnvironmentAsync(final String resourceGroupName, final String name) {
+        return beginResumeHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of hostingEnvironment (App Service Environment)
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return beginResumeHostingEnvironmentSinglePageAsync(resourceGroupName, name)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginResumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4746,7 +5697,7 @@ public final class HostingEnvironmentsInner {
      *
     ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
     ServiceResponse<PageImpl<SiteInner>> * @param name Name of hostingEnvironment (App Service Environment)
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
@@ -4790,17 +5741,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;StampCapacityInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<StampCapacityInner>> getHostingEnvironmentCapacitiesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<StampCapacityInner> getHostingEnvironmentCapacitiesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<StampCapacityInner>> response = getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<StampCapacityInner> pagedList = new PagedList<StampCapacityInner>(response.getBody()) {
+        return new PagedList<StampCapacityInner>(response.getBody()) {
             @Override
             public Page<StampCapacityInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<StampCapacityInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4827,15 +5777,34 @@ public final class HostingEnvironmentsInner {
      * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;StampCapacityInner&gt; object
+     * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
      */
-    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink) {
+    public Observable<Page<StampCapacityInner>> getHostingEnvironmentCapacitiesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentCapacitiesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<StampCapacityInner>>, Page<StampCapacityInner>>() {
+                @Override
+                public Page<StampCapacityInner> call(ServiceResponse<Page<StampCapacityInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;StampCapacityInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<StampCapacityInner>>, Observable<ServiceResponse<Page<StampCapacityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<StampCapacityInner>>> call(ServiceResponse<Page<StampCapacityInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentCapacitiesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentCapacitiesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4844,7 +5813,7 @@ public final class HostingEnvironmentsInner {
      * Get used, available, and total worker capacity for hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<StampCapacityInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;StampCapacityInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<StampCapacityInner>>> getHostingEnvironmentCapacitiesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -4878,17 +5847,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -4915,15 +5883,34 @@ public final class HostingEnvironmentsInner {
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextAsync(final String nextPageLink) {
+    public Observable<Page<HostingEnvironmentInner>> getHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
+                @Override
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all hostingEnvironments (App Service Environments) in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -4932,7 +5919,7 @@ public final class HostingEnvironmentsInner {
      * Get all hostingEnvironments (App Service Environments) in a resource group.
      *
     ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -4966,17 +5953,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5003,15 +5989,34 @@ public final class HostingEnvironmentsInner {
      * Get global metrics of hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get global metrics of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5020,7 +6025,7 @@ public final class HostingEnvironmentsInner {
      * Get global metrics of hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5054,17 +6059,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getHostingEnvironmentUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CsmUsageQuotaInner> pagedList = new PagedList<CsmUsageQuotaInner>(response.getBody()) {
+        return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
             public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CsmUsageQuotaInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5091,15 +6095,34 @@ public final class HostingEnvironmentsInner {
      * Get global usages of hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CsmUsageQuotaInner&gt; object
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink) {
+    public Observable<Page<CsmUsageQuotaInner>> getHostingEnvironmentUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentUsagesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Page<CsmUsageQuotaInner>>() {
+                @Override
+                public Page<CsmUsageQuotaInner> call(ServiceResponse<Page<CsmUsageQuotaInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get global usages of hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CsmUsageQuotaInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CsmUsageQuotaInner>>, Observable<ServiceResponse<Page<CsmUsageQuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> call(ServiceResponse<Page<CsmUsageQuotaInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5108,7 +6131,7 @@ public final class HostingEnvironmentsInner {
      * Get global usages of hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<CsmUsageQuotaInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CsmUsageQuotaInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CsmUsageQuotaInner>>> getHostingEnvironmentUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5142,17 +6165,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentMultiRoleMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5179,15 +6201,34 @@ public final class HostingEnvironmentsInner {
      * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentMultiRoleMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5196,7 +6237,7 @@ public final class HostingEnvironmentsInner {
      * Get metrics for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentMultiRoleMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5230,17 +6271,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getHostingEnvironmentWebWorkerMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ResourceMetricInner>> response = getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ResourceMetricInner> pagedList = new PagedList<ResourceMetricInner>(response.getBody()) {
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
             public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ResourceMetricInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5267,15 +6307,34 @@ public final class HostingEnvironmentsInner {
      * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ResourceMetricInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricInner>> getHostingEnvironmentWebWorkerMetricsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerMetricsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5284,7 +6343,7 @@ public final class HostingEnvironmentsInner {
      * Get metrics for a worker pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> getHostingEnvironmentWebWorkerMetricsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5318,17 +6377,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getHostingEnvironmentMultiRoleMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5355,15 +6413,34 @@ public final class HostingEnvironmentsInner {
      * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink) {
+    public Observable<Page<MetricDefinitionInner>> getHostingEnvironmentMultiRoleMetricDefinitionsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleMetricDefinitionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5372,7 +6449,7 @@ public final class HostingEnvironmentsInner {
      * Get metric definitions for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentMultiRoleMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5406,17 +6483,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getHostingEnvironmentWebWorkerMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<MetricDefinitionInner>> response = getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<MetricDefinitionInner> pagedList = new PagedList<MetricDefinitionInner>(response.getBody()) {
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
             public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<MetricDefinitionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5443,15 +6519,34 @@ public final class HostingEnvironmentsInner {
      * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink) {
+    public Observable<Page<MetricDefinitionInner>> getHostingEnvironmentWebWorkerMetricDefinitionsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerMetricDefinitionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5460,7 +6555,7 @@ public final class HostingEnvironmentsInner {
      * Get metric definitions for a worker pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getHostingEnvironmentWebWorkerMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5494,17 +6589,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentMultiRoleUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> getHostingEnvironmentMultiRoleUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5531,15 +6625,34 @@ public final class HostingEnvironmentsInner {
      * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink) {
+    public Observable<Page<UsageInner>> getHostingEnvironmentMultiRoleUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentMultiRoleUsagesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentMultiRoleUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5548,7 +6661,7 @@ public final class HostingEnvironmentsInner {
      * Get usages for a multiRole pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentMultiRoleUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5582,17 +6695,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> getHostingEnvironmentWebWorkerUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> getHostingEnvironmentWebWorkerUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5619,15 +6731,34 @@ public final class HostingEnvironmentsInner {
      * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink) {
+    public Observable<Page<UsageInner>> getHostingEnvironmentWebWorkerUsagesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebWorkerUsagesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebWorkerUsagesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5636,7 +6767,7 @@ public final class HostingEnvironmentsInner {
      * Get usages for a worker pool of a hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> getHostingEnvironmentWebWorkerUsagesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5670,17 +6801,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5707,15 +6837,34 @@ public final class HostingEnvironmentsInner {
      * Get all sites on the hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> getHostingEnvironmentSitesNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all sites on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5724,7 +6873,7 @@ public final class HostingEnvironmentsInner {
      * Get all sites on the hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getHostingEnvironmentSitesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5758,17 +6907,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5795,15 +6943,34 @@ public final class HostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentWebHostingPlansNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentWebHostingPlansNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5812,7 +6979,7 @@ public final class HostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentWebHostingPlansNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5846,17 +7013,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5883,15 +7049,34 @@ public final class HostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getHostingEnvironmentServerFarmsNextAsync(final String nextPageLink) {
+        return getHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextWithServiceResponseAsync(final String nextPageLink) {
         return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getHostingEnvironmentServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5900,7 +7085,7 @@ public final class HostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the hostingEnvironment (App Service Environment).
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getHostingEnvironmentServerFarmsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -5934,17 +7119,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<WorkerPoolInner>> getMultiRolePoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<WorkerPoolInner> getMultiRolePoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<WorkerPoolInner>> response = getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+        return new PagedList<WorkerPoolInner>(response.getBody()) {
             @Override
             public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getMultiRolePoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -5971,15 +7155,34 @@ public final class HostingEnvironmentsInner {
      * Get all multi role pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolInner>> getMultiRolePoolsNextAsync(final String nextPageLink) {
+        return getMultiRolePoolsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+                @Override
+                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all multi role pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return getMultiRolePoolsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getMultiRolePoolsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getMultiRolePoolsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -5988,7 +7191,7 @@ public final class HostingEnvironmentsInner {
      * Get all multi role pools.
      *
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getMultiRolePoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6022,17 +7225,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SkuInfoInner>> getMultiRolePoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SkuInfoInner> getMultiRolePoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SkuInfoInner>> response = getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.getBody()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6059,15 +7261,34 @@ public final class HostingEnvironmentsInner {
      * Get available skus for scaling a multiRole pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextAsync(final String nextPageLink) {
+    public Observable<Page<SkuInfoInner>> getMultiRolePoolSkusNextAsync(final String nextPageLink) {
+        return getMultiRolePoolSkusNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
+                @Override
+                public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a multiRole pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextWithServiceResponseAsync(final String nextPageLink) {
         return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getMultiRolePoolSkusNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getMultiRolePoolSkusNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6076,7 +7297,7 @@ public final class HostingEnvironmentsInner {
      * Get available skus for scaling a multiRole pool.
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getMultiRolePoolSkusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6110,17 +7331,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<WorkerPoolInner>> getWorkerPoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<WorkerPoolInner> getWorkerPoolsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<WorkerPoolInner>> response = getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<WorkerPoolInner> pagedList = new PagedList<WorkerPoolInner>(response.getBody()) {
+        return new PagedList<WorkerPoolInner>(response.getBody()) {
             @Override
             public Page<WorkerPoolInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getWorkerPoolsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<WorkerPoolInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6147,15 +7367,34 @@ public final class HostingEnvironmentsInner {
      * Get all worker pools.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;WorkerPoolInner&gt; object
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
      */
-    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextAsync(final String nextPageLink) {
+    public Observable<Page<WorkerPoolInner>> getWorkerPoolsNextAsync(final String nextPageLink) {
+        return getWorkerPoolsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Page<WorkerPoolInner>>() {
+                @Override
+                public Page<WorkerPoolInner> call(ServiceResponse<Page<WorkerPoolInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all worker pools.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;WorkerPoolInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextWithServiceResponseAsync(final String nextPageLink) {
         return getWorkerPoolsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<WorkerPoolInner>>, Observable<ServiceResponse<Page<WorkerPoolInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<WorkerPoolInner>>> call(ServiceResponse<Page<WorkerPoolInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getWorkerPoolsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getWorkerPoolsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6164,7 +7403,7 @@ public final class HostingEnvironmentsInner {
      * Get all worker pools.
      *
     ServiceResponse<PageImpl<WorkerPoolInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;WorkerPoolInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<WorkerPoolInner>>> getWorkerPoolsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6198,17 +7437,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SkuInfoInner>> getWorkerPoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SkuInfoInner> getWorkerPoolSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SkuInfoInner>> response = getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SkuInfoInner> pagedList = new PagedList<SkuInfoInner>(response.getBody()) {
+        return new PagedList<SkuInfoInner>(response.getBody()) {
             @Override
             public Page<SkuInfoInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getWorkerPoolSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SkuInfoInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6235,15 +7473,34 @@ public final class HostingEnvironmentsInner {
      * Get available skus for scaling a worker pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SkuInfoInner&gt; object
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextAsync(final String nextPageLink) {
+    public Observable<Page<SkuInfoInner>> getWorkerPoolSkusNextAsync(final String nextPageLink) {
+        return getWorkerPoolSkusNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SkuInfoInner>>, Page<SkuInfoInner>>() {
+                @Override
+                public Page<SkuInfoInner> call(ServiceResponse<Page<SkuInfoInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get available skus for scaling a worker pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SkuInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextWithServiceResponseAsync(final String nextPageLink) {
         return getWorkerPoolSkusNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SkuInfoInner>>, Observable<ServiceResponse<Page<SkuInfoInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SkuInfoInner>>> call(ServiceResponse<Page<SkuInfoInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getWorkerPoolSkusNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getWorkerPoolSkusNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6252,7 +7509,7 @@ public final class HostingEnvironmentsInner {
      * Get available skus for scaling a worker pool.
      *
     ServiceResponse<PageImpl<SkuInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SkuInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SkuInfoInner>>> getWorkerPoolSkusNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6287,17 +7544,16 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> suspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public PagedList<SiteInner> suspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         ServiceResponse<Page<SiteInner>> response = suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6324,15 +7580,34 @@ public final class HostingEnvironmentsInner {
      * Suspends the hostingEnvironment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> suspendHostingEnvironmentNextAsync(final String nextPageLink) {
+        return suspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
         return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return suspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(suspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6341,7 +7616,7 @@ public final class HostingEnvironmentsInner {
      * Suspends the hostingEnvironment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> suspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6376,17 +7651,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> beginSuspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> beginSuspendHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6413,15 +7687,34 @@ public final class HostingEnvironmentsInner {
      * Suspends the hostingEnvironment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> beginSuspendHostingEnvironmentNextAsync(final String nextPageLink) {
+        return beginSuspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Suspends the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
         return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return beginSuspendHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginSuspendHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6430,7 +7723,7 @@ public final class HostingEnvironmentsInner {
      * Suspends the hostingEnvironment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginSuspendHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6466,17 +7759,16 @@ public final class HostingEnvironmentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> resumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public PagedList<SiteInner> resumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
         ServiceResponse<Page<SiteInner>> response = resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6503,15 +7795,34 @@ public final class HostingEnvironmentsInner {
      * Resumes the hostingEnvironment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> resumeHostingEnvironmentNextAsync(final String nextPageLink) {
+        return resumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
         return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return resumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(resumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6520,7 +7831,7 @@ public final class HostingEnvironmentsInner {
      * Resumes the hostingEnvironment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> resumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -6555,17 +7866,16 @@ public final class HostingEnvironmentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> beginResumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> beginResumeHostingEnvironmentNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -6592,15 +7902,34 @@ public final class HostingEnvironmentsInner {
      * Resumes the hostingEnvironment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> beginResumeHostingEnvironmentNextAsync(final String nextPageLink) {
+        return beginResumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Resumes the hostingEnvironment.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
         return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return beginResumeHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginResumeHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -6609,7 +7938,7 @@ public final class HostingEnvironmentsInner {
      * Resumes the hostingEnvironment.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> beginResumeHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

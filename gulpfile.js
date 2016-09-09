@@ -148,7 +148,7 @@ gulp.task('codegen', function(cb) {
     var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
         autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        exec('tools\\nuget.exe install autorest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
+        exec('tools\\nuget.exe install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             handleInput(projects, cb);

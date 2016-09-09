@@ -31,7 +31,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIpForwarding()
-                .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
+                .updateIpConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
                     .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
                     .parent()
@@ -52,6 +52,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
                 .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
+                .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
+                .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
                 .append("\n\tDNS server IPs: ");
 
         // Output dns servers
@@ -67,9 +69,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tIP configurations: ");
 
         // Output IP configs
-        for (NicIpConfiguration ipConfig : resource.ipConfigurations()) {
+        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
-                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIp())
+                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
                 .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
                 .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
                 .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());

@@ -168,10 +168,10 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the VirtualMachineCaptureResultInner object wrapped in ServiceResponse if successful.
+     * @return the VirtualMachineCaptureResultInner object if successful.
      */
-    public ServiceResponse<VirtualMachineCaptureResultInner> capture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return captureAsync(resourceGroupName, vmName, parameters).toBlocking().last();
+    public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -184,7 +184,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
-        return ServiceCall.create(captureAsync(resourceGroupName, vmName, parameters), serviceCallback);
+        return ServiceCall.create(captureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -195,7 +195,24 @@ public final class VirtualMachinesInner {
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<VirtualMachineCaptureResultInner>> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
+    public Observable<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
+        return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>() {
+            @Override
+            public VirtualMachineCaptureResultInner call(ServiceResponse<VirtualMachineCaptureResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<VirtualMachineCaptureResultInner>> captureWithServiceResponseAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -225,10 +242,10 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineCaptureResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineCaptureResultInner object if successful.
      */
-    public ServiceResponse<VirtualMachineCaptureResultInner> beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCaptureAsync(resourceGroupName, vmName, parameters).toBlocking().single();
+    public VirtualMachineCaptureResultInner beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -241,7 +258,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters, final ServiceCallback<VirtualMachineCaptureResultInner> serviceCallback) {
-        return ServiceCall.create(beginCaptureAsync(resourceGroupName, vmName, parameters), serviceCallback);
+        return ServiceCall.create(beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -252,7 +269,24 @@ public final class VirtualMachinesInner {
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @return the observable to the VirtualMachineCaptureResultInner object
      */
-    public Observable<ServiceResponse<VirtualMachineCaptureResultInner>> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
+    public Observable<VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
+        return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner>() {
+            @Override
+            public VirtualMachineCaptureResultInner call(ServiceResponse<VirtualMachineCaptureResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
+     * @return the observable to the VirtualMachineCaptureResultInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineCaptureResultInner>> beginCaptureWithServiceResponseAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -301,10 +335,10 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the VirtualMachineInner object wrapped in ServiceResponse if successful.
+     * @return the VirtualMachineInner object if successful.
      */
-    public ServiceResponse<VirtualMachineInner> createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, vmName, parameters).toBlocking().last();
+    public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -317,7 +351,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, vmName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -328,7 +362,24 @@ public final class VirtualMachinesInner {
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<VirtualMachineInner>> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
+    public Observable<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
+            @Override
+            public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to create or update a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<VirtualMachineInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -358,10 +409,10 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineInner object if successful.
      */
-    public ServiceResponse<VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmName, parameters).toBlocking().single();
+    public VirtualMachineInner beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -374,7 +425,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, vmName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters), serviceCallback);
     }
 
     /**
@@ -385,7 +436,24 @@ public final class VirtualMachinesInner {
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
      * @return the observable to the VirtualMachineInner object
      */
-    public Observable<ServiceResponse<VirtualMachineInner>> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
+    public Observable<VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
+            @Override
+            public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to create or update a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Create Virtual Machine operation.
+     * @return the observable to the VirtualMachineInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -433,10 +501,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, vmName).toBlocking().last();
+    public void delete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -448,7 +515,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -458,7 +525,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String vmName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to delete a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -483,10 +566,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -498,7 +580,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -508,7 +590,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String vmName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to delete a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -550,10 +648,10 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineInner object if successful.
      */
-    public ServiceResponse<VirtualMachineInner> get(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, vmName).toBlocking().single();
+    public VirtualMachineInner get(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -565,7 +663,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -575,7 +673,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable to the VirtualMachineInner object
      */
-    public Observable<ServiceResponse<VirtualMachineInner>> getAsync(String resourceGroupName, String vmName) {
+    public Observable<VirtualMachineInner> getAsync(String resourceGroupName, String vmName) {
+        return getWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
+            @Override
+            public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to get a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable to the VirtualMachineInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineInner>> getWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -612,10 +726,10 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VirtualMachineInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VirtualMachineInner object if successful.
      */
-    public ServiceResponse<VirtualMachineInner> get(String resourceGroupName, String vmName, InstanceViewTypes expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, vmName, expand).toBlocking().single();
+    public VirtualMachineInner get(String resourceGroupName, String vmName, InstanceViewTypes expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -628,7 +742,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand, final ServiceCallback<VirtualMachineInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, vmName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, vmName, expand), serviceCallback);
     }
 
     /**
@@ -639,7 +753,24 @@ public final class VirtualMachinesInner {
      * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
      * @return the observable to the VirtualMachineInner object
      */
-    public Observable<ServiceResponse<VirtualMachineInner>> getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand) {
+    public Observable<VirtualMachineInner> getAsync(String resourceGroupName, String vmName, InstanceViewTypes expand) {
+        return getWithServiceResponseAsync(resourceGroupName, vmName, expand).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
+            @Override
+            public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to get a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
+     * @return the observable to the VirtualMachineInner object
+     */
+    public Observable<ServiceResponse<VirtualMachineInner>> getWithServiceResponseAsync(String resourceGroupName, String vmName, InstanceViewTypes expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -682,10 +813,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> deallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deallocateAsync(resourceGroupName, vmName).toBlocking().last();
+    public void deallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -697,7 +827,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deallocateAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(deallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -707,7 +837,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deallocateAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> deallocateAsync(String resourceGroupName, String vmName) {
+        return deallocateWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Shuts down the Virtual Machine and releases the compute resources. You are not billed for the compute resources that this Virtual Machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deallocateWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -732,10 +878,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDeallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeallocateAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginDeallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -747,7 +892,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeallocateAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeallocateAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -757,7 +902,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeallocateAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginDeallocateAsync(String resourceGroupName, String vmName) {
+        return beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Shuts down the Virtual Machine and releases the compute resources. You are not billed for the compute resources that this Virtual Machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeallocateWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -798,10 +959,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> generalize(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return generalizeAsync(resourceGroupName, vmName).toBlocking().single();
+    public void generalize(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        generalizeWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -813,7 +973,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> generalizeAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(generalizeAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(generalizeWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -823,7 +983,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> generalizeAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> generalizeAsync(String resourceGroupName, String vmName) {
+        return generalizeWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Sets the state of the VM as Generalized.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> generalizeWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -863,17 +1039,16 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualMachineInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<VirtualMachineInner> pagedList = new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -899,15 +1074,34 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;VirtualMachineInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<VirtualMachineInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The operation to list virtual machines under a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -916,7 +1110,7 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
     ServiceResponse<PageImpl1<VirtualMachineInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -955,17 +1149,16 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<VirtualMachineInner> pagedList = new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -989,15 +1182,14 @@ public final class VirtualMachinesInner {
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
-     * @return the observable to the List&lt;VirtualMachineInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+    public Observable<Page<VirtualMachineInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -1005,7 +1197,26 @@ public final class VirtualMachinesInner {
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
+     *
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -1043,10 +1254,10 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineSizeInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineSizeInner>> listAvailableSizes(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return listAvailableSizesAsync(resourceGroupName, vmName).toBlocking().single();
+    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -1058,7 +1269,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String vmName, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
-        return ServiceCall.create(listAvailableSizesAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1068,7 +1279,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listAvailableSizesAsync(String resourceGroupName, String vmName) {
+    public Observable<List<VirtualMachineSizeInner>> listAvailableSizesAsync(String resourceGroupName, String vmName) {
+        return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
+            @Override
+            public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists all available virtual machine sizes it can be resized to for a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listAvailableSizesWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1112,10 +1339,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> powerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return powerOffAsync(resourceGroupName, vmName).toBlocking().last();
+    public void powerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        powerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -1127,7 +1353,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> powerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(powerOffAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(powerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1137,7 +1363,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> powerOffAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> powerOffAsync(String resourceGroupName, String vmName) {
+        return powerOffWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to power off (stop) a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> powerOffWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1162,10 +1404,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginPowerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginPowerOffAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginPowerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -1177,7 +1418,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginPowerOffAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginPowerOffAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1187,7 +1428,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginPowerOffAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginPowerOffAsync(String resourceGroupName, String vmName) {
+        return beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to power off (stop) a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginPowerOffWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1229,10 +1486,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> restart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return restartAsync(resourceGroupName, vmName).toBlocking().last();
+    public void restart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        restartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -1244,7 +1500,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> restartAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(restartAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(restartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1254,7 +1510,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> restartAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> restartAsync(String resourceGroupName, String vmName) {
+        return restartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to restart a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> restartWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1279,10 +1551,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginRestart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginRestartAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginRestart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginRestartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -1294,7 +1565,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginRestartAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginRestartAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginRestartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1304,7 +1575,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginRestartAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginRestartAsync(String resourceGroupName, String vmName) {
+        return beginRestartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to restart a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginRestartWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1346,10 +1633,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> start(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return startAsync(resourceGroupName, vmName).toBlocking().last();
+    public void start(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        startWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -1361,7 +1647,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> startAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(startWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1371,7 +1657,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> startAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> startAsync(String resourceGroupName, String vmName) {
+        return startWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to start a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1396,10 +1698,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginStart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginStartAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginStart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginStartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -1411,7 +1712,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginStartAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStartAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginStartWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1421,7 +1722,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginStartAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginStartAsync(String resourceGroupName, String vmName) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to start a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStartWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1463,10 +1780,9 @@ public final class VirtualMachinesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> redeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return redeployAsync(resourceGroupName, vmName).toBlocking().last();
+    public void redeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        redeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
     /**
@@ -1478,7 +1794,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> redeployAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(redeployAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(redeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1488,7 +1804,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> redeployAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> redeployAsync(String resourceGroupName, String vmName) {
+        return redeployWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to redeploy a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> redeployWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1513,10 +1845,9 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginRedeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
-        return beginRedeployAsync(resourceGroupName, vmName).toBlocking().single();
+    public void beginRedeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+        beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
     /**
@@ -1528,7 +1859,7 @@ public final class VirtualMachinesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginRedeployAsync(String resourceGroupName, String vmName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginRedeployAsync(resourceGroupName, vmName), serviceCallback);
+        return ServiceCall.create(beginRedeployWithServiceResponseAsync(resourceGroupName, vmName), serviceCallback);
     }
 
     /**
@@ -1538,7 +1869,23 @@ public final class VirtualMachinesInner {
      * @param vmName The name of the virtual machine.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginRedeployAsync(String resourceGroupName, String vmName) {
+    public Observable<Void> beginRedeployAsync(String resourceGroupName, String vmName) {
+        return beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The operation to redeploy a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginRedeployWithServiceResponseAsync(String resourceGroupName, String vmName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1578,17 +1925,16 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualMachineInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<VirtualMachineInner> pagedList = new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1615,15 +1961,34 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;VirtualMachineInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<VirtualMachineInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The operation to list virtual machines under a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1632,7 +1997,7 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
     ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1666,17 +2031,16 @@ public final class VirtualMachinesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<VirtualMachineInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<VirtualMachineInner> pagedList = new PagedList<VirtualMachineInner>(response.getBody()) {
+        return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
             public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<VirtualMachineInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1703,15 +2067,34 @@ public final class VirtualMachinesInner {
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;VirtualMachineInner&gt; object
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
      */
-    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<VirtualMachineInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Page<VirtualMachineInner>>() {
+                @Override
+                public Page<VirtualMachineInner> call(ServiceResponse<Page<VirtualMachineInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;VirtualMachineInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<VirtualMachineInner>>, Observable<ServiceResponse<Page<VirtualMachineInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualMachineInner>>> call(ServiceResponse<Page<VirtualMachineInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1720,7 +2103,7 @@ public final class VirtualMachinesInner {
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
     ServiceResponse<PageImpl1<VirtualMachineInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;VirtualMachineInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<VirtualMachineInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

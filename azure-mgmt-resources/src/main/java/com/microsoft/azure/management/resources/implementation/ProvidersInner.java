@@ -88,10 +88,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ProviderInner object if successful.
      */
-    public ServiceResponse<ProviderInner> unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
-        return unregisterAsync(resourceProviderNamespace).toBlocking().single();
+    public ProviderInner unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+        return unregisterWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
     /**
@@ -102,7 +102,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProviderInner> unregisterAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.create(unregisterAsync(resourceProviderNamespace), serviceCallback);
+        return ServiceCall.create(unregisterWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -111,7 +111,22 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @return the observable to the ProviderInner object
      */
-    public Observable<ServiceResponse<ProviderInner>> unregisterAsync(String resourceProviderNamespace) {
+    public Observable<ProviderInner> unregisterAsync(String resourceProviderNamespace) {
+        return unregisterWithServiceResponseAsync(resourceProviderNamespace).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Unregisters provider from a subscription.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> unregisterWithServiceResponseAsync(String resourceProviderNamespace) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -149,10 +164,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ProviderInner object if successful.
      */
-    public ServiceResponse<ProviderInner> register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
-        return registerAsync(resourceProviderNamespace).toBlocking().single();
+    public ProviderInner register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+        return registerWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
     /**
@@ -163,7 +178,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProviderInner> registerAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.create(registerAsync(resourceProviderNamespace), serviceCallback);
+        return ServiceCall.create(registerWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -172,7 +187,22 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @return the observable to the ProviderInner object
      */
-    public Observable<ServiceResponse<ProviderInner>> registerAsync(String resourceProviderNamespace) {
+    public Observable<ProviderInner> registerAsync(String resourceProviderNamespace) {
+        return registerWithServiceResponseAsync(resourceProviderNamespace).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Registers provider to be used with a subscription.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> registerWithServiceResponseAsync(String resourceProviderNamespace) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -209,17 +239,16 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ProviderInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> list() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ProviderInner>> response = listSinglePageAsync().toBlocking().single();
-        PagedList<ProviderInner> pagedList = new PagedList<ProviderInner>(response.getBody()) {
+        return new PagedList<ProviderInner>(response.getBody()) {
             @Override
             public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -243,15 +272,14 @@ public final class ProvidersInner {
     /**
      * Gets a list of resource providers.
      *
-     * @return the observable to the List&lt;ProviderInner&gt; object
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ProviderInner>>> listAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ProviderInner>>, Observable<ServiceResponse<Page<ProviderInner>>>>() {
+    public Observable<Page<ProviderInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ProviderInner>>, Page<ProviderInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ProviderInner>>> call(ServiceResponse<Page<ProviderInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<ProviderInner> call(ServiceResponse<Page<ProviderInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -259,7 +287,26 @@ public final class ProvidersInner {
     /**
      * Gets a list of resource providers.
      *
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ProviderInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ProviderInner>>, Observable<ServiceResponse<Page<ProviderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProviderInner>>> call(ServiceResponse<Page<ProviderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of resource providers.
+     *
+     * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -292,17 +339,16 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ProviderInner>> list(final Integer top, final String expand) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> list(final Integer top, final String expand) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ProviderInner>> response = listSinglePageAsync(top, expand).toBlocking().single();
-        PagedList<ProviderInner> pagedList = new PagedList<ProviderInner>(response.getBody()) {
+        return new PagedList<ProviderInner>(response.getBody()) {
             @Override
             public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -330,15 +376,35 @@ public final class ProvidersInner {
      *
      * @param top Query parameters. If null is passed returns all deployments.
      * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
-     * @return the observable to the List&lt;ProviderInner&gt; object
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ProviderInner>>> listAsync(final Integer top, final String expand) {
+    public Observable<Page<ProviderInner>> listAsync(final Integer top, final String expand) {
+        return listWithServiceResponseAsync(top, expand)
+            .map(new Func1<ServiceResponse<Page<ProviderInner>>, Page<ProviderInner>>() {
+                @Override
+                public Page<ProviderInner> call(ServiceResponse<Page<ProviderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of resource providers.
+     *
+     * @param top Query parameters. If null is passed returns all deployments.
+     * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ProviderInner>>> listWithServiceResponseAsync(final Integer top, final String expand) {
         return listSinglePageAsync(top, expand)
             .concatMap(new Func1<ServiceResponse<Page<ProviderInner>>, Observable<ServiceResponse<Page<ProviderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProviderInner>>> call(ServiceResponse<Page<ProviderInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -348,7 +414,7 @@ public final class ProvidersInner {
      *
     ServiceResponse<PageImpl<ProviderInner>> * @param top Query parameters. If null is passed returns all deployments.
     ServiceResponse<PageImpl<ProviderInner>> * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listSinglePageAsync(final Integer top, final String expand) {
         if (this.client.subscriptionId() == null) {
@@ -385,10 +451,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ProviderInner object if successful.
      */
-    public ServiceResponse<ProviderInner> get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceProviderNamespace).toBlocking().single();
+    public ProviderInner get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
     /**
@@ -399,7 +465,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProviderInner> getAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceProviderNamespace), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
     }
 
     /**
@@ -408,7 +474,22 @@ public final class ProvidersInner {
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @return the observable to the ProviderInner object
      */
-    public Observable<ServiceResponse<ProviderInner>> getAsync(String resourceProviderNamespace) {
+    public Observable<ProviderInner> getAsync(String resourceProviderNamespace) {
+        return getWithServiceResponseAsync(resourceProviderNamespace).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a resource provider.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> getWithServiceResponseAsync(String resourceProviderNamespace) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -441,10 +522,10 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ProviderInner object if successful.
      */
-    public ServiceResponse<ProviderInner> get(String resourceProviderNamespace, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceProviderNamespace, expand).toBlocking().single();
+    public ProviderInner get(String resourceProviderNamespace, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceProviderNamespace, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -456,7 +537,7 @@ public final class ProvidersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ProviderInner> getAsync(String resourceProviderNamespace, String expand, final ServiceCallback<ProviderInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceProviderNamespace, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceProviderNamespace, expand), serviceCallback);
     }
 
     /**
@@ -466,7 +547,23 @@ public final class ProvidersInner {
      * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
      * @return the observable to the ProviderInner object
      */
-    public Observable<ServiceResponse<ProviderInner>> getAsync(String resourceProviderNamespace, String expand) {
+    public Observable<ProviderInner> getAsync(String resourceProviderNamespace, String expand) {
+        return getWithServiceResponseAsync(resourceProviderNamespace, expand).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a resource provider.
+     *
+     * @param resourceProviderNamespace Namespace of the resource provider.
+     * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> getWithServiceResponseAsync(String resourceProviderNamespace, String expand) {
         if (resourceProviderNamespace == null) {
             throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
         }
@@ -504,17 +601,16 @@ public final class ProvidersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ProviderInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ProviderInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ProviderInner> pagedList = new PagedList<ProviderInner>(response.getBody()) {
+        return new PagedList<ProviderInner>(response.getBody()) {
             @Override
             public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ProviderInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -541,15 +637,34 @@ public final class ProvidersInner {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ProviderInner&gt; object
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ProviderInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<ProviderInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ProviderInner>>, Page<ProviderInner>>() {
+                @Override
+                public Page<ProviderInner> call(ServiceResponse<Page<ProviderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of resource providers.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ProviderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ProviderInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ProviderInner>>, Observable<ServiceResponse<Page<ProviderInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProviderInner>>> call(ServiceResponse<Page<ProviderInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -558,7 +673,7 @@ public final class ProvidersInner {
      * Gets a list of resource providers.
      *
     ServiceResponse<PageImpl<ProviderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ProviderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ProviderInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

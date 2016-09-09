@@ -46,7 +46,7 @@ class SubnetImpl
         if (nsgResource == null) {
             return null;
         } else {
-            return this.parent().myManager().networkSecurityGroups().getById(nsgResource.id());
+            return this.parent().manager().networkSecurityGroups().getById(nsgResource.id());
         }
     }
 

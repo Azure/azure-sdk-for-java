@@ -31,17 +31,17 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        return wrapList(innerCollection.listAll().getBody());
+        return wrapList(innerCollection.listAll());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(innerCollection.list(groupName).getBody());
+        return wrapList(innerCollection.list(groupName));
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override

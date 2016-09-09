@@ -126,10 +126,9 @@ public final class ApplicationGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, applicationGatewayName).toBlocking().last();
+    public void delete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
     /**
@@ -141,7 +140,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -151,7 +150,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String applicationGatewayName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete ApplicationGateway operation deletes the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -176,10 +191,9 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, applicationGatewayName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -191,7 +205,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -201,7 +215,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete ApplicationGateway operation deletes the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -244,10 +274,10 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ApplicationGatewayInner object if successful.
      */
-    public ServiceResponse<ApplicationGatewayInner> get(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, applicationGatewayName).toBlocking().single();
+    public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -259,7 +289,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -269,7 +299,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the observable to the ApplicationGatewayInner object
      */
-    public Observable<ServiceResponse<ApplicationGatewayInner>> getAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<ApplicationGatewayInner> getAsync(String resourceGroupName, String applicationGatewayName) {
+        return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
+            @Override
+            public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get ApplicationGateway operation retrieves information about the specified application gateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable to the ApplicationGatewayInner object
+     */
+    public Observable<ServiceResponse<ApplicationGatewayInner>> getWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -313,10 +359,10 @@ public final class ApplicationGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ApplicationGatewayInner object wrapped in ServiceResponse if successful.
+     * @return the ApplicationGatewayInner object if successful.
      */
-    public ServiceResponse<ApplicationGatewayInner> createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last();
+    public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -329,7 +375,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -340,7 +386,24 @@ public final class ApplicationGatewaysInner {
      * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ApplicationGatewayInner>> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
+    public Observable<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
+            @Override
+            public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the ApplicationGateway.
+     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ApplicationGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -370,10 +433,10 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ApplicationGatewayInner object if successful.
      */
-    public ServiceResponse<ApplicationGatewayInner> beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single();
+    public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -386,7 +449,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, final ServiceCallback<ApplicationGatewayInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -397,7 +460,24 @@ public final class ApplicationGatewaysInner {
      * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
      * @return the observable to the ApplicationGatewayInner object
      */
-    public Observable<ServiceResponse<ApplicationGatewayInner>> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
+    public Observable<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).map(new Func1<ServiceResponse<ApplicationGatewayInner>, ApplicationGatewayInner>() {
+            @Override
+            public ApplicationGatewayInner call(ServiceResponse<ApplicationGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the ApplicationGateway.
+     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @return the observable to the ApplicationGatewayInner object
+     */
+    public Observable<ServiceResponse<ApplicationGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -443,17 +523,16 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ApplicationGatewayInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<ApplicationGatewayInner> pagedList = new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -479,15 +558,34 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;ApplicationGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<ApplicationGatewayInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
+                @Override
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -496,7 +594,7 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -535,17 +633,16 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ApplicationGatewayInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<ApplicationGatewayInner> pagedList = new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -569,15 +666,14 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
-     * @return the observable to the List&lt;ApplicationGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+    public Observable<Page<ApplicationGatewayInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -585,7 +681,26 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     *
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -624,10 +739,9 @@ public final class ApplicationGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> start(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return startAsync(resourceGroupName, applicationGatewayName).toBlocking().last();
+    public void start(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
     /**
@@ -639,7 +753,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> startAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(startWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -649,7 +763,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> startAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> startAsync(String resourceGroupName, String applicationGatewayName) {
+        return startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -674,10 +804,9 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginStart(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return beginStartAsync(resourceGroupName, applicationGatewayName).toBlocking().single();
+    public void beginStart(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -689,7 +818,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStartAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -699,7 +828,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStartWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -742,10 +887,9 @@ public final class ApplicationGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> stop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return stopAsync(resourceGroupName, applicationGatewayName).toBlocking().last();
+    public void stop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
     /**
@@ -757,7 +901,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> stopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(stopAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -767,7 +911,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> stopAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> stopAsync(String resourceGroupName, String applicationGatewayName) {
+        return stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> stopWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -792,10 +952,9 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginStop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return beginStopAsync(resourceGroupName, applicationGatewayName).toBlocking().single();
+    public void beginStop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -807,7 +966,7 @@ public final class ApplicationGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStopAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+        return ServiceCall.create(beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
     }
 
     /**
@@ -817,7 +976,23 @@ public final class ApplicationGatewaysInner {
      * @param applicationGatewayName The name of the application gateway.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
+    public Observable<Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
+        return beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStopWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -858,17 +1033,16 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ApplicationGatewayInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ApplicationGatewayInner> pagedList = new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -895,15 +1069,34 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ApplicationGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<ApplicationGatewayInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
+                @Override
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -912,7 +1105,7 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -946,17 +1139,16 @@ public final class ApplicationGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ApplicationGatewayInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ApplicationGatewayInner> pagedList = new PagedList<ApplicationGatewayInner>(response.getBody()) {
+        return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
             public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ApplicationGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -983,15 +1175,34 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ApplicationGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<ApplicationGatewayInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Page<ApplicationGatewayInner>>() {
+                @Override
+                public Page<ApplicationGatewayInner> call(ServiceResponse<Page<ApplicationGatewayInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ApplicationGatewayInner>>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(ServiceResponse<Page<ApplicationGatewayInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1000,7 +1211,7 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

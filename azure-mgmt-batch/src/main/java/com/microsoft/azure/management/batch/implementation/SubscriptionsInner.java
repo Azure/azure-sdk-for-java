@@ -65,10 +65,10 @@ public final class SubscriptionsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the SubscriptionQuotasGetResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the SubscriptionQuotasGetResultInner object if successful.
      */
-    public ServiceResponse<SubscriptionQuotasGetResultInner> getSubscriptionQuotas(String locationName) throws CloudException, IOException, IllegalArgumentException {
-        return getSubscriptionQuotasAsync(locationName).toBlocking().single();
+    public SubscriptionQuotasGetResultInner getSubscriptionQuotas(String locationName) throws CloudException, IOException, IllegalArgumentException {
+        return getSubscriptionQuotasWithServiceResponseAsync(locationName).toBlocking().single().getBody();
     }
 
     /**
@@ -79,7 +79,7 @@ public final class SubscriptionsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<SubscriptionQuotasGetResultInner> getSubscriptionQuotasAsync(String locationName, final ServiceCallback<SubscriptionQuotasGetResultInner> serviceCallback) {
-        return ServiceCall.create(getSubscriptionQuotasAsync(locationName), serviceCallback);
+        return ServiceCall.create(getSubscriptionQuotasWithServiceResponseAsync(locationName), serviceCallback);
     }
 
     /**
@@ -88,7 +88,22 @@ public final class SubscriptionsInner {
      * @param locationName The desired region for the quotas.
      * @return the observable to the SubscriptionQuotasGetResultInner object
      */
-    public Observable<ServiceResponse<SubscriptionQuotasGetResultInner>> getSubscriptionQuotasAsync(String locationName) {
+    public Observable<SubscriptionQuotasGetResultInner> getSubscriptionQuotasAsync(String locationName) {
+        return getSubscriptionQuotasWithServiceResponseAsync(locationName).map(new Func1<ServiceResponse<SubscriptionQuotasGetResultInner>, SubscriptionQuotasGetResultInner>() {
+            @Override
+            public SubscriptionQuotasGetResultInner call(ServiceResponse<SubscriptionQuotasGetResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the Batch service quotas for the specified suscription.
+     *
+     * @param locationName The desired region for the quotas.
+     * @return the observable to the SubscriptionQuotasGetResultInner object
+     */
+    public Observable<ServiceResponse<SubscriptionQuotasGetResultInner>> getSubscriptionQuotasWithServiceResponseAsync(String locationName) {
         if (locationName == null) {
             throw new IllegalArgumentException("Parameter locationName is required and cannot be null.");
         }

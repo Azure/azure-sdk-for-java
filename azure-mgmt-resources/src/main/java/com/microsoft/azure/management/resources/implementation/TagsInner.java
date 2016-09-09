@@ -94,10 +94,9 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
-        return deleteValueAsync(tagName, tagValue).toBlocking().single();
+    public void deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+        deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
     }
 
     /**
@@ -109,7 +108,7 @@ public final class TagsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteValueAsync(tagName, tagValue), serviceCallback);
+        return ServiceCall.create(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
@@ -119,7 +118,23 @@ public final class TagsInner {
      * @param tagValue The value of the tag.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteValueAsync(String tagName, String tagValue) {
+    public Observable<Void> deleteValueAsync(String tagName, String tagValue) {
+        return deleteValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteValueWithServiceResponseAsync(String tagName, String tagValue) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -161,10 +176,10 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TagValueInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the TagValueInner object if successful.
      */
-    public ServiceResponse<TagValueInner> createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateValueAsync(tagName, tagValue).toBlocking().single();
+    public TagValueInner createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
     }
 
     /**
@@ -176,7 +191,7 @@ public final class TagsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateValueAsync(tagName, tagValue), serviceCallback);
+        return ServiceCall.create(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
     }
 
     /**
@@ -186,7 +201,23 @@ public final class TagsInner {
      * @param tagValue The value of the tag.
      * @return the observable to the TagValueInner object
      */
-    public Observable<ServiceResponse<TagValueInner>> createOrUpdateValueAsync(String tagName, String tagValue) {
+    public Observable<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
+        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<TagValueInner>, TagValueInner>() {
+            @Override
+            public TagValueInner call(ServiceResponse<TagValueInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @return the observable to the TagValueInner object
+     */
+    public Observable<ServiceResponse<TagValueInner>> createOrUpdateValueWithServiceResponseAsync(String tagName, String tagValue) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -228,10 +259,10 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TagDetailsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the TagDetailsInner object if successful.
      */
-    public ServiceResponse<TagDetailsInner> createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException {
-        return createOrUpdateAsync(tagName).toBlocking().single();
+    public TagDetailsInner createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException {
+        return createOrUpdateWithServiceResponseAsync(tagName).toBlocking().single().getBody();
     }
 
     /**
@@ -242,7 +273,7 @@ public final class TagsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<TagDetailsInner> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(tagName), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
@@ -251,7 +282,22 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @return the observable to the TagDetailsInner object
      */
-    public Observable<ServiceResponse<TagDetailsInner>> createOrUpdateAsync(String tagName) {
+    public Observable<TagDetailsInner> createOrUpdateAsync(String tagName) {
+        return createOrUpdateWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<TagDetailsInner>, TagDetailsInner>() {
+            @Override
+            public TagDetailsInner call(ServiceResponse<TagDetailsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @return the observable to the TagDetailsInner object
+     */
+    public Observable<ServiceResponse<TagDetailsInner>> createOrUpdateWithServiceResponseAsync(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -290,10 +336,9 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String tagName) throws CloudException, IOException, IllegalArgumentException {
-        return deleteAsync(tagName).toBlocking().single();
+    public void delete(String tagName) throws CloudException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(tagName).toBlocking().single().getBody();
     }
 
     /**
@@ -304,7 +349,7 @@ public final class TagsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(tagName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(tagName), serviceCallback);
     }
 
     /**
@@ -313,7 +358,22 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String tagName) {
+    public Observable<Void> deleteAsync(String tagName) {
+        return deleteWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -350,17 +410,16 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<TagDetailsInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TagDetailsInner> list() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<TagDetailsInner>> response = listSinglePageAsync().toBlocking().single();
-        PagedList<TagDetailsInner> pagedList = new PagedList<TagDetailsInner>(response.getBody()) {
+        return new PagedList<TagDetailsInner>(response.getBody()) {
             @Override
             public Page<TagDetailsInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<TagDetailsInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -384,15 +443,14 @@ public final class TagsInner {
     /**
      * Get a list of subscription resource tags.
      *
-     * @return the observable to the List&lt;TagDetailsInner&gt; object
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TagDetailsInner>>> listAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+    public Observable<Page<TagDetailsInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -400,7 +458,26 @@ public final class TagsInner {
     /**
      * Get a list of subscription resource tags.
      *
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TagDetailsInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -437,17 +514,16 @@ public final class TagsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<TagDetailsInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TagDetailsInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<TagDetailsInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<TagDetailsInner> pagedList = new PagedList<TagDetailsInner>(response.getBody()) {
+        return new PagedList<TagDetailsInner>(response.getBody()) {
             @Override
             public Page<TagDetailsInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<TagDetailsInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -474,15 +550,34 @@ public final class TagsInner {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;TagDetailsInner&gt; object
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<TagDetailsInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
+                @Override
+                public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -491,7 +586,7 @@ public final class TagsInner {
      * Get a list of subscription resource tags.
      *
     ServiceResponse<PageImpl<TagDetailsInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

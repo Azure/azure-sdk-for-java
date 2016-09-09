@@ -7,12 +7,9 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
-import rx.functions.Func1;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +20,7 @@ import java.util.TreeMap;
  * Implementation for {@link Network} and its create and update interfaces.
  */
 class NetworkImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         Network,
         VirtualNetworkInner,
         NetworkImpl,
@@ -34,7 +31,7 @@ class NetworkImpl
         Network.Update {
 
     private final VirtualNetworksInner innerCollection;
-    private TreeMap<String, Subnet> subnets;
+    private Map<String, Subnet> subnets;
 
     NetworkImpl(String name,
             final VirtualNetworkInner innerModel,
@@ -42,14 +39,17 @@ class NetworkImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeSubnetsFromInner();
     }
 
-    private void initializeSubnetsFromInner() {
+    @Override
+    protected void initializeChildrenFromInner() {
         this.subnets = new TreeMap<>();
-        for (SubnetInner subnetInner : this.inner().subnets()) {
-            SubnetImpl subnet = new SubnetImpl(subnetInner, this);
-            this.subnets.put(subnetInner.name(), subnet);
+        List<SubnetInner> inners = this.inner().subnets();
+        if (inners != null) {
+            for (SubnetInner inner : inners) {
+                SubnetImpl subnet = new SubnetImpl(inner, this);
+                this.subnets.put(inner.name(), subnet);
+            }
         }
     }
 
@@ -57,10 +57,9 @@ class NetworkImpl
 
     @Override
     public NetworkImpl refresh() throws Exception {
-        ServiceResponse<VirtualNetworkInner> response =
-            this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
-        initializeSubnetsFromInner();
+        VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -72,12 +71,11 @@ class NetworkImpl
     // Helpers
 
     NetworkImpl withSubnet(SubnetImpl subnet) {
-        this.inner().subnets().add(subnet.inner());
         this.subnets.put(subnet.name(), subnet);
         return this;
     }
 
-    NetworkManager myManager() {
+    NetworkManager manager() {
         return super.myManager;
     }
 
@@ -98,9 +96,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withSubnets(Map<String, String> nameCidrPairs) {
-        List<SubnetInner> azureSubnets = new ArrayList<>();
-        this.inner().withSubnets(azureSubnets);
-        initializeSubnetsFromInner();
+        this.subnets.clear();
         for (Entry<String, String> pair : nameCidrPairs.entrySet()) {
             this.withSubnet(pair.getKey(), pair.getValue());
         }
@@ -109,18 +105,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withoutSubnet(String name) {
-        // Remove from cache
         this.subnets.remove(name);
-
-        // Remove from inner
-        List<SubnetInner> innerSubnets = this.inner().subnets();
-        for (int i = 0; i < innerSubnets.size(); i++) {
-            if (innerSubnets.get(i).name().equalsIgnoreCase(name)) {
-                innerSubnets.remove(i);
-                break;
-            }
-        }
-
         return this;
     }
 
@@ -132,8 +117,8 @@ class NetworkImpl
 
     @Override
     public SubnetImpl defineSubnet(String name) {
-        SubnetInner inner = new SubnetInner();
-        inner.withName(name);
+        SubnetInner inner = new SubnetInner()
+                .withName(name);
         return new SubnetImpl(inner, this);
     }
 
@@ -154,7 +139,8 @@ class NetworkImpl
         return Collections.unmodifiableMap(this.subnets);
     }
 
-    private void ensureCreationPrerequisites() {
+    @Override
+    protected void beforeCreating() {
         // Ensure address spaces
         if (this.addressSpaces().size() == 0) {
             this.withAddressSpace("10.0.0.0/16");
@@ -162,10 +148,18 @@ class NetworkImpl
 
         if (isInCreateMode()) {
             // Create a subnet as needed, covering the entire first address space
-            if (this.inner().subnets().size() == 0) {
+            if (this.subnets.size() == 0) {
                 this.withSubnet("subnet1", this.addressSpaces().get(0));
             }
         }
+
+        // Reset and update subnets
+        this.inner().withSubnets(innersFromWrappers(this.subnets.values()));
+    }
+
+    @Override
+    protected void afterCreating() {
+        initializeChildrenFromInner();
     }
 
     @Override
@@ -173,19 +167,8 @@ class NetworkImpl
         return (SubnetImpl) this.subnets.get(name);
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
     @Override
-    public Observable<Network> createResourceAsync() {
-        final  NetworkImpl self = this;
-        ensureCreationPrerequisites();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(new Func1<ServiceResponse<VirtualNetworkInner>, Network>() {
-                    @Override
-                    public Network call(ServiceResponse<VirtualNetworkInner> virtualNetworkInner) {
-                        setInner(virtualNetworkInner.getBody());
-                        initializeSubnetsFromInner();
-                        return self;
-                    }
-                });
+    protected Observable<VirtualNetworkInner> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

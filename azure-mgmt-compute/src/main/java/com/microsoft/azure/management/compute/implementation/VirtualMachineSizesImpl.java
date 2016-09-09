@@ -38,6 +38,6 @@ class VirtualMachineSizesImpl
 
     @Override
     public PagedList<VirtualMachineSize> listByRegion(String regionName) throws CloudException, IOException {
-        return wrapList(innerCollection.list(regionName).getBody());
+        return wrapList(innerCollection.list(regionName));
     }
 }

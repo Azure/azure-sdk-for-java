@@ -102,10 +102,10 @@ public final class LocalNetworkGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the LocalNetworkGatewayInner object wrapped in ServiceResponse if successful.
+     * @return the LocalNetworkGatewayInner object if successful.
      */
-    public ServiceResponse<LocalNetworkGatewayInner> createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().last();
+    public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -118,7 +118,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -129,7 +129,24 @@ public final class LocalNetworkGatewaysInner {
      * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<LocalNetworkGatewayInner>> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
+    public Observable<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
+            @Override
+            public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<LocalNetworkGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -159,10 +176,10 @@ public final class LocalNetworkGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LocalNetworkGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the LocalNetworkGatewayInner object if successful.
      */
-    public ServiceResponse<LocalNetworkGatewayInner> beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().single();
+    public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -175,7 +192,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LocalNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, localNetworkGatewayName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters), serviceCallback);
     }
 
     /**
@@ -186,7 +203,24 @@ public final class LocalNetworkGatewaysInner {
      * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
      * @return the observable to the LocalNetworkGatewayInner object
      */
-    public Observable<ServiceResponse<LocalNetworkGatewayInner>> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
+    public Observable<LocalNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
+            @Override
+            public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @return the observable to the LocalNetworkGatewayInner object
+     */
+    public Observable<ServiceResponse<LocalNetworkGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -233,10 +267,10 @@ public final class LocalNetworkGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LocalNetworkGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the LocalNetworkGatewayInner object if successful.
      */
-    public ServiceResponse<LocalNetworkGatewayInner> get(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single();
+    public LocalNetworkGatewayInner get(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -248,7 +282,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LocalNetworkGatewayInner> getAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<LocalNetworkGatewayInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -258,7 +292,23 @@ public final class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @return the observable to the LocalNetworkGatewayInner object
      */
-    public Observable<ServiceResponse<LocalNetworkGatewayInner>> getAsync(String resourceGroupName, String localNetworkGatewayName) {
+    public Observable<LocalNetworkGatewayInner> getAsync(String resourceGroupName, String localNetworkGatewayName) {
+        return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<LocalNetworkGatewayInner>, LocalNetworkGatewayInner>() {
+            @Override
+            public LocalNetworkGatewayInner call(ServiceResponse<LocalNetworkGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @return the observable to the LocalNetworkGatewayInner object
+     */
+    public Observable<ServiceResponse<LocalNetworkGatewayInner>> getWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -301,10 +351,9 @@ public final class LocalNetworkGatewaysInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last();
+    public void delete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last().getBody();
     }
 
     /**
@@ -316,7 +365,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -326,7 +375,23 @@ public final class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String localNetworkGatewayName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String localNetworkGatewayName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -351,10 +416,9 @@ public final class LocalNetworkGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
     }
 
     /**
@@ -366,7 +430,7 @@ public final class LocalNetworkGatewaysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName), serviceCallback);
     }
 
     /**
@@ -376,7 +440,23 @@ public final class LocalNetworkGatewaysInner {
      * @param localNetworkGatewayName The name of the local network gateway.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -418,17 +498,16 @@ public final class LocalNetworkGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LocalNetworkGatewayInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LocalNetworkGatewayInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<LocalNetworkGatewayInner> pagedList = new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
+        return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LocalNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -454,15 +533,34 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;LocalNetworkGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<LocalNetworkGatewayInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
+                @Override
+                public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -471,7 +569,7 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -511,17 +609,16 @@ public final class LocalNetworkGatewaysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LocalNetworkGatewayInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LocalNetworkGatewayInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<LocalNetworkGatewayInner> pagedList = new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
+        return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
             @Override
             public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LocalNetworkGatewayInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -548,15 +645,34 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;LocalNetworkGatewayInner&gt; object
+     * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<LocalNetworkGatewayInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Page<LocalNetworkGatewayInner>>() {
+                @Override
+                public Page<LocalNetworkGatewayInner> call(ServiceResponse<Page<LocalNetworkGatewayInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<LocalNetworkGatewayInner>>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(ServiceResponse<Page<LocalNetworkGatewayInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -565,7 +681,7 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

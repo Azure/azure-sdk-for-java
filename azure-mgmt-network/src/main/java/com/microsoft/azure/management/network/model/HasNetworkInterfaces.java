@@ -3,17 +3,18 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-package com.microsoft.azure.management.network;
+package com.microsoft.azure.management.network.model;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.network.NetworkInterface;
 
 /**
  * Interface exposing a list of network interfaces.
  */
-public interface SupportsNetworkInterfaces {
+public interface HasNetworkInterfaces {
     /**
      * Gets the primary network interface.
      * <p>
