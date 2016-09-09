@@ -4,10 +4,13 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -46,8 +49,16 @@ public final class ConnectionHandler extends BaseHandler
 	{
 		final Connection connection = event.getConnection();
 		final String hostName = event.getReactor().getConnectionAddress(connection);
+		
 		connection.setHostname(hostName);
 		connection.setContainer(StringUtil.getRandomString());
+		
+		final Map<Symbol, Object> connectionProperties = new HashMap<Symbol, Object>();
+		connectionProperties.put(AmqpConstants.PRODUCT, ClientConstants.PRODUCT_NAME);
+		connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
+		connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
+		connection.setProperties(connectionProperties);
+		
 		connection.open();
 	}
 

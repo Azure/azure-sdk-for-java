@@ -300,16 +300,18 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 				@Override
 				public void onEvent()
 				{
-					if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
-					{
-						createReceiveLink();
-					}
-
 					final List<Message> messages = receiveCore(maxMessageCount);
 					if (messages != null)
 						onReceive.complete(messages);
 					else
 						pendingReceives.offer(new ReceiveWorkItem(onReceive, receiveTimeout, maxMessageCount));
+
+					// calls to reactor should precede enqueue of the workItem into PendingReceives.
+					// This will allow error handling to enact on the enqueued workItem.
+					if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
+					{
+						createReceiveLink();
+					}
 				}
 			});
 		}
@@ -422,42 +424,37 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			this.lastKnownLinkError = exception;
 			this.onOpenComplete(exception);
 			
-			if (exception != null &&
-					(!(exception instanceof ServiceBusException) || !((ServiceBusException) exception).getIsTransient()))
+			final WorkItem<Collection<Message>> workItem = this.pendingReceives.peek();
+			final Duration nextRetryInterval = workItem != null && workItem.getTimeoutTracker() != null
+					? this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining())
+					: null;
+			if (nextRetryInterval != null)
 			{
-				WorkItem<Collection<Message>> workItem = null;
-				while ((workItem = this.pendingReceives.poll()) != null)
+				try
 				{
-					ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this);
+					this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
+					{
+						@Override
+						public void onEvent()
+						{
+							if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
+							{
+								createReceiveLink();
+								underlyingFactory.getRetryPolicy().incrementRetryCount(getClientId());
+							}
+						}
+					});
+				}
+				catch (IOException ignore)
+				{
 				}
 			}
 			else
 			{
-				WorkItem<Collection<Message>> workItem = this.pendingReceives.peek();
-				if (workItem != null && workItem.getTimeoutTracker() != null)
+				WorkItem<Collection<Message>> pendingReceive = null;
+				while ((pendingReceive = this.pendingReceives.poll()) != null)
 				{
-					Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy()
-							.getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
-					if (nextRetryInterval != null)
-					{
-						try
-						{
-							this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
-							{
-								@Override
-								public void onEvent()
-								{
-									if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
-									{
-										createReceiveLink();
-									}
-								}
-							});
-						}
-						catch (IOException ignore)
-						{
-						}
-					}
+					ExceptionUtil.completeExceptionally(pendingReceive.getWork(), exception, this);
 				}
 			}
 		}

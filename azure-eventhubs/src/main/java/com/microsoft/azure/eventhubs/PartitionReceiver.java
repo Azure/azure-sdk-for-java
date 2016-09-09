@@ -66,6 +66,7 @@ public final class PartitionReceiver extends ClientEntity
 	private Long epoch;
 	private boolean isEpochReceiver;
 	private PartitionReceiveHandler onReceiveHandler;
+	private boolean invokeHandlerOnTimeout;
 	private boolean isOnReceivePumpRunning;
 	private Thread onReceivePumpThread;
 
@@ -183,7 +184,7 @@ public final class PartitionReceiver extends ClientEntity
 	 * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
 	 * <p>By default the value is 300
 	 * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
-	 * @throws ServiceBusException 
+	 * @throws ServiceBusException if setting prefetchCount encounters error
 	 */
 	public final void setPrefetchCount(final int prefetchCount) throws ServiceBusException
 	{
@@ -291,17 +292,32 @@ public final class PartitionReceiver extends ClientEntity
 			}
 		});
 	}
+	
+	/**
+	 * Register a receive handler that will be called when an event is available. A 
+	 * {@link PartitionReceiveHandler} is a handler that allows user to specify a callback
+	 * for event processing and error handling in a receive pump model. 
+	 * 
+	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}. Setting this handler to <code>null</code> will stop the receive pump.
+	 */
+	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler)
+	{
+		this.setReceiveHandler(receiveHandler, false);
+	}
 
 	/**
 	 * Register a receive handler that will be called when an event is available. A 
 	 * {@link PartitionReceiveHandler} is a handler that allows user to specify a callback
 	 * for event processing and error handling in a receive pump model. 
 	 * @param receiveHandler An implementation of {@link PartitionReceiveHandler}
+	 * @param invokeWhenNoEvents flag to indicate whether the {@link PartitionReceiveHandler#onReceive(Iterable)} should be invoked when the receive call times out
 	 */
-	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler)
+	public void setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents)
 	{
 		synchronized (this.receiveHandlerSync)
 		{
+			this.invokeHandlerOnTimeout = invokeWhenNoEvents;
+			
 			if (receiveHandler == null)
 			{
 				if (this.onReceiveHandler != null)
@@ -312,6 +328,10 @@ public final class PartitionReceiver extends ClientEntity
 			}
 			else
 			{
+				if (this.isOnReceivePumpRunning)
+					throw new IllegalArgumentException(
+					"Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
+
 				this.onReceiveHandler = receiveHandler;
 				this.startOnReceivePump();
 			}
@@ -344,9 +364,11 @@ public final class PartitionReceiver extends ClientEntity
 			@Override
 			public void run()
 			{
+				final boolean invokeOnTimeout;
 				synchronized (PartitionReceiver.this.receiveHandlerSync)
 				{
 					PartitionReceiver.this.isOnReceivePumpRunning = true;
+					invokeOnTimeout = PartitionReceiver.this.invokeHandlerOnTimeout;
 				}
 
 				while(PartitionReceiver.this.isOnReceivePumpRunning)
@@ -400,7 +422,10 @@ public final class PartitionReceiver extends ClientEntity
 
 					try
 					{
-						PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);
+						if (receivedEvents != null || (receivedEvents == null && invokeOnTimeout))
+						{
+							PartitionReceiver.this.onReceiveHandler.onReceive(receivedEvents);	
+						}
 					}
 					catch (Throwable userCodeError)
 					{

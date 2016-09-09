@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.time.*;
-import org.apache.qpid.proton.amqp.*;
+import java.time.Duration;
+import org.apache.qpid.proton.amqp.Symbol;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
@@ -46,4 +46,29 @@ public final class ClientConstants
 
 	public final static String NO_RETRY = "NoRetry";
 	public final static String DEFAULT_RETRY = "Default";
+	
+	public final static String PRODUCT_NAME = "MSJavaClient";
+	public final static String CURRENT_JAVACLIENT_VERSION = "0.9.0-SNAPSHOT";
+
+	public static final String PLATFORM_INFO = getPlatformInfo();
+
+	private static String getPlatformInfo()
+	{
+		final Package javaRuntimeClassPkg = Runtime.class.getPackage();
+		final StringBuilder patformInfo = new StringBuilder();
+		patformInfo.append("jre:");
+		patformInfo.append(javaRuntimeClassPkg.getImplementationVersion());
+		patformInfo.append(";vendor:");
+		patformInfo.append(javaRuntimeClassPkg.getImplementationVendor());
+		patformInfo.append(";jvm:");
+		patformInfo.append(System.getProperty("java.vm.version"));
+		patformInfo.append(";arch:");
+		patformInfo.append(System.getProperty("os.arch"));
+		patformInfo.append(";os:");
+		patformInfo.append(System.getProperty("os.name"));
+		patformInfo.append(";os version:");
+		patformInfo.append(System.getProperty("os.version"));
+
+		return patformInfo.toString();
+	}
 }
