@@ -17,10 +17,9 @@ import java.util.List;
  * @param <ChildT> the type of child paged list item
  */
 final class ChildListFlattener<ParentT, ChildT> {
-    protected final String switchToCousin = "switchToCousin";
-    protected Iterator<ParentT> parentItr;
-    protected PagedList<ChildT> currentChildList;
-    protected PagedList<ChildT> cousinList;
+    private final String switchToCousin = "switchToCousin";
+    private Iterator<ParentT> parentItr;
+    private PagedList<ChildT> currentChildList;
     private final ChildListLoader<ParentT, ChildT> childListLoader;
 
     /**
@@ -67,50 +66,20 @@ final class ChildListFlattener<ParentT, ChildT> {
         if (this.currentChildList == null) {
             return emptyPagedList();
         }
-        // setCousin sets the next child paged list (i.e. the current child list's immediate cousin).
-        // we need to know in advance whether there is going to be a next child paged list (cousin).
-        // This is because the 'next link' of the current child paged list's last page will be null.
-        // when the PagedList sees next link as null it assumes there is no more pages hence it won't
-        // call nextPage and iteration stops, if cousin presents then 'childListPage' method replace
-        // this null with a marker indicating there is more pages.
-        setCousin();
         return new PagedList<ChildT>(childListPage(currentChildList.currentPage())) {
             @Override
             public Page<ChildT> nextPage(String nextPageLink) throws RestException, IOException {
                 if (nextPageLink.equalsIgnoreCase(switchToCousin)) {
                     // Reached end of current child paged list, make next child list(cousin) as current
                     // paged list and return it's first page.
-                    currentChildList = cousinList;
-                    setCousin();
+                    currentChildList = nextChildList();
                     return childListPage(currentChildList.currentPage());
                 } else {
                     currentChildList.loadNextPage();
-                    if (currentChildList.currentPage().getNextPageLink() == null) {
-                        // This is the last page of the current child paged list set it's cousin
-                        // so that next call to nextPage can start using it.
-                        setCousin();
-                    }
                     return childListPage(currentChildList.currentPage());
                 }
             }
         };
-    }
-
-    /**
-     * @return true if the current child paged list has a cousin
-     */
-    private boolean hasCousin() {
-        return this.cousinList != null;
-    }
-
-    /**
-     * Locate and sets the cousin list (the next child paged list).
-     *
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization
-     */
-    private void setCousin() throws CloudException, IOException {
-        cousinList = nextChildList();
     }
 
     /**
@@ -152,7 +121,7 @@ final class ChildListFlattener<ParentT, ChildT> {
                    return page.getNextPageLink();
                 }
 
-                if (hasCousin()) {
+                if (parentItr.hasNext()) {
                     // The current child paged list has no more pages so switch to it's cousin list
                     return switchToCousin;
                 }
