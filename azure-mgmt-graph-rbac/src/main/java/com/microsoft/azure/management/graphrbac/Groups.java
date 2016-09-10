@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Entry point to tenant management API.
+ * Entry point to AD group management API.
  */
 public interface Groups extends
         SupportsCreating<Group.DefinitionStages.Blank>,
         SupportsListing<Group>,
         SupportsDeleting {
     /**
-     * Gets the information about a user.
+     * Gets the information about a group.
      *
      * @param objectId the unique object id
      * @return an immutable representation of the resource
@@ -32,7 +32,7 @@ public interface Groups extends
     Group getByObjectId(String objectId) throws CloudException, IOException;
 
     /**
-     * Gets the information about a user.
+     * Gets the information about a group.
      *
      * @param displayNamePrefix the partial prefix of the display name to search
      * @return an immutable representation of the resource

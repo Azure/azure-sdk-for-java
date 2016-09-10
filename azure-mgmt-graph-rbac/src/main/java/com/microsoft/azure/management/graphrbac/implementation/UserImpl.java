@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import rx.Observable;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for User and its parent interfaces.
  */
 class UserImpl
         extends CreatableUpdatableImpl<User, UserInner, UserImpl>

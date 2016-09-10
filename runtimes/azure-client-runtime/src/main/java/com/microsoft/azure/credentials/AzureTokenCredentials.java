@@ -13,12 +13,24 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import java.io.IOException;
 
 /**
- * AzureServiceClientCredentials is the abstraction for credentials used by
- * ServiceClients accessing Azure.
+ * AzureTokenCredentials represents a credentials object with access to Azure
+ * Resource management.
  */
 public interface AzureTokenCredentials extends ServiceClientCredentials {
+    /**
+     * Override this method to provide the mechanism to get a token.
+     *
+     * @param resource the resource the access token is for
+     * @return the token to access the resource
+     * @throws IOException exceptions from IO
+     */
     String getToken(String resource) throws IOException;
 
+    /**
+     * Override this method to provide the domain or tenant ID the token is valid in.
+     *
+     * @return the domain or tenant ID string
+     */
     String getDomain();
 
     /**

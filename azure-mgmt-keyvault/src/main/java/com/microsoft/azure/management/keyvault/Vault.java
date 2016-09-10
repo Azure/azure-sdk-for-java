@@ -108,18 +108,77 @@ public interface Vault extends
             WithCreate withSku(SkuName skuName);
         }
 
+        /**
+         * A key vault definition allowing access policies to be attached.
+         */
         interface WithAccessPolicy {
+            /**
+             * Attach no access policy.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate withEmptyAccessPolicy();
+
+            /**
+             * Attach an existing access policy.
+             *
+             * @param accessPolicy the existing access policy
+             * @return the next stage of key vault definition
+             */
             WithCreate withAccessPolicy(AccessPolicy accessPolicy);
+
+            /**
+             * Begins the definition of a new access policy to be added to this key vault.
+             *
+             * @return the first stage of the access policy definition
+             */
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
         }
 
+        /**
+         * A key vault definition allowing various configurations to be set.
+         */
         interface WithConfigurations {
+            /**
+             * Enable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate enableDeployment();
+
+            /**
+             * Enable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate enableDiskEncryption();
+
+            /**
+             * Enable Azure Resource Manager to retrieve secrets from the key vault.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate enableTemplateDeployment();
+
+            /**
+             * Disable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate disableDeployment();
+
+            /**
+             * Disable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate disableDiskEncryption();
+
+            /**
+             * Disable Azure Resource Manager to retrieve secrets from the key vault.
+             *
+             * @return the next stage of key vault definition
+             */
             WithCreate disableTemplateDeployment();
         }
 
@@ -141,19 +200,86 @@ public interface Vault extends
      * Grouping of all the key vault update stages.
      */
     interface UpdateStages {
+        /**
+         * A key vault update allowing access policies to be modified, attached, or removed.
+         */
         interface WithAccessPolicy {
+            /**
+             * Remove an access policy from the access policy list.
+             *
+             * @param objectId the object ID of the Active Directory identity the access policy is for
+             * @return the key vault update stage
+             */
             Update withoutAccessPolicy(String objectId);
+
+            /**
+             * Attach an existing access policy.
+             *
+             * @param accessPolicy the existing access policy
+             * @return the key vault update stage
+             */
             Update withAccessPolicy(AccessPolicy accessPolicy);
+
+            /**
+             * Begins the definition of a new access policy to be added to this key vault.
+             *
+             * @return the first stage of the access policy definition
+             */
             AccessPolicy.UpdateDefinitionStages.Blank<Update> defineAccessPolicy();
+
+            /**
+             * Begins the update of an existing access policy attached to this key vault.
+             *
+             * @param objectId the object ID of the Active Directory identity the access policy is for
+             * @return the update stage of the access policy definition
+             */
             AccessPolicy.Update updateAccessPolicy(String objectId);
         }
 
+        /**
+         * A key vault update allowing various configurations to be set.
+         */
         interface WithConfigurations {
+            /**
+             * Enable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
+             *
+             * @return the key vault update stage
+             */
             Update enableDeployment();
+
+            /**
+             * Enable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
+             *
+             * @return the key vault update stage
+             */
             Update enableDiskEncryption();
+
+            /**
+             * Enable Azure Resource Manager to retrieve secrets from the key vault.
+             *
+             * @return the key vault update stage
+             */
             Update enableTemplateDeployment();
+
+            /**
+             * Disable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
+             *
+             * @return the key vault update stage
+             */
             Update disableDeployment();
+
+            /**
+             * Disable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
+             *
+             * @return the next stage of key vault definition
+             */
             Update disableDiskEncryption();
+
+            /**
+             * Disable Azure Resource Manager to retrieve secrets from the key vault.
+             *
+             * @return the key vault update stage
+             */
             Update disableTemplateDeployment();
         }
     }

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for AccessPolicy and its parent interfaces.
  */
 class AccessPolicyImpl
         extends ChildResourceImpl<
@@ -34,12 +34,20 @@ class AccessPolicyImpl
             AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
             AccessPolicy.UpdateDefinition<Vault.Update>,
             AccessPolicy.Update {
-    String userPrincipalName;
-    String servicePrincipalName;
+    private String userPrincipalName;
+    private String servicePrincipalName;
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
         super(innerObject, parent);
         inner().withTenantId(UUID.fromString(parent.tenantId()));
+    }
+
+    String userPrincipalName() {
+        return userPrincipalName;
+    }
+
+    String servicePrincipalName() {
+        return servicePrincipalName;
     }
 
     @Override

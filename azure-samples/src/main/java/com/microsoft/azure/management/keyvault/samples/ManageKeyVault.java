@@ -30,7 +30,7 @@ import java.io.File;
  *  - List key vaults
  *  - Delete a key vault.
  */
-public class ManageKeyVault {
+public final class ManageKeyVault {
 
     /**
      * Main entry point.

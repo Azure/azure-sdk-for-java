@@ -13,7 +13,7 @@ import rx.Observable;
 import java.util.List;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for ServicePrincipal and its parent interfaces.
  */
 class ServicePrincipalImpl
         extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>

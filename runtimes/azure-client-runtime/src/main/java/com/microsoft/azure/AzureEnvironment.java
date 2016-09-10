@@ -103,8 +103,6 @@ public final class AzureEnvironment {
     }
 
     /**
-     * Gets a builder for {@link RestClient}.
-     *
      * @return a builder for the rest client.
      */
     public RestClient.Builder.Buildable newRestClientBuilder() {
@@ -114,8 +112,6 @@ public final class AzureEnvironment {
     }
 
     /**
-     * Gets the ActiveDirectory Endpoint for the Azure Environment.
-     *
      * @return the ActiveDirectory Endpoint for the Azure Environment.
      */
     public String getAuthenticationEndpoint() {
@@ -123,14 +119,15 @@ public final class AzureEnvironment {
     }
 
     /**
-     * Gets the token audience for an endpoint.
-     *
-     * @return the token audience for an endpoint.
+     * @return the Azure Resource Manager endpoint for the environment.
      */
     public String getManagementEndpoint() {
         return managementEndpoint;
     }
 
+    /**
+     * @return the Graph API endpoint.
+     */
     public String getGraphEndpoint() {
         return graphEndpoint;
     }

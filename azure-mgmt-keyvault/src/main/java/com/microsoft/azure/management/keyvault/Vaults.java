@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for key vaults management API.
  */
 public interface Vaults extends
         SupportsListing<Vault>,

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * The implementation of StorageAccounts and its parent interfaces.
+ * The implementation of Vaults and its parent interfaces.
  */
 class VaultsImpl
         extends GroupableResourcesImpl<

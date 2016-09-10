@@ -16,7 +16,7 @@ import rx.Observable;
 import java.io.IOException;
 
 /**
- * Entry point to tenant management API.
+ * Entry point to service principal management API.
  */
 public interface ServicePrincipals extends
         SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,

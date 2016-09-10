@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The implementation of StorageAccounts and its parent interfaces.
+ * The implementation of ServicePrincipals and its parent interfaces.
  */
 class ServicePrincipalsImpl
         extends CreatableWrappersImpl<

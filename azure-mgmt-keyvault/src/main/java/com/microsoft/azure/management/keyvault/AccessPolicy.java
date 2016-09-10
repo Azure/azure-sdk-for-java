@@ -49,6 +49,10 @@ public interface AccessPolicy extends
      * Fluent interfaces to attach an access policy
      **************************************************************/
 
+    /**
+     * The entirety of an access policy definition.
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
@@ -66,12 +70,57 @@ public interface AccessPolicy extends
         interface Blank<ParentT> extends WithIdentity<ParentT> {
         }
 
+        /**
+         * The access policy definition stage allowing the Active Directory identity to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithIdentity<ParentT> {
+            /**
+             * Specifies the object ID of the Active Directory identity this access policy is for.
+             *
+             * @param objectId the object ID of the AD identity
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forObjectId(UUID objectId);
+
+            /**
+             * Specifies the Active Directory user this access policy is for.
+             *
+             * @param user the AD user object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forUser(User user);
+
+            /**
+             * Specifies the Active Directory user this access policy is for.
+             *
+             * @param userPrincipalName the user principal name of the AD user
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forUser(String userPrincipalName);
+
+            /**
+             * Specifies the Active Directory group this access policy is for.
+             *
+             * @param group the AD group object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forGroup(Group group);
+
+            /**
+             * Specifies the Active Directory service principal this access policy is for.
+             *
+             * @param servicePrincipal the AD service principal object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forServicePrincipal(ServicePrincipal servicePrincipal);
+
+            /**
+             * Specifies the Active Directory service principal this access policy is for.
+             *
+             * @param servicePrincipalName the service principal name of the AD user
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forServicePrincipal(String servicePrincipalName);
         }
 
@@ -80,13 +129,51 @@ public interface AccessPolicy extends
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithPermissions<ParentT> {
+            /**
+             * Allow all permissions for the AD identity to access keys.
+             *
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowKeyAllPermissions();
-            WithAttach<ParentT> allowKeyPermissions(KeyPermissions... permissions);
-            WithAttach<ParentT> allowKeyPermissions(List<KeyPermissions> permissions);
-            WithAttach<ParentT> allowSecretAllPermissions();
-            WithAttach<ParentT> allowSecretPermissions(SecretPermissions... permissions);
-            WithAttach<ParentT> allowSecretPermissions(List<SecretPermissions> permissions);
 
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowKeyPermissions(KeyPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowKeyPermissions(List<KeyPermissions> permissions);
+
+            /**
+             * Allow all permissions for the AD identity to access secrets.
+             *
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowSecretAllPermissions();
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowSecretPermissions(SecretPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowSecretPermissions(List<SecretPermissions> permissions);
         }
 
         /** The final stage of the access policy definition.
@@ -102,13 +189,17 @@ public interface AccessPolicy extends
         }
     }
 
+    /**
+     * The entirety of an access policy definition as part of a key vault update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /**
-     * Grouping of access policy definition stages applicable as part of a key vault creation.
+     * Grouping of access policy definition stages applicable as part of a key vault update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -119,12 +210,57 @@ public interface AccessPolicy extends
         interface Blank<ParentT> extends WithIdentity<ParentT> {
         }
 
+        /**
+         * The access policy definition stage allowing the Active Directory identity to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithIdentity<ParentT> {
+            /**
+             * Specifies the object ID of the Active Directory identity this access policy is for.
+             *
+             * @param objectId the object ID of the AD identity
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forObjectId(UUID objectId);
+
+            /**
+             * Specifies the Active Directory user this access policy is for.
+             *
+             * @param user the AD user object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forUser(User user);
+
+            /**
+             * Specifies the Active Directory user this access policy is for.
+             *
+             * @param userPrincipalName the user principal name of the AD user
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forUser(String userPrincipalName);
+
+            /**
+             * Specifies the Active Directory group this access policy is for.
+             *
+             * @param group the AD group object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forGroup(Group group);
+
+            /**
+             * Specifies the Active Directory service principal this access policy is for.
+             *
+             * @param servicePrincipal the AD service principal object
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forServicePrincipal(ServicePrincipal servicePrincipal);
+
+            /**
+             * Specifies the Active Directory service principal this access policy is for.
+             *
+             * @param servicePrincipalName the service principal name of the AD user
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> forServicePrincipal(String servicePrincipalName);
         }
 
@@ -133,18 +269,57 @@ public interface AccessPolicy extends
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithPermissions<ParentT> {
+            /**
+             * Allow all permissions for the AD identity to access keys.
+             *
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowKeyAllPermissions();
+
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowKeyPermissions(KeyPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowKeyPermissions(List<KeyPermissions> permissions);
+
+            /**
+             * Allow all permissions for the AD identity to access secrets.
+             *
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowSecretAllPermissions();
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowSecretPermissions(SecretPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
             WithAttach<ParentT> allowSecretPermissions(List<SecretPermissions> permissions);
         }
 
         /** The final stage of the access policy definition.
          * <p>
          * At this stage, more permissions can be added or application ID can be specified,
-         * or the access policy definition can be attached to the parent key vault definition
+         * or the access policy definition can be attached to the parent key vault update
          * using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -159,31 +334,109 @@ public interface AccessPolicy extends
      */
     interface UpdateStages {
         /**
-         * The access policy definition stage allowing permissions to be added.
+         * The access policy update stage allowing permissions to be added or removed.
          */
         interface WithPermissions {
+            /**
+             * Allow all permissions for the AD identity to access keys.
+             *
+             * @return the next stage of access policy update
+             */
             Update allowKeyAllPermissions();
-            Update allowKeyPermissions(KeyPermissions... permissions);
-            Update allowKeyPermissions(List<KeyPermissions> permissions);
-            Update disallowKeyAllPermissions();
-            Update disallowKeyPermissions(KeyPermissions... permissions);
-            Update disallowKeyPermissions(List<KeyPermissions> permissions);
-            Update allowSecretAllPermissions();
-            Update allowSecretPermissions(SecretPermissions... permissions);
-            Update allowSecretPermissions(List<SecretPermissions> permissions);
-            Update disallowSecretAllPermissions();
-            Update disallowSecretPermissions(SecretPermissions... permissions);
-            Update disallowSecretPermissions(List<SecretPermissions> permissions);
 
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy update
+             */
+            Update allowKeyPermissions(KeyPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy update
+             */
+            Update allowKeyPermissions(List<KeyPermissions> permissions);
+
+            /**
+             * Revoke all permissions for the AD identity to access keys.
+             *
+             * @return the next stage of access policy update
+             */
+            Update disallowKeyAllPermissions();
+
+            /**
+             * Revoke a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions to revoke
+             * @return the next stage of access policy update
+             */
+            Update disallowKeyPermissions(KeyPermissions... permissions);
+
+            /**
+             * Revoke a list of permissions for the AD identity to access keys.
+             *
+             * @param permissions the list of permissions to revoke
+             * @return the next stage of access policy update
+             */
+            Update disallowKeyPermissions(List<KeyPermissions> permissions);
+
+            /**
+             * Allow all permissions for the AD identity to access secrets.
+             *
+             * @return the next stage of access policy definition
+             */
+            Update allowSecretAllPermissions();
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            Update allowSecretPermissions(SecretPermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            Update allowSecretPermissions(List<SecretPermissions> permissions);
+
+            /**
+             * Revoke all permissions for the AD identity to access secrets.
+             *
+             * @return the next stage of access policy update
+             */
+            Update disallowSecretAllPermissions();
+
+            /**
+             * Revoke a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions to revoke
+             * @return the next stage of access policy update
+             */
+            Update disallowSecretPermissions(SecretPermissions... permissions);
+
+            /**
+             * Revoke a list of permissions for the AD identity to access secrets.
+             *
+             * @param permissions the list of permissions to revoke
+             * @return the next stage of access policy update
+             */
+            Update disallowSecretPermissions(List<SecretPermissions> permissions);
         }
     }
 
     /**
-     * The template for a key vault update operation, containing all the settings that can be modified.
+     * The entirety of an access policy update as part of a key vault update.
      */
     interface Update extends
             UpdateStages.WithPermissions,
-            Settable<Vault.Update>{
+            Settable<Vault.Update> {
     }
 }
 

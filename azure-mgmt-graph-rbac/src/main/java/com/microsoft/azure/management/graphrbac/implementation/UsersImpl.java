@@ -21,7 +21,7 @@ import rx.functions.Func1;
 import java.io.IOException;
 
 /**
- * The implementation of StorageAccounts and its parent interfaces.
+ * The implementation of Users and its parent interfaces.
  */
 class UsersImpl
         extends CreatableWrappersImpl<

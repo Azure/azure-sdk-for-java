@@ -274,6 +274,10 @@ public final class Utils {
                 .toString());
     }
 
+    /**
+     * Print a key vault.
+     * @param vault the key vault resource
+     */
     public static void print(Vault vault) {
         StringBuilder info = new StringBuilder().append("Key Vault: ").append(vault.id())
                 .append("Name: ").append(vault.name())
@@ -282,8 +286,7 @@ public final class Utils {
                 .append("\n\tSku: ").append(vault.sku().name()).append(" - ").append(vault.sku().family())
                 .append("\n\tVault URI: ").append(vault.vaultUri())
                 .append("\n\tAccess policies: ");
-        for (AccessPolicy accessPolicy:
-             vault.accessPolicies()) {
+        for (AccessPolicy accessPolicy: vault.accessPolicies()) {
             info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
                     .append("\n\t\tKey permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().keys()))
                     .append("\n\t\tSecret permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().secrets()));

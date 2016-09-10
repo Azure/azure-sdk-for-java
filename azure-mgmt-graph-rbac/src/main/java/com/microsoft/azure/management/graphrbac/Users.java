@@ -16,7 +16,7 @@ import rx.Observable;
 import java.io.IOException;
 
 /**
- * Entry point to tenant management API.
+ * Entry point to AD user management API.
  */
 public interface Users extends
         SupportsCreating<User.DefinitionStages.Blank>,

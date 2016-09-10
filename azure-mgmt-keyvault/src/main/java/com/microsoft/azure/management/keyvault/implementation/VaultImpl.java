@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for Vault and its parent interfaces.
  */
 class VaultImpl
         extends GroupableResourceImpl<
@@ -123,7 +123,7 @@ class VaultImpl
     @Override
     public VaultImpl withoutAccessPolicy(String objectId) {
         for (AccessPolicyImpl entry : this.accessPolicies) {
-            if (entry.objectId().toString().equals(objectId)) {
+            if (entry.objectId().equals(objectId)) {
                 accessPolicies.remove(entry);
                 break;
             }
@@ -145,7 +145,7 @@ class VaultImpl
     @Override
     public AccessPolicyImpl updateAccessPolicy(String objectId) {
         for (AccessPolicyImpl entry : this.accessPolicies) {
-            if (entry.objectId().toString().equals(objectId)) {
+            if (entry.objectId().equals(objectId)) {
                 return entry;
             }
         }
@@ -201,8 +201,8 @@ class VaultImpl
         List<Observable<?>>observables = new ArrayList<>();
         for (final AccessPolicyImpl accessPolicy : accessPolicies) {
             if (accessPolicy.objectId() == null) {
-                if (accessPolicy.userPrincipalName != null) {
-                    observables.add(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName)
+                if (accessPolicy.userPrincipalName() != null) {
+                    observables.add(graphRbacManager.users().getByUserPrincipalNameAsync(accessPolicy.userPrincipalName())
                             .subscribeOn(Schedulers.io())
                             .doOnNext(new Action1<User>() {
                                 @Override
@@ -210,8 +210,8 @@ class VaultImpl
                                     accessPolicy.forObjectId(UUID.fromString(user.objectId()));
                                 }
                             }));
-                } else if (accessPolicy.servicePrincipalName != null) {
-                    observables.add(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName)
+                } else if (accessPolicy.servicePrincipalName() != null) {
+                    observables.add(graphRbacManager.servicePrincipals().getByServicePrincipalNameAsync(accessPolicy.servicePrincipalName())
                             .subscribeOn(Schedulers.io())
                             .doOnNext(new Action1<ServicePrincipal>() {
                                 @Override

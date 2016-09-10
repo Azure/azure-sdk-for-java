@@ -55,6 +55,7 @@ public final class Azure {
      * Authenticate to Azure using a credentials object.
      *
      * @param credentials the credentials object
+     * @param tenantId the tenantId in Active Directory
      * @return the authenticated Azure client
      */
     public static Authenticated authenticate(ServiceClientCredentials credentials, String tenantId) {
@@ -103,6 +104,7 @@ public final class Azure {
     /**
      * Authenticates API access using a {@link RestClient} instance.
      * @param restClient the {@link RestClient} configured with Azure authentication credentials
+     * @param tenantId the tenantId in Active Directory
      * @return authenticated Azure client
      */
     public static Authenticated authenticate(RestClient restClient, String tenantId) {
@@ -128,10 +130,17 @@ public final class Azure {
          * Authenticates API access based on the provided credentials.
          *
          * @param credentials The credentials to authenticate API access with
+         * @param tenantId the tenantId in Active Directory
          * @return the authenticated Azure client
          */
         Authenticated authenticate(ServiceClientCredentials credentials, String tenantId);
 
+        /**
+         * Authenticates API access based on the provided credentials.
+         *
+         * @param credentials The credentials to authenticate API access with
+         * @return the authenticated Azure client
+         */
         Authenticated authenticate(AzureTokenCredentials credentials);
 
         /**
@@ -387,6 +396,9 @@ public final class Azure {
         return this.networkManager.networkInterfaces();
     }
 
+    /**
+     * @return entry point to managing key vaults
+     */
     public Vaults vaults() {
         return this.keyVaultManager.vaults();
     }
