@@ -127,7 +127,7 @@ public interface LoadBalancer extends
         /**
          * The stage of an Internet-facing load balancer definition allowing to define one or more public frontends.
          */
-        interface WithPublicFrontend extends WithPublicIpAddress<WithPublicFrontendOrBackend> {
+        interface WithPublicFrontend {
             /**
              * Begins the definition of a new load public balancer frontend.
              * <p>
@@ -242,16 +242,16 @@ public interface LoadBalancer extends
          */
         interface WithPublicIpAddress<ReturnT> {
             /**
-             * Assigns the provided public IP addresses as the public frontend to the load balancer,
+             * Assigns the provided public IP address to the default public frontend to the load balancer,
              * making it an Internet-facing load balancer.
              * <p>
              * This will create a new default frontend for the load balancer under the name "default".
              * <p>
              * Once the first public frontend is specified, only public frontends can be added, not private.
-             * @param publicIpAddresses existing public IP addresses
+             * @param publicIpAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
 
             /**
              * Creates a new public IP address as the default public frontend of the load balancer,
