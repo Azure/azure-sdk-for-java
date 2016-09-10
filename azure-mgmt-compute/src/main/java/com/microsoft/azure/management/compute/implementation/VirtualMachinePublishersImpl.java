@@ -21,10 +21,12 @@ class VirtualMachinePublishersImpl
         extends ReadableWrappersImpl<VirtualMachinePublisher, VirtualMachinePublisherImpl, VirtualMachineImageResourceInner>
         implements VirtualMachinePublishers {
 
-    private final VirtualMachineImagesInner innerCollection;
+    private final VirtualMachineImagesInner imagesInnerCollection;
+    private final VirtualMachineExtensionImagesInner extensionsInnerCollection;
 
-    VirtualMachinePublishersImpl(VirtualMachineImagesInner innerCollection) {
-        this.innerCollection = innerCollection;
+    VirtualMachinePublishersImpl(VirtualMachineImagesInner imagesInnerCollection, VirtualMachineExtensionImagesInner extensionsInnerCollection) {
+        this.imagesInnerCollection = imagesInnerCollection;
+        this.extensionsInnerCollection = extensionsInnerCollection;
     }
 
     @Override
@@ -34,11 +36,14 @@ class VirtualMachinePublishersImpl
 
     @Override
     protected VirtualMachinePublisherImpl wrapModel(VirtualMachineImageResourceInner inner) {
-        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()), inner.name(), this.innerCollection);
+        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()),
+                inner.name(),
+                this.imagesInnerCollection,
+                this.extensionsInnerCollection);
     }
 
     @Override
     public PagedList<VirtualMachinePublisher> listByRegion(String regionName) throws CloudException, IOException {
-        return wrapList(innerCollection.listPublishers(regionName));
+        return wrapList(imagesInnerCollection.listPublishers(regionName));
     }
 }

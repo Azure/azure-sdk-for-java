@@ -29,6 +29,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -54,6 +55,7 @@ import rx.functions.Func1;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -110,10 +112,13 @@ class VirtualMachineImpl
     private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
+    // The entry point to manage extensions associated with the virtual machine
+    private VirtualMachineExtensionsImpl virtualMachineExtensions;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
+                       VirtualMachineExtensionsInner extensionsClient,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
@@ -132,6 +137,7 @@ class VirtualMachineImpl
                 return new VirtualMachineSizeImpl(inner);
             }
         };
+        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         initializeDataDisks();
     }
 
@@ -144,6 +150,7 @@ class VirtualMachineImpl
         this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
+        this.virtualMachineExtensions.refresh();
         return this;
     }
 
@@ -624,6 +631,13 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine optional extension settings
+
+    @Override
+    public VirtualMachineExtensionImpl defineNewExtension(String name) {
+        return this.virtualMachineExtensions.define(name);
+    }
+
     // Virtual machine update only settings
 
     @Override
@@ -678,6 +692,17 @@ class VirtualMachineImpl
                 }
             }
         }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineExtensionImpl updateExtension(String name) {
+        return this.virtualMachineExtensions.update(name);
+    }
+
+    @Override
+    public VirtualMachineImpl withoutExtension(String name) {
+        this.virtualMachineExtensions.remove(name);
         return this;
     }
 
@@ -800,8 +825,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineExtensionInner> resources() {
-        return inner().resources();
+    public Map<String, VirtualMachineExtension> extensions() {
+        return this.virtualMachineExtensions.asMap();
     }
 
     @Override
@@ -872,10 +897,25 @@ class VirtualMachineImpl
                                     }
                                 });
                     }
+                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                        return self.virtualMachineExtensions.commitAndGetAllAsync()
+                                .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
+                                        return self;
+                                    }
+                                });
+                    }
                 });
     }
 
     // Helpers
+    VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
+        this.virtualMachineExtensions.addExtension(extension);
+        return this;
+    }
 
     VirtualMachineImpl withDataDisk(DataDiskImpl dataDisk) {
         this.inner()

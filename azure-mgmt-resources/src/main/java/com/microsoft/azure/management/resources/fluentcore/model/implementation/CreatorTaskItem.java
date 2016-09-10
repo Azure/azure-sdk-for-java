@@ -31,12 +31,12 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
     @Override
     public Observable<ResourceT> executeAsync() {
         return this.resourceCreator.createResourceAsync()
-                .subscribeOn(Schedulers.io())
-                .doOnNext(new Action1<ResourceT>() {
-                    @Override
-                    public void call(ResourceT resourceT) {
-                        created = resourceT;
-                    }
-                });
+            .subscribeOn(Schedulers.io())
+            .doOnNext(new Action1<ResourceT>() {
+                        @Override
+                        public void call(ResourceT resourceT) {
+                            created = resourceT;
+                        }
+                    });
     }
 }

@@ -11,6 +11,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -116,6 +118,21 @@ public final class Utils {
             networkProfile.append("\n\t\tId:").append(networkInterfaceId);
         }
 
+        StringBuilder extensions = new StringBuilder().append("\n\tExtensions: ");
+        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.extensions().entrySet()) {
+            VirtualMachineExtension extension = extensionEntry.getValue();
+            extensions.append("\n\t\tExtension: ").append(extension.id())
+                    .append("\n\t\t\tName: ").append(extension.name())
+                    .append("\n\t\t\tTags: ").append(extension.tags())
+                    .append("\n\t\t\tProvisioningState: ").append(extension.provisioningState())
+                    .append("\n\t\t\tAuto upgrade minor version enabled: ").append(extension.autoUpgradeMinorVersionEnabled())
+                    .append("\n\t\t\tPublisher: ").append(extension.publisherName())
+                    .append("\n\t\t\tType: ").append(extension.typeName())
+                    .append("\n\t\t\tVersion: ").append(extension.versionName())
+                    .append("\n\t\t\tPublic Settings: ").append(extension.publicSettingsAsJsonString());
+        }
+
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -126,6 +143,7 @@ public final class Utils {
                 .append(storageProfile)
                 .append(osProfile)
                 .append(networkProfile)
+                .append(extensions)
                 .toString());
     }
 
@@ -268,14 +286,11 @@ public final class Utils {
      * @param storageAccountKeys a list of storage account keys
      */
     public static void print(List<StorageAccountKey> storageAccountKeys) {
-        StorageAccountKey storageAccountKey;
-
         for (int i = 0; i < storageAccountKeys.size(); i++) {
-            storageAccountKey = (StorageAccountKey) storageAccountKeys.get(i);
+            StorageAccountKey storageAccountKey = storageAccountKeys.get(i);
             System.out.println("Key (" + i + ") " + storageAccountKey.keyName() + "="
                     + storageAccountKey.value());
         }
-
     }
 
     /**
