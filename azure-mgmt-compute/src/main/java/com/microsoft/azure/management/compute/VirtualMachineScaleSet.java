@@ -1,16 +1,122 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
+import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure virtual machine scale set.
  */
-public interface VirtualMachineScaleSet {
+public interface VirtualMachineScaleSet extends
+        GroupableResource,
+        Refreshable<VirtualMachineScaleSet>,
+        Wrapper<VirtualMachineScaleSetInner> {
+    // Actions
+    //
+    /**
+     * @return  available skus for the virtual machine scale set including the minimum and maximum vm instances
+     *          allowed for a particular sku.
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     */
+    PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException;
+
+    // Getters
+    //
+
+    /**
+     * @return the name prefix of the virtual machines in the scale set.
+     */
+    String computerNamePrefix();
+
+    /**
+     * @return the operating system of the virtual machines in the scale set.
+     */
+    OperatingSystemTypes osType();
+
+    /**
+     * @return the operating system disk caching type, valid values are 'None', 'ReadOnly', 'ReadWrite'
+     */
+    CachingTypes osDiskCachingType();
+
+    /**
+     * @return the upgradePolicy
+     */
+    UpgradePolicy upgradePolicy();
+
+    /**
+     * @return true if over provision is enabled for the virtual machines, false otherwise.
+     */
+    boolean overProvisionEnabled();
+
+    /**
+     * @return the sku of the virtual machines in the scale set.
+     */
+    VirtualMachineScaleSetSkuTypes sku();
+
+    /**
+     * @return the internet facing load balancer associated with the primary network interface of
+     * the virtual machines in the scale set.
+     */
+    LoadBalancer primaryInternetFacingLoadBalancer();
+
+    /**
+     * @return the internet facing load balancer's backends associated with the primary network interface
+     * of the virtual machines in the scale set.
+     */
+    Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds();
+
+    /**
+     * @return the internet facing load balancer's inbound NAT pool associated with the primary network interface
+     * of the virtual machines in the scale set.
+     */
+    Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools();
+
+    /**
+     * @return the internal load balancer associated with the primary network interface of
+     * the virtual machines in the scale set.
+     */
+    LoadBalancer primaryInternalLoadBalancer();
+
+    /**
+     * @return the internal load balancer's backends associated with the primary network interface
+     * of the virtual machines in the scale set.
+     */
+    Map<String, Backend> primaryInternalLoadBalancerBackEnds();
+
+    /**
+     * @return the internal load balancer's inbound NAT pool associated with the primary network interface
+     * of the virtual machines in the scale set.
+     */
+    Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools();
+
+    /**
+     * @return the storage profile.
+     */
+    VirtualMachineScaleSetStorageProfile storageProfile();
+
+    /**
+     * @return the network profile
+     */
+    VirtualMachineScaleSetNetworkProfile networkProfile();
+
+    /**
+     * @return the extensions attached to the Azure Virtual Machine
+     */
+    Map<String, VirtualMachineExtension> extensions();
 
     /**
      * The entirety of the load balancer definition.
@@ -18,11 +124,15 @@ public interface VirtualMachineScaleSet {
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
+            DefinitionStages.WithSku,
             DefinitionStages.WithNetwork,
+            DefinitionStages.WithSubnet,
             DefinitionStages.WithPrimaryInternetFacingLoadBalancer,
             DefinitionStages.WithPrimaryInternalLoadBalancer,
             DefinitionStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
             DefinitionStages.WithInternalLoadBalancerBackendOrNatPool,
+            DefinitionStages.WithPrimaryInternetFacingLoadBalancerNatPool,
+            DefinitionStages.WithInternalInternalLoadBalancerNatPool,
             DefinitionStages.WithOS,
             DefinitionStages.WithAdminUserName,
             DefinitionStages.WithRootUserName,
@@ -46,7 +156,28 @@ public interface VirtualMachineScaleSet {
          * The stage of the virtual machine scale set definition allowing to specify the resource group.
          */
         interface WithGroup
-                extends GroupableResource.DefinitionStages.WithGroup<WithNetwork> {
+                extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
+        }
+
+        /**
+         * The stage of the virtual machine scale set definition allowing to specify Sku for the virtual machines.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku for the virtual machines in the scale set.
+             *
+             * @param skuType the sku type
+             * @return the stage representing creatable VM scale set definition
+             */
+            WithNetwork withSku(VirtualMachineScaleSetSkuTypes skuType);
+
+            /**
+             * Specifies sku for the virtual machines in the scale set.
+             *
+             * @param sku a sku from the list of available sizes for the virtual machines in this scale set
+             * @return the stage representing creatable VM scale set definition
+             */
+            WithNetwork withSku(VirtualMachineScaleSetSku sku);
         }
 
         /**
@@ -248,9 +379,13 @@ public interface VirtualMachineScaleSet {
             WithAdminUserName withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the user (generalized) Windows image used for as the OS for virtual machines in the
+             * Specifies the user (custom) Windows image used for as the OS for virtual machines in the
              * scale set.
-             *
+             * <p>
+             * Custom images are currently limited to single storage account and the number of virtual machines
+             * in the scale set that can be created using custom image is limited to 40 when over provision
+             * is disabled {@link WithOverProvision} and up to 20 when enabled.
+             * </p>
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine scale set definition
              */
@@ -283,22 +418,16 @@ public interface VirtualMachineScaleSet {
             WithRootUserName withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
-             * Specifies the user (generalized) Linux image used for the virtual machine's OS.
-             *
+             * Specifies the user (custom) Linux image used for the virtual machine's OS.
+             * <p>
+             * Custom images are currently limited to single storage account and the number of virtual machines
+             * in the scale set that can be created using custom image is limited to 40 when over provision
+             * is disabled {@link WithOverProvision} and up to 20 when enabled.
+             * </p>
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine scale set definition
              */
             WithRootUserName withStoredLinuxImage(String imageUrl);
-
-            /**
-             * Specifies the specialized operating system disk to be attached to the virtual machines in the
-             * scale set.
-             *
-             * @param osDiskUrl osDiskUrl the url to the OS disk in the Azure Storage account
-             * @param osType the OS type
-             * @return the next stage of the Windows virtual machine scale set definition
-             */
-            WithCreate withOsDisk(String osDiskUrl, OperatingSystemTypes osType);
         }
 
         /**
@@ -399,28 +528,21 @@ public interface VirtualMachineScaleSet {
         }
 
         /**
-         * The stage of the virtual machine scale set definition allowing to specify VM size.
+         * The stage of the virtual machine scale set definition allowing to specify number of
+         * virtual machines in the scale set.
          */
-        interface WithVMSize {
+        interface WithCapacity {
             /**
-             * Specifies size for the virtual machines in the scale set.
+             * Specifies the number of virtual machines in the scale set.
              *
-             * @param sizeName the name of the size for the virtual machine as text
+             * @param capacity the virtual machine capacity
              * @return the stage representing creatable VM scale set definition
              */
-            WithCreate withSize(String sizeName);
-
-            /**
-             * Specifies size for the virtual machines in the scale set.
-             *
-             * @param size a size from the list of available sizes for the virtual machine
-             * @return the stage representing creatable VM scale set definition
-             */
-            WithCreate withSize(VirtualMachineSizeTypes size);
+            WithCreate withCapacity(long capacity);
         }
 
         /**
-         * The stage of the virtual machine scale set definition allowing to upgrade policy.
+         * The stage of the virtual machine scale set definition allowing to specify upgrade policy.
          */
         interface WithUpgradePolicy {
             /**
@@ -528,7 +650,7 @@ public interface VirtualMachineScaleSet {
                 Creatable<VirtualMachineScaleSet>,
                 DefinitionStages.WithPassword,
                 DefinitionStages.WithOsDiskSettings,
-                DefinitionStages.WithVMSize,
+                WithCapacity,
                 DefinitionStages.WithOverProvision,
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithExtension,
@@ -659,6 +781,9 @@ public interface VirtualMachineScaleSet {
             Update withoutPrimaryInternalLoadBalancerNatPool(String natPoolName);
         }
 
+        /**
+         * The entirety of the load balancer update.
+         */
         interface Update {
         }
     }
