@@ -201,11 +201,12 @@ public interface VirtualMachineScaleSet {
         }
 
         /**
-         * Stage of the virtual machine scale set update allowing to associate a backend from the internet facing
-         * and internal load balancer with the primary network interface configuration.
+         * Stage of the virtual machine scale set update allowing to associate a backend from the load balancer
+         * with the primary network interface configuration.
          */
         interface WithPrimaryLoadBalancerBackend {
             /**
+             * Associate a backend of the internet facing load balancer with the the primary network interface configuration.
              *
              * @param backendName the name of an existing backend
              * @return the next stage of the virtual machine scale set update
@@ -213,6 +214,7 @@ public interface VirtualMachineScaleSet {
             Update withPrimaryInternetFacingLoadBalancerBackend(String backendName);
 
             /**
+             * Associate a backend of the internal load balancer with the the primary network interface configuration.
              *
              * @param backendName the name of an existing backend
              * @return the next stage of the virtual machine scale set update
@@ -221,10 +223,55 @@ public interface VirtualMachineScaleSet {
         }
 
         /**
-         * Stage of the virtual machine scale set update allowing to remove association between the primary network interface
-         * configuration and inbound NAT pool of the internet facing and internal load balancer.
+         * Stage of the virtual machine scale set update allowing to associate a inbound NAT pool from the load balancer
+         * with the primary network interface configuration.
          */
-        interface WithPrimaryLoadBalancerNatPool {
+        interface WithPrimaryLoadBalancerNatPoold {
+            /**
+             * Associate an inbound NAT pool of the internet facing load balancer with the the primary network interface configuration.
+             *
+             * @param natPoolName the name of an existing inbound NAT pool
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withPrimaryInternetFacingLoadBalancerNatPool(String natPoolName);
+
+            /**
+             * Associate an inbound NAT pool of the internal load balancer with the the primary network interface configuration.
+             *
+             * @param natPoolName the name of an existing inbound NAT pool
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withPrimaryInternalLoadBalancerNatPool(String natPoolName);
+        }
+
+        /**
+         * Stage of the virtual machine scale set update allowing to remove association between the primary network interface
+         * configuration and backend of the load balancer.
+         */
+        interface WithoutPrimaryLoadBalancerBackend {
+            /**
+             * Removes association between the primary network interface configuration and backend of the internet facing
+             * load balancer.
+             *
+             * @param backendName the name of an existing backend
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withoutPrimaryInternetFacingLoadBalancerBackend(String backendName);
+
+            /**
+             * Removes association between the primary network interface configuration and backend of the internal load balancer.
+             *
+             * @param backendName the name of an existing backend
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withoutPrimaryInternalLoadBalancerBackend(String backendName);
+        }
+
+        /**
+         * Stage of the virtual machine scale set update allowing to remove association between the primary network interface
+         * configuration and inbound NAT pool of the load balancer.
+         */
+        interface WithoutPrimaryLoadBalancerNatPool {
             /**
              * Removes association between the primary network interface configuration and inbound NAT pool of the
              * internet facing load balancer.
