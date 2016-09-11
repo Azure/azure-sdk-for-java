@@ -18,12 +18,10 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtension;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtensionProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfile;
-import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
@@ -120,45 +118,6 @@ public class VirtualMachineScaleSetImpl
                 return new VirtualMachineScaleSetSkuImpl(inner);
             }
         };
-    }
-
-    static VirtualMachineScaleSetImpl create(String name) {
-        VirtualMachineScaleSetInner inner = new VirtualMachineScaleSetInner();
-
-        inner.withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile());
-        inner.virtualMachineProfile()
-                .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                    .withOsDisk(new VirtualMachineScaleSetOSDisk().withVhdContainers(new ArrayList<String>())));
-        inner.virtualMachineProfile()
-                .withOsProfile(new VirtualMachineScaleSetOSProfile());
-
-        inner.virtualMachineProfile()
-                .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile());
-
-        inner.virtualMachineProfile()
-                .networkProfile()
-                .withNetworkInterfaceConfigurations(new ArrayList<VirtualMachineScaleSetNetworkConfigurationInner>());
-
-        VirtualMachineScaleSetNetworkConfigurationInner primaryNetworkInterfaceConfiguration =
-                new VirtualMachineScaleSetNetworkConfigurationInner()
-                        .withPrimary(true)
-                        .withName("default")
-                        .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfigurationInner>());
-        primaryNetworkInterfaceConfiguration
-                .ipConfigurations()
-                .add(new VirtualMachineScaleSetIPConfigurationInner());
-
-        inner.virtualMachineProfile()
-                .networkProfile()
-                .networkInterfaceConfigurations()
-                .add(primaryNetworkInterfaceConfiguration);
-
-        return new VirtualMachineScaleSetImpl(name,
-                inner,
-                null,
-                null,
-                null,
-                null);
     }
 
     @Override
