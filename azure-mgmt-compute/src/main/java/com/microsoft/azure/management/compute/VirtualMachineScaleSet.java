@@ -70,8 +70,10 @@ public interface VirtualMachineScaleSet extends
     /**
      * @return the internet facing load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
+     *
+     * @throws throws IOException the IO exception
      */
-    LoadBalancer primaryInternetFacingLoadBalancer();
+    LoadBalancer primaryInternetFacingLoadBalancer() throws IOException;
 
     /**
      * @return the internet facing load balancer's backends associated with the primary network interface
@@ -88,8 +90,10 @@ public interface VirtualMachineScaleSet extends
     /**
      * @return the internal load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
+     *
+     * @throws throws IOException the IO exception
      */
-    LoadBalancer primaryInternalLoadBalancer();
+    LoadBalancer primaryInternalLoadBalancer() throws IOException;
 
     /**
      * @return the internal load balancer's backends associated with the primary network interface
