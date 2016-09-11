@@ -14,8 +14,9 @@ import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
-import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtension;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtensionProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
@@ -32,8 +33,9 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -42,6 +44,8 @@ import rx.Observable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,11 +53,11 @@ import java.util.Map;
  * Implementation of {@link VirtualMachineScaleSet}.
  */
 public class VirtualMachineScaleSetImpl
-        extends GroupableResourceImpl<
-        VirtualMachineScaleSet,
-        VirtualMachineScaleSetInner,
-        VirtualMachineScaleSetImpl,
-        ComputeManager>
+        extends GroupableParentResourceImpl<
+                VirtualMachineScaleSet,
+                VirtualMachineScaleSetInner,
+                VirtualMachineScaleSetImpl,
+                ComputeManager>
         implements
         VirtualMachineScaleSet,
         VirtualMachineScaleSet.Definition {
@@ -67,8 +71,9 @@ public class VirtualMachineScaleSetImpl
     // used to generate unique name for any dependency resources
     private final ResourceNamer namer;
     private boolean isMarketplaceLinuxImage = false;
-    // the primary load balancers
+    // reference to the primary internet facing load balancer
     private LoadBalancer primaryInternetFacingLoadBalancer;
+    // reference to the primary internal load balancer
     private LoadBalancer primaryInternalLoadBalancer;
     // unique key of a creatable network that needs to be used in virtual machine's primary network interface
     private String creatablePrimaryNetworkKey;
@@ -76,6 +81,19 @@ public class VirtualMachineScaleSetImpl
     private Network existingPrimaryNetworkToAssociate;
     // name of an existing subnet in the network to use
     private String existingSubnetNameToAssociate;
+    // unique key of a creatable storage accounts to be used for virtual machines child resources that
+    // requires storage [OS disk]
+    private List<String> creatableStorageAccountKeys;
+    // reference to an existing storage account to be used for virtual machines child resources that
+    // requires storage [OS disk]
+    private List<StorageAccount> existingStorageAccountsToAssociate;
+
+    private List<String> internetFacingLBBackendsToAssociateOnUpdate;
+    private List<String> internetFacingLBInboundNatPoolsToAssociateOnUpdate;
+    private List<String> internalLBBackendsToAssociateOnUpdate;
+    private List<String> internalLBInboundNatPoolsToAssociateOnUpdate;
+    private Map<String, VirtualMachineScaleSetExtension> extensions;
+    private PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku> skuConverter;
 
     VirtualMachineScaleSetImpl(String name,
                         VirtualMachineScaleSetInner innerModel,
@@ -89,6 +107,19 @@ public class VirtualMachineScaleSetImpl
         this.networkManager = networkManager;
         this.scaleSetName = name;
         this.namer = new ResourceNamer(this.scaleSetName);
+
+        this.creatableStorageAccountKeys = new ArrayList<>();
+        this.existingStorageAccountsToAssociate = new ArrayList<>();
+        this.internetFacingLBBackendsToAssociateOnUpdate = new ArrayList<>();
+        this.internetFacingLBInboundNatPoolsToAssociateOnUpdate = new ArrayList<>();
+        this.internalLBBackendsToAssociateOnUpdate = new ArrayList<>();
+        this.internalLBInboundNatPoolsToAssociateOnUpdate = new ArrayList<>();
+        this.skuConverter = new PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku>() {
+            @Override
+            public VirtualMachineScaleSetSku typeConvert(VirtualMachineScaleSetSkuInner inner) {
+                return new VirtualMachineScaleSetSkuImpl(inner);
+            }
+        };
     }
 
     static VirtualMachineScaleSetImpl create(String name) {
@@ -132,7 +163,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException {
-        return null;
+        return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
     }
 
     @Override
@@ -172,12 +203,14 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds() {
+    public Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds() throws IOException {
+        setPrimaryLoadBalancersIfAvailable();
         return null;
     }
 
     @Override
-    public Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools() {
+    public Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
+        setPrimaryLoadBalancersIfAvailable();
         return null;
     }
 
@@ -188,12 +221,14 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternalLoadBalancerBackEnds() {
+    public Map<String, Backend> primaryInternalLoadBalancerBackEnds() throws IOException {
+        setPrimaryLoadBalancersIfAvailable();
         return null;
     }
 
     @Override
-    public Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() {
+    public Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() throws IOException {
+        setPrimaryLoadBalancersIfAvailable();
         return null;
     }
 
@@ -208,8 +243,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> extensions() {
-        return null;
+    public Map<String, VirtualMachineScaleSetExtension> extensions() {
+        return Collections.unmodifiableMap(this.extensions);
     }
 
     @Override
@@ -217,22 +252,6 @@ public class VirtualMachineScaleSetImpl
         this.inner().virtualMachineProfile()
                 .osProfile()
                 .withAdminPassword(adminUserName);
-        return this;
-    }
-
-    @Override
-    public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackend(String... backendNames) {
-        if (this.primaryInternalLoadBalancer != null) {
-            this.removeAllBackendsAssociation(this.primaryInternalLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
-            this.removeAllInboundNatPoolsAssociation(this.primaryInternalLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
-
-            VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = primaryNicDefaultIPConfiguration();
-            this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
-                    defaultPrimaryIpConfig,
-                    backendNames);
-        }
         return this;
     }
 
@@ -260,8 +279,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineExtension.DefinitionStages.Blank<VirtualMachineScaleSet.DefinitionStages.WithCreate> defineNewExtension(String name) {
-        return null;
+    public VirtualMachineScaleSetExtensionImpl defineNewExtension(String name) {
+        return new VirtualMachineScaleSetExtensionImpl(new VirtualMachineScaleSetExtensionInner(), this);
     }
 
     @Override
@@ -520,14 +539,18 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerBackend(String... backendNames) {
         if (this.primaryInternetFacingLoadBalancer != null) {
-            this.removeAllBackendsAssociation(this.primaryInternetFacingLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
-            this.removeAllInboundNatPoolsAssociation(this.primaryInternetFacingLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
+            this.removeLoadBalancerAssociation(this.primaryInternetFacingLoadBalancer, defaultPrimaryIpConfig);
             this.associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
                     defaultPrimaryIpConfig,
                     backendNames);
+        } else {
+            if (!isInCreateMode()) {
+                this.internetFacingLBBackendsToAssociateOnUpdate.clear();
+                for (String backendName : backendNames) {
+                    this.internetFacingLBBackendsToAssociateOnUpdate.add(backendName);
+                }
+            }
         }
         return this;
     }
@@ -541,6 +564,36 @@ public class VirtualMachineScaleSetImpl
             this.associateInboundNATPoolsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
                     defaultPrimaryIpConfig,
                     natPoolNames);
+        } else {
+            if (!isInCreateMode()) {
+                this.internetFacingLBInboundNatPoolsToAssociateOnUpdate.clear();
+                for (String natPoolName : natPoolNames) {
+                    this.internetFacingLBInboundNatPoolsToAssociateOnUpdate.add(natPoolName);
+                }
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackend(String... backendNames) {
+        if (this.primaryInternalLoadBalancer != null) {
+            this.removeAllBackendsAssociation(this.primaryInternalLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
+            this.removeAllInboundNatPoolsAssociation(this.primaryInternalLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
+
+            VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = primaryNicDefaultIPConfiguration();
+            this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
+                    defaultPrimaryIpConfig,
+                    backendNames);
+        } else {
+            if (!isInCreateMode()) {
+                this.internalLBBackendsToAssociateOnUpdate.clear();
+                for (String backendName : backendNames) {
+                    this.internalLBBackendsToAssociateOnUpdate.add(backendName);
+                }
+            }
         }
         return this;
     }
@@ -554,6 +607,13 @@ public class VirtualMachineScaleSetImpl
             this.associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
                     defaultPrimaryIpConfig,
                     natPoolNames);
+        } else {
+            if (!isInCreateMode()) {
+                this.internalLBInboundNatPoolsToAssociateOnUpdate.clear();
+                for (String natPoolName : natPoolNames) {
+                    this.internalLBInboundNatPoolsToAssociateOnUpdate.add(natPoolName);
+                }
+            }
         }
         return this;
     }
@@ -576,22 +636,97 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withNewStorageAccount(String name) {
-        return this;
+        StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
+                .storageAccounts()
+                .define(name)
+                .withRegion(this.regionName());
+        Creatable<StorageAccount> definitionAfterGroup;
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        return withNewStorageAccount(definitionAfterGroup);
     }
 
     @Override
     public VirtualMachineScaleSetImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
+        this.creatableStorageAccountKeys.add(creatable.key());
+        this.addCreatableDependency(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingStorageAccount(StorageAccount storageAccount) {
+        this.existingStorageAccountsToAssociate.add(storageAccount);
         return this;
     }
 
     @Override
     public Observable<VirtualMachineScaleSet> applyAsync() {
+        if (!this.internetFacingLBBackendsToAssociateOnUpdate.isEmpty()
+                || !this.internetFacingLBInboundNatPoolsToAssociateOnUpdate.isEmpty()
+                || !this.internalLBBackendsToAssociateOnUpdate.isEmpty()
+                || !this.internalLBInboundNatPoolsToAssociateOnUpdate.isEmpty()) {
+            try {
+                this.setPrimaryLoadBalancersIfAvailable();
+                if (this.primaryInternetFacingLoadBalancer != null) {
+                    this.associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
+                            this.primaryNicDefaultIPConfiguration(),
+                            this.internalLBBackendsToAssociateOnUpdate.toArray(new String[0]));
+
+                    this.associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
+                            this.primaryNicDefaultIPConfiguration(),
+                            this.internetFacingLBInboundNatPoolsToAssociateOnUpdate.toArray(new String[0]));
+                }
+                if (this.primaryInternalLoadBalancer != null) {
+                    this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
+                            this.primaryNicDefaultIPConfiguration(),
+                            this.internalLBBackendsToAssociateOnUpdate.toArray(new String[0]));
+
+                    this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
+                            this.primaryNicDefaultIPConfiguration(),
+                            this.internalLBInboundNatPoolsToAssociateOnUpdate.toArray(new String[0]));
+                }
+            } catch (IOException ioException) {
+                throw new RuntimeException(ioException);
+            }
+        }
         return null;
+    }
+
+    @Override
+    protected Observable<VirtualMachineScaleSetInner> createInner() {
+        return null;
+    }
+
+    @Override
+    protected void initializeChildrenFromInner() {
+        this.extensions = new HashMap<>();
+        if (this.inner().virtualMachineProfile().extensionProfile() != null) {
+            if (this.inner().virtualMachineProfile().extensionProfile().extensions() != null) {
+                for (VirtualMachineScaleSetExtensionInner inner : this.inner().virtualMachineProfile().extensionProfile().extensions()) {
+                    this.extensions.put(inner.name(), new VirtualMachineScaleSetExtensionImpl(inner, this));
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void beforeCreating() {
+        // Reset and update extensions
+        if (this.extensions.size() > 0) {
+            this.inner()
+                    .virtualMachineProfile()
+                    .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
+                    .extensionProfile()
+                    .withExtensions(innersFromWrappers(this.extensions.values()));
+        }
+    }
+
+    @Override
+    protected void afterCreating() {
+
     }
 
     @Override
@@ -601,8 +736,14 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl refresh() throws Exception {
-        // GET VMSS
-        this.resetPrimaryLoadBalancers();
+        VirtualMachineScaleSetInner inner = this.client.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
+        this.refreshPrimaryLoadBalancersCache();
+        return this;
+    }
+
+    VirtualMachineScaleSetImpl withExtension(VirtualMachineScaleSetExtensionImpl extension) {
+        // TODO
         return this;
     }
 
@@ -628,11 +769,6 @@ public class VirtualMachineScaleSetImpl
         throw new RuntimeException("Could not find the primary nic configuration or an IP configuration in it");
     }
 
-    private void resetPrimaryLoadBalancers() {
-        this.primaryInternetFacingLoadBalancer = null;
-        this.primaryInternalLoadBalancer = null;
-    }
-
     private void setPrimaryLoadBalancersIfAvailable() throws IOException {
         String firstLoadBalancerId = null;
         VirtualMachineScaleSetIPConfigurationInner ipConfig = primaryNicDefaultIPConfiguration();
@@ -648,26 +784,6 @@ public class VirtualMachineScaleSetImpl
 
         if (firstLoadBalancerId == null) {
             return;
-        }
-
-        if (this.primaryInternetFacingLoadBalancer != null
-                && !this.primaryInternetFacingLoadBalancer.id().equalsIgnoreCase(firstLoadBalancerId)) {
-            if (this.primaryInternalLoadBalancer == null) {
-                this.primaryInternalLoadBalancer = this.networkManager
-                        .loadBalancers()
-                        .getById(firstLoadBalancerId);
-                return;
-            }
-        }
-
-        if (this.primaryInternalLoadBalancer != null
-                && !this.primaryInternalLoadBalancer.id().equalsIgnoreCase(firstLoadBalancerId)) {
-            if (this.primaryInternetFacingLoadBalancer == null) {
-                this.primaryInternetFacingLoadBalancer = this.networkManager
-                        .loadBalancers()
-                        .getById(firstLoadBalancerId);
-                return;
-            }
         }
 
         LoadBalancer loadBalancer1 = this.networkManager
@@ -713,6 +829,7 @@ public class VirtualMachineScaleSetImpl
     private void associateBackEndsToIpConfiguration(String loadBalancerId,
                                                     VirtualMachineScaleSetIPConfigurationInner ipConfig,
                                                     String... backendNames) {
+        List<SubResource> backendSubResourcesToAssociate = new ArrayList<>();
         for (String backendName : backendNames) {
             String backendPoolId = loadBalancerId + "/" + "backendAddressPools" + "/" + backendName;
             boolean found = false;
@@ -723,14 +840,19 @@ public class VirtualMachineScaleSetImpl
                 }
             }
             if (!found) {
-                ipConfig.loadBalancerBackendAddressPools().add(new SubResource().withId(backendPoolId));
+                backendSubResourcesToAssociate.add(new SubResource().withId(backendPoolId));
             }
+        }
+
+        for (SubResource backendSubResource : backendSubResourcesToAssociate) {
+            ipConfig.loadBalancerBackendAddressPools().add(backendSubResource);
         }
     }
 
     private void associateInboundNATPoolsToIpConfiguration(String loadBalancerId,
                                                     VirtualMachineScaleSetIPConfigurationInner ipConfig,
                                                     String... inboundNatPools) {
+        List<SubResource> inboundNatPoolSubResourcesToAssociate = new ArrayList<>();
         for (String inboundNatPool : inboundNatPools) {
             String inboundNatPoolId = loadBalancerId + "/" + "inboundNatPools" + "/" + inboundNatPool;
             boolean found = false;
@@ -741,8 +863,12 @@ public class VirtualMachineScaleSetImpl
                 }
             }
             if (!found) {
-                ipConfig.loadBalancerInboundNatPools().add(new SubResource().withId(inboundNatPoolId));
+                inboundNatPoolSubResourcesToAssociate.add(new SubResource().withId(inboundNatPoolId));
             }
+        }
+
+        for (SubResource backendSubResource : inboundNatPoolSubResourcesToAssociate) {
+            ipConfig.loadBalancerInboundNatPools().add(backendSubResource);
         }
     }
 
@@ -756,6 +882,10 @@ public class VirtualMachineScaleSetImpl
             i++;
         }
 
+        this.associateBackEndsToIpConfiguration(loadBalancer.id(),
+                ipConfig,
+                backendNames);
+
         Collection<InboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
         String[] natPoolNames = new String[inboundNatPools.size()];
         i = 0;
@@ -764,9 +894,6 @@ public class VirtualMachineScaleSetImpl
             i++;
         }
 
-        this.associateBackEndsToIpConfiguration(loadBalancer.id(),
-                ipConfig,
-                backendNames);
         this.associateInboundNATPoolsToIpConfiguration(loadBalancer.id(),
                 ipConfig,
                 natPoolNames);
@@ -788,6 +915,12 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
+    private void removeLoadBalancerAssociation(LoadBalancer loadBalancer,
+                                               VirtualMachineScaleSetIPConfigurationInner ipConfig) {
+        this.removeAllBackendsAssociation(loadBalancer, ipConfig);
+        this.removeAllInboundNatPoolsAssociation(loadBalancer, ipConfig);
+    }
+
     private void removeAllInboundNatPoolsAssociation(LoadBalancer loadBalancer,
                                               VirtualMachineScaleSetIPConfigurationInner ipConfig) {
         List<Integer> toRemoveIndicies = new ArrayList<>();
@@ -802,5 +935,11 @@ public class VirtualMachineScaleSetImpl
         for (Integer index : toRemoveIndicies) {
             ipConfig.loadBalancerInboundNatPools().remove(index);
         }
+    }
+
+    private void refreshPrimaryLoadBalancersCache() throws IOException {
+        this.primaryInternetFacingLoadBalancer = null;
+        this.primaryInternalLoadBalancer = null;
+        this.setPrimaryLoadBalancersIfAvailable();
     }
 }

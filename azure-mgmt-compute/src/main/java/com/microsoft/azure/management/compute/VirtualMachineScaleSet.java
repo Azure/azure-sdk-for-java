@@ -71,41 +71,49 @@ public interface VirtualMachineScaleSet extends
      * @return the internet facing load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
      *
-     * @throws throws IOException the IO exception
+     * @throws IOException the IO exception
      */
     LoadBalancer primaryInternetFacingLoadBalancer() throws IOException;
 
     /**
      * @return the internet facing load balancer's backends associated with the primary network interface
      * of the virtual machines in the scale set.
+     *
+     * @throws IOException the IO exception
      */
-    Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds();
+    Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds() throws IOException;
 
     /**
      * @return the internet facing load balancer's inbound NAT pool associated with the primary network interface
      * of the virtual machines in the scale set.
+     *
+     * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools();
+    Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the internal load balancer associated with the primary network interface of
      * the virtual machines in the scale set.
      *
-     * @throws throws IOException the IO exception
+     * @throws IOException the IO exception
      */
     LoadBalancer primaryInternalLoadBalancer() throws IOException;
 
     /**
      * @return the internal load balancer's backends associated with the primary network interface
      * of the virtual machines in the scale set.
+     *
+     * @throws IOException the IO exception
      */
-    Map<String, Backend> primaryInternalLoadBalancerBackEnds();
+    Map<String, Backend> primaryInternalLoadBalancerBackEnds() throws IOException;
 
     /**
      * @return the internal load balancer's inbound NAT pool associated with the primary network interface
      * of the virtual machines in the scale set.
+     *
+     * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools();
+    Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the storage profile.
@@ -118,9 +126,9 @@ public interface VirtualMachineScaleSet extends
     VirtualMachineScaleSetNetworkProfile networkProfile();
 
     /**
-     * @return the extensions attached to the Azure Virtual Machine
+     * @return the extensions attached to the Virtual Machines in the scale set.
      */
-    Map<String, VirtualMachineExtension> extensions();
+    Map<String, VirtualMachineScaleSetExtension> extensions();
 
     /**
      * The entirety of the load balancer definition.
@@ -642,7 +650,7 @@ public interface VirtualMachineScaleSet extends
              * @param name the reference name for the extension
              * @return the stage representing configuration for the extension
              */
-            VirtualMachineExtension.DefinitionStages.Blank<WithCreate> defineNewExtension(String name);
+            VirtualMachineScaleSetExtension.DefinitionStages.Blank<WithCreate> defineNewExtension(String name);
         }
 
         /**
@@ -784,11 +792,11 @@ public interface VirtualMachineScaleSet extends
              */
             Update withoutPrimaryInternalLoadBalancerNatPool(String natPoolName);
         }
+    }
 
-        /**
-         * The entirety of the load balancer update.
-         */
-        interface Update {
-        }
+    /**
+     * The entirety of the load balancer update.
+     */
+    interface Update {
     }
 }
