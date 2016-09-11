@@ -41,6 +41,7 @@ import rx.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -222,6 +223,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackend(String... backendNames) {
         if (this.primaryInternalLoadBalancer != null) {
+            this.removeAllBackendsAssociation(this.primaryInternalLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
+            this.removeAllInboundNatPoolsAssociation(this.primaryInternalLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
+
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = primaryNicDefaultIPConfiguration();
             this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
                     defaultPrimaryIpConfig,
@@ -481,7 +487,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
+        if (!loadBalancer.publicIpAddressIds().isEmpty()) {
+            throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
+        }
         this.primaryInternalLoadBalancer = loadBalancer;
+        this.associateAllBackendsAndInboundNatPools(this.primaryInternalLoadBalancer,
+                this.primaryNicDefaultIPConfiguration());
         return this;
     }
 
@@ -492,7 +503,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
+        if (loadBalancer.publicIpAddressIds().isEmpty()) {
+            throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
+        }
         this.primaryInternetFacingLoadBalancer = loadBalancer;
+        this.associateAllBackendsAndInboundNatPools(this.primaryInternetFacingLoadBalancer,
+                this.primaryNicDefaultIPConfiguration());
         return this;
     }
 
@@ -504,6 +520,10 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerBackend(String... backendNames) {
         if (this.primaryInternetFacingLoadBalancer != null) {
+            this.removeAllBackendsAssociation(this.primaryInternetFacingLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
+            this.removeAllInboundNatPoolsAssociation(this.primaryInternetFacingLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
             this.associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
                     defaultPrimaryIpConfig,
@@ -515,6 +535,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerInboundNatPool(String... natPoolNames) {
         if (this.primaryInternetFacingLoadBalancer != null) {
+            this.removeAllInboundNatPoolsAssociation(this.primaryInternetFacingLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
             this.associateInboundNATPoolsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
                     defaultPrimaryIpConfig,
@@ -526,6 +548,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerInboundNatPool(String... natPoolNames) {
         if (this.primaryInternalLoadBalancer != null) {
+            this.removeAllInboundNatPoolsAssociation(this.primaryInternalLoadBalancer,
+                    this.primaryNicDefaultIPConfiguration());
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
             this.associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
                     defaultPrimaryIpConfig,
@@ -719,6 +743,64 @@ public class VirtualMachineScaleSetImpl
             if (!found) {
                 ipConfig.loadBalancerInboundNatPools().add(new SubResource().withId(inboundNatPoolId));
             }
+        }
+    }
+
+    private void associateAllBackendsAndInboundNatPools(LoadBalancer loadBalancer,
+                                                        VirtualMachineScaleSetIPConfigurationInner ipConfig) {
+        Collection<Backend> backends = loadBalancer.backends().values();
+        String[] backendNames = new String[backends.size()];
+        int i = 0;
+        for (Backend backend : backends) {
+            backendNames[i] = backend.name();
+            i++;
+        }
+
+        Collection<InboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
+        String[] natPoolNames = new String[inboundNatPools.size()];
+        i = 0;
+        for (InboundNatPool inboundNatPool : inboundNatPools) {
+            natPoolNames[i] = inboundNatPool.name();
+            i++;
+        }
+
+        this.associateBackEndsToIpConfiguration(loadBalancer.id(),
+                ipConfig,
+                backendNames);
+        this.associateInboundNATPoolsToIpConfiguration(loadBalancer.id(),
+                ipConfig,
+                natPoolNames);
+    }
+
+    private void removeAllBackendsAssociation(LoadBalancer loadBalancer,
+                                              VirtualMachineScaleSetIPConfigurationInner ipConfig) {
+        List<Integer> toRemoveIndicies = new ArrayList<>();
+        int i = 0;
+        for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
+            if (subResource.id().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+                toRemoveIndicies.add(i);
+            }
+            i++;
+        }
+
+        for (Integer index : toRemoveIndicies) {
+            ipConfig.loadBalancerBackendAddressPools().remove(index);
+        }
+    }
+
+    private void removeAllInboundNatPoolsAssociation(LoadBalancer loadBalancer,
+                                              VirtualMachineScaleSetIPConfigurationInner ipConfig) {
+        List<Integer> toRemoveIndicies = new ArrayList<>();
+        int i = 0;
+        for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
+            if (subResource.id().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+                toRemoveIndicies.add(i);
+            }
+            i++;
+        }
+
+        for (Integer index : toRemoveIndicies) {
+            ipConfig.loadBalancerInboundNatPools().remove(index);
         }
     }
 }
