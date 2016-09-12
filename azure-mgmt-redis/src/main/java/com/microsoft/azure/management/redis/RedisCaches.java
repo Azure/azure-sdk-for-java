@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for Redis Caches management API.
  */
 public interface RedisCaches extends
         SupportsCreating<RedisCache.DefinitionStages.Blank>,

@@ -15,11 +15,10 @@ import java.util.List;
  */
 public interface RedisCachePremium extends RedisCache
 {
-
     /**
      * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
-     * @param RebootType specifies hich redis node(s) to reboot. Depending on this value data loss is
+     * @param rebootType specifies which redis node(s) to reboot. Depending on this value data loss is
      * possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      * @param shardId In case of cluster cache, this specifies shard id which should be rebooted.
      * @throws CloudException exception thrown from REST call
@@ -30,7 +29,7 @@ public interface RedisCachePremium extends RedisCache
     /**
      * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
-     * @param RebootType specifies hich redis node(s) to reboot. Depending on this value data loss is
+     * @param rebootType specifies which redis node(s) to reboot. Depending on this value data loss is
      * possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization

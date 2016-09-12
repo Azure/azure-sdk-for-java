@@ -17,7 +17,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.fail;
@@ -29,7 +28,6 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
     private static final String RR_NAME_SECOND = "javacsmrc375Second";
     private static final String RR_NAME_THIRD = "javacsmrc375Third";
     private static final String SA_NAME = "javacsmsa375";
-    private static ResourceGroup resourceGroup;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -53,18 +51,19 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .define(RR_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(RG_NAME)
-                .withSku(SkuName.BASIC, SkuFamily.C);
+                .withBasicSku();
         Creatable<RedisCache> redisCacheDefinition2 = redisManager.redisCaches()
                 .define(RR_NAME_SECOND)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
-                .withSku(SkuName.STANDARD, SkuFamily.C)
+                .withStandardSku()
                 .withNonSslPortDisabled();
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
                 .define(RR_NAME_THIRD)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
-                .withSku(SkuName.PREMIUM, SkuFamily.P, 2)
+                .withPremiumSku(2)
+                .withRedisConfiguration("maxclients","2")
                 .withNonSslPortEnabled();
 
         CreatedResources<RedisCache> batchRedisCaches = redisManager.redisCaches()
@@ -128,15 +127,16 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
         Assert.assertNotEquals(updatedPrimaryKey.secondaryKey(), updatedSecondaryKey.secondaryKey());
         Assert.assertEquals(updatedPrimaryKey.primaryKey(), updatedSecondaryKey.primaryKey());
 
-        // Update
+        // Update to STANDARD Sku from BASIC SKU
         redisCache = redisCache.update()
-                .withSku(SkuName.STANDARD, SkuFamily.C)
+                .withStandardSku()
                 .apply();
         Assert.assertEquals(SkuName.STANDARD, redisCache.sku().name());
+        Assert.assertEquals(SkuFamily.C, redisCache.sku().family());
 
         try {
             redisCache.update()
-                    .withSku(SkuName.BASIC, SkuFamily.C)
+                    .withBasicSku(1)
                     .apply();
             fail();
         } catch (CloudException e) {
@@ -151,6 +151,21 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
 
         // Premium SKU Functionality
         RedisCachePremium premiumCache = redisCachePremium.asPremium();
+        Assert.assertEquals(SkuFamily.P, premiumCache.sku().family());
+
+        // Redis configuration update
+        premiumCache.update()
+                .withRedisConfiguration("maxclients", "3")
+                .apply();
+
+        premiumCache.update()
+                .withoutRedisConfiguration("maxclients")
+                .apply();
+
+        premiumCache.update()
+                .withoutRedisConfiguration()
+                .apply();
+
         // Reboot
         premiumCache.forceReboot(RebootType.ALL_NODES);
 

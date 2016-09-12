@@ -9,16 +9,18 @@ package com.microsoft.azure.management.redis.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.redis.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+
 import rx.Observable;
 import rx.functions.Action1;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for Redis Cache and its parent interfaces.
  */
 class RedisCacheImpl
         extends GroupableResourceImpl<
@@ -39,8 +41,8 @@ class RedisCacheImpl
     RedisCacheImpl(String name,
                    RedisResourceInner innerModel,
                    final RedisInner client,
-                   final RedisManager storageManager) {
-        super(name, innerModel, storageManager);
+                   final RedisManager redisManager) {
+        super(name, innerModel, redisManager);
         this.createParameters = new RedisCreateParametersInner();
         this.client = client;
     }
@@ -64,13 +66,7 @@ class RedisCacheImpl
     public Sku sku() { return this.inner().sku(); }
 
     @Override
-    public Map<String, String> redisConfiguration() { return this.inner().redisConfiguration(); }
-
-    @Override
     public Boolean enableNonSslPort() { return this.inner().enableNonSslPort(); }
-
-    @Override
-    public Map<String, String> tenantSettings() { return this.inner().tenantSettings(); }
 
     @Override
     public Integer shardCount() { return this.inner().shardCount(); }
@@ -80,6 +76,11 @@ class RedisCacheImpl
 
     @Override
     public String staticIP() { return this.inner().staticIP(); }
+
+    @Override
+    public Map<String, String> redisConfiguration()  {
+        return Collections.unmodifiableMap(this.inner().redisConfiguration());
+    }
 
     @Override
     public RedisCachePremium asPremium()
@@ -100,17 +101,17 @@ class RedisCacheImpl
 
     @Override
     public RedisAccessKeys refreshKeys() throws CloudException, IOException {
-        ServiceResponse<RedisAccessKeysInner> response =
+        RedisAccessKeysInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
-        cachedAccessKeys = new RedisAccessKeys(response.getBody());
+        cachedAccessKeys = new RedisAccessKeys(response);
         return cachedAccessKeys;
     }
 
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) throws CloudException, IOException {
-        ServiceResponse<RedisAccessKeysInner> response =
+        RedisAccessKeysInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyType);
-        cachedAccessKeys = new RedisAccessKeys(response.getBody());
+        cachedAccessKeys = new RedisAccessKeys(response);
         return cachedAccessKeys;
     }
 
@@ -163,11 +164,9 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl refresh() throws Exception {
-        ServiceResponse<RedisResourceInner> response =
+        RedisResourceInner redisResourceInner =
                 this.client.get(this.resourceGroupName(), this.name());
-        RedisResourceInner redisResourceInner = response.getBody();
         this.setInner(redisResourceInner);
-        clearWrapperProperties();
         return this;
     }
 
@@ -176,7 +175,7 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withEnableNonSslPort(true);
         } else {
-            createParameters.withEnableNonSslPort(true);
+            updateParameters.withEnableNonSslPort(true);
         }
         return this;
     }
@@ -186,7 +185,7 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withEnableNonSslPort(false);
         } else {
-            createParameters.withEnableNonSslPort(false);
+            updateParameters.withEnableNonSslPort(false);
         }
         return this;
     }
@@ -196,17 +195,39 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withRedisConfiguration(redisConfiguration);
         } else {
-            createParameters.withRedisConfiguration(redisConfiguration);
+            updateParameters.withRedisConfiguration(redisConfiguration);
         }
         return this;
     }
 
     @Override
-    public RedisCacheImpl withTenantSettings(Map<String,String> tenantSettings) {
+    public RedisCacheImpl withRedisConfiguration(String key, String value) {
         if (isInCreateMode()) {
-            createParameters.withTenantSettings(tenantSettings);
+            if(createParameters.redisConfiguration() == null) {
+                createParameters.withRedisConfiguration( new TreeMap<String,String>());
+            }
+            createParameters.redisConfiguration().put(key, value);
         } else {
-            createParameters.withTenantSettings(tenantSettings);
+            if(updateParameters.redisConfiguration() == null) {
+                updateParameters.withRedisConfiguration( new TreeMap<String,String>());
+            }
+            updateParameters.redisConfiguration().put(key, value);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withoutRedisConfiguration() {
+        if(updateParameters.redisConfiguration() != null) {
+            updateParameters.redisConfiguration().clear();
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withoutRedisConfiguration(String key) {
+        if(updateParameters.redisConfiguration() != null && updateParameters.redisConfiguration().containsKey(key)) {
+            updateParameters.redisConfiguration().remove(key);
         }
         return this;
     }
@@ -216,7 +237,7 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withSubnetId(subnetId);
         } else {
-            createParameters.withSubnetId(subnetId);
+            updateParameters.withSubnetId(subnetId);
         }
         return this;
     }
@@ -226,7 +247,7 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withStaticIP(staticIP);
         } else {
-            createParameters.withStaticIP(staticIP);
+            updateParameters.withStaticIP(staticIP);
         }
         return this;
     }
@@ -236,35 +257,97 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withShardCount(shardCount);
         } else {
-            createParameters.withShardCount(shardCount);
+            updateParameters.withShardCount(shardCount);
         }
         return this;
     }
 
     @Override
-    public RedisCacheImpl withSku(SkuName skuName, SkuFamily skuFamily) {
+    public RedisCacheImpl withBasicSku() {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku().withName(skuName).withFamily(skuFamily));
+            createParameters.withSku(new Sku()
+                            .withName(SkuName.BASIC)
+                            .withFamily(SkuFamily.C));
         } else {
-            updateParameters.withSku(new Sku().withName(skuName).withFamily(skuFamily));
+            updateParameters.withSku(new Sku()
+                            .withName(SkuName.BASIC)
+                            .withFamily(SkuFamily.C));
         }
         return this;
     }
 
     @Override
-    public RedisCacheImpl withSku(SkuName skuName, SkuFamily skuFamily, int capacity) {
+    public RedisCacheImpl withBasicSku(int capacity) {
         if (isInCreateMode()) {
-            createParameters.withSku(
-                    new Sku()
-                            .withName(skuName)
-                            .withFamily(skuFamily)
+            createParameters.withSku(new Sku()
+                            .withName(SkuName.BASIC)
+                            .withFamily(SkuFamily.C)
                             .withCapacity(capacity));
         } else {
-            updateParameters.withSku(
-                    new Sku()
-                            .withName(skuName)
-                            .withFamily(skuFamily)
+            updateParameters.withSku(new Sku()
+                            .withName(SkuName.BASIC)
+                            .withFamily(SkuFamily.C)
                             .withCapacity(capacity));
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withStandardSku() {
+        if (isInCreateMode()) {
+            createParameters.withSku(new Sku()
+                    .withName(SkuName.STANDARD)
+                    .withFamily(SkuFamily.C));
+        } else {
+            updateParameters.withSku(new Sku()
+                    .withName(SkuName.STANDARD)
+                    .withFamily(SkuFamily.C));
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withStandardSku(int capacity) {
+        if (isInCreateMode()) {
+            createParameters.withSku(new Sku()
+                    .withName(SkuName.STANDARD)
+                    .withFamily(SkuFamily.C)
+                    .withCapacity(capacity));
+        } else {
+            updateParameters.withSku(new Sku()
+                    .withName(SkuName.STANDARD)
+                    .withFamily(SkuFamily.C)
+                    .withCapacity(capacity));
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withPremiumSku() {
+        if (isInCreateMode()) {
+            createParameters.withSku(new Sku()
+                    .withName(SkuName.PREMIUM)
+                    .withFamily(SkuFamily.P));
+        } else {
+            updateParameters.withSku(new Sku()
+                    .withName(SkuName.PREMIUM)
+                    .withFamily(SkuFamily.P));
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withPremiumSku(int capacity) {
+        if (isInCreateMode()) {
+            createParameters.withSku(new Sku()
+                    .withName(SkuName.PREMIUM)
+                    .withFamily(SkuFamily.P)
+                    .withCapacity(capacity));
+        } else {
+            updateParameters.withSku(new Sku()
+                    .withName(SkuName.PREMIUM)
+                    .withFamily(SkuFamily.P)
+                    .withCapacity(capacity));
         }
         return this;
     }

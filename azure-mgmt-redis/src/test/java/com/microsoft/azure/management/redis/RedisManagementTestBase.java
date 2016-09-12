@@ -15,12 +15,8 @@ import com.microsoft.azure.RestClient;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.SocketAddress;
-
 /**
- * The base for storage manager tests.
+ * The base for Redis cache manager tests.
  */
 public abstract class RedisManagementTestBase {
     protected static ResourceManager resourceManager;
@@ -37,7 +33,8 @@ public abstract class RedisManagementTestBase {
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888))) // uncomment for Fiddler tracing
+                // uncomment for Fiddler tracing
+                //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                 .build();
 
         resourceManager = ResourceManager

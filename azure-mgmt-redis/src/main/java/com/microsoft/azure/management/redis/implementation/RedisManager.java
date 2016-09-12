@@ -85,7 +85,7 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         }
 
     /**
-     * @return the storage account management API entry point
+     * @return the Redis Cache management API entry point
      */
     public RedisCaches redisCaches() {
         if (redisCaches == null) {
