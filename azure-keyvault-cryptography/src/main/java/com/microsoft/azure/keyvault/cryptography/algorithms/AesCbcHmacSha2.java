@@ -212,7 +212,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         byte[] hmac_key;
         Mac hmac;
 
-        if (algorithm.equalsIgnoreCase(Aes128CbcHmacSha256.AlgorithmName)) {
+        if (algorithm.equalsIgnoreCase(Aes128CbcHmacSha256.ALGORITHM_NAME)) {
             if ((key.length << 3) < 256) {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 256", algorithm, key.length << 3));
             }
@@ -227,7 +227,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             hmac = Mac.getInstance("HmacSHA256");
             hmac.init(new SecretKeySpec(hmac_key, "HmacSHA256"));
 
-        } else if (algorithm.equalsIgnoreCase(Aes192CbcHmacSha384.AlgorithmName)) {
+        } else if (algorithm.equalsIgnoreCase(Aes192CbcHmacSha384.ALGORITHM_NAME)) {
 
             if ((key.length << 3) < 384) {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 384", algorithm, key.length << 3));
@@ -242,7 +242,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             hmac = Mac.getInstance("HmacSHA384");
             hmac.init(new SecretKeySpec(hmac_key, "HmacSHA384"));
-        } else if (algorithm.equalsIgnoreCase(Aes256CbcHmacSha512.AlgorithmName)) {
+        } else if (algorithm.equalsIgnoreCase(Aes256CbcHmacSha512.ALGORITHM_NAME)) {
 
             if ((key.length << 3) < 512) {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 512", algorithm, key.length << 3));

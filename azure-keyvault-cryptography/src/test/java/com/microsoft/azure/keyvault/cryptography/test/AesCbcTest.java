@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 
 import java.security.Provider;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +12,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Aes128Cbc;
 
@@ -63,7 +63,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(encrypted, 16), ED);
+            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 16), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -81,7 +81,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(decrypted, 16), PLAIN);
+            assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 16), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -110,7 +110,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(encrypted, 32), ED);
+            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 32), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -128,7 +128,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(decrypted, 32), PLAIN);
+            assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 32), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -157,7 +157,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(encrypted, 16),ED);
+            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 16),ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -175,7 +175,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 16 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(decrypted, 16), PLAIN);
+            assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 16), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -204,7 +204,7 @@ public class AesCbcTest {
             encrypted = encryptor.doFinal(PLAIN);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(encrypted, 32), ED);
+            assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 32), ED);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -222,7 +222,7 @@ public class AesCbcTest {
             decrypted = decryptor.doFinal(encrypted);
             
             // Assert: we only compare the first 32 bytes as this library uses PKCS7 padding
-            assertArrayEquals(ByteExtensions.take(decrypted, 32), PLAIN);
+            assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 32), PLAIN);
         } catch (Exception e) {
             fail(e.getMessage());
         }

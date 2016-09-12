@@ -72,10 +72,10 @@ public final class RsaOaep extends RsaEncryption {
 
     final static String RSAOAEP = "RSA/ECB/OAEPWithSHA1AndMGF1Padding";
 
-    public final static String AlgorithmName = "RSA-OAEP";
+    public final static String ALGORITHM_NAME = "RSA-OAEP";
 
     public RsaOaep() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME);
     }
 
     @Override

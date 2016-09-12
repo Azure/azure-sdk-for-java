@@ -57,19 +57,19 @@ public class RsaKeyTest {
     	RsaKey key = getTestRsaKey();
 
         // Wrap and Unwrap
-        Pair<byte[], String> wrapped   = key.wrapKeyAsync(CEK, Rsa15.AlgorithmName).get();
+        Pair<byte[], String> wrapped   = key.wrapKeyAsync(CEK, Rsa15.ALGORITHM_NAME).get();
         byte[]               unwrapped = key.unwrapKeyAsync(wrapped.getLeft(), wrapped.getRight()).get();
         
         // Assert
-        assertEquals(Rsa15.AlgorithmName, wrapped.getRight());
+        assertEquals(Rsa15.ALGORITHM_NAME, wrapped.getRight());
         assertArrayEquals(CEK, unwrapped);
 
         // Encrypt and Decrypt
-        Triple<byte[], byte[], String> encrypted = key.encryptAsync(CEK, null, null, Rsa15.AlgorithmName).get();
+        Triple<byte[], byte[], String> encrypted = key.encryptAsync(CEK, null, null, Rsa15.ALGORITHM_NAME).get();
         byte[]                         decrypted = key.decryptAsync(encrypted.getLeft(), null, null, null, encrypted.getRight()).get();
         
         // Assert
-        assertEquals(Rsa15.AlgorithmName, encrypted.getRight());
+        assertEquals(Rsa15.ALGORITHM_NAME, encrypted.getRight());
         assertArrayEquals(CEK, decrypted);
 
         key.close();
@@ -81,19 +81,19 @@ public class RsaKeyTest {
     	RsaKey key = getTestRsaKey();
 
         // Wrap and Unwrap
-        Pair<byte[], String> wrapped   = key.wrapKeyAsync(CEK, RsaOaep.AlgorithmName).get();
+        Pair<byte[], String> wrapped   = key.wrapKeyAsync(CEK, RsaOaep.ALGORITHM_NAME).get();
         byte[]               unwrapped = key.unwrapKeyAsync(wrapped.getLeft(), wrapped.getRight()).get();
         
         // Assert
-        assertEquals(RsaOaep.AlgorithmName, wrapped.getRight());
+        assertEquals(RsaOaep.ALGORITHM_NAME, wrapped.getRight());
         assertArrayEquals(CEK, unwrapped);
 
         // Encrypt and Decrypt
-        Triple<byte[], byte[], String> encrypted = key.encryptAsync(CEK, null, null, RsaOaep.AlgorithmName).get();
+        Triple<byte[], byte[], String> encrypted = key.encryptAsync(CEK, null, null, RsaOaep.ALGORITHM_NAME).get();
         byte[]                         decrypted = key.decryptAsync(encrypted.getLeft(), null, null, null, encrypted.getRight()).get();
         
         // Assert
-        assertEquals(RsaOaep.AlgorithmName, encrypted.getRight());
+        assertEquals(RsaOaep.ALGORITHM_NAME, encrypted.getRight());
         assertArrayEquals(CEK, decrypted);
 
         key.close();
@@ -104,16 +104,16 @@ public class RsaKeyTest {
 
     	RsaKey key = getTestRsaKey();
 
-        assertEquals(RsaOaep.AlgorithmName, key.getDefaultEncryptionAlgorithm());
-        assertEquals(RsaOaep.AlgorithmName, key.getDefaultKeyWrapAlgorithm());
-        assertEquals(Rs256.AlgorithmName, key.getDefaultSignatureAlgorithm());
+        assertEquals(RsaOaep.ALGORITHM_NAME, key.getDefaultEncryptionAlgorithm());
+        assertEquals(RsaOaep.ALGORITHM_NAME, key.getDefaultKeyWrapAlgorithm());
+        assertEquals(Rs256.ALGORITHM_NAME, key.getDefaultSignatureAlgorithm());
 
         // Wrap and Unwrap
         Pair<byte[], String> wrapped   = key.wrapKeyAsync(CEK, key.getDefaultKeyWrapAlgorithm()).get();
         byte[]               unwrapped = key.unwrapKeyAsync(wrapped.getLeft(), wrapped.getRight()).get();
         
         // Assert
-        assertEquals(RsaOaep.AlgorithmName, wrapped.getRight());
+        assertEquals(RsaOaep.ALGORITHM_NAME, wrapped.getRight());
         assertArrayEquals(CEK, unwrapped);
 
         // Encrypt and Decrypt
@@ -121,7 +121,7 @@ public class RsaKeyTest {
         byte[]                         decrypted = key.decryptAsync(encrypted.getLeft(), null, null, null, encrypted.getRight()).get();
         
         // Assert
-        assertEquals(RsaOaep.AlgorithmName, encrypted.getRight());
+        assertEquals(RsaOaep.ALGORITHM_NAME, encrypted.getRight());
         assertArrayEquals(CEK, decrypted);
 
         key.close();
