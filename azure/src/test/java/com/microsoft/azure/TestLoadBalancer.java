@@ -84,7 +84,7 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIpAddresses(existingPips.get(0))
+                    .withExistingPublicIpAddress(existingPips.get(0))
                     .definePublicFrontend("frontend1")
                         .withExistingPublicIpAddress(existingPips.get(1))
                         .attach()
@@ -125,6 +125,7 @@ public class TestLoadBalancer {
                         .withFrontendPortRange(2000, 2001)
                         .withBackendPort(8080)
                         .attach()
+
                     .create();
 
             // Verify frontends
@@ -214,7 +215,7 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIpAddresses(existingPips.get(0))
+                    .withExistingPublicIpAddress(existingPips.get(0))
                     .definePublicFrontend("frontend1")
                         .withExistingPublicIpAddress(existingPips.get(1))
                         .attach()
@@ -341,7 +342,7 @@ public class TestLoadBalancer {
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
-                    .withExistingPublicIpAddresses(existingPips.get(0))
+                    .withExistingPublicIpAddress(existingPips.get(0))
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
                     // Probe (default)
