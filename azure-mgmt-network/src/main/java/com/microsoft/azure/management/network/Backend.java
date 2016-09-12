@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
@@ -27,6 +28,11 @@ public interface Backend extends
      * indexed by their NIC's resource id
      */
     Map<String, String> backendNicIpConfigurationNames();
+
+    /**
+     * @return a list of the resource IDs of the virtual machines associated with this backend
+     */
+    Set<String> getVirtualMachineIds();
 
     /**
      * Grouping of backend definition stages.

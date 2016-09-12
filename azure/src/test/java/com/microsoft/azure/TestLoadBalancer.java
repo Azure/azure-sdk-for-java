@@ -8,6 +8,7 @@ package com.microsoft.azure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.junit.Assert;
 
@@ -48,7 +49,7 @@ public class TestLoadBalancer {
     static final String[] PIP_NAMES = {"pipa" + TEST_ID, "pipb" + TEST_ID};
     static final String[] VM_IDS = {
             "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1",
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest2"
+            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest3"
     };
 
     /**
@@ -460,7 +461,7 @@ public class TestLoadBalancer {
                     // Frontend (default)
                     .withExistingSubnet(network, "subnet1")
                     // Backend (default)
-                    //TODO .withExistingVirtualMachines(existingVMs)
+                    .withExistingVirtualMachines(existingVMs)
                     .defineBackend("foo")
                     .attach()
                     // Probe (default)
@@ -778,6 +779,14 @@ public class TestLoadBalancer {
             for (Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
                 info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
                     .append(" - IP Config: ").append(entry.getValue());
+            }
+
+            // Show assigned virtual machines
+            Set<String> vmIds = backend.getVirtualMachineIds();
+            info.append("\n\t\t\tReferenced virtual machine ids: ")
+                .append(vmIds.size());
+            for (String vmId : vmIds) {
+                info.append("\n\t\t\t\tVM ID: ").append(vmId);
             }
 
             // Show assigned load balancing rules
