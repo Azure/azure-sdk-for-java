@@ -242,7 +242,7 @@ class NetworkInterfaceImpl
 
     @Override
     public String virtualMachineId() {
-        if(this.inner().virtualMachine() != null) {
+        if (this.inner().virtualMachine() != null) {
             return this.inner().virtualMachine().id();
         } else {
             return null;
