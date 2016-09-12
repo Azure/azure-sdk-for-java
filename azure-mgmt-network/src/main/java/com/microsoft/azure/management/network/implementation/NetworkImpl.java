@@ -64,8 +64,8 @@ class NetworkImpl
     }
 
     @Override
-    public Observable<Network> applyAsync() {
-        return createAsync();
+    public Observable<Network> applyUpdateAsync() {
+        return createResourceAsync();
     }
 
     // Helpers

@@ -263,7 +263,7 @@ class VaultImpl
     }
 
     @Override
-    public Observable<Vault> applyAsync() {
+    public Observable<Vault> applyUpdateAsync() {
         return createAsync();
     }
 }

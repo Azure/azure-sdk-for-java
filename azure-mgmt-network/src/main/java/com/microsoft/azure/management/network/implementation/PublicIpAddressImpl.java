@@ -38,8 +38,8 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public Observable<PublicIpAddress> applyAsync() {
-        return this.createAsync();
+    public Observable<PublicIpAddress> applyUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     @Override

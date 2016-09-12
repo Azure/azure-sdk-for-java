@@ -82,6 +82,11 @@
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-batch</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -98,6 +103,7 @@
       <version>0.1.53</version>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
   <build>
     <plugins>
