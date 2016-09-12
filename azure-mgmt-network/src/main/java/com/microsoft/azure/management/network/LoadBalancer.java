@@ -81,7 +81,10 @@ public interface LoadBalancer extends
         DefinitionStages.WithProbe,
         DefinitionStages.WithProbeOrLoadBalancingRule,
         DefinitionStages.WithLoadBalancingRule,
-        DefinitionStages.WithLoadBalancingRuleOrCreate {
+        DefinitionStages.WithLoadBalancingRuleOrCreate,
+        DefinitionStages.WithCreateAndInboundNatPool,
+        DefinitionStages.WithCreateAndInboundNatRule,
+        DefinitionStages.WithCreateAndNatChoice {
     }
 
     /**
@@ -338,7 +341,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer definition allowing to create a load balancing rule or create the load balancer.
          */
-        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreate {
+        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreateAndNatChoice {
         }
 
         /**
@@ -348,9 +351,32 @@ public interface LoadBalancer extends
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate>,
-            DefinitionStages.WithInboundNatRule,
-            DefinitionStages.WithInboundNatPool {
+            Resource.DefinitionWithTags<WithCreate> {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or start configuring optional inbound NAT rules or pools.
+         */
+        interface WithCreateAndNatChoice extends
+            WithCreate,
+            WithInboundNatRule,
+            WithInboundNatPool {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or add an inbound NAT pool.
+         */
+        interface WithCreateAndInboundNatPool extends
+            WithCreate,
+            WithInboundNatPool {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or add an inbound NAT rule.
+         */
+        interface WithCreateAndInboundNatRule extends
+            WithCreate,
+            WithInboundNatRule {
         }
 
         /**
@@ -364,7 +390,7 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.DefinitionStages.Blank<WithCreate> defineInboundNatRule(String name);
+            InboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
         }
 
         /**
@@ -378,7 +404,7 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.DefinitionStages.Blank<WithCreate> defineInboundNatPool(String name);
+            InboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
         }
     }
 
