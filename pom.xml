@@ -245,6 +245,8 @@
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>-->
     <module>./azure-mgmt-compute</module>
+    <module>./azure-mgmt-graph-rbac</module>
+    <module>./azure-mgmt-keyvault</module>
     <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-storage</module>
     <module>./azure-mgmt-network</module>

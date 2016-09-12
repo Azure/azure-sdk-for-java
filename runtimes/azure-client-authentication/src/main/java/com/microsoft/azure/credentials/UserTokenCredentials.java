@@ -21,6 +21,8 @@ import java.util.concurrent.Executors;
  * Token based credentials for use with a REST Service Client.
  */
 public class UserTokenCredentials extends TokenCredentials {
+    /** The endpoint of the target resource. */
+    private String resourceEndpoint;
     /** The Active Directory application client id. */
     private String clientId;
     /** The domain or tenant id containing this application. */
@@ -54,6 +56,34 @@ public class UserTokenCredentials extends TokenCredentials {
         this.username = username;
         this.password = password;
         this.clientRedirectUri = clientRedirectUri;
+        if (environment == null) {
+            this.environment = AzureEnvironment.AZURE;
+        } else {
+            this.environment = environment;
+        }
+        this.resourceEndpoint = this.environment.getTokenAudience();
+    }
+
+    /**
+     * Initializes a new instance of the UserTokenCredentials.
+     *
+     * @param clientId the active directory application client id.
+     * @param domain the domain or tenant id containing this application.
+     * @param username the user name for the Organization Id account.
+     * @param password the password for the Organization Id account.
+     * @param clientRedirectUri the Uri where the user will be redirected after authenticating with AD.
+     * @param resourceEndpoint the endpoint of the target resource.
+     * @param environment the Azure environment to authenticate with.
+     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     */
+    public UserTokenCredentials(String clientId, String domain, String username, String password, String clientRedirectUri, String resourceEndpoint, AzureEnvironment environment) {
+        super(null, null); // defer token acquisition
+        this.clientId = clientId;
+        this.domain = domain;
+        this.username = username;
+        this.password = password;
+        this.clientRedirectUri = clientRedirectUri;
+        this.resourceEndpoint = resourceEndpoint;
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         } else {
@@ -136,7 +166,7 @@ public class UserTokenCredentials extends TokenCredentials {
         AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), Executors.newSingleThreadExecutor());
         try {
             authenticationResult = context.acquireToken(
-                    this.getEnvironment().getTokenAudience(),
+                    this.resourceEndpoint,
                     this.getClientId(),
                     this.getUsername(),
                     this.getPassword(),

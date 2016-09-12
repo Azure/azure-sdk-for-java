@@ -56,7 +56,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure.
      */
     public static final AzureEnvironment AZURE = new AzureEnvironment(
-            "https://login.windows.net/",
+            "https://login.microsoftonline.com/",
             "https://management.core.windows.net/",
             true,
             "https://management.azure.com/");
