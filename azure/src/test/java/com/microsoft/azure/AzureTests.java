@@ -266,12 +266,13 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = azure.storageAccounts().define("mystg123")
+        String storageAccountName = "testsa" + String.valueOf(System.currentTimeMillis() % 100000L);
+        StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertEquals(storageAccount.name(), "mystg123");
+        Assert.assertEquals(storageAccount.name(), storageAccountName);
     }
 }
