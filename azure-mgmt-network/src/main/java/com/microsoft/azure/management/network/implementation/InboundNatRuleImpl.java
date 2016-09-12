@@ -20,7 +20,7 @@ class InboundNatRuleImpl
     extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl>
     implements
         InboundNatRule,
-        InboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        InboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatRule>,
         InboundNatRule.UpdateDefinition<LoadBalancer.Update>,
         InboundNatRule.Update {
 
