@@ -10,20 +10,20 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Arrays;
 
 import javax.crypto.NoSuchPaddingException;
 
-import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 
 public final class AesKw128 extends AesKw {
 
-    public static final String AlgorithmName = "A128KW";
+    public static final String ALGORITHM_NAME = "A128KW";
     
     static final int KeySizeInBytes = 128 >> 3;
 
     public AesKw128() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME);
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
+        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
     }
 
     @Override
@@ -51,7 +51,7 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
+        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
     }
 
 }

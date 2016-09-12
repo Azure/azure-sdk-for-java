@@ -8,9 +8,9 @@ package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 public class Aes128CbcHmacSha256 extends AesCbcHmacSha2 {
 
-    public static final String AlgorithmName = "A128CBC-HS256";
+    public static final String ALGORITHM_NAME = "A128CBC-HS256";
 
     public Aes128CbcHmacSha256() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME);
     }
 }

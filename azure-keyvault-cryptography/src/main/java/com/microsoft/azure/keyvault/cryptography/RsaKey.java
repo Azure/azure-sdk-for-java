@@ -84,17 +84,17 @@ public class RsaKey implements IKey {
 
     @Override
     public String getDefaultEncryptionAlgorithm() {
-        return RsaOaep.AlgorithmName;
+        return RsaOaep.ALGORITHM_NAME;
     }
 
     @Override
     public String getDefaultKeyWrapAlgorithm() {
-        return RsaOaep.AlgorithmName;
+        return RsaOaep.ALGORITHM_NAME;
     }
 
     @Override
     public String getDefaultSignatureAlgorithm() {
-    	return Rs256.AlgorithmName;
+    	return Rs256.ALGORITHM_NAME;
     }
 
     @Override
@@ -253,7 +253,7 @@ public class RsaKey implements IKey {
         ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
         
         try {
-			return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.AlgorithmName));
+			return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
 		} catch (Exception e) {
 			return Futures.immediateFailedFuture(e);
 		}

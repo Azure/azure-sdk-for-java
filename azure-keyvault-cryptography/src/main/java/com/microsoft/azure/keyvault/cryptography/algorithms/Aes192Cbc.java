@@ -6,64 +6,12 @@
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
-
-import javax.crypto.NoSuchPaddingException;
-
-import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
-import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
-
 public class Aes192Cbc extends AesCbc {
 
-    public static final String AlgorithmName = "A192CBC";
-    
-    static final int KeySizeInBytes = 192 >> 3;
+    private static final int KEY_SIZE = 192;
+    public static final String ALGORITHM_NAME = "A192CBC";
 
     public Aes192Cbc() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME, KEY_SIZE);
     }
-    
-    @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-    	if (key == null || key.length < KeySizeInBytes) {
-    		throw new InvalidKeyException("key must be at least 128 bits in length");
-    	}
-    	
-        return new AesCbcEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, null);
-    }
-
-    @Override
-    public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-    	if (key == null || key.length < KeySizeInBytes) {
-    		throw new InvalidKeyException("key must be at least 128 bits in length");
-    	}
-    	
-        return new AesCbcEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
-    }
-
-    @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-    	if (key == null || key.length < KeySizeInBytes) {
-    		throw new InvalidKeyException("key must be at least 128 bits in length");
-    	}
-    	
-        return new AesCbcDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, null);
-    }
-
-    @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-    	if (key == null || key.length < KeySizeInBytes) {
-    		throw new InvalidKeyException("key must be at least 128 bits in length");
-    	}
-    	
-        return new AesCbcDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
-    }
-
 }

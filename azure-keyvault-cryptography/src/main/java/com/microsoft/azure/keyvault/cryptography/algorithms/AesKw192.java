@@ -10,20 +10,20 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Arrays;
 
 import javax.crypto.NoSuchPaddingException;
 
-import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 
 public final class AesKw192 extends AesKw {
 
-    public static final String AlgorithmName = "A192KW";
+    public static final String ALGORITHM_NAME = "A192KW";
     
     static final int KeySizeInBytes = 192 >> 3;
 
     public AesKw192() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME);
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class AesKw192 extends AesKw {
             throw new IllegalArgumentException("key must be at least 192 bits long");
         }
 
-        return super.CreateEncryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
+        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
     }
 
     @Override
@@ -51,7 +51,7 @@ public final class AesKw192 extends AesKw {
             throw new IllegalArgumentException("key must be at least 192 bits long");
         }
 
-        return super.CreateDecryptor(ByteExtensions.take(key, KeySizeInBytes), iv, provider);
+        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
     }
 
 }

@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
 
 /**
@@ -75,20 +74,39 @@ public class Rs256 extends RsaSignature {
 			byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
 			
 			// Use constant time compare
-			return ByteExtensions.sequenceEqualConstantTime(EM, EM2);
+			return sequenceEqualConstantTime(EM, EM2);
 		}
 		
 	}
 
-    public final static String AlgorithmName = "RS256";
+    public final static String ALGORITHM_NAME = "RS256";
 
     public Rs256() {
-        super(AlgorithmName);
+        super(ALGORITHM_NAME);
     }
     
     @Override
     public ISignatureTransform createSignatureTransform(KeyPair keyPair) {
     	
     	return new Rs256SignatureTransform(keyPair);
+    }
+    
+    private boolean sequenceEqualConstantTime( byte[] self, byte[] other )
+    {
+        if ( self == null )
+            throw new IllegalArgumentException( "self" );
+
+        if ( other == null )
+            throw new IllegalArgumentException( "other" );
+
+        // Constant time comparison of two byte arrays
+        long difference = ( self.length & 0xffffffffl ) ^ ( other.length & 0xffffffffl );
+
+        for ( int i = 0; i < self.length && i < other.length; i++ )
+        {
+            difference |= ( self[i] ^ other[i] ) & 0xffffffffl;
+        }
+
+        return difference == 0;
     }
 }

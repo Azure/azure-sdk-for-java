@@ -10,6 +10,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -23,6 +24,8 @@ import com.microsoft.azure.keyvault.cryptography.SymmetricEncryptionAlgorithm;
 
 public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
+    final int keySizeInBytes;
+    final int keySize;
     static class AesCbcDecryptor implements ICryptoTransform {
 
         private final Cipher _cipher;
@@ -67,31 +70,49 @@ public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         }
     }
 
-    protected AesCbc(String name) {
+    protected AesCbc(String name, int size) {
         super(name);
+        keySize = size;
+        keySizeInBytes = size >> 3;
     }
 
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-        return new AesCbcEncryptor(key, iv, null);
+        
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, null);
     }
 
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcEncryptor(key, iv, provider);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcDecryptor(key, iv, null);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, null);
     }
 
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcDecryptor(key, iv, provider);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 }
