@@ -13,6 +13,7 @@ import com.microsoft.azure.eventhubs.EventData;
 abstract class PartitionPump
 {
 	protected final EventProcessorHost host;
+	protected final Pump pump;
 	protected Lease lease = null;
 	
 	protected PartitionPumpStatus pumpStatus = PartitionPumpStatus.PP_UNINITIALIZED;
@@ -22,9 +23,10 @@ abstract class PartitionPump
     
     protected final Object processingSynchronizer;
     
-	PartitionPump(EventProcessorHost host, Lease lease)
+	PartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
 		this.host = host;
+		this.pump = pump;
 		this.lease = lease;
 		this.processingSynchronizer = new Object();
 	}
@@ -85,7 +87,17 @@ abstract class PartitionPump
 
     void shutdown(CloseReason reason)
     {
-    	this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
+    	synchronized (this.pumpStatus)
+    	{
+    		// Make this method safe against races, for example it might be double-called in close succession if
+    		// the partition is stolen, which results in a pump failure due to receiver disconnect, at about the
+    		// same time as the PartitionManager is scanning leases.
+    		if (isClosing())
+    		{
+    			return;
+    		}
+    		this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
+    	}
         this.host.logWithHostAndPartition(Level.INFO, this.partitionContext, "pump shutdown for reason " + reason.toString());
 
         specializedShutdown(reason);
@@ -157,10 +169,20 @@ abstract class PartitionPump
     
     protected void onError(Throwable error)
     {
-    	// This handler is called when javaClient calls the error handler we have installed.
-    	// JavaClient can only do that when execution is down in javaClient. Therefore no onEvents
+    	// How this method gets called:
+    	// 1) JavaClient calls an error handler installed by EventHubPartitionPump.
+    	// 2) That error handler calls EventHubPartitionPump.onError.
+    	// 3) EventHubPartitionPump doesn't override onError, so the call winds up here.
+    	//
+    	// JavaClient can only make the call in (1) when execution is down in javaClient. Therefore no onEvents
     	// call can be in progress right now. JavaClient will not get control back until this handler
     	// returns, so there will be no calls to onEvents until after the user's error handler has returned.
+    	
+    	// Notify the user's IEventProcessor
     	this.processor.onError(this.partitionContext, error);
+    	
+    	// Notify upstream that this pump is dead so that cleanup will occur.
+    	// Failing to do so results in reactor threads leaking.
+    	this.pump.onPumpError(this.partitionContext.getPartitionId());
     }
 }

@@ -26,9 +26,9 @@ class EventHubPartitionPump extends PartitionPump
 	private PartitionReceiver partitionReceiver = null;
     private InternalReceiveHandler internalReceiveHandler = null;
 
-	EventHubPartitionPump(EventProcessorHost host, Lease lease)
+	EventHubPartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
-		super(host, lease);
+		super(host, pump, lease);
 	}
 
     @Override
@@ -203,6 +203,7 @@ class EventHubPartitionPump extends PartitionPump
 		@Override
 		public void onError(Throwable error)
 		{
+			EventHubPartitionPump.this.pumpStatus = PartitionPumpStatus.PP_ERRORED;
 			if (error == null)
 			{
 				error = new Throwable("No error info supplied by EventHub client");
@@ -219,9 +220,8 @@ class EventHubPartitionPump extends PartitionPump
 				{
 					EventHubPartitionPump.this.host.logWithHostAndPartition(Level.SEVERE, EventHubPartitionPump.this.partitionContext, "EventHub client error continued", (Exception)error);
 				}
-				EventHubPartitionPump.this.onError(error);
 			}
-			EventHubPartitionPump.this.pumpStatus = PartitionPumpStatus.PP_ERRORED;
+			EventHubPartitionPump.this.onError(error);
 		}
     }
 }
