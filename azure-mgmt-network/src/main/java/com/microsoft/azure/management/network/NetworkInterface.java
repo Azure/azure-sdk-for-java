@@ -138,6 +138,11 @@ public interface NetworkInterface extends
      */
     NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
 
+    /**
+     * @return the resource ID of the associated virtual machine, or null if none.
+     */
+    String virtualMachineId();
+
     // Setters (fluent)
 
     /**

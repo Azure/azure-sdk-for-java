@@ -241,6 +241,15 @@ class NetworkInterfaceImpl
     // Getters
 
     @Override
+    public String virtualMachineId() {
+        if(this.inner().virtualMachine() != null) {
+            return this.inner().virtualMachine().id();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public boolean isIpForwardingEnabled() {
         return Utils.toPrimitiveBoolean(this.inner().enableIPForwarding());
     }
