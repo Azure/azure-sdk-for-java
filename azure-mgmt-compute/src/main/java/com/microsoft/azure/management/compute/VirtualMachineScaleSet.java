@@ -9,6 +9,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -675,6 +676,72 @@ public interface VirtualMachineScaleSet extends
      */
     interface UpdateStages {
         /**
+         * The stage of the virtual machine scale set definition allowing to update Sku for the virtual machines in the scale set.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku for the virtual machines in the scale set.
+             *
+             * @param skuType the sku type
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withSku(VirtualMachineScaleSetSkuTypes skuType);
+
+            /**
+             * Specifies sku for the virtual machines in the scale set.
+             *
+             * @param sku a sku from the list of available sizes for the virtual machines in this scale set
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withSku(VirtualMachineScaleSetSku sku);
+        }
+
+        /**
+         * The stage of the virtual machine scale set definition allowing to specify number of
+         * virtual machines in the scale set.
+         */
+        interface WithCapacity {
+            /**
+             * Specifies the new number of virtual machines in the scale set.
+             *
+             * @param capacity the virtual machine capacity
+             * @return the next stage of the virtual machine scale set update
+             */
+            Update withCapacity(long capacity);
+        }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify extensions.
+         */
+        interface WithExtension {
+            /**
+             * Specifies definition of an extension to be attached to the virtual machines in the scale set.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing configuration for the extension
+             */
+            VirtualMachineScaleSetExtension
+                    .UpdateDefinitionStages
+                    .Blank<Update> defineNewExtension(String name);
+
+            /**
+             * Begins the description of an update of an existing extension assigned to the virtual machines in the scale set.
+             *
+             * @param name the reference name for the extension
+             * @return the stage representing updatable extension definition
+             */
+            VirtualMachineScaleSetExtension.Update updateExtension(String name);
+
+            /**
+             * Detaches an extension with the given name from the virtual machines in the scale set.
+             *
+             * @param name the reference name for the extension to be removed/uninstalled
+             * @return the stage representing updatable VM scale set definition
+             */
+            Update withoutExtension(String name);
+        }
+
+        /**
          * Stage of the virtual machine scale set update allowing to remove public and internal load balancer
          * from the primary network interface configuration.
          */
@@ -703,50 +770,6 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
-         * Stage of the virtual machine scale set update allowing to associate a backend from the load balancer
-         * with the primary network interface configuration.
-         */
-        interface WithPrimaryLoadBalancerBackend {
-            /**
-             * Associate a backend of the internet facing load balancer with the the primary network interface configuration.
-             *
-             * @param backendName the name of an existing backend
-             * @return the next stage of the virtual machine scale set update
-             */
-            Update withPrimaryInternetFacingLoadBalancerBackend(String backendName);
-
-            /**
-             * Associate a backend of the internal load balancer with the the primary network interface configuration.
-             *
-             * @param backendName the name of an existing backend
-             * @return the next stage of the virtual machine scale set update
-             */
-            Update withPrimaryInternalLoadBalancerBackend(String backendName);
-        }
-
-        /**
-         * Stage of the virtual machine scale set update allowing to associate a inbound NAT pool from the load balancer
-         * with the primary network interface configuration.
-         */
-        interface WithPrimaryLoadBalancerNatPoold {
-            /**
-             * Associate an inbound NAT pool of the internet facing load balancer with the the primary network interface configuration.
-             *
-             * @param natPoolName the name of an existing inbound NAT pool
-             * @return the next stage of the virtual machine scale set update
-             */
-            Update withPrimaryInternetFacingLoadBalancerNatPool(String natPoolName);
-
-            /**
-             * Associate an inbound NAT pool of the internal load balancer with the the primary network interface configuration.
-             *
-             * @param natPoolName the name of an existing inbound NAT pool
-             * @return the next stage of the virtual machine scale set update
-             */
-            Update withPrimaryInternalLoadBalancerNatPool(String natPoolName);
-        }
-
-        /**
          * Stage of the virtual machine scale set update allowing to remove association between the primary network interface
          * configuration and backend of the load balancer.
          */
@@ -755,18 +778,18 @@ public interface VirtualMachineScaleSet extends
              * Removes association between the primary network interface configuration and backend of the internet facing
              * load balancer.
              *
-             * @param backendName the name of an existing backend
+             * @param backendNames the existing backend names to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternetFacingLoadBalancerBackend(String backendName);
+            Update withoutPrimaryInternetFacingLoadBalancerBackend(String ...backendNames);
 
             /**
              * Removes association between the primary network interface configuration and backend of the internal load balancer.
              *
-             * @param backendName the name of an existing backend
+             * @param backendNames the existing backend names to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternalLoadBalancerBackend(String backendName);
+            Update withoutPrimaryInternalLoadBalancerBackend(String ...backendNames);
         }
 
         /**
@@ -778,25 +801,33 @@ public interface VirtualMachineScaleSet extends
              * Removes association between the primary network interface configuration and inbound NAT pool of the
              * internet facing load balancer.
              *
-             * @param natPoolName the name of an existing inbound NAT pool
+             * @param natPoolNames the name of an existing inbound NAT pools to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternetFacingLoadBalancerNatPool(String natPoolName);
+            Update withoutPrimaryInternetFacingLoadBalancerNatPool(String ...natPoolNames);
 
             /**
              * Removes association between the primary network interface configuration and inbound NAT pool of the
              * internal load balancer.
              *
-             * @param natPoolName the name of an existing inbound NAT pool
+             * @param natPoolNames the name of an existing inbound NAT pools to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternalLoadBalancerNatPool(String natPoolName);
+            Update withoutPrimaryInternalLoadBalancerNatPool(String ...natPoolNames);
         }
     }
 
     /**
      * The entirety of the load balancer update.
      */
-    interface Update {
+    interface Update extends
+            Appliable<VirtualMachineScaleSet>,
+            Resource.UpdateWithTags<Update>,
+            UpdateStages.WithSku,
+            UpdateStages.WithCapacity,
+            UpdateStages.WithExtension,
+            UpdateStages.WithoutPrimaryLoadBalancer,
+            UpdateStages.WithoutPrimaryLoadBalancerBackend,
+            UpdateStages.WithoutPrimaryLoadBalancerNatPool {
     }
 }
