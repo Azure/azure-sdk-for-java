@@ -136,7 +136,7 @@ public interface NetworkInterface extends
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
+    NetworkSecurityGroup getNetworkSecurityGroup() throws CloudException, IOException;
 
     /**
      * @return the resource ID of the associated virtual machine, or null if none.

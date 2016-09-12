@@ -329,7 +329,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException {
+    public NetworkSecurityGroup getNetworkSecurityGroup() throws CloudException, IOException {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
             this.networkSecurityGroup = super.myManager
