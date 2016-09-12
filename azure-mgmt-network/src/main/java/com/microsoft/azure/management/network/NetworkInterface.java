@@ -18,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Network interface.
@@ -111,9 +112,9 @@ public interface NetworkInterface extends
     IPAllocationMethod primaryPrivateIpAllocationMethod();
 
     /**
-     * @return the IP configurations of this network interface
+     * @return the IP configurations of this network interface, indexed by their names
      */
-    List<NicIpConfiguration> ipConfigurations();
+    Map<String, NicIpConfiguration> ipConfigurations();
 
     /**
      * @return the primary IP configuration of this network interface

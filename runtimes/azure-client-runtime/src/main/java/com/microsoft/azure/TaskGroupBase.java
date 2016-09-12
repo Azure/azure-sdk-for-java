@@ -64,18 +64,31 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
         final List<Observable<T>> observables = new ArrayList<>();
         while (nextNode != null) {
             final DAGNode<U> thisNode = nextNode;
-            observables.add(nextNode.data().executeAsync()
-                    .flatMap(new Func1<T, Observable<T>>() {
-                        @Override
-                        public Observable<T> call(T t) {
-                            dag().reportedCompleted(thisNode);
-                            if (dag().isRootNode(thisNode)) {
-                                return Observable.just(t);
-                            } else {
+            T cachedResult = nextNode.data().result();
+            if (cachedResult != null && !this.dag().isRootNode(nextNode)) {
+                observables.add(Observable.just(cachedResult)
+                        .flatMap(new Func1<T, Observable<T>>() {
+                            @Override
+                            public Observable<T> call(T t) {
+                                dag().reportedCompleted(thisNode);
                                 return executeAsync();
                             }
-                        }
-                    }));
+                        })
+                );
+            } else {
+                observables.add(nextNode.data().executeAsync()
+                        .flatMap(new Func1<T, Observable<T>>() {
+                            @Override
+                            public Observable<T> call(T t) {
+                                dag().reportedCompleted(thisNode);
+                                if (dag().isRootNode(thisNode)) {
+                                    return Observable.just(t);
+                                } else {
+                                    return executeAsync();
+                                }
+                            }
+                        }));
+            }
             nextNode = dag.getNext();
         }
         return Observable.merge(observables);

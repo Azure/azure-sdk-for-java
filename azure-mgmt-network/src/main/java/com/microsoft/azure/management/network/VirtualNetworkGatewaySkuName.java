@@ -23,6 +23,9 @@ public final class VirtualNetworkGatewaySkuName {
     /** Static value Standard for VirtualNetworkGatewaySkuName. */
     public static final VirtualNetworkGatewaySkuName STANDARD = new VirtualNetworkGatewaySkuName("Standard");
 
+    /** Static value UltraPerformance for VirtualNetworkGatewaySkuName. */
+    public static final VirtualNetworkGatewaySkuName ULTRA_PERFORMANCE = new VirtualNetworkGatewaySkuName("UltraPerformance");
+
     private String value;
 
     /**

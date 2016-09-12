@@ -66,10 +66,10 @@ public final class AdminKeysInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AdminKeyResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AdminKeyResultInner object if successful.
      */
-    public ServiceResponse<AdminKeyResultInner> list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(resourceGroupName, serviceName).toBlocking().single();
+    public AdminKeyResultInner list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class AdminKeysInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName, final ServiceCallback<AdminKeyResultInner> serviceCallback) {
-        return ServiceCall.create(listAsync(resourceGroupName, serviceName), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName, serviceName), serviceCallback);
     }
 
     /**
@@ -91,7 +91,23 @@ public final class AdminKeysInner {
      * @param serviceName The name of the Search service for which to list admin keys.
      * @return the observable to the AdminKeyResultInner object
      */
-    public Observable<ServiceResponse<AdminKeyResultInner>> listAsync(String resourceGroupName, String serviceName) {
+    public Observable<AdminKeyResultInner> listAsync(String resourceGroupName, String serviceName) {
+        return listWithServiceResponseAsync(resourceGroupName, serviceName).map(new Func1<ServiceResponse<AdminKeyResultInner>, AdminKeyResultInner>() {
+            @Override
+            public AdminKeyResultInner call(ServiceResponse<AdminKeyResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns the primary and secondary API keys for the given Azure Search service.
+     *
+     * @param resourceGroupName The name of the resource group within the current subscription.
+     * @param serviceName The name of the Search service for which to list admin keys.
+     * @return the observable to the AdminKeyResultInner object
+     */
+    public Observable<ServiceResponse<AdminKeyResultInner>> listWithServiceResponseAsync(String resourceGroupName, String serviceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

@@ -146,10 +146,9 @@ public final class NetworkInterfacesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, networkInterfaceName).toBlocking().last();
+    public void delete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
     /**
@@ -161,7 +160,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -171,7 +170,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String networkInterfaceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete netwokInterface operation deletes the specified netwokInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -196,10 +211,9 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, networkInterfaceName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
     /**
@@ -211,7 +225,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -221,7 +235,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete netwokInterface operation deletes the specified netwokInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -264,10 +294,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkInterfaceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> get(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, networkInterfaceName).toBlocking().single();
+    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
     /**
@@ -279,7 +309,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> getAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -289,7 +319,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable to the NetworkInterfaceInner object
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> getAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<NetworkInterfaceInner> getAsync(String resourceGroupName, String networkInterfaceName) {
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get network interface operation retrieves information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable to the NetworkInterfaceInner object
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> getWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -326,10 +372,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkInterfaceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> get(String resourceGroupName, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, networkInterfaceName, expand).toBlocking().single();
+    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -342,7 +388,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> getAsync(String resourceGroupName, String networkInterfaceName, String expand, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, networkInterfaceName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand), serviceCallback);
     }
 
     /**
@@ -353,7 +399,24 @@ public final class NetworkInterfacesInner {
      * @param expand expand references resources.
      * @return the observable to the NetworkInterfaceInner object
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> getAsync(String resourceGroupName, String networkInterfaceName, String expand) {
+    public Observable<NetworkInterfaceInner> getAsync(String resourceGroupName, String networkInterfaceName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get network interface operation retrieves information about the specified network interface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand expand references resources.
+     * @return the observable to the NetworkInterfaceInner object
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> getWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -397,10 +460,10 @@ public final class NetworkInterfacesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the NetworkInterfaceInner object wrapped in ServiceResponse if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().last();
+    public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -413,7 +476,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters), serviceCallback);
     }
 
     /**
@@ -424,7 +487,24 @@ public final class NetworkInterfacesInner {
      * @param parameters Parameters supplied to the create/update NetworkInterface operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
+    public Observable<NetworkInterfaceInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put NetworkInterface operation creates/updates a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to the create/update NetworkInterface operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -454,10 +534,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkInterfaceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().single();
+    public NetworkInterfaceInner beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -470,7 +550,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters), serviceCallback);
     }
 
     /**
@@ -481,7 +561,24 @@ public final class NetworkInterfacesInner {
      * @param parameters Parameters supplied to the create/update NetworkInterface operation
      * @return the observable to the NetworkInterfaceInner object
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
+    public Observable<NetworkInterfaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put NetworkInterface operation creates/updates a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to the create/update NetworkInterface operation
+     * @return the observable to the NetworkInterfaceInner object
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -529,17 +626,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -569,15 +665,36 @@ public final class NetworkInterfacesInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
+    public Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
+        return listVirtualMachineScaleSetVMNetworkInterfacesWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesWithServiceResponseAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
         return listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetVMNetworkInterfacesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -588,7 +705,7 @@ public final class NetworkInterfacesInner {
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualmachineIndex The virtual machine index.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
         if (resourceGroupName == null) {
@@ -635,17 +752,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -673,15 +789,35 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+    public Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        return listVirtualMachineScaleSetNetworkInterfacesWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesWithServiceResponseAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
         return listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetNetworkInterfacesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -691,7 +827,7 @@ public final class NetworkInterfacesInner {
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
         if (resourceGroupName == null) {
@@ -737,10 +873,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkInterfaceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
-        return getVirtualMachineScaleSetNetworkInterfaceAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).toBlocking().single();
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).toBlocking().single().getBody();
     }
 
     /**
@@ -754,7 +890,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(getVirtualMachineScaleSetNetworkInterfaceAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -766,7 +902,25 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable to the NetworkInterfaceInner object
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
+    public Observable<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get network interface operation retrieves information about the specified network interface in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable to the NetworkInterfaceInner object
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -811,10 +965,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the NetworkInterfaceInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the NetworkInterfaceInner object if successful.
      */
-    public ServiceResponse<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getVirtualMachineScaleSetNetworkInterfaceAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).toBlocking().single();
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -829,7 +983,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand, final ServiceCallback<NetworkInterfaceInner> serviceCallback) {
-        return ServiceCall.create(getVirtualMachineScaleSetNetworkInterfaceAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand), serviceCallback);
+        return ServiceCall.create(getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand), serviceCallback);
     }
 
     /**
@@ -842,7 +996,26 @@ public final class NetworkInterfacesInner {
      * @param expand expand references resources.
      * @return the observable to the NetworkInterfaceInner object
      */
-    public Observable<ServiceResponse<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) {
+    public Observable<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) {
+        return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).map(new Func1<ServiceResponse<NetworkInterfaceInner>, NetworkInterfaceInner>() {
+            @Override
+            public NetworkInterfaceInner call(ServiceResponse<NetworkInterfaceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get network interface operation retrieves information about the specified network interface in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param expand expand references resources.
+     * @return the observable to the NetworkInterfaceInner object
+     */
+    public Observable<ServiceResponse<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -888,17 +1061,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -922,15 +1094,14 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
+    public Observable<Page<NetworkInterfaceInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -938,7 +1109,26 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
+     *
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -975,17 +1165,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1011,15 +1200,34 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<NetworkInterfaceInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1028,7 +1236,7 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -1070,10 +1278,10 @@ public final class NetworkInterfacesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the EffectiveRouteListResultInner object wrapped in ServiceResponse if successful.
+     * @return the EffectiveRouteListResultInner object if successful.
      */
-    public ServiceResponse<EffectiveRouteListResultInner> getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return getEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).toBlocking().last();
+    public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
     /**
@@ -1085,7 +1293,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<EffectiveRouteListResultInner> serviceCallback) {
-        return ServiceCall.create(getEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -1095,7 +1303,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<EffectiveRouteListResultInner>> getEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
+        return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>() {
+            @Override
+            public EffectiveRouteListResultInner call(ServiceResponse<EffectiveRouteListResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<EffectiveRouteListResultInner>> getEffectiveRouteTableWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1120,10 +1344,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the EffectiveRouteListResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the EffectiveRouteListResultInner object if successful.
      */
-    public ServiceResponse<EffectiveRouteListResultInner> beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
-        return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).toBlocking().single();
+    public EffectiveRouteListResultInner beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
     /**
@@ -1135,7 +1359,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EffectiveRouteListResultInner> beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<EffectiveRouteListResultInner> serviceCallback) {
-        return ServiceCall.create(beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -1145,7 +1369,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable to the EffectiveRouteListResultInner object
      */
-    public Observable<ServiceResponse<EffectiveRouteListResultInner>> beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<EffectiveRouteListResultInner> beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
+        return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>() {
+            @Override
+            public EffectiveRouteListResultInner call(ServiceResponse<EffectiveRouteListResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The get effective routetable operation retrieves all the route tables applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable to the EffectiveRouteListResultInner object
+     */
+    public Observable<ServiceResponse<EffectiveRouteListResultInner>> beginGetEffectiveRouteTableWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1189,10 +1429,10 @@ public final class NetworkInterfacesInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the EffectiveNetworkSecurityGroupListResultInner object wrapped in ServiceResponse if successful.
+     * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
-    public ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return listEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName).toBlocking().last();
+    public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
     /**
@@ -1204,7 +1444,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<EffectiveNetworkSecurityGroupListResultInner> serviceCallback) {
-        return ServiceCall.create(listEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -1214,7 +1454,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>> listEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<EffectiveNetworkSecurityGroupListResultInner> listEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
+        return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>() {
+            @Override
+            public EffectiveNetworkSecurityGroupListResultInner call(ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>> listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1239,10 +1495,10 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the EffectiveNetworkSecurityGroupListResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
-    public ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
-        return beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName).toBlocking().single();
+    public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+        return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
     /**
@@ -1254,7 +1510,7 @@ public final class NetworkInterfacesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<EffectiveNetworkSecurityGroupListResultInner> beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName, final ServiceCallback<EffectiveNetworkSecurityGroupListResultInner> serviceCallback) {
-        return ServiceCall.create(beginListEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName), serviceCallback);
+        return ServiceCall.create(beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName), serviceCallback);
     }
 
     /**
@@ -1264,7 +1520,23 @@ public final class NetworkInterfacesInner {
      * @param networkInterfaceName The name of the network interface.
      * @return the observable to the EffectiveNetworkSecurityGroupListResultInner object
      */
-    public Observable<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>> beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
+    public Observable<EffectiveNetworkSecurityGroupListResultInner> beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
+        return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).map(new Func1<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>() {
+            @Override
+            public EffectiveNetworkSecurityGroupListResultInner call(ServiceResponse<EffectiveNetworkSecurityGroupListResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The list effective network security group operation retrieves all the network security groups applied on a networkInterface.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @return the observable to the EffectiveNetworkSecurityGroupListResultInner object
+     */
+    public Observable<ServiceResponse<EffectiveNetworkSecurityGroupListResultInner>> beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(String resourceGroupName, String networkInterfaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1306,17 +1578,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1343,15 +1614,34 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(final String nextPageLink) {
+    public Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetVMNetworkInterfacesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesNextWithServiceResponseAsync(final String nextPageLink) {
         return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetVMNetworkInterfacesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1360,7 +1650,7 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1394,17 +1684,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1431,15 +1720,34 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesNextAsync(final String nextPageLink) {
+    public Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesNextAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetNetworkInterfacesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesNextWithServiceResponseAsync(final String nextPageLink) {
         return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetNetworkInterfacesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1448,7 +1756,7 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1482,17 +1790,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1519,15 +1826,34 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<NetworkInterfaceInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1536,7 +1862,7 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1570,17 +1896,16 @@ public final class NetworkInterfacesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<NetworkInterfaceInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<NetworkInterfaceInner> pagedList = new PagedList<NetworkInterfaceInner>(response.getBody()) {
+        return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
             public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<NetworkInterfaceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1607,15 +1932,34 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;NetworkInterfaceInner&gt; object
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<NetworkInterfaceInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Page<NetworkInterfaceInner>>() {
+                @Override
+                public Page<NetworkInterfaceInner> call(ServiceResponse<Page<NetworkInterfaceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;NetworkInterfaceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<NetworkInterfaceInner>>, Observable<ServiceResponse<Page<NetworkInterfaceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> call(ServiceResponse<Page<NetworkInterfaceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1624,7 +1968,7 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
     ServiceResponse<PageImpl<NetworkInterfaceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;NetworkInterfaceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<NetworkInterfaceInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

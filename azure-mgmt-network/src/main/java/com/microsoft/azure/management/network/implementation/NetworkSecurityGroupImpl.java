@@ -7,10 +7,8 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +20,7 @@ import java.util.TreeMap;
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
 class NetworkSecurityGroupImpl
-    extends GroupableResourceImpl<
+    extends GroupableParentResourceImpl<
         NetworkSecurityGroup,
         NetworkSecurityGroupInner,
         NetworkSecurityGroupImpl,
@@ -33,8 +31,8 @@ class NetworkSecurityGroupImpl
         NetworkSecurityGroup.Update {
 
     private final NetworkSecurityGroupsInner innerCollection;
-    private final Map<String, NetworkSecurityRule> rules = new TreeMap<>();
-    private final Map<String, NetworkSecurityRule> defaultRules = new TreeMap<>();
+    private Map<String, NetworkSecurityRule> rules;
+    private Map<String, NetworkSecurityRule> defaultRules;
 
     NetworkSecurityGroupImpl(
             final String name,
@@ -43,11 +41,11 @@ class NetworkSecurityGroupImpl
             final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.innerCollection = innerCollection;
-        initializeRulesFromInner();
     }
 
-    private void initializeRulesFromInner() {
-        this.rules.clear();
+    @Override
+    protected void initializeChildrenFromInner() {
+        this.rules = new TreeMap<>();
         List<SecurityRuleInner> inners = this.inner().securityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
@@ -55,7 +53,7 @@ class NetworkSecurityGroupImpl
             }
         }
 
-        this.defaultRules.clear();
+        this.defaultRules = new TreeMap<>();
         inners = this.inner().defaultSecurityRules();
         if (inners != null) {
             for (SecurityRuleInner inner : inners) {
@@ -81,10 +79,9 @@ class NetworkSecurityGroupImpl
 
     @Override
     public NetworkSecurityGroupImpl refresh() throws Exception {
-        ServiceResponse<NetworkSecurityGroupInner> response =
-            this.innerCollection.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
-        initializeRulesFromInner();
+        NetworkSecurityGroupInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(response);
+        initializeChildrenFromInner();
         return this;
     }
 
@@ -129,24 +126,18 @@ class NetworkSecurityGroupImpl
         return Collections.unmodifiableList(ids);
     }
 
-    private void beforeCreating() {
+    @Override
+    protected void beforeCreating() {
         // Reset and update subnets
         this.inner().withSecurityRules(innersFromWrappers(this.rules.values()));
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
     @Override
-    public Observable<NetworkSecurityGroup> createResourceAsync() {
-        final NetworkSecurityGroupImpl self = this;
-        beforeCreating();
-        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(new Func1<ServiceResponse<NetworkSecurityGroupInner>, NetworkSecurityGroup>() {
-                    @Override
-                    public NetworkSecurityGroup call(ServiceResponse<NetworkSecurityGroupInner> networkSecurityGroupInner) {
-                        self.setInner(networkSecurityGroupInner.getBody());
-                        initializeRulesFromInner();
-                        return self;
-                    }
-                });
+    protected void afterCreating() {
     }
- }
+
+    @Override
+    protected Observable<NetworkSecurityGroupInner> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+}

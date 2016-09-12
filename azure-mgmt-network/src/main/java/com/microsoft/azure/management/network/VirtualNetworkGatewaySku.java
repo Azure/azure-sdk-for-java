@@ -14,14 +14,16 @@ package com.microsoft.azure.management.network;
  */
 public class VirtualNetworkGatewaySku {
     /**
-     * Gateway sku name -Basic/HighPerformance/Standard. Possible values
-     * include: 'Basic', 'HighPerformance', 'Standard'.
+     * Gateway sku name -Basic/HighPerformance/Standard/UltraPerformance.
+     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
+     * 'UltraPerformance'.
      */
     private VirtualNetworkGatewaySkuName name;
 
     /**
-     * Gateway sku tier -Basic/HighPerformance/Standard. Possible values
-     * include: 'Basic', 'HighPerformance', 'Standard'.
+     * Gateway sku tier -Basic/HighPerformance/Standard/UltraPerformance.
+     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
+     * 'UltraPerformance'.
      */
     private VirtualNetworkGatewaySkuTier tier;
 

@@ -119,10 +119,9 @@ public final class DeploymentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, deploymentName).toBlocking().last();
+    public void delete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().getBody();
     }
 
     /**
@@ -134,7 +133,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -144,7 +143,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment to be deleted.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String deploymentName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String deploymentName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to be deleted.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -169,10 +184,9 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, deploymentName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
     /**
@@ -184,7 +198,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -194,7 +208,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String deploymentName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment to be deleted.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -236,10 +266,10 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the boolean object wrapped in {@link ServiceResponse} if successful.
+     * @return the boolean object if successful.
      */
-    public ServiceResponse<Boolean> checkExistence(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
-        return checkExistenceAsync(resourceGroupName, deploymentName).toBlocking().single();
+    public boolean checkExistence(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
     /**
@@ -251,7 +281,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceCall.create(checkExistenceAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -261,7 +291,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @return the observable to the boolean object
      */
-    public Observable<ServiceResponse<Boolean>> checkExistenceAsync(String resourceGroupName, String deploymentName) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName) {
+        return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponse<Boolean> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks whether deployment exists.
+     *
+     * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @return the observable to the boolean object
+     */
+    public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -306,10 +352,10 @@ public final class DeploymentsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the DeploymentExtendedInner object wrapped in ServiceResponse if successful.
+     * @return the DeploymentExtendedInner object if successful.
      */
-    public ServiceResponse<DeploymentExtendedInner> createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, deploymentName, parameters).toBlocking().last();
+    public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -322,7 +368,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -333,7 +379,24 @@ public final class DeploymentsInner {
      * @param parameters Additional parameters supplied to the operation.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<DeploymentExtendedInner>> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+    public Observable<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
+            @Override
+            public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a named template deployment using a template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Additional parameters supplied to the operation.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<DeploymentExtendedInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -363,10 +426,10 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentExtendedInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentExtendedInner object if successful.
      */
-    public ServiceResponse<DeploymentExtendedInner> beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters).toBlocking().single();
+    public DeploymentExtendedInner beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -379,7 +442,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -390,7 +453,24 @@ public final class DeploymentsInner {
      * @param parameters Additional parameters supplied to the operation.
      * @return the observable to the DeploymentExtendedInner object
      */
-    public Observable<ServiceResponse<DeploymentExtendedInner>> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+    public Observable<DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
+            @Override
+            public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a named template deployment using a template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Additional parameters supplied to the operation.
+     * @return the observable to the DeploymentExtendedInner object
+     */
+    public Observable<ServiceResponse<DeploymentExtendedInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -437,10 +517,10 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentExtendedInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentExtendedInner object if successful.
      */
-    public ServiceResponse<DeploymentExtendedInner> get(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, deploymentName).toBlocking().single();
+    public DeploymentExtendedInner get(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
     /**
@@ -452,7 +532,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExtendedInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -462,7 +542,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @return the observable to the DeploymentExtendedInner object
      */
-    public Observable<ServiceResponse<DeploymentExtendedInner>> getAsync(String resourceGroupName, String deploymentName) {
+    public Observable<DeploymentExtendedInner> getAsync(String resourceGroupName, String deploymentName) {
+        return getWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExtendedInner>, DeploymentExtendedInner>() {
+            @Override
+            public DeploymentExtendedInner call(ServiceResponse<DeploymentExtendedInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get a deployment.
+     *
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @return the observable to the DeploymentExtendedInner object
+     */
+    public Observable<ServiceResponse<DeploymentExtendedInner>> getWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -504,10 +600,9 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> cancel(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
-        return cancelAsync(resourceGroupName, deploymentName).toBlocking().single();
+    public void cancel(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
     /**
@@ -519,7 +614,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> cancelAsync(String resourceGroupName, String deploymentName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(cancelAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(cancelWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -529,7 +624,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> cancelAsync(String resourceGroupName, String deploymentName) {
+    public Observable<Void> cancelAsync(String resourceGroupName, String deploymentName) {
+        return cancelWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Cancel a currently running template deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> cancelWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -571,10 +682,10 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentValidateResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentValidateResultInner object if successful.
      */
-    public ServiceResponse<DeploymentValidateResultInner> validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return validateAsync(resourceGroupName, deploymentName, parameters).toBlocking().single();
+    public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -587,7 +698,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters, final ServiceCallback<DeploymentValidateResultInner> serviceCallback) {
-        return ServiceCall.create(validateAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
+        return ServiceCall.create(validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters), serviceCallback);
     }
 
     /**
@@ -598,7 +709,24 @@ public final class DeploymentsInner {
      * @param parameters Deployment to validate.
      * @return the observable to the DeploymentValidateResultInner object
      */
-    public Observable<ServiceResponse<DeploymentValidateResultInner>> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+    public Observable<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).map(new Func1<ServiceResponse<DeploymentValidateResultInner>, DeploymentValidateResultInner>() {
+            @Override
+            public DeploymentValidateResultInner call(ServiceResponse<DeploymentValidateResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Validate a deployment template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment to validate.
+     * @return the observable to the DeploymentValidateResultInner object
+     */
+    public Observable<ServiceResponse<DeploymentValidateResultInner>> validateWithServiceResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -645,10 +773,10 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DeploymentExportResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DeploymentExportResultInner object if successful.
      */
-    public ServiceResponse<DeploymentExportResultInner> exportTemplate(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
-        return exportTemplateAsync(resourceGroupName, deploymentName).toBlocking().single();
+    public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
     /**
@@ -660,7 +788,7 @@ public final class DeploymentsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName, final ServiceCallback<DeploymentExportResultInner> serviceCallback) {
-        return ServiceCall.create(exportTemplateAsync(resourceGroupName, deploymentName), serviceCallback);
+        return ServiceCall.create(exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName), serviceCallback);
     }
 
     /**
@@ -670,7 +798,23 @@ public final class DeploymentsInner {
      * @param deploymentName The name of the deployment.
      * @return the observable to the DeploymentExportResultInner object
      */
-    public Observable<ServiceResponse<DeploymentExportResultInner>> exportTemplateAsync(String resourceGroupName, String deploymentName) {
+    public Observable<DeploymentExportResultInner> exportTemplateAsync(String resourceGroupName, String deploymentName) {
+        return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).map(new Func1<ServiceResponse<DeploymentExportResultInner>, DeploymentExportResultInner>() {
+            @Override
+            public DeploymentExportResultInner call(ServiceResponse<DeploymentExportResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Exports a deployment template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of the deployment.
+     * @return the observable to the DeploymentExportResultInner object
+     */
+    public Observable<ServiceResponse<DeploymentExportResultInner>> exportTemplateWithServiceResponseAsync(String resourceGroupName, String deploymentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -711,17 +855,16 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentExtendedInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<DeploymentExtendedInner> pagedList = new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -747,15 +890,14 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @return the observable to the List&lt;DeploymentExtendedInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listAsync(final String resourceGroupName) {
-        return listSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
+    public Observable<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -764,7 +906,27 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
+        return listSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get a list of deployments.
+     *
+     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -801,17 +963,16 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentExtendedInner>> list(final String resourceGroupName, final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName, final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName, filter, top).toBlocking().single();
-        PagedList<DeploymentExtendedInner> pagedList = new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -841,15 +1002,36 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all deployments.
-     * @return the observable to the List&lt;DeploymentExtendedInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listAsync(final String resourceGroupName, final String filter, final Integer top) {
+    public Observable<Page<DeploymentExtendedInner>> listAsync(final String resourceGroupName, final String filter, final Integer top) {
+        return listWithServiceResponseAsync(resourceGroupName, filter, top)
+            .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
+                @Override
+                public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get a list of deployments.
+     *
+     * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
+     * @param filter The filter to apply on the operation.
+     * @param top Query parameters. If null is passed returns all deployments.
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top) {
         return listSinglePageAsync(resourceGroupName, filter, top)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -860,7 +1042,7 @@ public final class DeploymentsInner {
     ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
     ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param filter The filter to apply on the operation.
     ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param top Query parameters. If null is passed returns all deployments.
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listSinglePageAsync(final String resourceGroupName, final String filter, final Integer top) {
         if (resourceGroupName == null) {
@@ -900,17 +1082,16 @@ public final class DeploymentsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<DeploymentExtendedInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<DeploymentExtendedInner> pagedList = new PagedList<DeploymentExtendedInner>(response.getBody()) {
+        return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
             public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<DeploymentExtendedInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -937,15 +1118,34 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;DeploymentExtendedInner&gt; object
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<DeploymentExtendedInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Page<DeploymentExtendedInner>>() {
+                @Override
+                public Page<DeploymentExtendedInner> call(ServiceResponse<Page<DeploymentExtendedInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get a list of deployments.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;DeploymentExtendedInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<DeploymentExtendedInner>>, Observable<ServiceResponse<Page<DeploymentExtendedInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> call(ServiceResponse<Page<DeploymentExtendedInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -954,7 +1154,7 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
     ServiceResponse<PageImpl<DeploymentExtendedInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DeploymentExtendedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<DeploymentExtendedInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

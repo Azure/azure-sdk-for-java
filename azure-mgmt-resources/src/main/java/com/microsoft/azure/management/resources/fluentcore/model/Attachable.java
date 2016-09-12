@@ -23,6 +23,22 @@ public interface Attachable<ParentT> {
      * @param <ParentT> the parent definition
      */
     interface InDefinition<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource definiton.
+         * @return the next stage of the parent definition
+         */
+        ParentT attach();
+    }
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent.
+     * @param <ParentT> the parent definition
+     */
+    interface InDefinitionAlt<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource definition.
+         * @return the next stage of the parent definition
+         */
         ParentT attach();
     }
 
@@ -31,6 +47,22 @@ public interface Attachable<ParentT> {
      * @param <ParentT> the parent definition
      */
     interface InUpdate<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource update.
+         * @return the next stage of the parent definition
+         */
+        ParentT attach();
+    }
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent.
+     * @param <ParentT> the parent definition
+     */
+    interface InUpdateAlt<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource update.
+         * @return the next stage of the parent definition
+         */
         ParentT attach();
     }
 }

@@ -102,10 +102,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last();
+    public void delete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().getBody();
     }
 
     /**
@@ -118,7 +117,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
@@ -129,7 +128,24 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -158,10 +174,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +189,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
@@ -185,7 +200,24 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String circuitName, String authorizationName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -232,10 +264,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ExpressRouteCircuitAuthorizationInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ServiceResponse<ExpressRouteCircuitAuthorizationInner> get(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single();
+    public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
     }
 
     /**
@@ -248,7 +280,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName), serviceCallback);
     }
 
     /**
@@ -259,7 +291,24 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationName The name of the authorization.
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
-    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> getAsync(String resourceGroupName, String circuitName, String authorizationName) {
+    public Observable<ExpressRouteCircuitAuthorizationInner> getAsync(String resourceGroupName, String circuitName, String authorizationName) {
+        return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
+            @Override
+            public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @return the observable to the ExpressRouteCircuitAuthorizationInner object
+     */
+    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> getWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -307,10 +356,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ExpressRouteCircuitAuthorizationInner object wrapped in ServiceResponse if successful.
+     * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ServiceResponse<ExpressRouteCircuitAuthorizationInner> createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last();
+    public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().getBody();
     }
 
     /**
@@ -324,7 +373,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
     }
 
     /**
@@ -336,7 +385,25 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
+    public Observable<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
+            @Override
+            public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -370,10 +437,10 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ExpressRouteCircuitAuthorizationInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ServiceResponse<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single();
+    public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().getBody();
     }
 
     /**
@@ -387,7 +454,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters, final ServiceCallback<ExpressRouteCircuitAuthorizationInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters), serviceCallback);
     }
 
     /**
@@ -399,7 +466,25 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
-    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
+    public Observable<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).map(new Func1<ServiceResponse<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>() {
+            @Override
+            public ExpressRouteCircuitAuthorizationInner call(ServiceResponse<ExpressRouteCircuitAuthorizationInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @return the observable to the ExpressRouteCircuitAuthorizationInner object
+     */
+    public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -449,17 +534,16 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>> list(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listSinglePageAsync(resourceGroupName, circuitName).toBlocking().single();
-        PagedList<ExpressRouteCircuitAuthorizationInner> pagedList = new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -487,15 +571,35 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @return the observable to the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object
+     * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listAsync(final String resourceGroupName, final String circuitName) {
+    public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listAsync(final String resourceGroupName, final String circuitName) {
+        return listWithServiceResponseAsync(resourceGroupName, circuitName)
+            .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
+                @Override
+                public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String circuitName) {
         return listSinglePageAsync(resourceGroupName, circuitName)
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -505,7 +609,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param circuitName The name of the circuit.
-     * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
         if (resourceGroupName == null) {
@@ -548,17 +652,16 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ExpressRouteCircuitAuthorizationInner> pagedList = new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
+        return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
             @Override
             public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ExpressRouteCircuitAuthorizationInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -585,15 +688,34 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object
+     * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<ExpressRouteCircuitAuthorizationInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Page<ExpressRouteCircuitAuthorizationInner>>() {
+                @Override
+                public Page<ExpressRouteCircuitAuthorizationInner> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -602,7 +724,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

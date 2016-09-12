@@ -109,10 +109,9 @@ public final class LoadBalancersInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return deleteAsync(resourceGroupName, loadBalancerName).toBlocking().last();
+    public void delete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().getBody();
     }
 
     /**
@@ -124,7 +123,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> deleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -134,7 +133,23 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the loadBalancer.
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String loadBalancerName) {
+    public Observable<Void> deleteAsync(String resourceGroupName, String loadBalancerName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete LoadBalancer operation deletes the specified load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -159,10 +174,9 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
-        return beginDeleteAsync(resourceGroupName, loadBalancerName).toBlocking().single();
+    public void beginDelete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
     }
 
     /**
@@ -174,7 +188,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginDeleteAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -184,7 +198,23 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the loadBalancer.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String loadBalancerName) {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete LoadBalancer operation deletes the specified load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -227,10 +257,10 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LoadBalancerInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the LoadBalancerInner object if successful.
      */
-    public ServiceResponse<LoadBalancerInner> get(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, loadBalancerName).toBlocking().single();
+    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
     }
 
     /**
@@ -242,7 +272,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, loadBalancerName), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, loadBalancerName), serviceCallback);
     }
 
     /**
@@ -252,7 +282,23 @@ public final class LoadBalancersInner {
      * @param loadBalancerName The name of the loadBalancer.
      * @return the observable to the LoadBalancerInner object
      */
-    public Observable<ServiceResponse<LoadBalancerInner>> getAsync(String resourceGroupName, String loadBalancerName) {
+    public Observable<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName) {
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
+            @Override
+            public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @return the observable to the LoadBalancerInner object
+     */
+    public Observable<ServiceResponse<LoadBalancerInner>> getWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -289,10 +335,10 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LoadBalancerInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the LoadBalancerInner object if successful.
      */
-    public ServiceResponse<LoadBalancerInner> get(String resourceGroupName, String loadBalancerName, String expand) throws CloudException, IOException, IllegalArgumentException {
-        return getAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single();
+    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) throws CloudException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().getBody();
     }
 
     /**
@@ -305,7 +351,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(getAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand), serviceCallback);
     }
 
     /**
@@ -316,7 +362,24 @@ public final class LoadBalancersInner {
      * @param expand expand references resources.
      * @return the observable to the LoadBalancerInner object
      */
-    public Observable<ServiceResponse<LoadBalancerInner>> getAsync(String resourceGroupName, String loadBalancerName, String expand) {
+    public Observable<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
+            @Override
+            public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param expand expand references resources.
+     * @return the observable to the LoadBalancerInner object
+     */
+    public Observable<ServiceResponse<LoadBalancerInner>> getWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -360,10 +423,10 @@ public final class LoadBalancersInner {
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the LoadBalancerInner object wrapped in ServiceResponse if successful.
+     * @return the LoadBalancerInner object if successful.
      */
-    public ServiceResponse<LoadBalancerInner> createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        return createOrUpdateAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last();
+    public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -376,7 +439,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -387,7 +450,24 @@ public final class LoadBalancersInner {
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<LoadBalancerInner>> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
+    public Observable<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
+            @Override
+            public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<LoadBalancerInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -417,10 +497,10 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the LoadBalancerInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the LoadBalancerInner object if successful.
      */
-    public ServiceResponse<LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single();
+    public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -433,7 +513,7 @@ public final class LoadBalancersInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, final ServiceCallback<LoadBalancerInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters), serviceCallback);
     }
 
     /**
@@ -444,7 +524,24 @@ public final class LoadBalancersInner {
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
      * @return the observable to the LoadBalancerInner object
      */
-    public Observable<ServiceResponse<LoadBalancerInner>> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
+    public Observable<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).map(new Func1<ServiceResponse<LoadBalancerInner>, LoadBalancerInner>() {
+            @Override
+            public LoadBalancerInner call(ServiceResponse<LoadBalancerInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the loadBalancer.
+     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @return the observable to the LoadBalancerInner object
+     */
+    public Observable<ServiceResponse<LoadBalancerInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -489,17 +586,16 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LoadBalancerInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listAll() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllSinglePageAsync().toBlocking().single();
-        PagedList<LoadBalancerInner> pagedList = new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LoadBalancerInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -523,15 +619,14 @@ public final class LoadBalancersInner {
     /**
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
-     * @return the observable to the List&lt;LoadBalancerInner&gt; object
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllAsync() {
-        return listAllSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
+    public Observable<Page<LoadBalancerInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -539,7 +634,26 @@ public final class LoadBalancersInner {
     /**
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     *
+     * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -576,17 +690,16 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LoadBalancerInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LoadBalancerInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
-        PagedList<LoadBalancerInner> pagedList = new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LoadBalancerInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -612,15 +725,34 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;LoadBalancerInner&gt; object
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAsync(final String resourceGroupName) {
+    public Observable<Page<LoadBalancerInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
+                @Override
+                public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
         return listSinglePageAsync(resourceGroupName)
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -629,7 +761,7 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param resourceGroupName The name of the resource group.
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LoadBalancerInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
@@ -669,17 +801,16 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LoadBalancerInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<LoadBalancerInner> pagedList = new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LoadBalancerInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -706,15 +837,34 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;LoadBalancerInner&gt; object
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllNextAsync(final String nextPageLink) {
+    public Observable<Page<LoadBalancerInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
+                @Override
+                public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
         return listAllNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listAllNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -723,7 +873,7 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LoadBalancerInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -757,17 +907,16 @@ public final class LoadBalancersInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<LoadBalancerInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<LoadBalancerInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<LoadBalancerInner> pagedList = new PagedList<LoadBalancerInner>(response.getBody()) {
+        return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
             public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<LoadBalancerInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -794,15 +943,34 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;LoadBalancerInner&gt; object
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
-    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<LoadBalancerInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Page<LoadBalancerInner>>() {
+                @Override
+                public Page<LoadBalancerInner> call(ServiceResponse<Page<LoadBalancerInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<LoadBalancerInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<LoadBalancerInner>>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(ServiceResponse<Page<LoadBalancerInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -811,7 +979,7 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<LoadBalancerInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

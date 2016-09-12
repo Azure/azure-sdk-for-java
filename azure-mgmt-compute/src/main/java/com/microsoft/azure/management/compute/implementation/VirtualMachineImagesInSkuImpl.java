@@ -32,7 +32,7 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
                 this.sku.region().toString(),
                 this.sku.publisher().name(),
                 this.sku.offer().name(),
-                this.sku.name()).getBody()) {
+                this.sku.name())) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
                     this.sku.region(),
@@ -44,7 +44,7 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
                             this.sku.publisher().name(),
                             this.sku.offer().name(),
                             this.sku.name(),
-                            version).getBody()));
+                            version)));
         }
         Page<VirtualMachineImage> page = new Page<VirtualMachineImage>() {
              @Override

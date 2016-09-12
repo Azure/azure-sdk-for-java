@@ -27,7 +27,7 @@ final class FeaturesImpl
 
     @Override
     public PagedList<Feature> list() throws CloudException, IOException {
-        return wrapList(client.listAll().getBody());
+        return wrapList(client.listAll());
     }
 
     @Override

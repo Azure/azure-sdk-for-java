@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
+import com.microsoft.azure.management.network.model.HasFloatingIp;
 import com.microsoft.azure.management.network.model.HasFrontend;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -21,6 +22,7 @@ public interface InboundNatRule extends
     HasFrontend,
     HasBackendPort,
     HasProtocol<TransportProtocol>,
+    HasFloatingIp,
     Wrapper<InboundNatRuleInner>,
     ChildResource {
 
@@ -38,11 +40,6 @@ public interface InboundNatRule extends
      * @return the frontend port number associated with this NAT rule
      */
     int frontendPort();
-
-    /**
-     * @return the state of the floating IP enablement
-     */
-    boolean floatingIpEnabled();
 
     /**
      * @return the number of minutes before an idle connection is closed
@@ -102,25 +99,7 @@ public interface InboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify whether floating IP should be enabled.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFloatingIp<ParentT> {
-            /**
-             * Enables the floating IP feature.
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIpEnabled();
-
-            /**
-             * Disables the floating IP feature.
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIpDisabled();
-
-            /**
-             * Specifies whether the floating IP feature should be enabled or disabled.
-             * @param enabled true if enabled, else false
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIp(boolean enabled);
+        interface WithFloatingIp<ParentT> extends HasFloatingIp.DefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
         }
 
         /**
@@ -190,25 +169,7 @@ public interface InboundNatRule extends
         /**
          * The stage of an inbound NAT rule update allowing to specify whether floating IP should be enabled.
          */
-        interface WithFloatingIp {
-            /**
-             * Enables the floating IP feature.
-             * @return the next stage of the update
-             */
-            Update withFloatingIpEnabled();
-
-            /**
-             * Disables the floating IP feature.
-             * @return the next stage of the update
-             */
-            Update withFloatingIpDisabled();
-
-            /**
-             * Specifies whether the floating IP feature should be enabled or disabled.
-             * @param enabled true if enabled, else false
-             * @return the next stage of the update
-             */
-            Update withFloatingIp(boolean enabled);
+        interface WithFloatingIp extends HasFloatingIp.UpdateStages.WithFloatingIp<Update> {
         }
 
         /**
@@ -302,25 +263,7 @@ public interface InboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify whether floating IP should be enabled.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFloatingIp<ParentT> {
-            /**
-             * Enables the floating IP feature.
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIpEnabled();
-
-            /**
-             * Disables the floating IP feature.
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIpDisabled();
-
-            /**
-             * Specifies whether the floating IP feature should be enabled or disabled.
-             * @param enabled true if enabled, else false
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFloatingIp(boolean enabled);
+        interface WithFloatingIp<ParentT> extends HasFloatingIp.UpdateDefinitionStages.WithFloatingIp<WithAttach<ParentT>> {
         }
 
         /**

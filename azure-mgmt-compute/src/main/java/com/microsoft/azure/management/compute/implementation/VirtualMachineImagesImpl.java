@@ -18,8 +18,8 @@ class VirtualMachineImagesImpl
         implements VirtualMachineImages {
     private final VirtualMachinePublishers publishers;
 
-    VirtualMachineImagesImpl(VirtualMachineImagesInner client) {
-        this.publishers = new VirtualMachinePublishersImpl(client);
+    VirtualMachineImagesImpl(VirtualMachinePublishers publishers) {
+        this.publishers = publishers;
     }
 
     @Override

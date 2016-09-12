@@ -74,17 +74,16 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> list(final String location) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> list(final String location) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = listSinglePageAsync(location).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -110,15 +109,34 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
      * @param location The location upon which resource usage is queried.
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> listAsync(final String location) {
+    public Observable<Page<UsageInner>> listAsync(final String location) {
+        return listWithServiceResponseAsync(location)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists compute usages for a subscription.
+     *
+     * @param location The location upon which resource usage is queried.
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> listWithServiceResponseAsync(final String location) {
         return listSinglePageAsync(location)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -127,7 +145,7 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
     ServiceResponse<PageImpl1<UsageInner>> * @param location The location upon which resource usage is queried.
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listSinglePageAsync(final String location) {
         if (location == null) {
@@ -167,17 +185,16 @@ public final class UsagesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UsageInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<UsageInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<UsageInner> pagedList = new PagedList<UsageInner>(response.getBody()) {
+        return new PagedList<UsageInner>(response.getBody()) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<UsageInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -204,15 +221,34 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;UsageInner&gt; object
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
-    public Observable<ServiceResponse<Page<UsageInner>>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<UsageInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<UsageInner>>, Page<UsageInner>>() {
+                @Override
+                public Page<UsageInner> call(ServiceResponse<Page<UsageInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists compute usages for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;UsageInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UsageInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<UsageInner>>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(ServiceResponse<Page<UsageInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return listNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -221,7 +257,7 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
     ServiceResponse<PageImpl1<UsageInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

@@ -44,7 +44,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public boolean floatingIp() {
+    public boolean floatingIpEnabled() {
         return this.inner().enableFloatingIP();
     }
 

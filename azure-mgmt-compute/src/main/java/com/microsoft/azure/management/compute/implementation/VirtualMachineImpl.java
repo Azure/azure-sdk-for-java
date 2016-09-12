@@ -29,6 +29,7 @@ import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -48,13 +49,13 @@ import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -111,10 +112,13 @@ class VirtualMachineImpl
     private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
+    // The entry point to manage extensions associated with the virtual machine
+    private VirtualMachineExtensionsImpl virtualMachineExtensions;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
+                       VirtualMachineExtensionsInner extensionsClient,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
@@ -133,6 +137,7 @@ class VirtualMachineImpl
                 return new VirtualMachineSizeImpl(inner);
             }
         };
+        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         initializeDataDisks();
     }
 
@@ -140,11 +145,12 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachine refresh() throws Exception {
-        ServiceResponse<VirtualMachineInner> response =
+        VirtualMachineInner response =
                 this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
+        this.virtualMachineExtensions.refresh();
         return this;
     }
 
@@ -186,7 +192,7 @@ class VirtualMachineImpl
     @Override
     public PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()).getBody());
+        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
@@ -201,17 +207,17 @@ class VirtualMachineImpl
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
-        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
-        return mapper.writeValueAsString(captureResult.getBody().output());
+        return mapper.writeValueAsString(captureResult.output());
     }
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
         this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
                 this.name(),
-                InstanceViewTypes.INSTANCE_VIEW).getBody().instanceView();
+                InstanceViewTypes.INSTANCE_VIEW).instanceView();
         return this.virtualMachineInstanceView;
     }
 
@@ -625,6 +631,13 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine optional extension settings
+
+    @Override
+    public VirtualMachineExtensionImpl defineNewExtension(String name) {
+        return this.virtualMachineExtensions.define(name);
+    }
+
     // Virtual machine update only settings
 
     @Override
@@ -679,6 +692,17 @@ class VirtualMachineImpl
                 }
             }
         }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineExtensionImpl updateExtension(String name) {
+        return this.virtualMachineExtensions.update(name);
+    }
+
+    @Override
+    public VirtualMachineImpl withoutExtension(String name) {
+        this.virtualMachineExtensions.remove(name);
         return this;
     }
 
@@ -801,8 +825,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineExtensionInner> resources() {
-        return inner().resources();
+    public Map<String, VirtualMachineExtension> extensions() {
+        return this.virtualMachineExtensions.asMap();
     }
 
     @Override
@@ -863,12 +887,23 @@ class VirtualMachineImpl
                         handleNetworkSettings();
                         handleAvailabilitySettings();
                         return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
-                                .map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachine>() {
+                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                                     @Override
-                                    public VirtualMachine call(ServiceResponse<VirtualMachineInner> virtualMachineInner) {
-                                        self.setInner(virtualMachineInner.getBody());
+                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
+                                        self.setInner(virtualMachineInner);
                                         clearCachedRelatedResources();
                                         initializeDataDisks();
+                                        return self;
+                                    }
+                                });
+                    }
+                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                        return self.virtualMachineExtensions.commitAndGetAllAsync()
+                                .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
                                         return self;
                                     }
                                 });
@@ -877,6 +912,10 @@ class VirtualMachineImpl
     }
 
     // Helpers
+    VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
+        this.virtualMachineExtensions.addExtension(extension);
+        return this;
+    }
 
     VirtualMachineImpl withDataDisk(DataDiskImpl dataDisk) {
         this.inner()

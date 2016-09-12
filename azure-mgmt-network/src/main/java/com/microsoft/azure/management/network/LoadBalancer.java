@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
+import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -72,7 +73,9 @@ public interface LoadBalancer extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithFrontend,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithInternetFrontendOrBackend,
+        DefinitionStages.WithPublicFrontendOrBackend,
+        DefinitionStages.WithPrivateFrontendOrBackend,
+        DefinitionStages.WithNetworkSubnet,
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrProbe,
         DefinitionStages.WithProbe,
@@ -103,36 +106,43 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition describing the nature of the frontend of the load balancer: internal or Internet-facing.
          */
         interface WithFrontend extends
-            WithPublicIpAddress<WithInternetFrontendOrBackend>,
-            WithInternetFrontend,
-            WithInternalFrontend {
+            WithPublicIpAddress<WithPublicFrontendOrBackend>,
+            WithPublicFrontend,
+            WithPrivateFrontend {
         }
 
         /**
-         * The stage of a load balancer definition allowing to define one or more internal frontends.
+         * The stage of an internal load balancer definition allowing to define one or more private frontends.
          */
-        interface WithInternalFrontend {
-            // TODO
+        interface WithPrivateFrontend extends WithNetworkSubnet {
+            PrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrBackend> definePrivateFrontend(String name);
         }
 
         /**
-         * The stage of a load balancer definition allowing to define one or more Internet-facing frontends.
+         * The stage of an internal load balancer definition allowing to specify another private frontend or start specifying a backend.
          */
-        interface WithInternetFrontend extends WithPublicIpAddress<WithInternetFrontendOrBackend> {
+        interface WithPrivateFrontendOrBackend extends WithPrivateFrontend, WithBackend {
+        }
+
+        /**
+         * The stage of an Internet-facing load balancer definition allowing to define one or more public frontends.
+         */
+        interface WithPublicFrontend {
             /**
-             * Begins the definition of a new load balancer frontend.
+             * Begins the definition of a new load public balancer frontend.
              * <p>
-             * The definition must be completed with a call to {@link InternetFrontend.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link PublicFrontend.DefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            InternetFrontend.DefinitionStages.Blank<WithInternetFrontendOrBackend> defineInternetFrontend(String name);
+            PublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrBackend> definePublicFrontend(String name);
         }
 
         /**
-         * The stage of a load balancer definition allowing to add additional Internet-facing frontends or add the first back end pool.
+         * The stage of an Internet-facing load balancer definition allowing to add additional public frontends
+         * or add the first backend pool.
          */
-        interface WithInternetFrontendOrBackend extends WithInternetFrontend, WithBackend {
+        interface WithPublicFrontendOrBackend extends WithPublicFrontend, WithBackend {
         }
 
         /**
@@ -222,45 +232,72 @@ public interface LoadBalancer extends
              * @param vms existing virtual machines
              * @return the next stage of the update
              */
-            ReturnT withExistingVirtualMachines(SupportsNetworkInterfaces...vms);
+            ReturnT withExistingVirtualMachines(HasNetworkInterfaces...vms);
         }
 
         /**
-         * The stage of a load balancer definition allowing to add a public ip address to the load
-         * balancer's front end.
+         * The stage of a load balancer definition allowing to add a public ip address as one of the load
+         * balancer's public frontends.
          * @param <ReturnT> the next stage of the definition
          */
         interface WithPublicIpAddress<ReturnT> {
             /**
-             * Assigns the provided set of public IP addresses front end to the load balancer, making it an Internet-facing load balancer.
+             * Assigns the provided public IP address to the default public frontend to the load balancer,
+             * making it an Internet-facing load balancer.
              * <p>
              * This will create a new default frontend for the load balancer under the name "default".
-             * @param publicIpAddresses existing public IP addresses
-             * @return the next stage of the resource definition
+             * <p>
+             * Once the first public frontend is specified, only public frontends can be added, not private.
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIpAddresses(PublicIpAddress...publicIpAddresses);
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
 
             /**
-             * Adds a new public IP address to the default front end of the load balancer, using an automatically generated name and leaf DNS label
+             * Creates a new public IP address as the default public frontend of the load balancer,
+             * using an automatically generated name and leaf DNS label
              * derived from the load balancer's name, in the same resource group and region.
+             * <p>
+             * This will create a new default frontend for the load balancer under the name "default".
+             * <p>
+             * Once the first public frontend is specified, only public frontends can be added, not private.
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress();
 
             /**
-             * Adds a new public IP address to the front end of the load balancer, using the specified DNS leaf label,
-             * an automatically generated name derived from the DNS label, in the same resource group and region.
+             * Adds a new public IP address as the default public frontend of the load balancer,
+             * using the specified DNS leaf label, an automatically generated frontend name derived from the DNS label,
+             * in the same resource group and region as the load balancer.
+             * @param dnsLeafLabel a DNS leaf label
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(String dnsLeafLabel);
 
             /**
-             * Adds a new public IP address to the front end of the load balancer, creating the public IP based on the provided {@link Creatable}
+             * Adds a new public IP address to the front end of the load balancer,
+             * creating the public IP based on the provided {@link Creatable}
              * stage of a public IP endpoint's definition.
              * @param creatablePublicIpAddress the creatable stage of a public IP address definition
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to specify an existing subnet as the private frontend.
+         */
+        interface WithNetworkSubnet {
+            /**
+             * Assigns the specified subnet from the selected network as teh default private frontend of this load balancer,
+             * thereby making the load balancer internal.
+             * <p>
+             * Once the first private frontend is added, only private frontends can be added thereafter.
+             * @param network an existing virtual network
+             * @param subnetName the name of an existing subnet on the specified network
+             * @return the next stage of the definition
+             */
+            WithPrivateFrontendOrBackend withExistingSubnet(Network network, String subnetName);
         }
 
         /**
@@ -491,13 +528,13 @@ public interface LoadBalancer extends
          */
         interface WithInternetFrontend {
             /**
-             * Begins the update of a new load balancer frontend.
+             * Begins the update of a load balancer frontend.
              * <p>
-             * The definition must be completed with a call to {@link InternetFrontend.UpdateDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link PublicFrontend.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            InternetFrontend.UpdateDefinitionStages.Blank<Update> defineInternetFrontend(String name);
+            PublicFrontend.UpdateDefinitionStages.Blank<Update> definePublicFrontend(String name);
 
             /**
              * Removes the specified frontend from the load balancer.
@@ -511,7 +548,39 @@ public interface LoadBalancer extends
              * @param name the name of the frontend to update
              * @return the first stage of the frontend update
              */
-            InternetFrontend.Update updateInternetFrontend(String name);
+            PublicFrontend.Update updateInternetFrontend(String name);
+        }
+
+        /**
+         * The stage of a load balancer update allowing to define one or more private frontends.
+         */
+        interface WithInternalFrontend extends WithNetworkSubnet {
+            /**
+             * Begins the update of an internal load balancer frontend.
+             * @param name the name for the frontend
+             * @return the first stage of the new frontend definition
+             */
+            PrivateFrontend.UpdateDefinitionStages.Blank<Update> definePrivateFrontend(String name);
+
+            /**
+             * Begins the description of an update to an existing internal frontend.
+             * @param name the name of an existing frontend from this load balancer
+             * @return the first stage of the frontend update
+             */
+            PrivateFrontend.Update updateInternalFrontend(String name);
+        }
+
+        /**
+         * The stage of a load balancer update allowing to specify a subnet to assign to the load balancer's frontend.
+         */
+        interface WithNetworkSubnet {
+            /**
+             * Assigns the specified subnet from the specified network to the default frontend of this load balancer.
+             * @param network an existing virtual network
+             * @param subnetName the name of an existing subnet on the specified network
+             * @return the next stage of the update
+             */
+            Update withExistingSubnet(Network network, String subnetName);
         }
 
         /**
@@ -582,6 +651,8 @@ public interface LoadBalancer extends
         UpdateStages.WithBackend,
         UpdateStages.WithLoadBalancingRule,
         UpdateStages.WithInternetFrontend,
+        UpdateStages.WithInternalFrontend,
+        UpdateStages.WithNetworkSubnet,
         UpdateStages.WithInboundNatRule,
         UpdateStages.WithInboundNatPool {
     }

@@ -150,10 +150,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> getSubscriptionPublishingCredentials() throws CloudException, IOException, IllegalArgumentException {
-        return getSubscriptionPublishingCredentialsAsync().toBlocking().single();
+    public UserInner getSubscriptionPublishingCredentials() throws CloudException, IOException, IllegalArgumentException {
+        return getSubscriptionPublishingCredentialsWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -163,7 +163,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> getSubscriptionPublishingCredentialsAsync(final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(getSubscriptionPublishingCredentialsAsync(), serviceCallback);
+        return ServiceCall.create(getSubscriptionPublishingCredentialsWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -171,7 +171,21 @@ public final class GlobalsInner {
      *
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> getSubscriptionPublishingCredentialsAsync() {
+    public Observable<UserInner> getSubscriptionPublishingCredentialsAsync() {
+        return getSubscriptionPublishingCredentialsWithServiceResponseAsync().map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets publishing credentials for the subscription owner.
+     *
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> getSubscriptionPublishingCredentialsWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -206,10 +220,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> updateSubscriptionPublishingCredentials(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
-        return updateSubscriptionPublishingCredentialsAsync(requestMessage).toBlocking().single();
+    public UserInner updateSubscriptionPublishingCredentials(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+        return updateSubscriptionPublishingCredentialsWithServiceResponseAsync(requestMessage).toBlocking().single().getBody();
     }
 
     /**
@@ -220,7 +234,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<UserInner> updateSubscriptionPublishingCredentialsAsync(UserInner requestMessage, final ServiceCallback<UserInner> serviceCallback) {
-        return ServiceCall.create(updateSubscriptionPublishingCredentialsAsync(requestMessage), serviceCallback);
+        return ServiceCall.create(updateSubscriptionPublishingCredentialsWithServiceResponseAsync(requestMessage), serviceCallback);
     }
 
     /**
@@ -229,7 +243,22 @@ public final class GlobalsInner {
      * @param requestMessage requestMessage with new publishing credentials
      * @return the observable to the UserInner object
      */
-    public Observable<ServiceResponse<UserInner>> updateSubscriptionPublishingCredentialsAsync(UserInner requestMessage) {
+    public Observable<UserInner> updateSubscriptionPublishingCredentialsAsync(UserInner requestMessage) {
+        return updateSubscriptionPublishingCredentialsWithServiceResponseAsync(requestMessage).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates publishing credentials for the subscription owner.
+     *
+     * @param requestMessage requestMessage with new publishing credentials
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> updateSubscriptionPublishingCredentialsWithServiceResponseAsync(UserInner requestMessage) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -267,17 +296,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync().toBlocking().single();
-        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -301,15 +329,14 @@ public final class GlobalsInner {
     /**
      * Gets list of available geo regions.
      *
-     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsAsync() {
-        return getSubscriptionGeoRegionsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+    public Observable<Page<GeoRegionInner>> getSubscriptionGeoRegionsAsync() {
+        return getSubscriptionGeoRegionsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -317,7 +344,26 @@ public final class GlobalsInner {
     /**
      * Gets list of available geo regions.
      *
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsWithServiceResponseAsync() {
+        return getSubscriptionGeoRegionsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSubscriptionGeoRegionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -348,17 +394,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegions(final String sku) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegions(final String sku) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync(sku).toBlocking().single();
-        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -384,15 +429,34 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
      * @param sku Filter only to regions that support this sku
-     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsAsync(final String sku) {
+    public Observable<Page<GeoRegionInner>> getSubscriptionGeoRegionsAsync(final String sku) {
+        return getSubscriptionGeoRegionsWithServiceResponseAsync(sku)
+            .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
+                @Override
+                public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param sku Filter only to regions that support this sku
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsWithServiceResponseAsync(final String sku) {
         return getSubscriptionGeoRegionsSinglePageAsync(sku)
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSubscriptionGeoRegionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -401,7 +465,7 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
     ServiceResponse<PageImpl<GeoRegionInner>> * @param sku Filter only to regions that support this sku
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsSinglePageAsync(final String sku) {
         if (this.client.subscriptionId() == null) {
@@ -437,17 +501,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateInner>> getAllCertificates() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateInner> getAllCertificates() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateInner>> response = getAllCertificatesSinglePageAsync().toBlocking().single();
-        PagedList<CertificateInner> pagedList = new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.getBody()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -471,15 +534,14 @@ public final class GlobalsInner {
     /**
      * Get all certificates for a subscription.
      *
-     * @return the observable to the List&lt;CertificateInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesAsync() {
-        return getAllCertificatesSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+    public Observable<Page<CertificateInner>> getAllCertificatesAsync() {
+        return getAllCertificatesWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -487,7 +549,26 @@ public final class GlobalsInner {
     /**
      * Get all certificates for a subscription.
      *
-     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;CertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesWithServiceResponseAsync() {
+        return getAllCertificatesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @return the PagedList&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -523,17 +604,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync().toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -557,15 +637,14 @@ public final class GlobalsInner {
     /**
      * Gets all App Service Plans for a subcription.
      *
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsAsync() {
-        return getAllServerFarmsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync() {
+        return getAllServerFarmsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -573,7 +652,26 @@ public final class GlobalsInner {
     /**
      * Gets all App Service Plans for a subcription.
      *
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsWithServiceResponseAsync() {
+        return getAllServerFarmsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllServerFarmsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -605,17 +703,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarms(final Boolean detailed) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms(final Boolean detailed) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync(detailed).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -643,15 +740,35 @@ public final class GlobalsInner {
      *
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsAsync(final Boolean detailed) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsAsync(final Boolean detailed) {
+        return getAllServerFarmsWithServiceResponseAsync(detailed)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
+                 Retrieval of all properties may increase the API latency.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsWithServiceResponseAsync(final Boolean detailed) {
         return getAllServerFarmsSinglePageAsync(detailed)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -661,7 +778,7 @@ public final class GlobalsInner {
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsSinglePageAsync(final Boolean detailed) {
         if (this.client.subscriptionId() == null) {
@@ -697,17 +814,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getAllSites() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getAllSites() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getAllSitesSinglePageAsync().toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -731,15 +847,14 @@ public final class GlobalsInner {
     /**
      * Gets all Web Apps for a subscription.
      *
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesAsync() {
-        return getAllSitesSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+    public Observable<Page<SiteInner>> getAllSitesAsync() {
+        return getAllSitesWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -747,7 +862,26 @@ public final class GlobalsInner {
     /**
      * Gets all Web Apps for a subscription.
      *
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesWithServiceResponseAsync() {
+        return getAllSitesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -783,17 +917,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsSinglePageAsync().toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -817,15 +950,14 @@ public final class GlobalsInner {
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsAsync() {
-        return getAllHostingEnvironmentsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+    public Observable<Page<HostingEnvironmentInner>> getAllHostingEnvironmentsAsync() {
+        return getAllHostingEnvironmentsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -833,7 +965,26 @@ public final class GlobalsInner {
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsWithServiceResponseAsync() {
+        return getAllHostingEnvironmentsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -869,17 +1020,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsSinglePageAsync().toBlocking().single();
-        PagedList<ManagedHostingEnvironmentInner> pagedList = new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -903,15 +1053,14 @@ public final class GlobalsInner {
     /**
      * Gets all managed hosting environments for a subscription.
      *
-     * @return the observable to the List&lt;ManagedHostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;ManagedHostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsAsync() {
-        return getAllManagedHostingEnvironmentsSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+    public Observable<Page<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsAsync() {
+        return getAllManagedHostingEnvironmentsWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Page<ManagedHostingEnvironmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                public Page<ManagedHostingEnvironmentInner> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -919,7 +1068,26 @@ public final class GlobalsInner {
     /**
      * Gets all managed hosting environments for a subscription.
      *
-     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ManagedHostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsWithServiceResponseAsync() {
+        return getAllManagedHostingEnvironmentsSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -955,17 +1123,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ClassicMobileServiceInner>> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesSinglePageAsync().toBlocking().single();
-        PagedList<ClassicMobileServiceInner> pagedList = new PagedList<ClassicMobileServiceInner>(response.getBody()) {
+        return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
             public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -989,15 +1156,14 @@ public final class GlobalsInner {
     /**
      * Gets all mobile services for a subscription.
      *
-     * @return the observable to the List&lt;ClassicMobileServiceInner&gt; object
+     * @return the observable to the PagedList&lt;ClassicMobileServiceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesAsync() {
-        return getAllClassicMobileServicesSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+    public Observable<Page<ClassicMobileServiceInner>> getAllClassicMobileServicesAsync() {
+        return getAllClassicMobileServicesWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Page<ClassicMobileServiceInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(ServiceResponse<Page<ClassicMobileServiceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                public Page<ClassicMobileServiceInner> call(ServiceResponse<Page<ClassicMobileServiceInner>> response) {
+                    return response.getBody();
                 }
             });
     }
@@ -1005,7 +1171,26 @@ public final class GlobalsInner {
     /**
      * Gets all mobile services for a subscription.
      *
-     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;ClassicMobileServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesWithServiceResponseAsync() {
+        return getAllClassicMobileServicesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(ServiceResponse<Page<ClassicMobileServiceInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllClassicMobileServicesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @return the PagedList&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
@@ -1041,10 +1226,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> listPremierAddOnOffers() throws CloudException, IOException, IllegalArgumentException {
-        return listPremierAddOnOffersAsync().toBlocking().single();
+    public Object listPremierAddOnOffers() throws CloudException, IOException, IllegalArgumentException {
+        return listPremierAddOnOffersWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -1054,7 +1239,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> listPremierAddOnOffersAsync(final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(listPremierAddOnOffersAsync(), serviceCallback);
+        return ServiceCall.create(listPremierAddOnOffersWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -1062,7 +1247,21 @@ public final class GlobalsInner {
      *
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> listPremierAddOnOffersAsync() {
+    public Observable<Object> listPremierAddOnOffersAsync() {
+        return listPremierAddOnOffersWithServiceResponseAsync().map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * List premier add on offers.
+     *
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> listPremierAddOnOffersWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1097,10 +1296,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> isHostingEnvironmentNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
-        return isHostingEnvironmentNameAvailableAsync(name).toBlocking().single();
+    public Object isHostingEnvironmentNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
+        return isHostingEnvironmentNameAvailableWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
     /**
@@ -1111,7 +1310,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> isHostingEnvironmentNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(isHostingEnvironmentNameAvailableAsync(name), serviceCallback);
+        return ServiceCall.create(isHostingEnvironmentNameAvailableWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -1120,7 +1319,22 @@ public final class GlobalsInner {
      * @param name Hosting environment name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> isHostingEnvironmentNameAvailableAsync(String name) {
+    public Observable<Object> isHostingEnvironmentNameAvailableAsync(String name) {
+        return isHostingEnvironmentNameAvailableWithServiceResponseAsync(name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Whether hosting environment name is available.
+     *
+     * @param name Hosting environment name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> isHostingEnvironmentNameAvailableWithServiceResponseAsync(String name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1158,10 +1372,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> isHostingEnvironmentWithLegacyNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
-        return isHostingEnvironmentWithLegacyNameAvailableAsync(name).toBlocking().single();
+    public Object isHostingEnvironmentWithLegacyNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
+        return isHostingEnvironmentWithLegacyNameAvailableWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
     /**
@@ -1172,7 +1386,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<Object> isHostingEnvironmentWithLegacyNameAvailableAsync(String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(isHostingEnvironmentWithLegacyNameAvailableAsync(name), serviceCallback);
+        return ServiceCall.create(isHostingEnvironmentWithLegacyNameAvailableWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
@@ -1181,7 +1395,22 @@ public final class GlobalsInner {
      * @param name Hosting environment name
      * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Object>> isHostingEnvironmentWithLegacyNameAvailableAsync(String name) {
+    public Observable<Object> isHostingEnvironmentWithLegacyNameAvailableAsync(String name) {
+        return isHostingEnvironmentWithLegacyNameAvailableWithServiceResponseAsync(name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Whether hosting environment name is available.
+     *
+     * @param name Hosting environment name
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> isHostingEnvironmentWithLegacyNameAvailableWithServiceResponseAsync(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
@@ -1219,10 +1448,10 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceNameAvailabilityInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ServiceResponse<ResourceNameAvailabilityInner> checkNameAvailability(ResourceNameAvailabilityRequestInner request) throws CloudException, IOException, IllegalArgumentException {
-        return checkNameAvailabilityAsync(request).toBlocking().single();
+    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+        return checkNameAvailabilityWithServiceResponseAsync(request).toBlocking().single().getBody();
     }
 
     /**
@@ -1233,7 +1462,7 @@ public final class GlobalsInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequestInner request, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceCall.create(checkNameAvailabilityAsync(request), serviceCallback);
+        return ServiceCall.create(checkNameAvailabilityWithServiceResponseAsync(request), serviceCallback);
     }
 
     /**
@@ -1242,7 +1471,22 @@ public final class GlobalsInner {
      * @param request Name availability request
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityAsync(ResourceNameAvailabilityRequestInner request) {
+    public Observable<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequestInner request) {
+        return checkNameAvailabilityWithServiceResponseAsync(request).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
+            @Override
+            public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Check if resource name is available.
+     *
+     * @param request Name availability request
+     * @return the observable to the ResourceNameAvailabilityInner object
+     */
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(ResourceNameAvailabilityRequestInner request) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1281,17 +1525,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<GeoRegionInner>> getSubscriptionGeoRegionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<GeoRegionInner> pagedList = new PagedList<GeoRegionInner>(response.getBody()) {
+        return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
             public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<GeoRegionInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1318,15 +1561,34 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;GeoRegionInner&gt; object
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink) {
+    public Observable<Page<GeoRegionInner>> getSubscriptionGeoRegionsNextAsync(final String nextPageLink) {
+        return getSubscriptionGeoRegionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<GeoRegionInner>>, Page<GeoRegionInner>>() {
+                @Override
+                public Page<GeoRegionInner> call(ServiceResponse<Page<GeoRegionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of available geo regions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;GeoRegionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextWithServiceResponseAsync(final String nextPageLink) {
         return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<GeoRegionInner>>, Observable<ServiceResponse<Page<GeoRegionInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<GeoRegionInner>>> call(ServiceResponse<Page<GeoRegionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getSubscriptionGeoRegionsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1335,7 +1597,7 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
     ServiceResponse<PageImpl<GeoRegionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GeoRegionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<GeoRegionInner>>> getSubscriptionGeoRegionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1369,17 +1631,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<CertificateInner>> getAllCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateInner> getAllCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<CertificateInner>> response = getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<CertificateInner> pagedList = new PagedList<CertificateInner>(response.getBody()) {
+        return new PagedList<CertificateInner>(response.getBody()) {
             @Override
             public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<CertificateInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1406,15 +1667,34 @@ public final class GlobalsInner {
      * Get all certificates for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;CertificateInner&gt; object
+     * @return the observable to the PagedList&lt;CertificateInner&gt; object
      */
-    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextAsync(final String nextPageLink) {
+    public Observable<Page<CertificateInner>> getAllCertificatesNextAsync(final String nextPageLink) {
+        return getAllCertificatesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CertificateInner>>, Page<CertificateInner>>() {
+                @Override
+                public Page<CertificateInner> call(ServiceResponse<Page<CertificateInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all certificates for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllCertificatesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<CertificateInner>>, Observable<ServiceResponse<Page<CertificateInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<CertificateInner>>> call(ServiceResponse<Page<CertificateInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllCertificatesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificatesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1423,7 +1703,7 @@ public final class GlobalsInner {
      * Get all certificates for a subscription.
      *
     ServiceResponse<PageImpl<CertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateInner>>> getAllCertificatesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1457,17 +1737,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ServerFarmWithRichSkuInner>> getAllServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ServerFarmWithRichSkuInner> pagedList = new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
             public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ServerFarmWithRichSkuInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1494,15 +1773,34 @@ public final class GlobalsInner {
      * Gets all App Service Plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ServerFarmWithRichSkuInner&gt; object
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextAsync(final String nextPageLink) {
+    public Observable<Page<ServerFarmWithRichSkuInner>> getAllServerFarmsNextAsync(final String nextPageLink) {
+        return getAllServerFarmsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all App Service Plans for a subcription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllServerFarmsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllServerFarmsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllServerFarmsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1511,7 +1809,7 @@ public final class GlobalsInner {
      * Gets all App Service Plans for a subcription.
      *
     ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getAllServerFarmsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1545,17 +1843,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getAllSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getAllSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<SiteInner>> response = getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<SiteInner> pagedList = new PagedList<SiteInner>(response.getBody()) {
+        return new PagedList<SiteInner>(response.getBody()) {
             @Override
             public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<SiteInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1582,15 +1879,34 @@ public final class GlobalsInner {
      * Gets all Web Apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;SiteInner&gt; object
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextAsync(final String nextPageLink) {
+    public Observable<Page<SiteInner>> getAllSitesNextAsync(final String nextPageLink) {
+        return getAllSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all Web Apps for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllSitesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllSitesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllSitesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1599,7 +1915,7 @@ public final class GlobalsInner {
      * Gets all Web Apps for a subscription.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> getAllSitesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1633,17 +1949,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<HostingEnvironmentInner>> getAllHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getAllHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<HostingEnvironmentInner> pagedList = new PagedList<HostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<HostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1670,15 +1985,34 @@ public final class GlobalsInner {
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;HostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextAsync(final String nextPageLink) {
+    public Observable<Page<HostingEnvironmentInner>> getAllHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getAllHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Page<HostingEnvironmentInner>>() {
+                @Override
+                public Page<HostingEnvironmentInner> call(ServiceResponse<Page<HostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all hostingEnvironments (App Service Environment) for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<HostingEnvironmentInner>>, Observable<ServiceResponse<Page<HostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> call(ServiceResponse<Page<HostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1687,7 +2021,7 @@ public final class GlobalsInner {
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
     ServiceResponse<PageImpl<HostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;HostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<HostingEnvironmentInner>>> getAllHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1721,17 +2055,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ManagedHostingEnvironmentInner> pagedList = new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
+        return new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
             @Override
             public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ManagedHostingEnvironmentInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1758,15 +2091,34 @@ public final class GlobalsInner {
      * Gets all managed hosting environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ManagedHostingEnvironmentInner&gt; object
+     * @return the observable to the PagedList&lt;ManagedHostingEnvironmentInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink) {
+    public Observable<Page<ManagedHostingEnvironmentInner>> getAllManagedHostingEnvironmentsNextAsync(final String nextPageLink) {
+        return getAllManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Page<ManagedHostingEnvironmentInner>>() {
+                @Override
+                public Page<ManagedHostingEnvironmentInner> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all managed hosting environments for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ManagedHostingEnvironmentInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ManagedHostingEnvironmentInner>>, Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> call(ServiceResponse<Page<ManagedHostingEnvironmentInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllManagedHostingEnvironmentsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1775,7 +2127,7 @@ public final class GlobalsInner {
      * Gets all managed hosting environments for a subscription.
      *
     ServiceResponse<PageImpl<ManagedHostingEnvironmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ManagedHostingEnvironmentInner>>> getAllManagedHostingEnvironmentsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
@@ -1809,17 +2161,16 @@ public final class GlobalsInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<ClassicMobileServiceInner>> getAllClassicMobileServicesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServicesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single();
-        PagedList<ClassicMobileServiceInner> pagedList = new PagedList<ClassicMobileServiceInner>(response.getBody()) {
+        return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
             public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<PagedList<ClassicMobileServiceInner>>(pagedList, response.getResponse());
     }
 
     /**
@@ -1846,15 +2197,34 @@ public final class GlobalsInner {
      * Gets all mobile services for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;ClassicMobileServiceInner&gt; object
+     * @return the observable to the PagedList&lt;ClassicMobileServiceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextAsync(final String nextPageLink) {
+    public Observable<Page<ClassicMobileServiceInner>> getAllClassicMobileServicesNextAsync(final String nextPageLink) {
+        return getAllClassicMobileServicesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Page<ClassicMobileServiceInner>>() {
+                @Override
+                public Page<ClassicMobileServiceInner> call(ServiceResponse<Page<ClassicMobileServiceInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets all mobile services for a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ClassicMobileServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextWithServiceResponseAsync(final String nextPageLink) {
         return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<ClassicMobileServiceInner>>, Observable<ServiceResponse<Page<ClassicMobileServiceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> call(ServiceResponse<Page<ClassicMobileServiceInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
-                    return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink);
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllClassicMobileServicesNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
@@ -1863,7 +2233,7 @@ public final class GlobalsInner {
      * Gets all mobile services for a subscription.
      *
     ServiceResponse<PageImpl<ClassicMobileServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the List&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ClassicMobileServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ClassicMobileServiceInner>>> getAllClassicMobileServicesNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {

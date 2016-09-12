@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,20 +40,20 @@ class AvailabilitySetsImpl
         return new GroupPagedList<AvailabilitySet>(this.myManager.resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {
-                return wrapList(innerCollection.list(resourceGroupName).getBody());
+                return wrapList(innerCollection.list(resourceGroupName));
             }
         };
     }
 
     @Override
     public PagedList<AvailabilitySet> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
     public AvailabilitySetImpl getByGroup(String groupName, String name) throws CloudException, IOException {
-        ServiceResponse<AvailabilitySetInner> response = this.innerCollection.get(groupName, name);
-        return wrapModel(response.getBody());
+        AvailabilitySetInner response = this.innerCollection.get(groupName, name);
+        return wrapModel(response);
     }
 
     @Override

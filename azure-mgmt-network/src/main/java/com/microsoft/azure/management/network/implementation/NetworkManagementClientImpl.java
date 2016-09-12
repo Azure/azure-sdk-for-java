@@ -491,10 +491,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DnsNameAvailabilityResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DnsNameAvailabilityResultInner object if successful.
      */
-    public ServiceResponse<DnsNameAvailabilityResultInner> checkDnsNameAvailability(String location) throws CloudException, IOException, IllegalArgumentException {
-        return checkDnsNameAvailabilityAsync(location).toBlocking().single();
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) throws CloudException, IOException, IllegalArgumentException {
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().getBody();
     }
 
     /**
@@ -505,7 +505,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityAsync(location), serviceCallback);
+        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -514,7 +514,22 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param location The location of the domain name
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
-    public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityAsync(String location) {
+    public Observable<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location) {
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
+            @Override
+            public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
+     * @return the observable to the DnsNameAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithServiceResponseAsync(String location) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -547,10 +562,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the DnsNameAvailabilityResultInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the DnsNameAvailabilityResultInner object if successful.
      */
-    public ServiceResponse<DnsNameAvailabilityResultInner> checkDnsNameAvailability(String location, String domainNameLabel) throws CloudException, IOException, IllegalArgumentException {
-        return checkDnsNameAvailabilityAsync(location, domainNameLabel).toBlocking().single();
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) throws CloudException, IOException, IllegalArgumentException {
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().getBody();
     }
 
     /**
@@ -562,7 +577,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel, final ServiceCallback<DnsNameAvailabilityResultInner> serviceCallback) {
-        return ServiceCall.create(checkDnsNameAvailabilityAsync(location, domainNameLabel), serviceCallback);
+        return ServiceCall.create(checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel), serviceCallback);
     }
 
     /**
@@ -572,7 +587,23 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @return the observable to the DnsNameAvailabilityResultInner object
      */
-    public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
+    public Observable<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
+        return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).map(new Func1<ServiceResponse<DnsNameAvailabilityResultInner>, DnsNameAvailabilityResultInner>() {
+            @Override
+            public DnsNameAvailabilityResultInner call(ServiceResponse<DnsNameAvailabilityResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.net zone is available for use.
+     *
+     * @param location The location of the domain name
+     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @return the observable to the DnsNameAvailabilityResultInner object
+     */
+    public Observable<ServiceResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithServiceResponseAsync(String location, String domainNameLabel) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }

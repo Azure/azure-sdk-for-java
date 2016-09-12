@@ -51,6 +51,12 @@ public class VirtualNetworkGatewayInner extends Resource {
     private Boolean enableBgp;
 
     /**
+     * ActiveActive flag.
+     */
+    @JsonProperty(value = "properties.activeActive")
+    private Boolean activeActive;
+
+    /**
      * Gets or sets the reference of the LocalNetworkGateway resource which
      * represents Local network site having default routes. Assign Null value
      * in case of removing existing default site setting.
@@ -175,6 +181,26 @@ public class VirtualNetworkGatewayInner extends Resource {
      */
     public VirtualNetworkGatewayInner withEnableBgp(Boolean enableBgp) {
         this.enableBgp = enableBgp;
+        return this;
+    }
+
+    /**
+     * Get the activeActive value.
+     *
+     * @return the activeActive value
+     */
+    public Boolean activeActive() {
+        return this.activeActive;
+    }
+
+    /**
+     * Set the activeActive value.
+     *
+     * @param activeActive the activeActive value to set
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withActiveActive(Boolean activeActive) {
+        this.activeActive = activeActive;
         return this;
     }
 

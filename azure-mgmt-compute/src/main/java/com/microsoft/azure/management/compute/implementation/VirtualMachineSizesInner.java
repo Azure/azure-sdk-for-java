@@ -66,10 +66,10 @@ public final class VirtualMachineSizesInner {
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VirtualMachineSizeInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public ServiceResponse<List<VirtualMachineSizeInner>> list(String location) throws CloudException, IOException, IllegalArgumentException {
-        return listAsync(location).toBlocking().single();
+    public List<VirtualMachineSizeInner> list(String location) throws CloudException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(location).toBlocking().single().getBody();
     }
 
     /**
@@ -80,7 +80,7 @@ public final class VirtualMachineSizesInner {
      * @return the {@link ServiceCall} object
      */
     public ServiceCall<List<VirtualMachineSizeInner>> listAsync(String location, final ServiceCallback<List<VirtualMachineSizeInner>> serviceCallback) {
-        return ServiceCall.create(listAsync(location), serviceCallback);
+        return ServiceCall.create(listWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -89,7 +89,22 @@ public final class VirtualMachineSizesInner {
      * @param location The location upon which virtual-machine-sizes is queried.
      * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listAsync(String location) {
+    public Observable<List<VirtualMachineSizeInner>> listAsync(String location) {
+        return listWithServiceResponseAsync(location).map(new Func1<ServiceResponse<List<VirtualMachineSizeInner>>, List<VirtualMachineSizeInner>>() {
+            @Override
+            public List<VirtualMachineSizeInner> call(ServiceResponse<List<VirtualMachineSizeInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists all available virtual machine sizes for a subscription in a location.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @return the observable to the List&lt;VirtualMachineSizeInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VirtualMachineSizeInner>>> listWithServiceResponseAsync(String location) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
