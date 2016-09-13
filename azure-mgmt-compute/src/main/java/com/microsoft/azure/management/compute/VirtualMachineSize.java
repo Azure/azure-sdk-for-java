@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * A type representing virtual machine size available for a subscription in a region.
  */
+@LangDefinition(ContainerName="~/")
 public interface VirtualMachineSize {
     /**
      * @return the VM size name

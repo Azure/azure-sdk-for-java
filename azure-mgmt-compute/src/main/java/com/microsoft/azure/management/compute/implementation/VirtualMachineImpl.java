@@ -5,6 +5,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
@@ -61,6 +62,7 @@ import java.util.UUID;
 /**
  * The implementation for {@link VirtualMachine} and its create and update interfaces.
  */
+@LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
             VirtualMachine,
