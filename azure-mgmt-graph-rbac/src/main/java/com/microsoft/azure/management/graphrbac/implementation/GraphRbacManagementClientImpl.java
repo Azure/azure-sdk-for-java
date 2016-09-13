@@ -40,11 +40,11 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the tenant Id. */
+    /** the tenant Id. */
     private String tenantID;
 
     /**
-     * Gets Gets or sets the tenant Id.
+     * Gets the tenant Id.
      *
      * @return the tenantID value.
      */
@@ -53,7 +53,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the tenant Id.
+     * Sets the tenant Id.
      *
      * @param tenantID the tenantID value.
      * @return the service client itself
