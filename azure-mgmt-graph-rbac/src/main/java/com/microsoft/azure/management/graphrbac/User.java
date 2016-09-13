@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An immutable client-side representation of an Azure tenant.
+ * An immutable client-side representation of an Azure AD user.
  */
 public interface User extends
         Wrapper<UserInner> {
@@ -52,7 +52,7 @@ public interface User extends
     String mailNickname();
 
     /**************************************************************
-     * Fluent interfaces to provision a StorageAccount
+     * Fluent interfaces to provision a User
      **************************************************************/
 
     /**
@@ -67,35 +67,79 @@ public interface User extends
     }
 
     /**
-     * Grouping of all the storage account definition stages.
+     * Grouping of all the user definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the storage account definition.
+         * The first stage of the user definition.
          */
         interface Blank extends WithDisplayName {
         }
 
+        /**
+         * The stage of a user definition allowing display name to be set.
+         */
         interface WithDisplayName {
+            /**
+             * Specifies the display name of the user.
+             *
+             * @param displayName the human-readable display name
+             * @return the next stage of a user definition
+             */
             WithPassword withDisplayName(String displayName);
         }
 
+        /**
+         * The stage of a user definition allowing password to be set.
+         */
         interface WithPassword {
+            /**
+             * Specifies the password for the user.
+             *
+             * @param password the password
+             * @return the next stage for a user definition
+             */
             WithMailNickname withPassword(String password);
+
+            /**
+             * Specifies the temporary password for the user.
+             *
+             * @param password the temporary password
+             * @param forceChangePasswordNextLogin if set to true, the user will have to change the password next time
+             * @return the next stage for a user definition
+             */
             WithMailNickname withPassword(String password, boolean forceChangePasswordNextLogin);
         }
 
+        /**
+         * The stage of a user definition allowing mail nickname to be specified.
+         */
         interface WithMailNickname {
+            /**
+             * Specifies the mail nickname for the user.
+             *
+             * @param mailNickname the mail nickname
+             * @return the next stage for a user definition
+             */
             WithCreate withMailNickname(String mailNickname);
         }
 
+        /**
+         * The stage of a user definition allowing specifying if the account is enabled.
+         */
         interface WithAccountEnabled {
+            /**
+             * Specifies if the user account is enabled upon creation.
+             *
+             * @param enabled if set to true, the user account is enabled
+             * @return the next stage for a user definition
+             */
             WithCreate withAccountEnabled(boolean enabled);
         }
 
         /**
-         * A storage account definition with sufficient inputs to create a new
-         * storage account in the cloud, but exposing additional optional inputs to
+         * An AD user definition with sufficient inputs to create a new
+         * user in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
@@ -105,13 +149,13 @@ public interface User extends
     }
 
     /**
-     * Grouping of all the storage account update stages.
+     * Grouping of all the user update stages.
      */
     interface UpdateStages {
     }
 
     /**
-     * The template for a storage account update operation, containing all the settings that can be modified.
+     * The template for a user update operation, containing all the settings that can be modified.
      */
     interface Update {
     }

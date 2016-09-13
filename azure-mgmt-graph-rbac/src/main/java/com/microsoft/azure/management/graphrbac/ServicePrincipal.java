@@ -13,11 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import java.util.List;
 
 /**
- * An immutable client-side representation of an Azure tenant.
+ * An immutable client-side representation of an Azure AD service principal.
  */
 public interface ServicePrincipal extends
         Wrapper<ServicePrincipalInner> {
-
     /**
      * @return object Id.
      */
@@ -56,22 +55,31 @@ public interface ServicePrincipal extends
     }
 
     /**
-     * Grouping of all the storage account definition stages.
+     * Grouping of all the service principal definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the storage account definition.
+         * The first stage of the service principal definition.
          */
         interface Blank extends WithCreate {
         }
 
+        /**
+         * The stage of service principal definition allowing specifying if the service principal account is enabled.
+         */
         interface WithAccountEnabled {
+            /**
+             * Specifies whether the service principal account is enabled upon creation.
+             *
+             * @param enabled if set to true, the service principal account is enabled.
+             * @return the next stage in service principal definition
+             */
             WithCreate withAccountEnabled(boolean enabled);
         }
 
         /**
-         * A storage account definition with sufficient inputs to create a new
-         * storage account in the cloud, but exposing additional optional inputs to
+         * A service principal definition with sufficient inputs to create a new
+         * service principal in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
@@ -81,13 +89,13 @@ public interface ServicePrincipal extends
     }
 
     /**
-     * Grouping of all the storage account update stages.
+     * Grouping of all the service principal update stages.
      */
     interface UpdateStages {
     }
 
     /**
-     * The template for a storage account update operation, containing all the settings that can be modified.
+     * The template for a service principal update operation, containing all the settings that can be modified.
      */
     interface Update {
     }

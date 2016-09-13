@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import javax.xml.bind.DataBindingException;
-
 /**
  * Defines a list response from a paging operation. The pages are
  * lazy initialized when an instance of this class is iterated.
@@ -28,10 +26,10 @@ import javax.xml.bind.DataBindingException;
 public abstract class PagedList<E> implements List<E> {
     /** The actual items in the list. */
     private List<E> items;
-    /** Stores the link to get the next page of items. */
-    private String nextPageLink;
     /** Stores the latest page fetched. */
     private Page<E> currentPage;
+    /** Cached page right after the current one. */
+    private Page<E> cachedPage;
 
     /**
      * Creates an instance of Pagedlist.
@@ -48,11 +46,26 @@ public abstract class PagedList<E> implements List<E> {
     public PagedList(Page<E> page) {
         this();
         List<E> retrievedItems = page.getItems();
-        if (retrievedItems != null && retrievedItems.size() != 0) {
+        if (retrievedItems != null) {
             items.addAll(retrievedItems);
         }
-        nextPageLink = page.getNextPageLink();
         currentPage = page;
+        cachePage(page.getNextPageLink());
+    }
+
+    private void cachePage(String nextPageLink) {
+        try {
+            while (nextPageLink != null) {
+                cachedPage = nextPage(nextPageLink);
+                nextPageLink = cachedPage.getNextPageLink();
+                if (hasNextPage()) {
+                    // a legit, non-empty page has been fetched, otherwise keep fetching
+                    break;
+                }
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
@@ -71,7 +84,7 @@ public abstract class PagedList<E> implements List<E> {
      * @return true if there are more pages to load. False otherwise.
      */
     public boolean hasNextPage() {
-        return this.nextPageLink != null;
+        return this.cachedPage != null && this.cachedPage.getItems() != null && !this.cachedPage.getItems().isEmpty();
     }
 
     /**
@@ -79,14 +92,10 @@ public abstract class PagedList<E> implements List<E> {
      * The exceptions are wrapped into Java Runtime exceptions.
      */
     public void loadNextPage() {
-        try {
-            Page<E> nextPage = nextPage(this.nextPageLink);
-            this.nextPageLink = nextPage.getNextPageLink();
-            this.items.addAll(nextPage.getItems());
-            this.currentPage = nextPage;
-        } catch (IOException e) {
-            throw new DataBindingException(e.getMessage(), e);
-        }
+        this.currentPage = cachedPage;
+        cachedPage = null;
+        this.items.addAll(currentPage.getItems());
+        cachePage(currentPage.getNextPageLink());
     }
 
     /**
@@ -108,12 +117,17 @@ public abstract class PagedList<E> implements List<E> {
     }
 
     /**
-     * Gets the next page's link.
+     * Sets the current page.
      *
-     * @return the next page link.
+     * @param currentPage the current page.
      */
-    public String nextPageLink() {
-        return nextPageLink;
+    protected void setCurrentPage(Page<E> currentPage) {
+        this.currentPage = currentPage;
+        List<E> retrievedItems = currentPage.getItems();
+        if (retrievedItems != null) {
+            items.addAll(retrievedItems);
+        }
+        cachePage(currentPage.getNextPageLink());
     }
 
     /**
@@ -141,17 +155,14 @@ public abstract class PagedList<E> implements List<E> {
         public E next() {
             if (!itemsListItr.hasNext()) {
                 if (!hasNextPage()) {
-                    throw new NoSuchElementException();                        
+                    throw new NoSuchElementException();
                 } else {
                     int size = items.size();
                     loadNextPage();
                     itemsListItr = items.listIterator(size);
                 }
             }
-            if (itemsListItr.hasNext()) {
-                return itemsListItr.next();
-            }
-            return null;
+            return itemsListItr.next();
         }
 
         @Override

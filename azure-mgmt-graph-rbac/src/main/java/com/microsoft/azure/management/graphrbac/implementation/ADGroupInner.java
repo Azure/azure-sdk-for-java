@@ -14,27 +14,27 @@ package com.microsoft.azure.management.graphrbac.implementation;
  */
 public class ADGroupInner {
     /**
-     * Gets or sets object Id.
+     * object Id.
      */
     private String objectId;
 
     /**
-     * Gets or sets object type.
+     * object type.
      */
     private String objectType;
 
     /**
-     * Gets or sets group display name.
+     * group display name.
      */
     private String displayName;
 
     /**
-     * Gets or sets security enabled field.
+     * security enabled field.
      */
     private Boolean securityEnabled;
 
     /**
-     * Gets or sets mail field.
+     * mail field.
      */
     private String mail;
 

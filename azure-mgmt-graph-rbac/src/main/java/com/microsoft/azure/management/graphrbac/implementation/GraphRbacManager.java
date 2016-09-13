@@ -28,6 +28,7 @@ public final class GraphRbacManager {
      * Creates an instance of GraphRbacManager that exposes resource management API entry points.
      *
      * @param credentials the credentials to use
+     * @param tenantId the tenantId in Active Directory
      * @return the GraphRbacManager instance
      */
     public static GraphRbacManager authenticate(ServiceClientCredentials credentials, String tenantId) {
@@ -42,6 +43,7 @@ public final class GraphRbacManager {
      * Creates an instance of GraphRbacManager that exposes resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls
+     * @param tenantId the tenantId in Active Directory
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
     public static GraphRbacManager authenticate(RestClient restClient, String tenantId) {
@@ -65,6 +67,7 @@ public final class GraphRbacManager {
          * Creates an instance of GraphRbacManager that exposes resource management API entry points.
          *
          * @param credentials the credentials to use
+         * @param tenantId the tenantId in Active Directory
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
         GraphRbacManager authenticate(ServiceClientCredentials credentials, String tenantId);
@@ -92,7 +95,7 @@ public final class GraphRbacManager {
     /**
      * @return the storage account management API entry point
      */
-    public Users storageAccounts() {
+    public Users users() {
         if (users == null) {
             users = new UsersImpl(graphRbacManagementClient.users(), this);
         }

@@ -7,18 +7,16 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import rx.Observable;
 
 import java.util.List;
 
 /**
- * Implementation for StorageAccount and its parent interfaces.
+ * Implementation for ServicePrincipal and its parent interfaces.
  */
 class ServicePrincipalImpl
-        extends WrapperImpl<ServicePrincipalInner>
+        extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
         implements
             ServicePrincipal,
             ServicePrincipal.Definition,
@@ -27,13 +25,13 @@ class ServicePrincipalImpl
     private ServicePrincipalCreateParametersInner createParameters;
 
     ServicePrincipalImpl(String appId, ServicePrincipalsInner client) {
-        super(new ServicePrincipalInner());
+        super(appId, new ServicePrincipalInner());
         this.client = client;
         this.createParameters = new ServicePrincipalCreateParametersInner().withAppId(appId);
     }
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, ServicePrincipalsInner client) {
-        super(innerObject);
+        super(innerObject.appId(), innerObject);
         this.client = client;
         this.createParameters = new ServicePrincipalCreateParametersInner();
     }
@@ -70,30 +68,17 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public ServicePrincipalImpl create() throws Exception {
-        this.setInner(client.create(createParameters).getBody());
-        return this;
+    public ServicePrincipal refresh() throws Exception {
+        return null;
     }
 
     @Override
-    public ServiceCall createAsync(final ServiceCallback<ServicePrincipal> callback) {
-        final ServicePrincipalImpl self = this;
-        return client.createAsync(createParameters, new ServiceCallback<ServicePrincipalInner>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<ServicePrincipalInner> result) {
-                self.setInner(result.getBody());
-                callback.success(new ServiceResponse<ServicePrincipal>(self, result.getResponse()));
-            }
-        });
+    public Observable<ServicePrincipal> createResourceAsync() {
+        return null;
     }
 
     @Override
-    public String key() {
-        return objectId();
+    public Observable<ServicePrincipal> applyAsync() {
+        return null;
     }
 }

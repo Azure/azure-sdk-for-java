@@ -15,22 +15,22 @@ import java.util.List;
  */
 public class ApplicationInner {
     /**
-     * Gets or sets object Id.
+     * object Id.
      */
     private String objectId;
 
     /**
-     * Gets or sets object type.
+     * object type.
      */
     private String objectType;
 
     /**
-     * Gets or sets application Id.
+     * application Id.
      */
     private String appId;
 
     /**
-     * Gets or sets application permissions.
+     * application permissions.
      */
     private List<String> appPermissions;
 
@@ -40,17 +40,17 @@ public class ApplicationInner {
     private Boolean availableToOtherTenants;
 
     /**
-     * Gets or sets the displayName.
+     * the displayName.
      */
     private String displayName;
 
     /**
-     * Gets or sets the application identifier Uris.
+     * the application identifier Uris.
      */
     private List<String> identifierUris;
 
     /**
-     * Gets or sets the application reply Urls.
+     * the application reply Urls.
      */
     private List<String> replyUrls;
 

@@ -11,13 +11,13 @@ var mappings = {
         'package': 'com.microsoft.azure.management.compute',
         'args': '-FT 1'
     },
-    'graph': {
+    'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
         'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
         'package': 'com.microsoft.azure.management.graphrbac',
         'args': '-FT 1'
     },
-    'keyvault': {
+    'arm-keyvault': {
         'dir': 'azure-mgmt-keyvault',
         'source': 'arm-keyvault/2015-06-01/swagger/keyvault.json',
         'package': 'com.microsoft.azure.management.keyvault',

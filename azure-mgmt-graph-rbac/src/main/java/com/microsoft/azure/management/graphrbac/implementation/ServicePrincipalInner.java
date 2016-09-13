@@ -15,27 +15,27 @@ import java.util.List;
  */
 public class ServicePrincipalInner {
     /**
-     * Gets or sets object Id.
+     * object Id.
      */
     private String objectId;
 
     /**
-     * Gets or sets object type.
+     * object type.
      */
     private String objectType;
 
     /**
-     * Gets or sets service principal display name.
+     * service principal display name.
      */
     private String displayName;
 
     /**
-     * Gets or sets app id.
+     * app id.
      */
     private String appId;
 
     /**
-     * Gets or sets the list of names.
+     * the list of names.
      */
     private List<String> servicePrincipalNames;
 

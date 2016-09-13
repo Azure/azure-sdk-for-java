@@ -11,16 +11,16 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
+import com.microsoft.azure.management.graphrbac.KeyCredentialsUpdateParameters;
+import com.microsoft.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -31,6 +31,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -60,23 +62,39 @@ public final class ApplicationsInner {
     interface ApplicationsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("{tenantID}/applications")
-        Call<ResponseBody> create(@Path("tenantID") String tenantID, @Body ApplicationCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("tenantID") String tenantID, @Body ApplicationCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/applications")
-        Call<ResponseBody> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "{tenantID}/applications/{applicationObjectId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/applications/{applicationObjectId}")
-        Call<ResponseBody> get(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("{tenantID}/applications/{applicationObjectId}")
-        Call<ResponseBody> patch(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Body ApplicationUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Body ApplicationUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{tenantID}/applications/{applicationObjectId}/keyCredentials")
+        Observable<Response<ResponseBody>> listKeyCredentials(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("{tenantID}/applications/{applicationObjectId}/keyCredentials")
+        Observable<Response<ResponseBody>> updateKeyCredentials(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body KeyCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{tenantID}/applications/{applicationObjectId}/passwordCredentials")
+        Observable<Response<ResponseBody>> listPasswordCredentials(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PATCH("{tenantID}/applications/{applicationObjectId}/passwordCredentials")
+        Observable<Response<ResponseBody>> updatePasswordCredentials(@Path(value = "applicationObjectId", encoded = true) String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PasswordCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
 
     }
 
@@ -84,12 +102,48 @@ public final class ApplicationsInner {
      * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param parameters Parameters to create an application.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ApplicationInner object if successful.
      */
-    public ServiceResponse<ApplicationInner> create(ApplicationCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationInner create(ApplicationCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param parameters Parameters to create an application.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationInner> createAsync(ApplicationCreateParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceCall.create(createWithServiceResponseAsync(parameters), serviceCallback);
+    }
+
+    /**
+     * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param parameters Parameters to create an application.
+     * @return the observable to the ApplicationInner object
+     */
+    public Observable<ApplicationInner> createAsync(ApplicationCreateParametersInner parameters) {
+        return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
+            @Override
+            public ApplicationInner call(ServiceResponse<ApplicationInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param parameters Parameters to create an application.
+     * @return the observable to the ApplicationInner object
+     */
+    public Observable<ServiceResponse<ApplicationInner>> createWithServiceResponseAsync(ApplicationCreateParametersInner parameters) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -100,66 +154,69 @@ public final class ApplicationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return createDelegate(call.execute());
-    }
-
-    /**
-     * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
-     *
-     * @param parameters Parameters to create an application.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createAsync(ApplicationCreateParametersInner parameters, final ServiceCallback<ApplicationInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ApplicationInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ApplicationInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ApplicationInner> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ApplicationInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<ApplicationInner> createDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ApplicationInner, GraphErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<ApplicationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
      * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ApplicationInner&gt; object if successful.
      */
-    public ServiceResponse<List<ApplicationInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public List<ApplicationInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync().toBlocking().single().getBody();
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ApplicationInner>> listAsync(final ServiceCallback<List<ApplicationInner>> serviceCallback) {
+        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @return the observable to the List&lt;ApplicationInner&gt; object
+     */
+    public Observable<List<ApplicationInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ApplicationInner>>, List<ApplicationInner>>() {
+            @Override
+            public List<ApplicationInner> call(ServiceResponse<List<ApplicationInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @return the observable to the List&lt;ApplicationInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ApplicationInner>>> listWithServiceResponseAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -167,110 +224,92 @@ public final class ApplicationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ApplicationInner>> response = listDelegate(call.execute());
-        List<ApplicationInner> result = response.getBody().getItems();
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final ServiceCallback<List<ApplicationInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final String filter = null;
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
-                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ApplicationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
+                        ServiceResponse<List<ApplicationInner>> clientResponse = new ServiceResponse<List<ApplicationInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param filter The filters to apply on the operation
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ApplicationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;ApplicationInner&gt; object if successful.
      */
-    public ServiceResponse<List<ApplicationInner>> list(String filter) throws CloudException, IOException, IllegalArgumentException {
+    public List<ApplicationInner> list(String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+        return listWithServiceResponseAsync(filter).toBlocking().single().getBody();
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param filter The filters to apply on the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ApplicationInner>> listAsync(String filter, final ServiceCallback<List<ApplicationInner>> serviceCallback) {
+        return ServiceCall.create(listWithServiceResponseAsync(filter), serviceCallback);
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param filter The filters to apply on the operation
+     * @return the observable to the List&lt;ApplicationInner&gt; object
+     */
+    public Observable<List<ApplicationInner>> listAsync(String filter) {
+        return listWithServiceResponseAsync(filter).map(new Func1<ServiceResponse<List<ApplicationInner>>, List<ApplicationInner>>() {
+            @Override
+            public List<ApplicationInner> call(ServiceResponse<List<ApplicationInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param filter The filters to apply on the operation
+     * @return the observable to the List&lt;ApplicationInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ApplicationInner>>> listWithServiceResponseAsync(String filter) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<ApplicationInner>> response = listDelegate(call.execute());
-        List<ApplicationInner> result = response.getBody().getItems();
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
-     *
-     * @param filter The filters to apply on the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(String filter, final ServiceCallback<List<ApplicationInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ApplicationInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
-                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ApplicationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ApplicationInner>> result = listDelegate(response);
+                        ServiceResponse<List<ApplicationInner>> clientResponse = new ServiceResponse<List<ApplicationInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<PageImpl<ApplicationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<ApplicationInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<ApplicationInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ApplicationInner>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<ApplicationInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -278,12 +317,47 @@ public final class ApplicationsInner {
      * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param applicationObjectId Application object id
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void delete(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String applicationObjectId) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String applicationObjectId) {
+        return deleteWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String applicationObjectId) {
         if (applicationObjectId == null) {
             throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
         }
@@ -293,52 +367,24 @@ public final class ApplicationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
-     *
-     * @param applicationObjectId Application object id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (applicationObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.delete(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -346,12 +392,48 @@ public final class ApplicationsInner {
      * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param applicationObjectId Application object id
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ApplicationInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ApplicationInner object if successful.
      */
-    public ServiceResponse<ApplicationInner> get(String applicationObjectId) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationInner get(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationInner> getAsync(String applicationObjectId, final ServiceCallback<ApplicationInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the ApplicationInner object
+     */
+    public Observable<ApplicationInner> getAsync(String applicationObjectId) {
+        return getWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<ApplicationInner>, ApplicationInner>() {
+            @Override
+            public ApplicationInner call(ServiceResponse<ApplicationInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the ApplicationInner object
+     */
+    public Observable<ServiceResponse<ApplicationInner>> getWithServiceResponseAsync(String applicationObjectId) {
         if (applicationObjectId == null) {
             throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
         }
@@ -361,53 +443,24 @@ public final class ApplicationsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
-     *
-     * @param applicationObjectId Application object id
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String applicationObjectId, final ServiceCallback<ApplicationInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (applicationObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.get(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ApplicationInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ApplicationInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ApplicationInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ApplicationInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ApplicationInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<ApplicationInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ApplicationInner, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ApplicationInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -416,12 +469,50 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object id
      * @param parameters Parameters to update an existing application.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void patch(String applicationObjectId, ApplicationUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        patchWithServiceResponseAsync(applicationObjectId, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Update existing application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @param parameters Parameters to update an existing application.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> patchAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(patchWithServiceResponseAsync(applicationObjectId, parameters), serviceCallback);
+    }
+
+    /**
+     * Update existing application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @param parameters Parameters to update an existing application.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> patch(String applicationObjectId, ApplicationUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> patchAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters) {
+        return patchWithServiceResponseAsync(applicationObjectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update existing application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     *
+     * @param applicationObjectId Application object id
+     * @param parameters Parameters to update an existing application.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> patchWithServiceResponseAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters) {
         if (applicationObjectId == null) {
             throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
         }
@@ -435,58 +526,484 @@ public final class ApplicationsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.patch(applicationObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return patchDelegate(call.execute());
+        return service.patch(applicationObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = patchDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> patchDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
     }
 
     /**
-     * Update existing application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
+     * Get keyCredentials associated with the application by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param applicationObjectId Application object id
-     * @param parameters Parameters to update an existing application.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;KeyCredentialInner&gt; object if successful.
      */
-    public ServiceCall patchAsync(String applicationObjectId, ApplicationUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (applicationObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.patch(applicationObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(patchDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
+    public List<KeyCredentialInner> listKeyCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        return listKeyCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
-    private ServiceResponse<Void> patchDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+    /**
+     * Get keyCredentials associated with the application by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<KeyCredentialInner>> listKeyCredentialsAsync(String applicationObjectId, final ServiceCallback<List<KeyCredentialInner>> serviceCallback) {
+        return ServiceCall.create(listKeyCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Get keyCredentials associated with the application by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the List&lt;KeyCredentialInner&gt; object
+     */
+    public Observable<List<KeyCredentialInner>> listKeyCredentialsAsync(String applicationObjectId) {
+        return listKeyCredentialsWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<List<KeyCredentialInner>>, List<KeyCredentialInner>>() {
+            @Override
+            public List<KeyCredentialInner> call(ServiceResponse<List<KeyCredentialInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Get keyCredentials associated with the application by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the List&lt;KeyCredentialInner&gt; object
+     */
+    public Observable<ServiceResponse<List<KeyCredentialInner>>> listKeyCredentialsWithServiceResponseAsync(String applicationObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listKeyCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<KeyCredentialInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<KeyCredentialInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<KeyCredentialInner>> result = listKeyCredentialsDelegate(response);
+                        ServiceResponse<List<KeyCredentialInner>> clientResponse = new ServiceResponse<List<KeyCredentialInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<KeyCredentialInner>> listKeyCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<KeyCredentialInner>, GraphErrorException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<KeyCredentialInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updateKeyCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        updateKeyCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updateKeyCredentialsAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(updateKeyCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updateKeyCredentialsAsync(String applicationObjectId) {
+        return updateKeyCredentialsWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> updateKeyCredentialsWithServiceResponseAsync(String applicationObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<KeyCredentialInner> value = null;
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(null);
+        return service.updateKeyCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateKeyCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value KeyCredential list.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+        updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value).toBlocking().single().getBody();
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value KeyCredential list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value KeyCredential list.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value) {
+        return updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value KeyCredential list.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> updateKeyCredentialsWithServiceResponseAsync(String applicationObjectId, List<KeyCredentialInner> value) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(value);
+        return service.updateKeyCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateKeyCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> updateKeyCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;PasswordCredentialInner&gt; object if successful.
+     */
+    public List<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        return listPasswordCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String applicationObjectId, final ServiceCallback<List<PasswordCredentialInner>> serviceCallback) {
+        return ServiceCall.create(listPasswordCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Gets passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the List&lt;PasswordCredentialInner&gt; object
+     */
+    public Observable<List<PasswordCredentialInner>> listPasswordCredentialsAsync(String applicationObjectId) {
+        return listPasswordCredentialsWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<List<PasswordCredentialInner>>, List<PasswordCredentialInner>>() {
+            @Override
+            public List<PasswordCredentialInner> call(ServiceResponse<List<PasswordCredentialInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the observable to the List&lt;PasswordCredentialInner&gt; object
+     */
+    public Observable<ServiceResponse<List<PasswordCredentialInner>>> listPasswordCredentialsWithServiceResponseAsync(String applicationObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listPasswordCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PasswordCredentialInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<PasswordCredentialInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PasswordCredentialInner>> result = listPasswordCredentialsDelegate(response);
+                        ServiceResponse<List<PasswordCredentialInner>> clientResponse = new ServiceResponse<List<PasswordCredentialInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PasswordCredentialInner>> listPasswordCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<PasswordCredentialInner>, GraphErrorException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<PasswordCredentialInner>>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updatePasswordCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updatePasswordCredentialsAsync(String applicationObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId), serviceCallback);
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updatePasswordCredentialsAsync(String applicationObjectId) {
+        return updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> updatePasswordCredentialsWithServiceResponseAsync(String applicationObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final List<PasswordCredentialInner> value = null;
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(null);
+        return service.updatePasswordCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updatePasswordCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value PasswordCredential list.
+     * @throws GraphErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+        updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value PasswordCredential list.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value), serviceCallback);
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value PasswordCredential list.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value) {
+        return updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
+     *
+     * @param applicationObjectId Application object id
+     * @param value PasswordCredential list.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> updatePasswordCredentialsWithServiceResponseAsync(String applicationObjectId, List<PasswordCredentialInner> value) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(value);
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(value);
+        return service.updatePasswordCredentials(applicationObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updatePasswordCredentialsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> updatePasswordCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 

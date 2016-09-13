@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 
@@ -23,8 +23,8 @@ public interface SupportsListing<T> {
      * Lists all the resources of the specified type in the currently selected subscription.
      *
      * @return list of resources
-     * @throws CloudException exceptions thrown from the cloud.
+     * @throws RestException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PagedList<T> list() throws CloudException, IOException;
+    PagedList<T> list() throws RestException, IOException;
 }
