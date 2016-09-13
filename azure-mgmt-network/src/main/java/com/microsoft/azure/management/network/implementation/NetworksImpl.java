@@ -9,6 +9,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 /**
  *  Implementation for {@link Networks}.
  */
+@LangDefinition
 class NetworksImpl
         extends GroupableResourcesImpl<
             Network,

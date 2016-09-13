@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to network security group management.
  */
+@LangDefinition()
 public interface NetworkSecurityGroups extends
     SupportsCreating<NetworkSecurityGroup.DefinitionStages.Blank>,
     SupportsListing<NetworkSecurityGroup>,

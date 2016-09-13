@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -14,6 +15,7 @@ import rx.Observable;
 /**
  *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
  */
+@LangDefinition
 class PublicIpAddressImpl
     extends GroupableResourceImpl<
         PublicIpAddress,

@@ -1,11 +1,14 @@
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * The base interface for all template interfaces for child resources that support
  * update operations.
  *
  * @param <ParentT> the parent definition {@link Settable#parent()} returns to
  */
+@LangDefinition(ContainerName="ChildResourceActions")
 public interface Settable<ParentT> {
     /**
      * Begins an update for a child resource.

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachineSkus;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
@@ -17,6 +18,7 @@ import java.io.IOException;
 /**
  * The implementation for {@link VirtualMachineSkus}.
  */
+@LangDefinition
 class VirtualMachineSkusImpl
         extends ReadableWrappersImpl<VirtualMachineSku, VirtualMachineSkuImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineSkus {
