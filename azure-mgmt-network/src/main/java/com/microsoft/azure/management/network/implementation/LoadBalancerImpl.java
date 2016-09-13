@@ -342,12 +342,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withExistingPublicIpAddresses(PublicIpAddress... publicIpAddresses) {
-        for (PublicIpAddress pip : publicIpAddresses) {
-            withExistingPublicIpAddress(pip.id(), DEFAULT);
-        }
-
-        return this;
+    public LoadBalancerImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+        return withExistingPublicIpAddress(publicIpAddress.id(), DEFAULT);
     }
 
     private LoadBalancerImpl withExistingPublicIpAddress(String resourceId, String frontendName) {
