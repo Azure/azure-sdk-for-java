@@ -61,7 +61,8 @@ public class VirtualMachineScaleSetImpl
                 ComputeManager>
         implements
         VirtualMachineScaleSet,
-        VirtualMachineScaleSet.Definition {
+        VirtualMachineScaleSet.Definition,
+        VirtualMachineScaleSet.Update {
 
     // Clients
     private final VirtualMachineScaleSetsInner client;
@@ -397,6 +398,30 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String ...backendNames) {
+        addToList(this.primaryInternetFacingLBBackendsToRemoveOnUpdate, backendNames);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String ...backendNames) {
+        addToList(this.primaryInternalLBBackendsToRemoveOnUpdate, backendNames);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames) {
+        addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames) {
+        addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage) {
         return withSpecificWindowsImageVersion(knownImage.imageReference());
     }
@@ -527,7 +552,8 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withPassword(String password) {
         this.inner()
                 .virtualMachineProfile()
-                .osProfile().withAdminPassword(password);
+                .osProfile()
+                .withAdminPassword(password);
         return this;
     }
 
@@ -607,6 +633,15 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withComputerNamePrefix(String namePrefix) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withComputerNamePrefix(namePrefix);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withOverProvision(boolean enabled) {
         this.inner()
                 .withOverProvision(enabled);
@@ -665,6 +700,19 @@ public class VirtualMachineScaleSetImpl
 
     protected VirtualMachineScaleSetImpl withExtension(VirtualMachineScaleSetExtensionImpl extension) {
         this.extensions.put(extension.name(), extension);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetExtensionImpl updateExtension(String name) {
+        return (VirtualMachineScaleSetExtensionImpl) this.extensions.get(name);
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutExtension(String name) {
+        if (this.extensions.containsKey(name)) {
+            this.extensions.remove(name);
+        }
         return this;
     }
 
@@ -748,14 +796,14 @@ public class VirtualMachineScaleSetImpl
             withOsDiskName(this.scaleSetName + "-os-disk");
         }
 
-        if (osProfile.computerNamePrefix() == null) {
+        if (this.computerNamePrefix() == null) {
             // VM name cannot contain only numeric values and cannot exceed 15 chars
             if (this.scaleSetName.matches("[0-9]+")) {
-                osProfile.withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
+                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
             } else if (this.scaleSetName.length() <= 12) {
-                osProfile.withComputerNamePrefix(this.scaleSetName + "-vm");
+                withComputerNamePrefix(this.scaleSetName + "-vm");
             } else {
-                osProfile.withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
+                withComputerNamePrefix(ResourceNamer.randomResourceName("vmss-vm", 12));
             }
         }
     }
@@ -798,6 +846,8 @@ public class VirtualMachineScaleSetImpl
                                     .vhdContainers()
                                     .add(storageAccount.endPoints().primary().blob() + "/" + containerName);
                             vhdContainerName = null;
+                            creatableStorageAccountKeys.clear();
+                            existingStorageAccountsToAssociate.clear();
                             return null;
                         }
                     });
@@ -844,6 +894,7 @@ public class VirtualMachineScaleSetImpl
             Network primaryNetwork = (Network) this.createdResource(this.creatablePrimaryNetworkKey);
             for (Subnet subnet : primaryNetwork.subnets().values()) {
                 ipConfig.withSubnet(new ApiEntityReference().withId(subnet.inner().id()));
+                break;
             }
         } else if (this.existingPrimaryNetworkToAssociate != null) {
             ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkToAssociate.id()

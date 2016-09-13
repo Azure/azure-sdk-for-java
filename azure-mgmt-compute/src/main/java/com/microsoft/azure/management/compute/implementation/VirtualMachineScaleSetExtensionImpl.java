@@ -17,9 +17,9 @@ public class VirtualMachineScaleSetExtensionImpl
         extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl>
         implements
         VirtualMachineScaleSetExtension,
-        VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>
-        /*VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.Update>,
-        VirtualMachineScaleSetExtension.Update*/ {
+        VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
+        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.Update>,
+        VirtualMachineScaleSetExtension.Update {
 
     private HashMap<String, Object> publicSettings;
     private HashMap<String, Object> protectedSettings;

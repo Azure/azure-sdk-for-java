@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
@@ -24,7 +25,8 @@ import java.util.Map;
 public interface VirtualMachineScaleSet extends
         GroupableResource,
         Refreshable<VirtualMachineScaleSet>,
-        Wrapper<VirtualMachineScaleSetInner> {
+        Wrapper<VirtualMachineScaleSetInner>,
+        Updatable<VirtualMachineScaleSet.Update> {
     // Actions
     //
     /**
@@ -546,6 +548,19 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to specify the computer name prefix.
+         */
+        interface WithComputerNamePrefix {
+            /**
+             * Specifies the bane prefix for the virtual machines in the scale set.
+             *
+             * @param namePrefix the prefix for the name of virtual machines in the scale set.
+             * @return the stage representing creatable VM scale set definition
+             */
+            WithCreate withComputerNamePrefix(String namePrefix);
+        }
+
+        /**
          * The stage of the virtual machine scale set definition allowing to specify number of
          * virtual machines in the scale set.
          */
@@ -676,7 +691,8 @@ public interface VirtualMachineScaleSet extends
                 Creatable<VirtualMachineScaleSet>,
                 DefinitionStages.WithPassword,
                 DefinitionStages.WithOsDiskSettings,
-                WithCapacity,
+                DefinitionStages.WithComputerNamePrefix,
+                DefinitionStages.WithCapacity,
                 DefinitionStages.WithOverProvision,
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithExtension,
@@ -794,7 +810,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the existing backend names to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternetFacingLoadBalancerBackend(String ...backendNames);
+            Update withoutPrimaryInternetFacingLoadBalancerBackends(String ...backendNames);
 
             /**
              * Removes association between the primary network interface configuration and backend of the internal load balancer.
@@ -802,7 +818,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the existing backend names to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternalLoadBalancerBackend(String ...backendNames);
+            Update withoutPrimaryInternalLoadBalancerBackends(String ...backendNames);
         }
 
         /**
@@ -817,7 +833,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the name of an existing inbound NAT pools to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternetFacingLoadBalancerNatPool(String ...natPoolNames);
+            Update withoutPrimaryInternetFacingLoadBalancerNatPools(String ...natPoolNames);
 
             /**
              * Removes association between the primary network interface configuration and inbound NAT pool of the
@@ -826,7 +842,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the name of an existing inbound NAT pools to remove
              * @return the next stage of the virtual machine scale set update
              */
-            Update withoutPrimaryInternalLoadBalancerNatPool(String ...natPoolNames);
+            Update withoutPrimaryInternalLoadBalancerNatPools(String ...natPoolNames);
         }
     }
 
