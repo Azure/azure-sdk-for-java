@@ -169,7 +169,6 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             resource =  resource.update()
-                    //TODO .withExistingPublicIpAddress(pip)
                     .withoutFrontend("default")
                     .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
@@ -216,13 +215,11 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIpAddress(existingPips.get(0))
                     .definePublicFrontend("frontend1")
-                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .withExistingPublicIpAddress(existingPips.get(0))
                         .attach()
 
                     // Backends
-                    .withExistingVirtualMachines(existingVMs)
                     .defineBackend("backend1")
                         .attach()
 
@@ -260,13 +257,11 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
-            Assert.assertTrue(lb.frontends().containsKey("default"));
-            Assert.assertTrue(lb.frontends().size() == 2);
+            Assert.assertTrue(lb.frontends().size() == 1);
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("default"));
             Assert.assertTrue(lb.backends().containsKey("backend1"));
-            Assert.assertTrue(lb.backends().size() == 2);
+            Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
@@ -296,8 +291,11 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            List<PublicIpAddress> existingPips = ensurePIPs(pips);
             resource =  resource.update()
-                    //TODO .withExistingPublicIpAddress(pip)
+                    .updateInternetFrontend("frontend1")
+                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .parent()
                     .withoutFrontend("default")
                     .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
@@ -370,9 +368,7 @@ public class TestLoadBalancer {
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
             PublicIpAddress pip = existingPips.get(1);
             resource =  resource.update()
-                    .updateInternetFrontend("default")
-                        .withExistingPublicIpAddress(pip)
-                        .parent()
+                    .withExistingPublicIpAddress(pip)
                     .updateTcpProbe("default")
                         .withPort(22)
                         .parent()
@@ -791,7 +787,7 @@ public class TestLoadBalancer {
 
             // Show assigned load balancing rules
             info.append("\n\t\t\tReferenced load balancing rules: ")
-                .append(backend.loadBalancingRules().keySet().toArray(new String[0]));
+                .append(new ArrayList<String>(backend.loadBalancingRules().keySet()));
         }
 
         System.out.println(info.toString());
