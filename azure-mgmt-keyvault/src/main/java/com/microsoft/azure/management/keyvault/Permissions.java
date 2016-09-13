@@ -17,19 +17,19 @@ public class Permissions {
     /**
      * Permissions to keys.
      */
-    private List<String> keys;
+    private List<KeyPermissions> keys;
 
     /**
      * Permissions to secrets.
      */
-    private List<String> secrets;
+    private List<SecretPermissions> secrets;
 
     /**
      * Get the keys value.
      *
      * @return the keys value
      */
-    public List<String> keys() {
+    public List<KeyPermissions> keys() {
         return this.keys;
     }
 
@@ -39,7 +39,7 @@ public class Permissions {
      * @param keys the keys value to set
      * @return the Permissions object itself.
      */
-    public Permissions withKeys(List<String> keys) {
+    public Permissions withKeys(List<KeyPermissions> keys) {
         this.keys = keys;
         return this;
     }
@@ -49,7 +49,7 @@ public class Permissions {
      *
      * @return the secrets value
      */
-    public List<String> secrets() {
+    public List<SecretPermissions> secrets() {
         return this.secrets;
     }
 
@@ -59,7 +59,7 @@ public class Permissions {
      * @param secrets the secrets value to set
      * @return the Permissions object itself.
      */
-    public Permissions withSecrets(List<String> secrets) {
+    public Permissions withSecrets(List<SecretPermissions> secrets) {
         this.secrets = secrets;
         return this;
     }

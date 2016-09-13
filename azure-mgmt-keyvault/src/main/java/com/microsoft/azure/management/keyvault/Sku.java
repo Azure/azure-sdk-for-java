@@ -15,8 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Sku {
     /**
-     * SKU family name. Possible values include: 'A'.
+     * SKU family name.
      */
+    @JsonProperty(required = true)
     private String family;
 
     /**
@@ -25,6 +26,13 @@ public class Sku {
      */
     @JsonProperty(required = true)
     private SkuName name;
+
+    /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+        family = "A";
+    }
 
     /**
      * Get the family value.

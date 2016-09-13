@@ -11,20 +11,20 @@ package com.microsoft.azure.management.graphrbac.implementation;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceResponseBuilder;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -54,67 +54,76 @@ public final class ObjectsInner {
     interface ObjectsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/me")
-        Call<ResponseBody> getCurrentUser(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCurrentUser(@Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Gets the details for current logged in user.
      *
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the AADObjectInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the AADObjectInner object if successful.
      */
-    public ServiceResponse<AADObjectInner> getCurrentUser() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.tenantID() == null) {
-            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getCurrentUserDelegate(call.execute());
+    public AADObjectInner getCurrentUser() throws GraphErrorException, IOException, IllegalArgumentException {
+        return getCurrentUserWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
      * Gets the details for current logged in user.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<AADObjectInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getCurrentUserDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
+    public ServiceCall<AADObjectInner> getCurrentUserAsync(final ServiceCallback<AADObjectInner> serviceCallback) {
+        return ServiceCall.create(getCurrentUserWithServiceResponseAsync(), serviceCallback);
     }
 
-    private ServiceResponse<AADObjectInner> getCurrentUserDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AADObjectInner, CloudException>(this.client.mapperAdapter())
+    /**
+     * Gets the details for current logged in user.
+     *
+     * @return the observable to the AADObjectInner object
+     */
+    public Observable<AADObjectInner> getCurrentUserAsync() {
+        return getCurrentUserWithServiceResponseAsync().map(new Func1<ServiceResponse<AADObjectInner>, AADObjectInner>() {
+            @Override
+            public AADObjectInner call(ServiceResponse<AADObjectInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the details for current logged in user.
+     *
+     * @return the observable to the AADObjectInner object
+     */
+    public Observable<ServiceResponse<AADObjectInner>> getCurrentUserWithServiceResponseAsync() {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getCurrentUser(this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AADObjectInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AADObjectInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AADObjectInner> clientResponse = getCurrentUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AADObjectInner> getCurrentUserDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<AADObjectInner, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AADObjectInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.keyvault;
 
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An array of 0 to 16 identities that have access to the key vault. All
@@ -20,12 +21,15 @@ public class AccessPolicyEntry {
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
+    @JsonProperty(required = true)
     private UUID tenantId;
 
     /**
      * The object ID of a user or service principal in the Azure Active
-     * Directory tenant for the vault.
+     * Directory tenant for the vault. The object ID must be unique for the
+     * list of access policies.
      */
+    @JsonProperty(required = true)
     private UUID objectId;
 
     /**
@@ -36,6 +40,7 @@ public class AccessPolicyEntry {
     /**
      * Permissions the identity has for keys and secrets.
      */
+    @JsonProperty(required = true)
     private Permissions permissions;
 
     /**
