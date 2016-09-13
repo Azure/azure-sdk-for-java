@@ -11,7 +11,6 @@ package com.microsoft.azure.management.keyvault.implementation;
 import com.microsoft.azure.management.keyvault.VaultProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
-import com.microsoft.azure.Resource;
 
 /**
  * Resource information with extended details.

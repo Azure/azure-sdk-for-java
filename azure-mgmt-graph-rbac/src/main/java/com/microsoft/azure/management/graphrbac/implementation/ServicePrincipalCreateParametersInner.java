@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServicePrincipalCreateParametersInner {
     /**
-     * Gets or sets application Id.
+     * application Id.
      */
     @JsonProperty(required = true)
     private String appId;
@@ -25,6 +26,16 @@ public class ServicePrincipalCreateParametersInner {
      */
     @JsonProperty(required = true)
     private boolean accountEnabled;
+
+    /**
+     * the list of KeyCredential objects.
+     */
+    private List<KeyCredentialInner> keyCredentials;
+
+    /**
+     * the list of PasswordCredential objects.
+     */
+    private List<PasswordCredentialInner> passwordCredentials;
 
     /**
      * Get the appId value.
@@ -63,6 +74,46 @@ public class ServicePrincipalCreateParametersInner {
      */
     public ServicePrincipalCreateParametersInner withAccountEnabled(boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
+        return this;
+    }
+
+    /**
+     * Get the keyCredentials value.
+     *
+     * @return the keyCredentials value
+     */
+    public List<KeyCredentialInner> keyCredentials() {
+        return this.keyCredentials;
+    }
+
+    /**
+     * Set the keyCredentials value.
+     *
+     * @param keyCredentials the keyCredentials value to set
+     * @return the ServicePrincipalCreateParametersInner object itself.
+     */
+    public ServicePrincipalCreateParametersInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        this.keyCredentials = keyCredentials;
+        return this;
+    }
+
+    /**
+     * Get the passwordCredentials value.
+     *
+     * @return the passwordCredentials value
+     */
+    public List<PasswordCredentialInner> passwordCredentials() {
+        return this.passwordCredentials;
+    }
+
+    /**
+     * Set the passwordCredentials value.
+     *
+     * @param passwordCredentials the passwordCredentials value to set
+     * @return the ServicePrincipalCreateParametersInner object itself.
+     */
+    public ServicePrincipalCreateParametersInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        this.passwordCredentials = passwordCredentials;
         return this;
     }
 

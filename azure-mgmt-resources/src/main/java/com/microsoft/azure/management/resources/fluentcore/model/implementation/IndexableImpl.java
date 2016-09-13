@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * The base implementation for {@link Indexable}.
  */
-public abstract class IndexableImpl implements Indexable {
+abstract class IndexableImpl implements Indexable {
     protected String key;
 
     protected IndexableImpl() {

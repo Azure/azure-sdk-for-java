@@ -6,16 +6,22 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.rest.RestException;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 
 /**
- * The implementation of StorageAccounts and its parent interfaces.
+ * The implementation of Users and its parent interfaces.
  */
 class UsersImpl
         extends CreatableWrappersImpl<
@@ -34,8 +40,8 @@ class UsersImpl
     }
 
     @Override
-    public PagedList<User> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.list().getBody());
+    public PagedList<User> list() throws RestException, IOException {
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
@@ -44,8 +50,8 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl define(String userPrincipalName) {
-        return wrapModel(userPrincipalName);
+    public UserImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override
@@ -59,7 +65,35 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl getByName(String upnOrId) throws CloudException, IOException {
-        return new UserImpl(innerCollection.get(upnOrId).getBody(), innerCollection);
+    public UserImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
+        return new UserImpl(innerCollection.get(objectId), innerCollection);
+    }
+
+    @Override
+    public UserImpl getByUserPrincipalName(String upn) throws GraphErrorException, IOException {
+        return new UserImpl(innerCollection.get(upn), innerCollection);
+    }
+
+    @Override
+    public ServiceCall<User> getByUserPrincipalNameAsync(String upn, final ServiceCallback<User> callback) {
+        return ServiceCall.create(
+                getByUserPrincipalNameAsync(upn).map(new Func1<User, ServiceResponse<User>>() {
+                    @Override
+                    public ServiceResponse<User> call(User fluentModelT) {
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
+    }
+
+    @Override
+    public Observable<User> getByUserPrincipalNameAsync(String upn) {
+        return innerCollection.getAsync(upn)
+                .map(new Func1<UserInner, User>() {
+                    @Override
+                    public User call(UserInner userInnerServiceResponse) {
+                        return new UserImpl(userInnerServiceResponse, innerCollection);
+                    }
+                });
     }
 }

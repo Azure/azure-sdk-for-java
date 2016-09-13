@@ -36,7 +36,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public PagedList<AvailabilitySet> list() throws CloudException, IOException {
+    public PagedList<AvailabilitySet> list() throws RestException, IOException {
         return new GroupPagedList<AvailabilitySet>(this.myManager.resourceManager().resourceGroups().list()) {
             @Override
             public List<AvailabilitySet> listNextGroup(String resourceGroupName) throws RestException, IOException {

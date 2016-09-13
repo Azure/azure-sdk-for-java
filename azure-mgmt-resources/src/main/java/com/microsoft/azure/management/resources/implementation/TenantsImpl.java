@@ -6,11 +6,11 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Tenant;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ final class TenantsImpl
     }
 
     @Override
-    public PagedList<Tenant> list() throws CloudException, IOException {
+    public PagedList<Tenant> list() throws RestException, IOException {
         PagedListConverter<TenantIdDescriptionInner, Tenant> converter = new PagedListConverter<TenantIdDescriptionInner, Tenant>() {
             @Override
             public Tenant typeConvert(TenantIdDescriptionInner tenantInner) {

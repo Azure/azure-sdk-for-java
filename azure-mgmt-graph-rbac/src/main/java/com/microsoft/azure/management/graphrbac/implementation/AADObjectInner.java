@@ -15,52 +15,52 @@ import java.util.List;
  */
 public class AADObjectInner {
     /**
-     * Gets or sets object Id.
+     * object Id.
      */
     private String objectId;
 
     /**
-     * Gets or sets object type.
+     * object type.
      */
     private String objectType;
 
     /**
-     * Gets or sets object display name.
+     * object display name.
      */
     private String displayName;
 
     /**
-     * Gets or sets principal name.
+     * principal name.
      */
     private String userPrincipalName;
 
     /**
-     * Gets or sets mail.
+     * mail.
      */
     private String mail;
 
     /**
-     * Gets or sets MailEnabled field.
+     * MailEnabled field.
      */
     private Boolean mailEnabled;
 
     /**
-     * Gets or sets SecurityEnabled field.
+     * SecurityEnabled field.
      */
     private Boolean securityEnabled;
 
     /**
-     * Gets or sets signIn name.
+     * signIn name.
      */
     private String signInName;
 
     /**
-     * Gets or sets the list of service principal names.
+     * the list of service principal names.
      */
     private List<String> servicePrincipalNames;
 
     /**
-     * Gets or sets the user type.
+     * the user type.
      */
     private String userType;
 

@@ -8,34 +8,35 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.graphrbac.GraphErrorException;
+import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.PATCH;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-
 import java.io.IOException;
 import java.util.List;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -65,31 +66,31 @@ public final class UsersInner {
     interface UsersService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("{tenantID}/users")
-        Call<ResponseBody> create(@Path("tenantID") String tenantID, @Body UserCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("tenantID") String tenantID, @Body UserCreateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/users")
-        Call<ResponseBody> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("tenantID") String tenantID, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/users/{upnOrObjectId}")
-        Call<ResponseBody> get(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("{tenantID}/users/{upnOrObjectId}")
-        Call<ResponseBody> update(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Body UserUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Body UserUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "{tenantID}/users/{upnOrObjectId}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path(value = "upnOrObjectId", encoded = true) String upnOrObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("{tenantID}/users/{objectId}/getMemberGroups")
-        Call<ResponseBody> getMemberGroups(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UserGetMemberGroupsParameters parameters, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getMemberGroups(@Path(value = "objectId", encoded = true) String objectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UserGetMemberGroupsParameters parameters, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{tenantID}/{nextLink}")
-        Call<ResponseBody> listNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextLink, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -97,12 +98,48 @@ public final class UsersInner {
      * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
      *
      * @param parameters Parameters to create a user.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> create(UserCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner create(UserCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     *
+     * @param parameters Parameters to create a user.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<UserInner> createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceCall.create(createWithServiceResponseAsync(parameters), serviceCallback);
+    }
+
+    /**
+     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     *
+     * @param parameters Parameters to create a user.
+     * @return the observable to the UserInner object
+     */
+    public Observable<UserInner> createAsync(UserCreateParametersInner parameters) {
+        return createWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
+     *
+     * @param parameters Parameters to create a user.
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> createWithServiceResponseAsync(UserCreateParametersInner parameters) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -113,66 +150,103 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return createDelegate(call.execute());
-    }
-
-    /**
-     * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
-     *
-     * @param parameters Parameters to create a user.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createAsync(UserCreateParametersInner parameters, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.create(this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
+                @Override
+                public Observable<ServiceResponse<UserInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<UserInner> clientResponse = createDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<UserInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<UserInner> createDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<UserInner, GraphErrorException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<UserInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
     /**
      * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
      *
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UserInner>> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UserInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<UserInner>(response.getBody()) {
+            @Override
+            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<UserInner>> listAsync(final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<Page<UserInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
+                @Override
+                public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
+                    String nextLink = page.getBody().getNextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync() {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
@@ -180,132 +254,125 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
-        PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
-            @Override
-            public Page<UserInner> nextPage(String nextLink) throws CloudException, IOException {
-                return listNext(nextLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final ListOperationCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final String filter = null;
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
      *
      * @param filter The filter to apply on the operation.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<UserInner>> list(final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UserInner>> response = listSinglePageAsync(filter).toBlocking().single();
+        return new PagedList<UserInner>(response.getBody()) {
+            @Override
+            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @param filter The filter to apply on the operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<UserInner>> listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(filter),
+            new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @param filter The filter to apply on the operation.
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<Page<UserInner>> listAsync(final String filter) {
+        return listWithServiceResponseAsync(filter)
+            .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
+                @Override
+                public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+     * @param filter The filter to apply on the operation.
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listWithServiceResponseAsync(final String filter) {
+        return listSinglePageAsync(filter)
+            .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
+                    String nextLink = page.getBody().getNextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
+     *
+    ServiceResponse<PageImpl1<UserInner>> * @param filter The filter to apply on the operation.
+     * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listSinglePageAsync(final String filter) {
         if (this.client.tenantID() == null) {
             throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl1<UserInner>> response = listDelegate(call.execute());
-        PagedList<UserInner> result = new PagedList<UserInner>(response.getBody()) {
-            @Override
-            public Page<UserInner> nextPage(String nextLink) throws CloudException, IOException {
-                return listNext(nextLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
-     *
-     * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final String filter, final ListOperationCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.list(this.client.tenantID(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<UserInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<PageImpl1<UserInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl1<UserInner>> listDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<UserInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -313,12 +380,48 @@ public final class UsersInner {
      * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
      *
      * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the UserInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the UserInner object if successful.
      */
-    public ServiceResponse<UserInner> get(String upnOrObjectId) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner get(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        return getWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<UserInner> getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+    }
+
+    /**
+     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @return the observable to the UserInner object
+     */
+    public Observable<UserInner> getAsync(String upnOrObjectId) {
+        return getWithServiceResponseAsync(upnOrObjectId).map(new Func1<ServiceResponse<UserInner>, UserInner>() {
+            @Override
+            public UserInner call(ServiceResponse<UserInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @return the observable to the UserInner object
+     */
+    public Observable<ServiceResponse<UserInner>> getWithServiceResponseAsync(String upnOrObjectId) {
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -328,53 +431,24 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
-     *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String upnOrObjectId, final ServiceCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (upnOrObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<UserInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserInner>>>() {
+                @Override
+                public Observable<ServiceResponse<UserInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<UserInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<UserInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<UserInner, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<UserInner> getDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<UserInner, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<UserInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -383,12 +457,50 @@ public final class UsersInner {
      *
      * @param upnOrObjectId User object Id or user principal name to get user information.
      * @param parameters Parameters to update an exisitng user.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void update(String upnOrObjectId, UserUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+        updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param parameters Parameters to update an exisitng user.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(updateWithServiceResponseAsync(upnOrObjectId, parameters), serviceCallback);
+    }
+
+    /**
+     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param parameters Parameters to update an exisitng user.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> update(String upnOrObjectId, UserUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
+        return updateWithServiceResponseAsync(upnOrObjectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
+     *
+     * @param upnOrObjectId User object Id or user principal name to get user information.
+     * @param parameters Parameters to update an exisitng user.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String upnOrObjectId, UserUpdateParametersInner parameters) {
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -402,58 +514,24 @@ public final class UsersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return updateDelegate(call.execute());
-    }
-
-    /**
-     * Updates an exisitng user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#UpdateUser.
-     *
-     * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @param parameters Parameters to update an exisitng user.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateAsync(String upnOrObjectId, UserUpdateParametersInner parameters, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (upnOrObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.update(upnOrObjectId, this.client.tenantID(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<Void> updateDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -461,12 +539,47 @@ public final class UsersInner {
      * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
      *
      * @param upnOrObjectId user object id or user principal name (upn)
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void delete(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+        deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     *
+     * @param upnOrObjectId user object id or user principal name (upn)
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteWithServiceResponseAsync(upnOrObjectId), serviceCallback);
+    }
+
+    /**
+     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     *
+     * @param upnOrObjectId user object id or user principal name (upn)
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String upnOrObjectId) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String upnOrObjectId) {
+        return deleteWithServiceResponseAsync(upnOrObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
+     *
+     * @param upnOrObjectId user object id or user principal name (upn)
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String upnOrObjectId) {
         if (upnOrObjectId == null) {
             throw new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null.");
         }
@@ -476,52 +589,24 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
-     *
-     * @param upnOrObjectId user object id or user principal name (upn)
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String upnOrObjectId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (upnOrObjectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(upnOrObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, GraphErrorException>(this.client.mapperAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -530,12 +615,51 @@ public final class UsersInner {
      *
      * @param objectId User filtering parameters.
      * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;String&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;String&gt; object if successful.
      */
-    public ServiceResponse<List<String>> getMemberGroups(String objectId, boolean securityEnabledOnly) throws CloudException, IOException, IllegalArgumentException {
+    public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) throws GraphErrorException, IOException, IllegalArgumentException {
+        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     *
+     * @param objectId User filtering parameters.
+     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) {
+        return ServiceCall.create(getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly), serviceCallback);
+    }
+
+    /**
+     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     *
+     * @param objectId User filtering parameters.
+     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @return the observable to the List&lt;String&gt; object
+     */
+    public Observable<List<String>> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
+        return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).map(new Func1<ServiceResponse<List<String>>, List<String>>() {
+            @Override
+            public List<String> call(ServiceResponse<List<String>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
+     *
+     * @param objectId User filtering parameters.
+     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
+     * @return the observable to the List&lt;String&gt; object
+     */
+    public Observable<ServiceResponse<List<String>>> getMemberGroupsWithServiceResponseAsync(String objectId, boolean securityEnabledOnly) {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }
@@ -547,59 +671,25 @@ public final class UsersInner {
         }
         UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
         parameters.withSecurityEnabledOnly(securityEnabledOnly);
-        Call<ResponseBody> call = service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        ServiceResponse<PageImpl<String>> response = getMemberGroupsDelegate(call.execute());
-        List<String> result = response.getBody().getItems();
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets a collection that contains the Object IDs of the groups of which the user is a member.
-     *
-     * @param objectId User filtering parameters.
-     * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getMemberGroupsAsync(String objectId, boolean securityEnabledOnly, final ServiceCallback<List<String>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (objectId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
-        parameters.withSecurityEnabledOnly(securityEnabledOnly);
-        Call<ResponseBody> call = service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<String>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<String>> result = getMemberGroupsDelegate(response);
-                    serviceCallback.success(new ServiceResponse<>(result.getBody().getItems(), result.getResponse()));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getMemberGroups(objectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<String>> result = getMemberGroupsDelegate(response);
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<PageImpl<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl<String>> getMemberGroupsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<String>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<String>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 
@@ -607,12 +697,84 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param nextLink Next link for list operation.
-     * @throws CloudException exception thrown from REST call
+     * @throws GraphErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public ServiceResponse<PageImpl1<UserInner>> listNext(final String nextLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+        ServiceResponse<Page<UserInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
+        return new PagedList<UserInner>(response.getBody()) {
+            @Override
+            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+                return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets list of users for the current tenant.
+     *
+     * @param nextLink Next link for list operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<UserInner>> listNextAsync(final String nextLink, final ServiceCall<List<UserInner>> serviceCall, final ListOperationCallback<UserInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listNextSinglePageAsync(nextLink),
+            new Func1<String, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(String nextLink) {
+                    return listNextSinglePageAsync(nextLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of users for the current tenant.
+     *
+     * @param nextLink Next link for list operation.
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<Page<UserInner>> listNextAsync(final String nextLink) {
+        return listNextWithServiceResponseAsync(nextLink)
+            .map(new Func1<ServiceResponse<Page<UserInner>>, Page<UserInner>>() {
+                @Override
+                public Page<UserInner> call(ServiceResponse<Page<UserInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant.
+     *
+     * @param nextLink Next link for list operation.
+     * @return the observable to the PagedList&lt;UserInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listNextWithServiceResponseAsync(final String nextLink) {
+        return listNextSinglePageAsync(nextLink)
+            .concatMap(new Func1<ServiceResponse<Page<UserInner>>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(ServiceResponse<Page<UserInner>> page) {
+                    String nextLink = page.getBody().getNextPageLink();
+                    if (nextLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of users for the current tenant.
+     *
+    ServiceResponse<PageImpl1<UserInner>> * @param nextLink Next link for list operation.
+     * @return the PagedList&lt;UserInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<UserInner>>> listNextSinglePageAsync(final String nextLink) {
         if (nextLink == null) {
             throw new IllegalArgumentException("Parameter nextLink is required and cannot be null.");
         }
@@ -622,61 +784,24 @@ public final class UsersInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @param nextLink Next link for list operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextLink, final ServiceCall serviceCall, final ListOperationCallback<UserInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-            return null;
-        }
-        if (this.client.tenantID() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<UserInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl1<UserInner>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.listNext(nextLink, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UserInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<UserInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<UserInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<UserInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<PageImpl1<UserInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, CloudException>(this.client.mapperAdapter())
+    private ServiceResponse<PageImpl1<UserInner>> listNextDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<UserInner>, GraphErrorException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<UserInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(GraphErrorException.class)
                 .build(response);
     }
 

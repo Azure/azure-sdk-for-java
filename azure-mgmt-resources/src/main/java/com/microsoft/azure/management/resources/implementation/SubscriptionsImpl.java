@@ -11,6 +11,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 
@@ -26,7 +27,7 @@ final class SubscriptionsImpl
     }
 
     @Override
-    public PagedList<Subscription> list() throws CloudException, IOException {
+    public PagedList<Subscription> list() throws RestException, IOException {
         PagedListConverter<SubscriptionInner, Subscription> converter = new PagedListConverter<SubscriptionInner, Subscription>() {
             @Override
             public Subscription typeConvert(SubscriptionInner subscriptionInner) {

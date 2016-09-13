@@ -45,7 +45,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public PagedList<Deployment> list() throws CloudException, IOException {
+    public PagedList<Deployment> list() throws RestException, IOException {
         return new GroupPagedList<Deployment>(this.resourceManager.resourceGroups().list()) {
             @Override
             public List<Deployment> listNextGroup(String resourceGroupName) throws RestException, IOException {
@@ -62,13 +62,9 @@ final class DeploymentsImpl
     @Override
     public Deployment getByName(String name) throws IOException, CloudException {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            try {
-                DeploymentExtendedInner inner = client.get(group.name(), name);
-                if (inner != null) {
-                    return createFluentModel(inner);
-                }
-            } catch (CloudException ex) {
-                // Do nothing
+            DeploymentExtendedInner inner = client.get(group.name(), name);
+            if (inner != null) {
+                return createFluentModel(inner);
             }
         }
         return null;

@@ -9,13 +9,16 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.graphrbac.KeyCredential;
-import com.microsoft.azure.management.graphrbac.PasswordCredential;
 
 /**
  * Request parameters for updating an existing application.
  */
 public class ApplicationUpdateParametersInner {
+    /**
+     * Indicates if the application will be available to other tenants.
+     */
+    private Boolean availableToOtherTenants;
+
     /**
      * Application display name.
      */
@@ -37,14 +40,34 @@ public class ApplicationUpdateParametersInner {
     private List<String> replyUrls;
 
     /**
-     * Gets or sets the list of KeyCredential objects.
+     * the list of KeyCredential objects.
      */
-    private List<KeyCredential> keyCredentials;
+    private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * Gets or sets the list of PasswordCredential objects.
+     * the list of PasswordCredential objects.
      */
-    private List<PasswordCredential> passwordCredentials;
+    private List<PasswordCredentialInner> passwordCredentials;
+
+    /**
+     * Get the availableToOtherTenants value.
+     *
+     * @return the availableToOtherTenants value
+     */
+    public Boolean availableToOtherTenants() {
+        return this.availableToOtherTenants;
+    }
+
+    /**
+     * Set the availableToOtherTenants value.
+     *
+     * @param availableToOtherTenants the availableToOtherTenants value to set
+     * @return the ApplicationUpdateParametersInner object itself.
+     */
+    public ApplicationUpdateParametersInner withAvailableToOtherTenants(Boolean availableToOtherTenants) {
+        this.availableToOtherTenants = availableToOtherTenants;
+        return this;
+    }
 
     /**
      * Get the displayName value.
@@ -131,7 +154,7 @@ public class ApplicationUpdateParametersInner {
      *
      * @return the keyCredentials value
      */
-    public List<KeyCredential> keyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -141,7 +164,7 @@ public class ApplicationUpdateParametersInner {
      * @param keyCredentials the keyCredentials value to set
      * @return the ApplicationUpdateParametersInner object itself.
      */
-    public ApplicationUpdateParametersInner withKeyCredentials(List<KeyCredential> keyCredentials) {
+    public ApplicationUpdateParametersInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -151,7 +174,7 @@ public class ApplicationUpdateParametersInner {
      *
      * @return the passwordCredentials value
      */
-    public List<PasswordCredential> passwordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -161,7 +184,7 @@ public class ApplicationUpdateParametersInner {
      * @param passwordCredentials the passwordCredentials value to set
      * @return the ApplicationUpdateParametersInner object itself.
      */
-    public ApplicationUpdateParametersInner withPasswordCredentials(List<PasswordCredential> passwordCredentials) {
+    public ApplicationUpdateParametersInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
