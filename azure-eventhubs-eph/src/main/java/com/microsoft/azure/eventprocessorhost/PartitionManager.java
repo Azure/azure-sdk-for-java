@@ -172,13 +172,12 @@ class PartitionManager
     	catch (ExceptionWithAction e)
     	{
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e.getCause());
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction(), ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction());
     	}
     	catch (Exception e)
     	{
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e);
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Partition Manager Main Loop",
-    				ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
     	}
     	
     	// Cleanup
@@ -200,8 +199,7 @@ class PartitionManager
     		catch (InterruptedException | ExecutionException e)
     		{
     			this.host.logWithHost(Level.SEVERE, "Failure during shutdown", e);
-    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP,
-    					ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
     			
     			// By convention, bail immediately on interrupt, even though we're just cleaning
     			// up on the way out. Fortunately, we ARE just cleaning up on the way out, so we're

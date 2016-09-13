@@ -170,6 +170,11 @@ public final class EventProcessorOptions
     {
         this.invokeProcessorAfterReceiveTimeout = invokeProcessorAfterReceiveTimeout;
     }
+
+    void notifyOfException(String hostname, Exception exception, String action)
+    {
+    	notifyOfException(hostname, exception, action, ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    }
     
     void notifyOfException(String hostname, Exception exception, String action, String partitionId)
     {

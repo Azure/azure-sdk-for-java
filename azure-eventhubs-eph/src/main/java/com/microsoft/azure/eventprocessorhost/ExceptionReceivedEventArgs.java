@@ -16,13 +16,22 @@ public final class ExceptionReceivedEventArgs
 	private final String action;
 	private final String partitionId;
 	
-	public static final String NO_ASSOCIATED_PARTITION = "";
+	public static final String NO_ASSOCIATED_PARTITION = "N/A";
+	
+	ExceptionReceivedEventArgs(String hostname, Exception exception, String action)
+	{
+		this(hostname, exception, action, ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+	}
 	
 	ExceptionReceivedEventArgs(String hostname, Exception exception, String action, String partitionId)
 	{
 		this.hostname = hostname;
 		this.exception = exception;
 		this.action = action;
+		if ((partitionId == null) || partitionId.isEmpty())
+		{
+			throw new IllegalArgumentException("PartitionId must not be null or empty");
+		}
 		this.partitionId = partitionId;
 	}
 	
