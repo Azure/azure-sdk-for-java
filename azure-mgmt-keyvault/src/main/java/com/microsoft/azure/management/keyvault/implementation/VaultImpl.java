@@ -91,25 +91,25 @@ class VaultImpl
     }
 
     @Override
-    public Boolean enabledForDeployment() {
-        if (inner().properties() == null) {
-            return null;
+    public boolean enabledForDeployment() {
+        if (inner().properties() == null || inner().properties().enabledForDeployment() == null) {
+            return false;
         }
         return inner().properties().enabledForDeployment();
     }
 
     @Override
-    public Boolean enabledForDiskEncryption() {
-        if (inner().properties() == null) {
-            return null;
+    public boolean enabledForDiskEncryption() {
+        if (inner().properties() == null || inner().properties().enabledForDiskEncryption() == null) {
+            return false;
         }
         return inner().properties().enabledForDiskEncryption();
     }
 
     @Override
-    public Boolean enabledForTemplateDeployment() {
-        if (inner().properties() == null) {
-            return null;
+    public boolean enabledForTemplateDeployment() {
+        if (inner().properties() == null || inner().properties().enabledForTemplateDeployment()) {
+            return false;
         }
         return inner().properties().enabledForTemplateDeployment();
     }
@@ -153,37 +153,37 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl enableDeployment() {
+    public VaultImpl withDeploymentEnabled() {
         inner().properties().withEnabledForDeployment(true);
         return this;
     }
 
     @Override
-    public VaultImpl enableDiskEncryption() {
+    public VaultImpl withDiskEncryptionEnabled() {
         inner().properties().withEnabledForDiskEncryption(true);
         return this;
     }
 
     @Override
-    public VaultImpl enableTemplateDeployment() {
+    public VaultImpl withTemplateDeploymentEnabled() {
         inner().properties().withEnabledForTemplateDeployment(true);
         return this;
     }
 
     @Override
-    public VaultImpl disableDeployment() {
+    public VaultImpl withDeploymentDisabled() {
         inner().properties().withEnabledForDeployment(false);
         return this;
     }
 
     @Override
-    public VaultImpl disableDiskEncryption() {
+    public VaultImpl withDiskEncryptionDisabled() {
         inner().properties().withEnabledForDiskEncryption(false);
         return this;
     }
 
     @Override
-    public VaultImpl disableTemplateDeployment() {
+    public VaultImpl withTemplateDeploymentDisabled() {
         inner().properties().withEnabledForTemplateDeployment(false);
         return this;
     }

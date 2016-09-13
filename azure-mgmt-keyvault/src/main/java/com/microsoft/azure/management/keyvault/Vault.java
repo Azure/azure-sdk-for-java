@@ -25,12 +25,12 @@ public interface Vault extends
         Updatable<Vault.Update>,
         Wrapper<VaultInner> {
     /**
-     * @return The URI of the vault for performing operations on keys and secrets.
+     * @return the URI of the vault for performing operations on keys and secrets.
      */
     String vaultUri();
 
     /**
-     * @return The Azure Active Directory tenant ID that should be used for
+     * @return the Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
      */
     String tenantId();
@@ -41,29 +41,29 @@ public interface Vault extends
     Sku sku();
 
     /**
-     * @return An array of 0 to 16 identities that have access to the key vault. All
+     * @return an array of 0 to 16 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID.
      */
     List<AccessPolicy> accessPolicies();
 
     /**
-     * @return Property to specify whether Azure Virtual Machines are permitted to
+     * @return whether Azure Virtual Machines are permitted to
      * retrieve certificates stored as secrets from the key vault.
      */
-    Boolean enabledForDeployment();
+    boolean enabledForDeployment();
 
     /**
-     * @return Property to specify whether Azure Disk Encryption is permitted to
+     * @return whether Azure Disk Encryption is permitted to
      * retrieve secrets from the vault and unwrap keys.
      */
-    Boolean enabledForDiskEncryption();
+    boolean enabledForDiskEncryption();
 
     /**
-     * @return Property to specify whether Azure Resource Manager is permitted to
+     * @return whether Azure Resource Manager is permitted to
      * retrieve secrets from the key vault.
      */
-    Boolean enabledForTemplateDeployment();
+    boolean enabledForTemplateDeployment();
 
     /**************************************************************
      * Fluent interfaces to provision a Vault
@@ -144,42 +144,42 @@ public interface Vault extends
              *
              * @return the next stage of key vault definition
              */
-            WithCreate enableDeployment();
+            WithCreate withDeploymentEnabled();
 
             /**
              * Enable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
              *
              * @return the next stage of key vault definition
              */
-            WithCreate enableDiskEncryption();
+            WithCreate withDiskEncryptionEnabled();
 
             /**
              * Enable Azure Resource Manager to retrieve secrets from the key vault.
              *
              * @return the next stage of key vault definition
              */
-            WithCreate enableTemplateDeployment();
+            WithCreate withTemplateDeploymentEnabled();
 
             /**
              * Disable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
              *
              * @return the next stage of key vault definition
              */
-            WithCreate disableDeployment();
+            WithCreate withDeploymentDisabled();
 
             /**
              * Disable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
              *
              * @return the next stage of key vault definition
              */
-            WithCreate disableDiskEncryption();
+            WithCreate withDiskEncryptionDisabled();
 
             /**
              * Disable Azure Resource Manager to retrieve secrets from the key vault.
              *
              * @return the next stage of key vault definition
              */
-            WithCreate disableTemplateDeployment();
+            WithCreate withTemplateDeploymentDisabled();
         }
 
         /**
@@ -245,42 +245,42 @@ public interface Vault extends
              *
              * @return the key vault update stage
              */
-            Update enableDeployment();
+            Update withDeploymentEnabled();
 
             /**
              * Enable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
              *
              * @return the key vault update stage
              */
-            Update enableDiskEncryption();
+            Update withDiskEncryptionEnabled();
 
             /**
              * Enable Azure Resource Manager to retrieve secrets from the key vault.
              *
              * @return the key vault update stage
              */
-            Update enableTemplateDeployment();
+            Update withTemplateDeploymentEnabled();
 
             /**
              * Disable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
              *
              * @return the key vault update stage
              */
-            Update disableDeployment();
+            Update withDeploymentDisabled();
 
             /**
              * Disable Azure Disk Encryption to retrieve secrets from the vault and unwrap keys.
              *
              * @return the next stage of key vault definition
              */
-            Update disableDiskEncryption();
+            Update withDiskEncryptionDisabled();
 
             /**
              * Disable Azure Resource Manager to retrieve secrets from the key vault.
              *
              * @return the key vault update stage
              */
-            Update disableTemplateDeployment();
+            Update withTemplateDeploymentDisabled();
         }
     }
 
