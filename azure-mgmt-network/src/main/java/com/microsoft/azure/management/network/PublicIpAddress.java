@@ -23,9 +23,12 @@ public interface PublicIpAddress extends
         Wrapper<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    // Getters
+
+    /**
+     * @return the IP version of the public IP address
+     */
+    IPVersion version();
 
     /**
      * @return the assigned IP address

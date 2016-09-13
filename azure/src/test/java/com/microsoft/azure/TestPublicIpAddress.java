@@ -59,6 +59,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .append("\n\tReverse FQDN: ").append(resource.reverseFqdn())
                 .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
                 .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod().toString())
+                .append("\n\tIP version: ").append(resource.version().toString())
                 .toString());
     }
 }

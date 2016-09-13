@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -102,6 +103,11 @@ class PublicIpAddressImpl
     @Override
     public IPAllocationMethod ipAllocationMethod() {
         return this.inner().publicIPAllocationMethod();
+    }
+
+    @Override
+    public IPVersion version() {
+        return this.inner().publicIPAddressVersion();
     }
 
     @Override
