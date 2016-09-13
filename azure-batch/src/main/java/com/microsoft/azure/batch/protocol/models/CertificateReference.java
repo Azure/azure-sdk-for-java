@@ -30,23 +30,23 @@ public class CertificateReference {
 
     /**
      * The location of the certificate store on the compute node into which to
-     * install the certificate. The default value is CurrentUser. Possible
-     * values include: 'currentuser', 'localmachine', 'unmapped'.
+     * install the certificate.
+     * The default value is CurrentUser. Possible values include:
+     * 'currentuser', 'localmachine', 'unmapped'.
      */
     private CertificateStoreLocation storeLocation;
 
     /**
      * The name of the certificate store on the compute node into which to
-     * install the certificate. The default value is My.
+     * install the certificate.
+     * The default value is My.
      */
     private String storeName;
 
     /**
      * Which user accounts on the compute node should have access to the
-     * private data of the certificate. This may be any subset of the values
-     * 'starttask', 'task' and 'remoteuser', separated by commas. The default
-     * is all accounts, corresponding to the string
-     * 'starttask,task,remoteuser'.
+     * private data of the certificate.
+     * The default is all accounts.
      */
     private List<CertificateVisibility> visibility;
 

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class VirtualMachineScaleSetVMInstanceIDs {
     /**
-     * Gets or sets the virtual machine scale set instance ids.
+     * the virtual machine scale set instance ids.
      */
     private List<String> instanceIds;
 

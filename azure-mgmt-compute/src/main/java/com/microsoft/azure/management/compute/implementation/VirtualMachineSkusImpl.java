@@ -34,7 +34,7 @@ class VirtualMachineSkusImpl
         return wrapList(innerCollection.listSkus(
                 offer.region().toString(),
                 offer.publisher().name(),
-                offer.name()).getBody());
+                offer.name()));
     }
 
     @Override

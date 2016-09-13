@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.VirtualNetworkGatewayConnectionType;
+import com.microsoft.azure.management.network.VirtualNetworkGatewayConnectionStatus;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -47,7 +49,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      */
     @JsonProperty(value = "properties.connectionType")
-    private String connectionType;
+    private VirtualNetworkGatewayConnectionType connectionType;
 
     /**
      * The Routing weight.
@@ -66,7 +68,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
      */
     @JsonProperty(value = "properties.connectionStatus")
-    private String connectionStatus;
+    private VirtualNetworkGatewayConnectionStatus connectionStatus;
 
     /**
      * The Egress Bytes Transferred in this connection.
@@ -100,8 +102,8 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the VirtualNetworkGatewayConnection
-     * resource Updating/Deleting/Failed.
+     * Gets provisioning state of the VirtualNetworkGatewayConnection resource
+     * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -197,7 +199,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      *
      * @return the connectionType value
      */
-    public String connectionType() {
+    public VirtualNetworkGatewayConnectionType connectionType() {
         return this.connectionType;
     }
 
@@ -207,7 +209,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * @param connectionType the connectionType value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
      */
-    public VirtualNetworkGatewayConnectionInner withConnectionType(String connectionType) {
+    public VirtualNetworkGatewayConnectionInner withConnectionType(VirtualNetworkGatewayConnectionType connectionType) {
         this.connectionType = connectionType;
         return this;
     }
@@ -257,7 +259,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      *
      * @return the connectionStatus value
      */
-    public String connectionStatus() {
+    public VirtualNetworkGatewayConnectionStatus connectionStatus() {
         return this.connectionStatus;
     }
 
@@ -267,7 +269,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * @param connectionStatus the connectionStatus value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
      */
-    public VirtualNetworkGatewayConnectionInner withConnectionStatus(String connectionStatus) {
+    public VirtualNetworkGatewayConnectionInner withConnectionStatus(VirtualNetworkGatewayConnectionStatus connectionStatus) {
         this.connectionStatus = connectionStatus;
         return this;
     }

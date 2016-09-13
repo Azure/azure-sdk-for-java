@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 
 /**
  * The response body contains the status of the specified asynchronous
- * operation, indicating whether it has succeeded, is inprogress, or has
+ * operation, indicating whether it has succeeded, is in progress, or has
  * failed. Note that this status is distinct from the HTTP status code
  * returned for the Get Operation Status operation itself. If the
  * asynchronous operation succeeded, the response body includes the HTTP
@@ -24,7 +24,7 @@ public class AzureAsyncOperationResult {
      * Status of the AzureAsuncOperation. Possible values include:
      * 'InProgress', 'Succeeded', 'Failed'.
      */
-    private String status;
+    private NetworkOperationStatus status;
 
     /**
      * The error property.
@@ -36,7 +36,7 @@ public class AzureAsyncOperationResult {
      *
      * @return the status value
      */
-    public String status() {
+    public NetworkOperationStatus status() {
         return this.status;
     }
 
@@ -46,7 +46,7 @@ public class AzureAsyncOperationResult {
      * @param status the status value to set
      * @return the AzureAsyncOperationResult object itself.
      */
-    public AzureAsyncOperationResult withStatus(String status) {
+    public AzureAsyncOperationResult withStatus(NetworkOperationStatus status) {
         this.status = status;
         return this;
     }

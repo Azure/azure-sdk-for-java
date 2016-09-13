@@ -8,21 +8,19 @@ package com.microsoft.azure.management.compute.implementation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.HardwareProfile;
+import com.microsoft.azure.management.compute.NetworkProfile;
+import com.microsoft.azure.management.compute.OSDisk;
+import com.microsoft.azure.management.compute.OSProfile;
+import com.microsoft.azure.management.compute.StorageProfile;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.compute.NetworkInterfaceReference;
-import com.microsoft.azure.management.compute.StorageProfile;
-import com.microsoft.azure.management.compute.OSDisk;
-import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.OSProfile;
-import com.microsoft.azure.management.compute.HardwareProfile;
-import com.microsoft.azure.management.compute.NetworkProfile;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.ServiceResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,22 +30,25 @@ import java.util.ArrayList;
  */
 class VirtualMachinesImpl
         extends GroupableResourcesImpl<
-            VirtualMachine,
-            VirtualMachineImpl,
-            VirtualMachineInner,
-            VirtualMachinesInner,
-            ComputeManager>
+        VirtualMachine,
+        VirtualMachineImpl,
+        VirtualMachineInner,
+        VirtualMachinesInner,
+        ComputeManager>
         implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final VirtualMachineSizesImpl vmSizes;
+    private final VirtualMachineExtensionsInner virtualMachineExtensionsClient;
 
     VirtualMachinesImpl(VirtualMachinesInner client,
+                        VirtualMachineExtensionsInner virtualMachineExtensionsClient,
                         VirtualMachineSizesInner virtualMachineSizesClient,
                         ComputeManager computeManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         super(client, computeManager);
+        this.virtualMachineExtensionsClient = virtualMachineExtensionsClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.vmSizes = new VirtualMachineSizesImpl(virtualMachineSizesClient);
@@ -57,17 +58,17 @@ class VirtualMachinesImpl
 
     @Override
     public PagedList<VirtualMachine> list() throws CloudException, IOException {
-        return wrapList(this.innerCollection.listAll().getBody());
+        return wrapList(this.innerCollection.listAll());
     }
 
     @Override
     public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(this.innerCollection.list(groupName).getBody());
+        return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
     public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
@@ -122,10 +123,10 @@ class VirtualMachinesImpl
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
-        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.innerCollection.capture(groupName, name, parameters);
+        VirtualMachineCaptureResultInner captureResult = this.innerCollection.capture(groupName, name, parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
-        return mapper.writeValueAsString(captureResult.getBody().output());
+        return mapper.writeValueAsString(captureResult.output());
     }
 
 
@@ -142,18 +143,19 @@ class VirtualMachinesImpl
     protected VirtualMachineImpl wrapModel(String name) {
         VirtualMachineInner inner = new VirtualMachineInner();
         inner.withStorageProfile(new StorageProfile()
-            .withOsDisk(new OSDisk())
-            .withDataDisks(new ArrayList<DataDisk>()));
+                .withOsDisk(new OSDisk())
+                .withDataDisks(new ArrayList<DataDisk>()));
         inner.withOsProfile(new OSProfile());
         inner.withHardwareProfile(new HardwareProfile());
         inner.withNetworkProfile(new NetworkProfile()
-                .withNetworkInterfaces(new ArrayList<NetworkInterfaceReference>()));
+                .withNetworkInterfaces(new ArrayList<NetworkInterfaceReferenceInner>()));
         return new VirtualMachineImpl(name,
-            inner,
-            this.innerCollection,
-            super.myManager,
-            this.storageManager,
-            this.networkManager);
+                inner,
+                this.innerCollection,
+                this.virtualMachineExtensionsClient,
+                super.myManager,
+                this.storageManager,
+                this.networkManager);
     }
 
     @Override
@@ -161,6 +163,7 @@ class VirtualMachinesImpl
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,
+                this.virtualMachineExtensionsClient,
                 super.myManager,
                 this.storageManager,
                 this.networkManager);

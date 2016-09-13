@@ -50,7 +50,7 @@ public class DataLakeAnalyticsAccountOperationsTests extends DataLakeAnalyticsMa
         createParams.withLocation(location);
         createParams.withSku(new Sku().withName(SkuName.STANDARD_LRS));
         storageManagementClient.storageAccounts().create(rgName, storageAcct, createParams);
-        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).getBody().keys().get(0).value();
+        storageAccessKey = storageManagementClient.storageAccounts().listKeys(rgName, storageAcct).keys().get(0).value();
     }
 
     @AfterClass

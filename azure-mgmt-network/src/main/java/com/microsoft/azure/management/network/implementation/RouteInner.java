@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.RouteNextHopType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -29,7 +30,7 @@ public class RouteInner extends SubResource {
      * 'Internet', 'VirtualAppliance', 'None'.
      */
     @JsonProperty(value = "properties.nextHopType", required = true)
-    private String nextHopType;
+    private RouteNextHopType nextHopType;
 
     /**
      * Gets or sets the IP address packets should be forwarded to. Next hop
@@ -40,8 +41,7 @@ public class RouteInner extends SubResource {
     private String nextHopIpAddress;
 
     /**
-     * Gets or sets Provisioning state of the resource
-     * Updating/Deleting/Failed.
+     * Gets provisioning state of the resource Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -82,7 +82,7 @@ public class RouteInner extends SubResource {
      *
      * @return the nextHopType value
      */
-    public String nextHopType() {
+    public RouteNextHopType nextHopType() {
         return this.nextHopType;
     }
 
@@ -92,7 +92,7 @@ public class RouteInner extends SubResource {
      * @param nextHopType the nextHopType value to set
      * @return the RouteInner object itself.
      */
-    public RouteInner withNextHopType(String nextHopType) {
+    public RouteInner withNextHopType(RouteNextHopType nextHopType) {
         this.nextHopType = nextHopType;
         return this;
     }

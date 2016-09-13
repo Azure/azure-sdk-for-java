@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Features;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.Feature;
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ import java.io.IOException;
  * The implementation of {@link Features}.
  */
 final class FeaturesImpl
+        extends ReadableWrappersImpl<Feature, FeatureImpl, FeatureResultInner>
         implements Features {
     private final FeaturesInner client;
 
@@ -26,17 +27,16 @@ final class FeaturesImpl
 
     @Override
     public PagedList<Feature> list() throws CloudException, IOException {
-        PagedListConverter<FeatureResultInner, Feature> converter = new PagedListConverter<FeatureResultInner, Feature>() {
-            @Override
-            public Feature typeConvert(FeatureResultInner tenantInner) {
-                return new FeatureImpl(tenantInner);
-            }
-        };
-        return converter.convert(client.listAll().getBody());
+        return wrapList(client.listAll());
     }
 
     @Override
     public InResourceProvider resourceProvider(String resourceProviderName) {
         return null;
+    }
+
+    @Override
+    protected FeatureImpl wrapModel(FeatureResultInner inner) {
+        return new FeatureImpl(inner);
     }
 }

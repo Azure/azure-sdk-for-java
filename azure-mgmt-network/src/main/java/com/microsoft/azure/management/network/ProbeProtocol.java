@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ProbeProtocol.
  */
 public final class ProbeProtocol {
     /** Static value Http for ProbeProtocol. */
-    public static final String HTTP = "Http";
+    public static final ProbeProtocol HTTP = new ProbeProtocol("Http");
 
     /** Static value Tcp for ProbeProtocol. */
-    public static final String TCP = "Tcp";
+    public static final ProbeProtocol TCP = new ProbeProtocol("Tcp");
 
-    private ProbeProtocol() {
+    private String value;
+
+    /**
+     * Creates a custom value for ProbeProtocol.
+     * @param value the custom value
+     */
+    public ProbeProtocol(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ProbeProtocol)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ProbeProtocol rhs = (ProbeProtocol) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

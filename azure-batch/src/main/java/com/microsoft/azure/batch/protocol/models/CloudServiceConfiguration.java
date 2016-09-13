@@ -24,14 +24,15 @@ public class CloudServiceConfiguration {
 
     /**
      * The Azure Guest OS version to be installed on the virtual machines in
-     * the pool. The default value is * which specifies the latest operating
-     * system version for the specified OS family.
+     * the pool.
+     * The default value is * which specifies the latest operating system
+     * version for the specified OS family.
      */
     private String targetOSVersion;
 
     /**
      * The Azure Guest OS Version currently installed on the virtual machines
-     * in the pool. This may differ from TargetOSVersion if the pool state is
+     * in the pool. This may differ from targetOSVersion if the pool state is
      * Upgrading.
      */
     private String currentOSVersion;

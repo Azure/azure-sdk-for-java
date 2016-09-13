@@ -13,7 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
-import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
@@ -45,9 +45,9 @@ public final class ManageVirtualNetwork {
         final String vnet1BackEndSubnetName = "backend";
         final String vnet1FrontEndSubnetNsgName = "frontendnsg";
         final String vnet1BackEndSubnetNsgName = "backendnsg";
-        final String frontEndVMName = ResourceNamer.randomResourceName("fevm", 24);
-        final String backEndVMName = ResourceNamer.randomResourceName("bevm", 24);
-        final String publicIpAddressLeafDNSForFrontEndVM = ResourceNamer.randomResourceName("pip1", 24);
+        final String frontEndVmName = ResourceNamer.randomResourceName("fevm", 24);
+        final String backEndVmName = ResourceNamer.randomResourceName("bevm", 24);
+        final String publicIpAddressLeafDnsForFrontEndVm = ResourceNamer.randomResourceName("pip1", 24);
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
@@ -143,7 +143,7 @@ public final class ManageVirtualNetwork {
                             .fromAnyPort()
                             .toAnyAddress()
                             .toPort(80)
-                            .withProtocol(NetworkSecurityRule.Protocol.TCP)
+                            .withProtocol(SecurityRuleProtocol.TCP)
                             .attach()
                         .defineRule("DenyInternetOutGoing")
                             .denyOutbound()
@@ -183,13 +183,13 @@ public final class ManageVirtualNetwork {
 
                 Date t1 = new Date();
 
-                VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVMName)
+                VirtualMachine frontEndVM = azure.virtualMachines().define(frontEndVmName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(virtualNetwork1)
                         .withSubnet(vnet1FrontEndSubnetName)
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(publicIpAddressLeafDNSForFrontEndVM)
+                        .withNewPrimaryPublicIpAddress(publicIpAddressLeafDnsForFrontEndVm)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUserName(userName)
                         .withSsh(sshKey)
@@ -209,7 +209,7 @@ public final class ManageVirtualNetwork {
 
                 Date t3 = new Date();
 
-                VirtualMachine backEndVM = azure.virtualMachines().define(backEndVMName)
+                VirtualMachine backEndVM = azure.virtualMachines().define(backEndVmName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetwork(virtualNetwork1)

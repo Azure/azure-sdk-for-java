@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class ClientRequestIdInterceptor extends RequestInterceptor {
     public ClientRequestIdInterceptor() {
-        this.setHandler(new BatchRequestInterceptHandler() {
+        this.withHandler(new BatchRequestInterceptHandler() {
             @Override
             public void modify(Object request) {
                 Class<?> c = request.getClass();

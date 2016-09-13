@@ -15,37 +15,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DeploymentProperties {
     /**
-     * Gets or sets the template content. Use only one of Template or
-     * TemplateLink.
+     * The template content. It can be a JObject or a well formed JSON string.
+     * Use only one of Template or TemplateLink.
      */
     private Object template;
 
     /**
-     * Gets or sets the URI referencing the template. Use only one of Template
-     * or TemplateLink.
+     * The template URI. Use only one of Template or TemplateLink.
      */
     private TemplateLink templateLink;
 
     /**
-     * Deployment parameters. Use only one of Parameters or ParametersLink.
+     * Deployment parameters. It can be a JObject or a well formed JSON
+     * string. Use only one of Parameters or ParametersLink.
      */
     private Object parameters;
 
     /**
-     * Gets or sets the URI referencing the parameters. Use only one of
-     * Parameters or ParametersLink.
+     * The parameters URI. Use only one of Parameters or ParametersLink.
      */
     private ParametersLink parametersLink;
 
     /**
-     * Gets or sets the deployment mode. Possible values include:
-     * 'Incremental', 'Complete'.
+     * The deployment mode. Possible values include: 'Incremental', 'Complete'.
      */
     @JsonProperty(required = true)
     private DeploymentMode mode;
 
     /**
-     * Gets or sets the debug setting of the deployment.
+     * The debug setting of the deployment.
      */
     private DebugSetting debugSetting;
 

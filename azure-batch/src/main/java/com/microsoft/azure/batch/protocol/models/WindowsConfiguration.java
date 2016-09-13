@@ -14,8 +14,8 @@ package com.microsoft.azure.batch.protocol.models;
  */
 public class WindowsConfiguration {
     /**
-     * Whether automatic updates are enabled on the virtual machine. If
-     * omitted, the default value is true.
+     * Whether automatic updates are enabled on the virtual machine.
+     * If omitted, the default value is true.
      */
     private Boolean enableAutomaticUpdates;
 

@@ -104,10 +104,15 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
-        azure.genericResources().listByGroup("sdkpriv");
-        GenericResource resourceByGroup = azure.genericResources().getByGroup("sdkpriv", "sdkpriv");
-        GenericResource resourceById = azure.genericResources().getById(resourceByGroup.id());
-        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
+        PagedList<GenericResource> resources = azure.genericResources().listByGroup("sdkpriv");
+        GenericResource firstResource = resources.get(0);
+        GenericResource resourceById = azure.genericResources().getById(firstResource.id());
+        GenericResource resourceByDetails = azure.genericResources().get(
+                firstResource.resourceGroupName(),
+                firstResource.resourceProviderNamespace(),
+                firstResource.resourceType(),
+                firstResource.name());
+        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByDetails.id()));
     }
 
     /**
@@ -135,8 +140,44 @@ public class AzureTests {
      * Tests the network security group implementation
      * @throws Exception
      */
-    @Test public void testNetworkSecurityGroups() throws Exception {
+    @Test
+    public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersNatRules() throws Exception {
+        new TestLoadBalancer.InternetWithNatRule(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersNatPools() throws Exception {
+        new TestLoadBalancer.InternetWithNatPool(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersInternetMinimum() throws Exception {
+        new TestLoadBalancer.InternetMinimal(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersInternalMinimum() throws Exception {
+        new TestLoadBalancer.InternalMinimal(
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -225,12 +266,12 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
+        StorageAccount storageAccount = azure.storageAccounts().define("mystg123")
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertSame(storageAccount.name(), "my-stg1");
+        Assert.assertEquals(storageAccount.name(), "mystg123");
     }
 }

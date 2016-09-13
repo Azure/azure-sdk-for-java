@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * An environment variable to be set on a task process.
@@ -16,6 +17,7 @@ public class EnvironmentSetting {
     /**
      * The name of the environment variable.
      */
+    @JsonProperty(required = true)
     private String name;
 
     /**

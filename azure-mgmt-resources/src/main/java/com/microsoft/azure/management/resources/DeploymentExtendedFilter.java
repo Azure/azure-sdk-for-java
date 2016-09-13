@@ -14,7 +14,7 @@ package com.microsoft.azure.management.resources;
  */
 public class DeploymentExtendedFilter {
     /**
-     * Gets or sets the provisioning state.
+     * The provisioning state.
      */
     private String provisioningState;
 

@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringState;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -23,14 +25,14 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'.
      */
     @JsonProperty(value = "properties.peeringType")
-    private String peeringType;
+    private ExpressRouteCircuitPeeringType peeringType;
 
     /**
      * Gets or sets state of Peering. Possible values include: 'Disabled',
      * 'Enabled'.
      */
     @JsonProperty(value = "properties.state")
-    private String state;
+    private ExpressRouteCircuitPeeringState state;
 
     /**
      * Gets or sets the azure ASN.
@@ -93,11 +95,23 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private ExpressRouteCircuitStatsInner stats;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
+
+    /**
+     * Gets or sets the GatewayManager Etag.
+     */
+    @JsonProperty(value = "properties.gatewayManagerEtag")
+    private String gatewayManagerEtag;
+
+    /**
+     * Gets whether the provider or the customer last modified the peering.
+     */
+    @JsonProperty(value = "properties.lastModifiedBy")
+    private String lastModifiedBy;
 
     /**
      * Gets name of the resource that is unique within a resource group. This
@@ -115,7 +129,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the peeringType value
      */
-    public String peeringType() {
+    public ExpressRouteCircuitPeeringType peeringType() {
         return this.peeringType;
     }
 
@@ -125,7 +139,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param peeringType the peeringType value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withPeeringType(String peeringType) {
+    public ExpressRouteCircuitPeeringInner withPeeringType(ExpressRouteCircuitPeeringType peeringType) {
         this.peeringType = peeringType;
         return this;
     }
@@ -135,7 +149,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the state value
      */
-    public String state() {
+    public ExpressRouteCircuitPeeringState state() {
         return this.state;
     }
 
@@ -145,7 +159,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param state the state value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withState(String state) {
+    public ExpressRouteCircuitPeeringInner withState(ExpressRouteCircuitPeeringState state) {
         this.state = state;
         return this;
     }
@@ -367,6 +381,46 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public ExpressRouteCircuitPeeringInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the gatewayManagerEtag value.
+     *
+     * @return the gatewayManagerEtag value
+     */
+    public String gatewayManagerEtag() {
+        return this.gatewayManagerEtag;
+    }
+
+    /**
+     * Set the gatewayManagerEtag value.
+     *
+     * @param gatewayManagerEtag the gatewayManagerEtag value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withGatewayManagerEtag(String gatewayManagerEtag) {
+        this.gatewayManagerEtag = gatewayManagerEtag;
+        return this;
+    }
+
+    /**
+     * Get the lastModifiedBy value.
+     *
+     * @return the lastModifiedBy value
+     */
+    public String lastModifiedBy() {
+        return this.lastModifiedBy;
+    }
+
+    /**
+     * Set the lastModifiedBy value.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
         return this;
     }
 

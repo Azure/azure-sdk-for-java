@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.credentials.AzureEnvironment;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.analytics.implementation.DataLakeAnalyticsCatalogManagementClientImpl;
@@ -13,17 +14,14 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlJobPropertie
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManagementClientImpl;
-
-import com.microsoft.azure.RestClient;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Assert;
+import retrofit2.Retrofit;
 
 import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
 
 public abstract class DataLakeAnalyticsManagementTestBase {
     protected static DataLakeAnalyticsAccountManagementClientImpl dataLakeAnalyticsAccountManagementClient;
@@ -48,13 +46,21 @@ public abstract class DataLakeAnalyticsManagementTestBase {
             case "ppe":
                 armUri = "https://api-dogfood.resources.windows-int.net";
                 adlaSuffix = "konaaccountdogfood.net";
-                authEnv = new AzureEnvironment("https://login.windows-ppe.net/", "https://management.core.windows.net/", true);
+                authEnv = new AzureEnvironment(
+                        "https://login.windows-ppe.net/",
+                        "https://management.core.windows.net/",
+                        true,
+                        "https://api-dogfood.resources.windows-int.net");
                 break;
             case "test":
                 armUri = "https://api-dogfood.resources.windows-int.net";
                 adlaSuffix = "konaaccountdogfood.net";
                 environmentLocation = "westus";
-                authEnv = new AzureEnvironment("https://login.windows-ppe.net/", "https://management.core.windows.net/", true);
+                authEnv = new AzureEnvironment(
+                        "https://login.windows-ppe.net/",
+                        "https://management.core.windows.net/",
+                        true,
+                        "https://api-dogfood.resources.windows-int.net");
                 break;
             default: // default to production
                 armUri = "https://management.azure.com";

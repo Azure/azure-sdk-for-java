@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
@@ -22,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * @param <ManagerT> the service manager type
  */
 public abstract class GroupableResourceImpl<
-        FluentModelT,
+        FluentModelT extends Resource,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends GroupableResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT extends ManagerBase>
@@ -32,15 +33,24 @@ public abstract class GroupableResourceImpl<
             GroupableResource {
 
     protected final ManagerT myManager;
-    protected Creatable<ResourceGroup> newGroup;
+    protected Creatable<ResourceGroup> creatableGroup;
     private String groupName;
 
     protected GroupableResourceImpl(
-            String key,
+            String name,
             InnerModelT innerObject,
             ManagerT manager) {
-        super(key, innerObject);
+        super(name, innerObject);
         this.myManager = manager;
+    }
+
+    // Helpers
+
+    protected String resourceIdBase() {
+        return new StringBuilder()
+                .append("/subscriptions/").append(this.myManager.subscriptionId())
+                .append("/resourceGroups/").append(this.resourceGroupName())
+                .toString();
     }
 
     /*******************************************
@@ -90,8 +100,8 @@ public abstract class GroupableResourceImpl<
      */
     @SuppressWarnings("unchecked")
     public final FluentModelImplT withNewResourceGroup(Creatable<ResourceGroup> creatable) {
-        this.groupName = creatable.key();
-        this.newGroup = creatable;
+        this.groupName = creatable.name();
+        this.creatableGroup = creatable;
         addCreatableDependency(creatable);
         return (FluentModelImplT) this;
     }

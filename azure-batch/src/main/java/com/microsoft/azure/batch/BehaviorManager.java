@@ -22,22 +22,22 @@ class BehaviorManager {
         this.baseBehaviors = new LinkedList<BatchClientBehavior>();
 
         if (null != baseBehaviors) {
-            this.getBaseBehaviors().addAll(baseBehaviors);
+            this.baseBehaviors().addAll(baseBehaviors);
         }
 
         this.perCallBehaviors = new LinkedList<BatchClientBehavior>();
 
         if (null != perCallBehaviors) {
             for (BatchClientBehavior bh : perCallBehaviors) {
-                this.getPerCallBehaviors().add(bh);
+                this.perCallBehaviors().add(bh);
             }
         }
     }
 
     Collection<BatchClientBehavior> getMasterListOfBehaviors() {
-        List<BatchClientBehavior> ml = new LinkedList<BatchClientBehavior>(this.getBaseBehaviors());
+        List<BatchClientBehavior> ml = new LinkedList<BatchClientBehavior>(this.baseBehaviors());
 
-        ml.addAll(this.getPerCallBehaviors());
+        ml.addAll(this.perCallBehaviors());
 
         return ml;
     }
@@ -45,30 +45,32 @@ class BehaviorManager {
     void applyRequestBehaviors(Object request) {
         for (BatchClientBehavior bh : getMasterListOfBehaviors()) {
             if (bh instanceof RequestInterceptor) {
-                ((RequestInterceptor) bh).getHandler().modify(request);
+                ((RequestInterceptor) bh).handler().modify(request);
             }
         }
     }
 
     void appendDetailLevelToPerCallBehaviors(DetailLevel dl) {
         if (dl != null) {
-            this.getPerCallBehaviors().add(new DetailLevelInterceptor(dl));
+            this.perCallBehaviors().add(new DetailLevelInterceptor(dl));
         }
     }
 
-    public Collection<BatchClientBehavior> getBaseBehaviors() {
+    public Collection<BatchClientBehavior> baseBehaviors() {
         return baseBehaviors;
     }
 
-    public void setBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
+    public BehaviorManager withBaseBehaviors(Collection<BatchClientBehavior> baseBehaviors) {
         this.baseBehaviors = baseBehaviors;
+        return this;
     }
 
-    public Collection<BatchClientBehavior> getPerCallBehaviors() {
+    public Collection<BatchClientBehavior> perCallBehaviors() {
         return perCallBehaviors;
     }
 
-    public void setPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
+    public BehaviorManager withPerCallBehaviors(Collection<BatchClientBehavior> perCallBehaviors) {
         this.perCallBehaviors = perCallBehaviors;
+        return this;
     }
 }

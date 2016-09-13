@@ -8,22 +8,58 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.
  */
 public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
     /** Static value NotConfigured for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
-    public static final String NOT_CONFIGURED = "NotConfigured";
+    public static final ExpressRouteCircuitPeeringAdvertisedPublicPrefixState NOT_CONFIGURED = new ExpressRouteCircuitPeeringAdvertisedPublicPrefixState("NotConfigured");
 
     /** Static value Configuring for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
-    public static final String CONFIGURING = "Configuring";
+    public static final ExpressRouteCircuitPeeringAdvertisedPublicPrefixState CONFIGURING = new ExpressRouteCircuitPeeringAdvertisedPublicPrefixState("Configuring");
 
     /** Static value Configured for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
-    public static final String CONFIGURED = "Configured";
+    public static final ExpressRouteCircuitPeeringAdvertisedPublicPrefixState CONFIGURED = new ExpressRouteCircuitPeeringAdvertisedPublicPrefixState("Configured");
 
     /** Static value ValidationNeeded for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState. */
-    public static final String VALIDATION_NEEDED = "ValidationNeeded";
+    public static final ExpressRouteCircuitPeeringAdvertisedPublicPrefixState VALIDATION_NEEDED = new ExpressRouteCircuitPeeringAdvertisedPublicPrefixState("ValidationNeeded");
 
-    private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState() {
+    private String value;
+
+    /**
+     * Creates a custom value for ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.
+     * @param value the custom value
+     */
+    public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ExpressRouteCircuitPeeringAdvertisedPublicPrefixState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ExpressRouteCircuitPeeringAdvertisedPublicPrefixState rhs = (ExpressRouteCircuitPeeringAdvertisedPublicPrefixState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

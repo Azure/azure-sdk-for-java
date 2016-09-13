@@ -23,8 +23,8 @@ public class JobExecutionInformation {
     private DateTime startTime;
 
     /**
-     * The completion time of the job. This property is set only if the job is
-     * in the completed state.
+     * The completion time of the job.
+     * This property is set only if the job is in the completed state.
      */
     private DateTime endTime;
 

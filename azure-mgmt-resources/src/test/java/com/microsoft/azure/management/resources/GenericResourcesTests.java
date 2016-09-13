@@ -47,9 +47,9 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withExistingResourceGroup(rgName)
                 .withResourceType("sites")
                 .withProviderNamespace("Microsoft.Web")
-                .withParentResource("")
                 .withoutPlan()
                 .withApiVersion("2015-08-01")
+                .withParentResource("")
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                 .create();
         //List

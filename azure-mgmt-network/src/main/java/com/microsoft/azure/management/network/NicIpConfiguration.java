@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
+import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -13,8 +15,9 @@ import java.io.IOException;
  * An IP configuration in a network interface.
  */
 public interface NicIpConfiguration extends
-        Wrapper<NetworkInterfaceIPConfiguration>,
-        ChildResource {
+        Wrapper<NetworkInterfaceIPConfigurationInner>,
+        ChildResource,
+        HasPrivateIpAddress {
     // Getters
 
     /**
@@ -50,20 +53,6 @@ public interface NicIpConfiguration extends
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
     Network network() throws CloudException, IOException;
-
-    /**
-     * Gets the private IP address allocated to this IP configuration.
-     * <p>
-     * The private IP will be within the virtual network subnet of this IP configuration.
-     *
-     * @return the private IP addresses
-     */
-    String privateIp();
-
-    /**
-     * @return the private IP allocation method (Dynamic, Static)
-     */
-    String privateIpAllocationMethod();
 
     // Setters (fluent)
 
@@ -147,24 +136,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPrivateIp<ParentT> {
-            /**
-             * Enables dynamic private IP address allocation within the specified existing virtual network
-             * subnet for the network interface IP configuration.
-             *
-             * @return the next stage of network interface IP configuration definition
-             */
-            WithAttach<ParentT> withPrivateIpAddressDynamic();
-
-            /**
-             * Assigns the specified static private IP address within the specified existing virtual network
-             * subnet to the network interface IP configuration.
-             *
-             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-             *                               the network interface
-             * @return the next stage of network interface IP configuration definition
-             */
-            WithAttach<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -322,24 +294,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPrivateIp<ParentT> {
-            /**
-             * Enables dynamic private IP address allocation within the specified existing virtual network
-             * subnet for the network interface IP configuration.
-             *
-             * @return the next stage of network interface IP configuration definition
-             */
-            WithAttach<ParentT> withPrivateIpAddressDynamic();
-
-            /**
-             * Assigns the specified static private IP address within the specified existing virtual network
-             * subnet to the network interface IP configuration.
-             *
-             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-             *                               the network interface
-             * @return the next stage of network interface IP configuration definition
-             */
-            WithAttach<ParentT> withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -425,7 +380,9 @@ public interface NicIpConfiguration extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
         UpdateStages.WithPrivateIp,
-        UpdateStages.WithPublicIpAddress {
+        UpdateStages.WithPublicIpAddress,
+        UpdateStages.WithLoadBalancer,
+        UpdateStages.WithBackendAddressPool {
     }
 
     /**
@@ -448,24 +405,7 @@ public interface NicIpConfiguration extends
         /**
          * The stage of the network interface IP configuration update allowing to specify private IP.
          */
-        interface WithPrivateIp {
-            /**
-             * Enables dynamic private IP address allocation within the specified existing virtual network
-             * subnet to the network interface IP configuration.
-             *
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withPrivateIpAddressDynamic();
-
-            /**
-             * Assigns the specified static private IP address within the specified existing virtual network
-             * subnet to the network interface IP configuration.
-             *
-             * @param staticPrivateIpAddress the static IP address within the specified subnet to assign to
-             *                               the  IP configuration
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withPrivateIpAddressStatic(String staticPrivateIpAddress);
+        interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
         }
 
         /**
@@ -513,6 +453,33 @@ public interface NicIpConfiguration extends
              * @return the next stage of the network interface IP configuration update
              */
             Update withoutPublicIpAddress();
+        }
+
+        /**
+         * The stage of the network interface IP configuration update allowing to specify the load balancer
+         * back end address pool to add it to.
+         */
+        interface WithBackendAddressPool {
+            /**
+             * Adds this network interface's IP configuration to the provided back end address pool of
+             * the specified load balancer.
+             * @param name the name of an existing load balancer back end address pool
+             * @return the next stage of the update
+             */
+            Update withBackendAddressPool(String name);
+        }
+
+        /**
+         * The stage of the network interface's IP configuration allowing to specify the load balancer
+         * to associate this IP configuration with.
+         */
+        interface WithLoadBalancer {
+            /**
+             * Specifies the load balancer to associate this IP configuration with.
+             * @param loadBalancer an existing load balancer
+             * @return the next stage of the update
+             */
+            WithBackendAddressPool withExistingLoadBalancer(LoadBalancer loadBalancer);
         }
     }
 }

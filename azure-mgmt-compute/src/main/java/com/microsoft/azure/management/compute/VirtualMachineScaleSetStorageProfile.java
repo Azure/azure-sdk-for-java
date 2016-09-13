@@ -14,12 +14,12 @@ package com.microsoft.azure.management.compute;
  */
 public class VirtualMachineScaleSetStorageProfile {
     /**
-     * Gets or sets the image reference.
+     * the image reference.
      */
     private ImageReference imageReference;
 
     /**
-     * Gets or sets the OS disk.
+     * the OS disk.
      */
     private VirtualMachineScaleSetOSDisk osDisk;
 

@@ -26,10 +26,10 @@ public class ComputeNode {
     private String url;
 
     /**
-     * The current state of the compute node. Possible values include: 'idle',
-     * 'rebooting', 'reimaging', 'running', 'unusable', 'creating',
-     * 'starting', 'waitingforstarttask', 'starttaskfailed', 'unknown',
-     * 'leavingpool', 'offline'.
+     * The current state of the compute node.
+     * Possible values include: 'idle', 'rebooting', 'reimaging', 'running',
+     * 'unusable', 'creating', 'starting', 'waitingforstarttask',
+     * 'starttaskfailed', 'unknown', 'leavingpool', 'offline'.
      */
     private ComputeNodeState state;
 

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.datalake.analytics;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters;
-import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.management.datalake.analytics.models.USqlAssembly;
 import com.microsoft.azure.management.datalake.analytics.models.USqlAssemblyClr;
 import com.microsoft.azure.management.datalake.analytics.models.USqlCredential;
@@ -27,11 +26,14 @@ import com.microsoft.azure.management.datalake.analytics.models.USqlTableType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlTableValuedFunction;
 import com.microsoft.azure.management.datalake.analytics.models.USqlType;
 import com.microsoft.azure.management.datalake.analytics.models.USqlView;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -60,10 +62,20 @@ public interface Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to create the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+
+    /**
+     * Creates the specified secret for use with external data sources in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database in which to create the secret.
+     * @param secretName The name of the secret.
+     * @param parameters The parameters required to create the secret (name and password)
+     * @return the observable to the USqlSecret object
+     */
+    Observable<ServiceResponse<USqlSecret>> createSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Modifies the specified secret for use with external data sources in the specified database.
@@ -87,10 +99,20 @@ public interface Catalogs {
      * @param secretName The name of the secret.
      * @param parameters The parameters required to modify the secret (name and password)
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters, final ServiceCallback<USqlSecret> serviceCallback);
+
+    /**
+     * Modifies the specified secret for use with external data sources in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret.
+     * @param parameters The parameters required to modify the secret (name and password)
+     * @return the observable to the USqlSecret object
+     */
+    Observable<ServiceResponse<USqlSecret>> updateSecretAsync(String accountName, String databaseName, String secretName, DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters parameters);
 
     /**
      * Gets the specified secret in the specified database.
@@ -112,10 +134,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to get
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSecret> getSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<USqlSecret> serviceCallback);
+
+    /**
+     * Gets the specified secret in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to get
+     * @return the observable to the USqlSecret object
+     */
+    Observable<ServiceResponse<USqlSecret>> getSecretAsync(String accountName, String databaseName, String secretName);
 
     /**
      * Deletes the specified secret in the specified database.
@@ -137,10 +168,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the secret.
      * @param secretName The name of the secret to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteSecretAsync(String accountName, String databaseName, String secretName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes the specified secret in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @param secretName The name of the secret to delete
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteSecretAsync(String accountName, String databaseName, String secretName);
 
     /**
      * Deletes all secrets in the specified database.
@@ -160,10 +200,18 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the secret.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAllSecretsAsync(String accountName, String databaseName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deletes all secrets in the specified database.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the secret.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteAllSecretsAsync(String accountName, String databaseName);
 
     /**
      * Retrieves the specified external data source from the Data Lake Analytics catalog.
@@ -185,10 +233,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the external data source.
      * @param externalDataSourceName The name of the external data source.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlExternalDataSource> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName, final ServiceCallback<USqlExternalDataSource> serviceCallback);
+
+    /**
+     * Retrieves the specified external data source from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data source.
+     * @param externalDataSourceName The name of the external data source.
+     * @return the observable to the USqlExternalDataSource object
+     */
+    Observable<ServiceResponse<USqlExternalDataSource>> getExternalDataSourceAsync(String accountName, String databaseName, String externalDataSourceName);
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -208,10 +265,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the external data sources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
      *
@@ -244,10 +300,25 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
+
+    /**
+     * Retrieves the list of external data sources from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the external data sources.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlExternalDataSource&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlExternalDataSource>>> listExternalDataSourcesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified credential from the Data Lake Analytics catalog.
@@ -269,10 +340,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param credentialName The name of the credential.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlCredential> getCredentialAsync(String accountName, String databaseName, String credentialName, final ServiceCallback<USqlCredential> serviceCallback);
+
+    /**
+     * Retrieves the specified credential from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
+     * @param credentialName The name of the credential.
+     * @return the observable to the USqlCredential object
+     */
+    Observable<ServiceResponse<USqlCredential>> getCredentialAsync(String accountName, String databaseName, String credentialName);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -292,10 +372,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlCredential> serviceCallback);
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
      *
@@ -328,10 +407,25 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlCredential> serviceCallback);
+
+    /**
+     * Retrieves the list of credentials from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlCredential&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlCredential>>> listCredentialsAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified procedure from the Data Lake Analytics catalog.
@@ -355,10 +449,20 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the procedure.
      * @param procedureName The name of the procedure.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlProcedure> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName, final ServiceCallback<USqlProcedure> serviceCallback);
+
+    /**
+     * Retrieves the specified procedure from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the procedure.
+     * @param schemaName The name of the schema containing the procedure.
+     * @param procedureName The name of the procedure.
+     * @return the observable to the USqlProcedure object
+     */
+    Observable<ServiceResponse<USqlProcedure>> getProcedureAsync(String accountName, String databaseName, String schemaName, String procedureName);
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -380,10 +484,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the procedures.
      * @param schemaName The name of the schema containing the procedures.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlProcedure> serviceCallback);
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
      *
@@ -418,10 +521,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlProcedure> serviceCallback);
+
+    /**
+     * Retrieves the list of procedures from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the procedures.
+     * @param schemaName The name of the schema containing the procedures.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlProcedure&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlProcedure>>> listProceduresAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified table from the Data Lake Analytics catalog.
@@ -445,10 +564,20 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table.
      * @param tableName The name of the table.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTable> getTableAsync(String accountName, String databaseName, String schemaName, String tableName, final ServiceCallback<USqlTable> serviceCallback);
+
+    /**
+     * Retrieves the specified table from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table.
+     * @param schemaName The name of the schema containing the table.
+     * @param tableName The name of the table.
+     * @return the observable to the USqlTable object
+     */
+    Observable<ServiceResponse<USqlTable>> getTableAsync(String accountName, String databaseName, String schemaName, String tableName);
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -470,10 +599,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the tables.
      * @param schemaName The name of the schema containing the tables.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTable> serviceCallback);
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
      *
@@ -508,10 +636,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTable> serviceCallback);
+
+    /**
+     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the tables.
+     * @param schemaName The name of the schema containing the tables.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlTable&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTable>>> listTablesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified table type from the Data Lake Analytics catalog.
@@ -535,10 +679,20 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table type.
      * @param tableTypeName The name of the table type to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableType> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName, final ServiceCallback<USqlTableType> serviceCallback);
+
+    /**
+     * Retrieves the specified table type from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table type.
+     * @param schemaName The name of the schema containing the table type.
+     * @param tableTypeName The name of the table type to retrieve.
+     * @return the observable to the USqlTableType object
+     */
+    Observable<ServiceResponse<USqlTableType>> getTableTypeAsync(String accountName, String databaseName, String schemaName, String tableTypeName);
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -560,10 +714,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the table types.
      * @param schemaName The name of the schema containing the table types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableType> serviceCallback);
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
      *
@@ -598,10 +751,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableType> serviceCallback);
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table types.
+     * @param schemaName The name of the schema containing the table types.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlTableType&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableType>>> listTableTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified view from the Data Lake Analytics catalog.
@@ -625,10 +794,20 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the view.
      * @param viewName The name of the view.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlView> getViewAsync(String accountName, String databaseName, String schemaName, String viewName, final ServiceCallback<USqlView> serviceCallback);
+
+    /**
+     * Retrieves the specified view from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the view.
+     * @param schemaName The name of the schema containing the view.
+     * @param viewName The name of the view.
+     * @return the observable to the USqlView object
+     */
+    Observable<ServiceResponse<USqlView>> getViewAsync(String accountName, String databaseName, String schemaName, String viewName);
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -650,10 +829,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the views.
      * @param schemaName The name of the schema containing the views.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlView> serviceCallback);
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
      *
@@ -688,10 +866,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlView> serviceCallback);
+
+    /**
+     * Retrieves the list of views from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the views.
+     * @param schemaName The name of the schema containing the views.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlView&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlView>>> listViewsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified table statistics from the Data Lake Analytics catalog.
@@ -717,10 +911,21 @@ public interface Catalogs {
      * @param tableName The name of the table containing the statistics.
      * @param statisticsName The name of the table statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableStatistics> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName, final ServiceCallback<USqlTableStatistics> serviceCallback);
+
+    /**
+     * Retrieves the specified table statistics from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the statistics.
+     * @param schemaName The name of the schema containing the statistics.
+     * @param tableName The name of the table containing the statistics.
+     * @param statisticsName The name of the table statistics.
+     * @return the observable to the USqlTableStatistics object
+     */
+    Observable<ServiceResponse<USqlTableStatistics>> getTableStatisticAsync(String accountName, String databaseName, String schemaName, String tableName, String statisticsName);
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -744,10 +949,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the statistics.
      * @param tableName The name of the table containing the statistics.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTableStatistics> serviceCallback);
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
      *
@@ -784,10 +988,27 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableStatistics> serviceCallback);
+
+    /**
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the statistics.
+     * @param schemaName The name of the schema containing the statistics.
+     * @param tableName The name of the table containing the statistics.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlTableStatistics&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableStatistics>>> listTableStatisticsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified table partition from the Data Lake Analytics catalog.
@@ -813,10 +1034,21 @@ public interface Catalogs {
      * @param tableName The name of the table containing the partition.
      * @param partitionName The name of the table partition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTablePartition> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName, final ServiceCallback<USqlTablePartition> serviceCallback);
+
+    /**
+     * Retrieves the specified table partition from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partition.
+     * @param schemaName The name of the schema containing the partition.
+     * @param tableName The name of the table containing the partition.
+     * @param partitionName The name of the table partition.
+     * @return the observable to the USqlTablePartition object
+     */
+    Observable<ServiceResponse<USqlTablePartition>> getTablePartitionAsync(String accountName, String databaseName, String schemaName, String tableName, String partitionName);
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -840,10 +1072,9 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the partitions.
      * @param tableName The name of the table containing the partitions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final ListOperationCallback<USqlTablePartition> serviceCallback);
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
      *
@@ -880,10 +1111,27 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTablePartition> serviceCallback);
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the partitions.
+     * @param schemaName The name of the schema containing the partitions.
+     * @param tableName The name of the table containing the partitions.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlTablePartition&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTablePartition>>> listTablePartitionsAsync(final String accountName, final String databaseName, final String schemaName, final String tableName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -905,10 +1153,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the types.
      * @param schemaName The name of the schema containing the types.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlType> serviceCallback);
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
      *
@@ -943,10 +1190,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlType> serviceCallback);
+
+    /**
+     * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the types.
+     * @param schemaName The name of the schema containing the types.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlType&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlType>>> listTypesAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified table valued function from the Data Lake Analytics catalog.
@@ -970,10 +1233,20 @@ public interface Catalogs {
      * @param schemaName The name of the schema containing the table valued function.
      * @param tableValuedFunctionName The name of the tableValuedFunction.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlTableValuedFunction> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName, final ServiceCallback<USqlTableValuedFunction> serviceCallback);
+
+    /**
+     * Retrieves the specified table valued function from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table valued function.
+     * @param schemaName The name of the schema containing the table valued function.
+     * @param tableValuedFunctionName The name of the tableValuedFunction.
+     * @return the observable to the USqlTableValuedFunction object
+     */
+    Observable<ServiceResponse<USqlTableValuedFunction>> getTableValuedFunctionAsync(String accountName, String databaseName, String schemaName, String tableValuedFunctionName);
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -995,10 +1268,9 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the table valued functions.
      * @param schemaName The name of the schema containing the table valued functions.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
      *
@@ -1033,10 +1305,26 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
+
+    /**
+     * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the table valued functions.
+     * @param schemaName The name of the schema containing the table valued functions.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlTableValuedFunction&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableValuedFunction>>> listTableValuedFunctionsAsync(final String accountName, final String databaseName, final String schemaName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified assembly from the Data Lake Analytics catalog.
@@ -1058,10 +1346,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the assembly.
      * @param assemblyName The name of the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlAssembly> getAssemblyAsync(String accountName, String databaseName, String assemblyName, final ServiceCallback<USqlAssembly> serviceCallback);
+
+    /**
+     * Retrieves the specified assembly from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
+     * @param assemblyName The name of the assembly.
+     * @return the observable to the USqlAssembly object
+     */
+    Observable<ServiceResponse<USqlAssembly>> getAssemblyAsync(String accountName, String databaseName, String assemblyName);
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1081,10 +1378,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the assembly.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
      *
@@ -1117,10 +1413,25 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
+
+    /**
+     * Retrieves the list of assemblies from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the assembly.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlAssemblyClr&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlAssemblyClr>>> listAssembliesAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified schema from the Data Lake Analytics catalog.
@@ -1142,10 +1453,19 @@ public interface Catalogs {
      * @param databaseName The name of the database containing the schema.
      * @param schemaName The name of the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlSchema> getSchemaAsync(String accountName, String databaseName, String schemaName, final ServiceCallback<USqlSchema> serviceCallback);
+
+    /**
+     * Retrieves the specified schema from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
+     * @param schemaName The name of the schema.
+     * @return the observable to the USqlSchema object
+     */
+    Observable<ServiceResponse<USqlSchema>> getSchemaAsync(String accountName, String databaseName, String schemaName);
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1165,10 +1485,9 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database containing the schema.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final ListOperationCallback<USqlSchema> serviceCallback);
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
      *
@@ -1201,10 +1520,25 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlSchema> serviceCallback);
+
+    /**
+     * Retrieves the list of schemas from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database containing the schema.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlSchema&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlSchema>>> listSchemasAsync(final String accountName, final String databaseName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the specified database from the Data Lake Analytics catalog.
@@ -1224,10 +1558,18 @@ public interface Catalogs {
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param databaseName The name of the database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<USqlDatabase> getDatabaseAsync(String accountName, String databaseName, final ServiceCallback<USqlDatabase> serviceCallback);
+
+    /**
+     * Retrieves the specified database from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param databaseName The name of the database.
+     * @return the observable to the USqlDatabase object
+     */
+    Observable<ServiceResponse<USqlDatabase>> getDatabaseAsync(String accountName, String databaseName);
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1245,10 +1587,9 @@ public interface Catalogs {
      *
      * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final ListOperationCallback<USqlDatabase> serviceCallback);
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
      *
@@ -1279,10 +1620,24 @@ public interface Catalogs {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final ListOperationCallback<USqlDatabase> serviceCallback);
+
+    /**
+     * Retrieves the list of databases from the Data Lake Analytics catalog.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute catalog operations on.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the List&lt;USqlDatabase&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlDatabase>>> listDatabasesAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count);
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -1293,7 +1648,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlExternalDataSource&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlExternalDataSource>> listExternalDataSourcesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlExternalDataSource>> listExternalDataSourcesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of external data sources from the Data Lake Analytics catalog.
@@ -1301,10 +1656,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlExternalDataSource>> listExternalDataSourcesNextAsync(final String nextPageLink, final ServiceCall<List<USqlExternalDataSource>> serviceCall, final ListOperationCallback<USqlExternalDataSource> serviceCallback);
+
+    /**
+     * Retrieves the list of external data sources from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlExternalDataSource&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlExternalDataSource>>> listExternalDataSourcesNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -1315,7 +1677,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlCredential&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlCredential>> listCredentialsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlCredential>> listCredentialsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of credentials from the Data Lake Analytics catalog.
@@ -1323,10 +1685,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listCredentialsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlCredential> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlCredential>> listCredentialsNextAsync(final String nextPageLink, final ServiceCall<List<USqlCredential>> serviceCall, final ListOperationCallback<USqlCredential> serviceCallback);
+
+    /**
+     * Retrieves the list of credentials from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlCredential&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlCredential>>> listCredentialsNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -1337,7 +1706,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlProcedure&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlProcedure>> listProceduresNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlProcedure>> listProceduresNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of procedures from the Data Lake Analytics catalog.
@@ -1345,10 +1714,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listProceduresNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlProcedure>> listProceduresNextAsync(final String nextPageLink, final ServiceCall<List<USqlProcedure>> serviceCall, final ListOperationCallback<USqlProcedure> serviceCallback);
+
+    /**
+     * Retrieves the list of procedures from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlProcedure&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlProcedure>>> listProceduresNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -1359,7 +1735,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTable&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlTable>> listTablesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTable>> listTablesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of tables from the Data Lake Analytics catalog.
@@ -1367,10 +1743,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTable> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTable>> listTablesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTable>> serviceCall, final ListOperationCallback<USqlTable> serviceCallback);
+
+    /**
+     * Retrieves the list of tables from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlTable&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTable>>> listTablesNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -1381,7 +1764,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlTableType>> listTableTypesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableType>> listTableTypesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table types from the Data Lake Analytics catalog.
@@ -1389,10 +1772,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableTypesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableType>> listTableTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableType>> serviceCall, final ListOperationCallback<USqlTableType> serviceCallback);
+
+    /**
+     * Retrieves the list of table types from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlTableType&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableType>>> listTableTypesNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -1403,7 +1793,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlView&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlView>> listViewsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlView>> listViewsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of views from the Data Lake Analytics catalog.
@@ -1411,10 +1801,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listViewsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlView> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlView>> listViewsNextAsync(final String nextPageLink, final ServiceCall<List<USqlView>> serviceCall, final ListOperationCallback<USqlView> serviceCallback);
+
+    /**
+     * Retrieves the list of views from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlView&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlView>>> listViewsNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -1425,7 +1822,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableStatistics&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlTableStatistics>> listTableStatisticsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableStatistics>> listTableStatisticsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table statistics from the Data Lake Analytics catalog.
@@ -1433,10 +1830,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableStatistics>> listTableStatisticsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableStatistics>> serviceCall, final ListOperationCallback<USqlTableStatistics> serviceCallback);
+
+    /**
+     * Retrieves the list of table statistics from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlTableStatistics&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableStatistics>>> listTableStatisticsNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1447,7 +1851,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTablePartition&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlTablePartition>> listTablePartitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTablePartition>> listTablePartitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table partitions from the Data Lake Analytics catalog.
@@ -1455,10 +1859,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTablePartition>> listTablePartitionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTablePartition>> serviceCall, final ListOperationCallback<USqlTablePartition> serviceCallback);
+
+    /**
+     * Retrieves the list of table partitions from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlTablePartition&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTablePartition>>> listTablePartitionsNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -1469,7 +1880,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlType&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlType>> listTypesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlType>> listTypesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
@@ -1477,10 +1888,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTypesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlType> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlType>> listTypesNextAsync(final String nextPageLink, final ServiceCall<List<USqlType>> serviceCall, final ListOperationCallback<USqlType> serviceCallback);
+
+    /**
+     * Retrieves the list of types within the specified database and schema from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlType&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlType>>> listTypesNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -1491,7 +1909,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlTableValuedFunction&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlTableValuedFunction>> listTableValuedFunctionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlTableValuedFunction>> listTableValuedFunctionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
@@ -1499,10 +1917,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlTableValuedFunction>> listTableValuedFunctionsNextAsync(final String nextPageLink, final ServiceCall<List<USqlTableValuedFunction>> serviceCall, final ListOperationCallback<USqlTableValuedFunction> serviceCallback);
+
+    /**
+     * Retrieves the list of table valued functions from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlTableValuedFunction&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlTableValuedFunction>>> listTableValuedFunctionsNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1513,7 +1938,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlAssemblyClr&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlAssemblyClr>> listAssembliesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlAssemblyClr>> listAssembliesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of assemblies from the Data Lake Analytics catalog.
@@ -1521,10 +1946,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAssembliesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlAssemblyClr>> listAssembliesNextAsync(final String nextPageLink, final ServiceCall<List<USqlAssemblyClr>> serviceCall, final ListOperationCallback<USqlAssemblyClr> serviceCallback);
+
+    /**
+     * Retrieves the list of assemblies from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlAssemblyClr&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlAssemblyClr>>> listAssembliesNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1535,7 +1967,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlSchema&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlSchema>> listSchemasNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlSchema>> listSchemasNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of schemas from the Data Lake Analytics catalog.
@@ -1543,10 +1975,17 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSchemasNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlSchema> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlSchema>> listSchemasNextAsync(final String nextPageLink, final ServiceCall<List<USqlSchema>> serviceCall, final ListOperationCallback<USqlSchema> serviceCallback);
+
+    /**
+     * Retrieves the list of schemas from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlSchema&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlSchema>>> listSchemasNextAsync(final String nextPageLink);
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1557,7 +1996,7 @@ public interface Catalogs {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;USqlDatabase&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<USqlDatabase>> listDatabasesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<USqlDatabase>> listDatabasesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Retrieves the list of databases from the Data Lake Analytics catalog.
@@ -1565,9 +2004,16 @@ public interface Catalogs {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDatabasesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<USqlDatabase>> listDatabasesNextAsync(final String nextPageLink, final ServiceCall<List<USqlDatabase>> serviceCall, final ListOperationCallback<USqlDatabase> serviceCallback);
+
+    /**
+     * Retrieves the list of databases from the Data Lake Analytics catalog.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;USqlDatabase&gt; object
+     */
+    Observable<ServiceResponse<Page<USqlDatabase>>> listDatabasesNextAsync(final String nextPageLink);
 
 }

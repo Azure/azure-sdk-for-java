@@ -30,7 +30,7 @@ final class SubscriptionImpl extends
     private final SubscriptionsInner client;
 
     SubscriptionImpl(SubscriptionInner innerModel, final SubscriptionsInner client) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
         this.client = client;
     }
 
@@ -62,7 +62,7 @@ final class SubscriptionImpl extends
                 return new LocationImpl(locationInner);
             }
         };
-        return converter.convert(toPagedList(client.listLocations(this.subscriptionId()).getBody()));
+        return converter.convert(toPagedList(client.listLocations(this.subscriptionId())));
     }
 
     private PagedList<LocationInner> toPagedList(List<LocationInner> list) {

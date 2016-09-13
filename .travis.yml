@@ -1,10 +1,8 @@
 language: java
 sudo: false
-
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 script:
-  - mvn install -DskipTests=true
-  - mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
-  - mvn package javadoc:aggregate -DskipTests=true
+- mvn install -DskipTests=true
+- mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
+- mvn package javadoc:aggregate -DskipTests=true

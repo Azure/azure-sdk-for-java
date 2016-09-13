@@ -126,7 +126,11 @@ public class PoolDisableAutoScaleHeaders {
      * @return the PoolDisableAutoScaleHeaders object itself.
      */
     public PoolDisableAutoScaleHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

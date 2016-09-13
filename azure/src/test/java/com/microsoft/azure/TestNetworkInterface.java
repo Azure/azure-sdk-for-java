@@ -9,6 +9,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -30,7 +31,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
         resource =  resource.update()
                 .withoutIpForwarding()
-                .updateIpConfiguration("primary-nic-config") // Updating the primary ip configuration
+                .updateIpConfiguration("primary") // Updating the primary ip configuration
                     .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIpAddressDynamic()
                     .withoutPublicIpAddress()      // Equivalent to ..update().withoutPrimaryPublicIpAddress()
                     .parent()
@@ -51,18 +52,30 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
                 .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
+                .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
+                .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
                 .append("\n\tDNS server IPs: ");
 
         // Output dns servers
         for (String dnsServerIp : resource.dnsServers()) {
             info.append("\n\t\t").append(dnsServerIp);
         }
+
         info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
-                .append("\n\tIs Primary:").append(resource.isPrimary())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.primarySubnetId());
+                .append("\n\tSubnet Id:").append(resource.primarySubnetId())
+                .append("\n\tIP configurations: ");
+
+        // Output IP configs
+        for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
+            info.append("\n\t\tName: ").append(ipConfig.name())
+                .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
+                .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
+                .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());
+        }
 
         System.out.println(info.toString());
     }

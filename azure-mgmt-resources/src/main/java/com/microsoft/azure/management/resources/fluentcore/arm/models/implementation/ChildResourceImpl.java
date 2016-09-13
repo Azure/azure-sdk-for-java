@@ -20,10 +20,8 @@ public abstract class ChildResourceImpl<InnerT, ParentImplT>
 
     private final ParentImplT parent;
 
-    protected ChildResourceImpl(String name,
-            InnerT innerObject,
-            ParentImplT parent) {
-        super(name, innerObject);
+    protected ChildResourceImpl(InnerT innerObject, ParentImplT parent) {
+        super(innerObject);
         this.parent = parent;
     }
 

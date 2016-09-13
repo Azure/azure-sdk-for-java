@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ExpressRouteCircuitSku;
+import com.microsoft.azure.management.network.ServiceProviderProvisioningState;
 import java.util.List;
 import com.microsoft.azure.management.network.ExpressRouteCircuitServiceProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,6 +27,12 @@ public class ExpressRouteCircuitInner extends Resource {
     private ExpressRouteCircuitSku sku;
 
     /**
+     * allow classic operations.
+     */
+    @JsonProperty(value = "properties.allowClassicOperations")
+    private Boolean allowClassicOperations;
+
+    /**
      * Gets or sets CircuitProvisioningState state of the resource.
      */
     @JsonProperty(value = "properties.circuitProvisioningState")
@@ -37,7 +44,7 @@ public class ExpressRouteCircuitInner extends Resource {
      * 'Provisioned', 'Deprovisioning'.
      */
     @JsonProperty(value = "properties.serviceProviderProvisioningState")
-    private String serviceProviderProvisioningState;
+    private ServiceProviderProvisioningState serviceProviderProvisioningState;
 
     /**
      * Gets or sets list of authorizations.
@@ -70,11 +77,17 @@ public class ExpressRouteCircuitInner extends Resource {
     private ExpressRouteCircuitServiceProviderProperties serviceProviderProperties;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
+
+    /**
+     * Gets or sets the GatewayManager Etag.
+     */
+    @JsonProperty(value = "properties.gatewayManagerEtag")
+    private String gatewayManagerEtag;
 
     /**
      * Gets a unique read-only string that changes whenever the resource is
@@ -103,6 +116,26 @@ public class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
+     * Get the allowClassicOperations value.
+     *
+     * @return the allowClassicOperations value
+     */
+    public Boolean allowClassicOperations() {
+        return this.allowClassicOperations;
+    }
+
+    /**
+     * Set the allowClassicOperations value.
+     *
+     * @param allowClassicOperations the allowClassicOperations value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withAllowClassicOperations(Boolean allowClassicOperations) {
+        this.allowClassicOperations = allowClassicOperations;
+        return this;
+    }
+
+    /**
      * Get the circuitProvisioningState value.
      *
      * @return the circuitProvisioningState value
@@ -127,7 +160,7 @@ public class ExpressRouteCircuitInner extends Resource {
      *
      * @return the serviceProviderProvisioningState value
      */
-    public String serviceProviderProvisioningState() {
+    public ServiceProviderProvisioningState serviceProviderProvisioningState() {
         return this.serviceProviderProvisioningState;
     }
 
@@ -137,7 +170,7 @@ public class ExpressRouteCircuitInner extends Resource {
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set
      * @return the ExpressRouteCircuitInner object itself.
      */
-    public ExpressRouteCircuitInner withServiceProviderProvisioningState(String serviceProviderProvisioningState) {
+    public ExpressRouteCircuitInner withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
         this.serviceProviderProvisioningState = serviceProviderProvisioningState;
         return this;
     }
@@ -259,6 +292,26 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public ExpressRouteCircuitInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the gatewayManagerEtag value.
+     *
+     * @return the gatewayManagerEtag value
+     */
+    public String gatewayManagerEtag() {
+        return this.gatewayManagerEtag;
+    }
+
+    /**
+     * Set the gatewayManagerEtag value.
+     *
+     * @param gatewayManagerEtag the gatewayManagerEtag value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withGatewayManagerEtag(String gatewayManagerEtag) {
+        this.gatewayManagerEtag = gatewayManagerEtag;
         return this;
     }
 

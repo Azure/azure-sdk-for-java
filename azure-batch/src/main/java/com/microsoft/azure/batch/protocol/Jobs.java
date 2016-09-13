@@ -57,7 +57,8 @@ import java.io.IOException;
  */
 public interface Jobs {
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -67,7 +68,8 @@ public interface Jobs {
     ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> getAllJobsLifetimeStatistics() throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -75,7 +77,8 @@ public interface Jobs {
      */
     ServiceCall getAllJobsLifetimeStatisticsAsync(final ServiceCallback<JobStatistics> serviceCallback) throws IllegalArgumentException;
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -86,7 +89,8 @@ public interface Jobs {
     ServiceResponseWithHeaders<JobStatistics, JobGetAllJobsLifetimeStatisticsHeaders> getAllJobsLifetimeStatistics(JobGetAllJobsLifetimeStatisticsOptions jobGetAllJobsLifetimeStatisticsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets lifetime summary statistics for all of the jobs in the specified account. Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the jobs in the specified account.
+     * Statistics are aggregated across all jobs that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param jobGetAllJobsLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -389,7 +393,7 @@ public interface Jobs {
      * Terminates the specified job, marking it as completed.
      *
      * @param jobId The id of the job to terminate.
-     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
+     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'. 
      * @param jobTerminateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -402,7 +406,7 @@ public interface Jobs {
      * Terminates the specified job, marking it as completed.
      *
      * @param jobId The id of the job to terminate.
-     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
+     * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'. 
      * @param jobTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

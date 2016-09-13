@@ -30,7 +30,7 @@ public abstract class GroupableResourcesImpl<
         InnerT extends Resource,
         InnerCollectionT,
         ManagerT extends ManagerBase>
-    extends CreatableWrappersImpl<T, ImplT, InnerT>
+    extends CreatableResourcesImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T> {
@@ -48,7 +48,7 @@ public abstract class GroupableResourcesImpl<
     public abstract T getByGroup(String groupName, String name) throws CloudException, IOException;
 
     @Override
-    public final T getById(String id) throws CloudException, IOException {
+    public T getById(String id) throws CloudException, IOException {
         return this.getByGroup(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));

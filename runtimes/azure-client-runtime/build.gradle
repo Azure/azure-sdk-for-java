@@ -10,17 +10,17 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 
-version = '1.0.0-beta2'
+version = '1.0.0-SNAPSHOT'
 
 checkstyle {
     toolVersion = "6.18"
-    configFile = new File("$rootDir/ClientRuntimes/Java/build-tools/src/main/resources/checkstyle.xml")
-    configProperties = [samedir: "$rootDir/ClientRuntimes/Java/build-tools/src/main/resources"]
-    reportsDir = new File("$rootDir/ClientRuntimes/Java/build-tools/reports")
+    configFile = new File("$rootDir/src/client/Java/build-tools/src/main/resources/checkstyle.xml")
+    configProperties = [samedir: "$rootDir/src/client/Java/build-tools/src/main/resources"]
+    reportsDir = new File("$rootDir/src/client/Java/build-tools/reports")
 }
 
 dependencies {
-    compile 'com.microsoft.rest:client-runtime:1.0.0-beta2'
+    compile 'com.microsoft.rest:client-runtime:1.0.0-SNAPSHOT'
     testCompile 'junit:junit:4.12'
     testCompile 'junit:junit-dep:4.11'
     deployerJars "org.apache.maven.wagon:wagon-ftp:2.10"
@@ -90,7 +90,7 @@ artifacts {
 
 test {
     reports.getHtml()
-    reports.html.destination = file("${projectDir}/../../../TestResults/JavaAzureRuntime")
+    reports.html.destination = file("$rootDir/TestResults/JavaAzureRuntime")
 }
 
 tasks.compileJava.dependsOn 'clean'

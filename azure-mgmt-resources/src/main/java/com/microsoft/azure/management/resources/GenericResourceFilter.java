@@ -14,24 +14,19 @@ package com.microsoft.azure.management.resources;
  */
 public class GenericResourceFilter {
     /**
-     * Gets or sets the resource type.
+     * The resource type.
      */
     private String resourceType;
 
     /**
-     * Gets or sets the tag name.
+     * The tag name.
      */
     private String tagname;
 
     /**
-     * Gets or sets the tag value.
+     * The tag value.
      */
     private String tagvalue;
-
-    /**
-     * Gets or sets the expand value.
-     */
-    private String expand;
 
     /**
      * Get the resourceType value.
@@ -90,26 +85,6 @@ public class GenericResourceFilter {
      */
     public GenericResourceFilter withTagvalue(String tagvalue) {
         this.tagvalue = tagvalue;
-        return this;
-    }
-
-    /**
-     * Get the expand value.
-     *
-     * @return the expand value
-     */
-    public String expand() {
-        return this.expand;
-    }
-
-    /**
-     * Set the expand value.
-     *
-     * @param expand the expand value to set
-     * @return the GenericResourceFilter object itself.
-     */
-    public GenericResourceFilter withExpand(String expand) {
-        this.expand = expand;
         return this;
     }
 

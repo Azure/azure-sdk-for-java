@@ -9,22 +9,23 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetNetworkConfigurationInner;
 
 /**
  * Describes a virtual machine scale set network profile.
  */
 public class VirtualMachineScaleSetNetworkProfile {
     /**
-     * Gets or sets the list of network configurations.
+     * the list of network configurations.
      */
-    private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
+    private List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations;
 
     /**
      * Get the networkInterfaceConfigurations value.
      *
      * @return the networkInterfaceConfigurations value
      */
-    public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
+    public List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations() {
         return this.networkInterfaceConfigurations;
     }
 
@@ -34,7 +35,7 @@ public class VirtualMachineScaleSetNetworkProfile {
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

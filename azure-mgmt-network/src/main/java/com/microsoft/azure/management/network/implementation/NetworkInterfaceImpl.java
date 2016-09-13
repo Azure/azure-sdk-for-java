@@ -8,33 +8,33 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
 class NetworkInterfaceImpl
-        extends GroupableResourceImpl<
+        extends GroupableParentResourceImpl<
             NetworkInterface,
             NetworkInterfaceInner,
             NetworkInterfaceImpl,
@@ -44,15 +44,17 @@ class NetworkInterfaceImpl
         NetworkInterface.Definition,
         NetworkInterface.Update {
     // Clients
-    private final NetworkInterfacesInner client;
+    private final NetworkInterfacesInner innerCollection;
     // the name of the network interface
     private final String nicName;
     // used to generate unique name for any dependency resources
     protected final ResourceNamer namer;
     // reference to the primary ip configuration
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
-    // list of references to all ip configuration
-    private List<NicIpConfiguration> nicIpConfigurations;
+
+    // references to all ip configuration
+    private Map<String, NicIpConfiguration> nicIpConfigurations;
+
     // unique key of a creatable network security group to be associated with the network interface
     private String creatableNetworkSecurityGroupKey;
     // reference to an network security group to be associated with the network interface
@@ -67,32 +69,26 @@ class NetworkInterfaceImpl
                          final NetworkInterfacesInner client,
                          final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
-        this.client = client;
+        this.innerCollection = client;
         this.nicName = name;
         this.namer = new ResourceNamer(this.nicName);
-        initializeNicIpConfigurations();
+        initializeChildrenFromInner();
     }
 
     // Verbs
 
     @Override
     public NetworkInterface refresh() throws Exception {
-        ServiceResponse<NetworkInterfaceInner> response =
-                this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        NetworkInterfaceInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
         clearCachedRelatedResources();
-        initializeNicIpConfigurations();
+        initializeChildrenFromInner();
         return this;
     }
 
     @Override
-    public NetworkInterfaceImpl apply() throws Exception {
-        return this.create();
-    }
-
-    @Override
-    public ServiceCall applyAsync(ServiceCallback<NetworkInterface> callback) {
-        return createAsync(callback);
+    public Observable<NetworkInterface> applyAsync() {
+        return createAsync();
     }
 
     // Setters (fluent)
@@ -191,17 +187,18 @@ class NetworkInterfaceImpl
 
     @Override
     public NicIpConfigurationImpl updateIpConfiguration(String name) {
-        for (NicIpConfiguration nicIpConfiguration : this.nicIpConfigurations) {
-            if (name.compareToIgnoreCase(nicIpConfiguration.name()) == 0) {
-                return (NicIpConfigurationImpl) nicIpConfiguration;
-            }
-        }
-        throw new RuntimeException("IP configuration '" + name + "' not found");
+        return (NicIpConfigurationImpl) this.nicIpConfigurations.get(name);
     }
 
     @Override
     public NetworkInterfaceImpl withIpForwarding() {
         this.inner().withEnableIPForwarding(true);
+        return this;
+    }
+
+    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.    
+    public NetworkInterfaceImpl withoutIpConfiguration(String name) {
+        this.nicIpConfigurations.remove(name);
         return this;
     }
 
@@ -249,11 +246,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public boolean isPrimary() {
-        return Utils.toPrimitiveBoolean(this.inner().primary());
-    }
-
-    @Override
     public String macAddress() {
         return this.inner().macAddress();
     }
@@ -261,6 +253,16 @@ class NetworkInterfaceImpl
     @Override
     public String internalDnsNameLabel() {
         return this.inner().dnsSettings().internalDnsNameLabel();
+    }
+
+    @Override
+    public String internalDomainNameSuffix() {
+        return this.inner().dnsSettings().internalDomainNameSuffix();
+    }
+
+    @Override
+    public List<String> appliedDnsServers() {
+        return Collections.unmodifiableList(this.inner().dnsSettings().appliedDnsServers());
     }
 
     @Override
@@ -296,17 +298,17 @@ class NetworkInterfaceImpl
 
     @Override
     public String primaryPrivateIp() {
-        return this.primaryIpConfiguration().privateIp();
+        return this.primaryIpConfiguration().privateIpAddress();
     }
 
     @Override
-    public String primaryPrivateIpAllocationMethod() {
+    public IPAllocationMethod primaryPrivateIpAllocationMethod() {
         return this.primaryIpConfiguration().privateIpAllocationMethod();
     }
 
     @Override
-    public List<NicIpConfiguration> ipConfigurations() {
-        return Collections.unmodifiableList(this.nicIpConfigurations);
+    public Map<String, NicIpConfiguration> ipConfigurations() {
+        return Collections.unmodifiableMap(this.nicIpConfigurations);
     }
 
     @Override
@@ -329,75 +331,25 @@ class NetworkInterfaceImpl
         return this.networkSecurityGroup;
     }
 
-    /**************************************************.
-     * CreatableImpl::createResource
-     **************************************************/
-
-    @Override
-    protected void createResource() throws Exception {
-        NetworkSecurityGroup networkSecurityGroup = null;
-        if (creatableNetworkSecurityGroupKey != null) {
-            networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
-        } else if (existingNetworkSecurityGroupToAssociate != null) {
-            networkSecurityGroup = existingNetworkSecurityGroupToAssociate;
-        }
-
-        if (networkSecurityGroup != null) {
-            this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
-        }
-
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        ServiceResponse<NetworkInterfaceInner> response = this.client.createOrUpdate(this.resourceGroupName(),
-                this.nicName,
-                this.inner());
-        this.setInner(response.getBody());
-        clearCachedRelatedResources();
-        initializeNicIpConfigurations();
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations);
-        return this.client.createOrUpdateAsync(this.resourceGroupName(),
-                this.nicName,
-                this.inner(),
-                Utils.fromVoidCallback(this, new ServiceCallback<Void>() {
-                    @Override
-                    public void failure(Throwable t) {
-                        callback.failure(t);
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<Void> result) {
-                        clearCachedRelatedResources();
-                        initializeNicIpConfigurations();
-                        callback.success(result);
-                    }
-                }));
-    }
-
-    /**************************************************.
-     * Helper methods
-     **************************************************/
-
     /**
      * @return the primary IP configuration of the network interface
      */
-    private NicIpConfigurationImpl primaryIpConfiguration() {
+    public NicIpConfigurationImpl primaryIpConfiguration() {
         if (this.nicPrimaryIpConfiguration != null) {
             return this.nicPrimaryIpConfiguration;
         }
 
         if (isInCreateMode()) {
-            this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary-nic-config");
+            this.nicPrimaryIpConfiguration = prepareNewNicIpConfiguration("primary");
             withIpConfiguration(this.nicPrimaryIpConfiguration);
         } else {
-            // Currently Azure supports only one IP configuration and that is the primary
+            // TODO: Currently Azure supports only one IP configuration and that is the primary
             // hence we pick the first one here.
             // when Azure support multiple IP configurations then there will be a flag in
             // the IPConfiguration or a property in the network interface to identify the
             // primary so below logic will be changed.
-            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) this.nicIpConfigurations.get(0);
+            this.nicPrimaryIpConfiguration = (NicIpConfigurationImpl) new ArrayList<NicIpConfiguration>(
+                    this.nicIpConfigurations.values()).get(0);
         }
         return this.nicPrimaryIpConfiguration;
     }
@@ -412,27 +364,20 @@ class NetworkInterfaceImpl
         return this.inner().dnsSettings().dnsServers();
     }
 
-    /**
-     * Initializes the list of {@link NicIpConfiguration} that wraps {@link NetworkInterfaceInner#ipConfigurations()}.
-     */
-    private void initializeNicIpConfigurations() {
-        if (this.inner().ipConfigurations() == null) {
-            this.inner().withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
-        }
-
-        this.nicIpConfigurations = new ArrayList<>();
-        for (NetworkInterfaceIPConfiguration ipConfig : this.inner().ipConfigurations()) {
-            NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(ipConfig.name(),
-                    ipConfig,
-                    this,
-                    super.myManager,
-                    false);
-            this.nicIpConfigurations.add(nicIpConfiguration);
+    @Override
+    protected void initializeChildrenFromInner() {
+        this.nicIpConfigurations = new TreeMap<>();
+        List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
+        if (inners != null) {
+            for (NetworkInterfaceIPConfigurationInner inner : inners) {
+                NicIpConfigurationImpl  nicIpConfiguration = new NicIpConfigurationImpl(inner, this, super.myManager, false);
+                this.nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
+            }
         }
     }
 
     /**
-     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfiguration}.
+     * Gets a new IP configuration child resource {@link NicIpConfiguration} wrapping {@link NetworkInterfaceIPConfigurationInner}.
      *
      * @param name the name for the new ip configuration
      * @return {@link NicIpConfiguration}
@@ -454,12 +399,11 @@ class NetworkInterfaceImpl
     }
 
     NetworkInterfaceImpl withIpConfiguration(NicIpConfigurationImpl nicIpConfiguration) {
-        this.nicIpConfigurations.add(nicIpConfiguration);
-        this.inner().ipConfigurations().add(nicIpConfiguration.inner());
+        this.nicIpConfigurations.put(nicIpConfiguration.name(), nicIpConfiguration);
         return this;
     }
 
-    void addToCreatableDependencies(Creatable<?> creatableResource) {
+    void addToCreatableDependencies(Creatable<? extends Resource> creatableResource) {
         super.addCreatableDependency(creatableResource);
     }
 
@@ -468,6 +412,36 @@ class NetworkInterfaceImpl
     }
 
     Creatable<ResourceGroup> newGroup() {
-        return this.newGroup;
+        return this.creatableGroup;
+    }
+
+    @Override
+    protected Observable<NetworkInterfaceInner> createInner() {
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
+    protected void afterCreating() {
+        clearCachedRelatedResources();
+    }
+
+    @Override
+    protected void beforeCreating() {
+        NetworkSecurityGroup networkSecurityGroup = null;
+        if (creatableNetworkSecurityGroupKey != null) {
+            networkSecurityGroup = (NetworkSecurityGroup) this.createdResource(creatableNetworkSecurityGroupKey);
+        } else if (existingNetworkSecurityGroupToAssociate != null) {
+            networkSecurityGroup = existingNetworkSecurityGroupToAssociate;
+        }
+
+        // Associate an NSG if needed
+        if (networkSecurityGroup != null) {
+            this.inner().withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
+        }
+
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
+        
+        // Reset and update IP configs
+        this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
     }
 }

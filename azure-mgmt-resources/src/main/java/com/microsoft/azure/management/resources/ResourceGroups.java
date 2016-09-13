@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -20,8 +21,9 @@ import java.io.IOException;
 public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,
-        SupportsCreating<ResourceGroup.DefinitionBlank>,
-        SupportsDeleting {
+        SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
+        SupportsDeleting,
+        SupportsBatchCreation<ResourceGroup> {
     /**
      * Checks whether resource group exists.
      *

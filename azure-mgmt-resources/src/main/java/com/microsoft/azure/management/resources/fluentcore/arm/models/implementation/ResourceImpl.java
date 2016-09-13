@@ -8,10 +8,14 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -25,18 +29,15 @@ import java.util.TreeMap;
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
 public abstract class ResourceImpl<
-        FluentModelT,
+        FluentModelT extends Resource,
         InnerModelT extends com.microsoft.azure.Resource,
         FluentModelImplT extends ResourceImpl<FluentModelT, InnerModelT, FluentModelImplT>>
     extends
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     implements
         Resource {
-
-
-    protected ResourceImpl(String key, InnerModelT innerObject) {
-        super(key, innerObject);
-
+    protected ResourceImpl(String name, InnerModelT innerObject) {
+        super(name, innerObject);
         // Initialize tags
         if (innerObject.getTags() == null) {
             innerObject.withTags(new TreeMap<String, String>());
@@ -61,7 +62,7 @@ public abstract class ResourceImpl<
     public Map<String, String> tags() {
         Map<String, String> tags = this.inner().getTags();
         if (tags == null) {
-            tags = new TreeMap<String, String>();
+            tags = new TreeMap<>();
         }
         return Collections.unmodifiableMap(tags);
     }
@@ -79,7 +80,7 @@ public abstract class ResourceImpl<
     @Override
     public String name() {
         if (this.inner().name() == null) {
-            return this.key(); // Not yet created, so use the key
+            return super.name();
         } else {
             return this.inner().name();
         }
@@ -152,5 +153,28 @@ public abstract class ResourceImpl<
      */
     protected boolean isInCreateMode() {
         return this.inner().id() == null;
+    }
+
+    protected <InnerT> List<InnerT> innersFromWrappers(
+            Collection<? extends Wrapper<InnerT>> wrappers) {
+        return innersFromWrappers(wrappers, null);
+    }
+
+    protected <InnerT> List<InnerT> innersFromWrappers(
+            Collection<? extends Wrapper<InnerT>> wrappers,
+            List<InnerT> inners) {
+        if (wrappers == null || wrappers.size() == 0) {
+            return inners;
+        } else {
+            if (inners == null) {
+                inners = new ArrayList<>();
+            }
+
+            for (Wrapper<InnerT> wrapper : wrappers) {
+                inners.add(wrapper.inner());
+            }
+
+            return inners;
+        }
     }
 }

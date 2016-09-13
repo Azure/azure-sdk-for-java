@@ -17,19 +17,19 @@ import com.microsoft.azure.SubResource;
  */
 public class VirtualMachineImageResourceInner extends SubResource {
     /**
-     * Gets or sets the name of the resource.
+     * the name of the resource.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the location of the resource.
+     * the location of the resource.
      */
     @JsonProperty(required = true)
     private String location;
 
     /**
-     * Gets or sets the tags attached to the resource.
+     * the tags attached to the resource.
      */
     private Map<String, String> tags;
 

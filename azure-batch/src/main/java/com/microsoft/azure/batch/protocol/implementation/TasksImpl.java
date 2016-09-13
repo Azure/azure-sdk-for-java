@@ -33,6 +33,8 @@ import com.microsoft.azure.batch.protocol.models.TaskListNextOptions;
 import com.microsoft.azure.batch.protocol.models.TaskListOptions;
 import com.microsoft.azure.batch.protocol.models.TaskListSubtasksHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskListSubtasksOptions;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateHeaders;
+import com.microsoft.azure.batch.protocol.models.TaskReactivateOptions;
 import com.microsoft.azure.batch.protocol.models.TaskTerminateHeaders;
 import com.microsoft.azure.batch.protocol.models.TaskTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.TaskUpdateHeaders;
@@ -121,6 +123,10 @@ public final class TasksImpl implements Tasks {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("jobs/{jobId}/tasks/{taskId}/terminate")
         Call<ResponseBody> terminate(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
+        @POST("jobs/{jobId}/tasks/{taskId}/reactivate")
+        Call<ResponseBody> reactivate(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET
@@ -2114,6 +2120,279 @@ public final class TasksImpl implements Tasks {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, TaskTerminateHeaders.class);
+    }
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (taskId == null) {
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final TaskReactivateOptions taskReactivateOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        String ifMatch = null;
+        String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.reactivate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return reactivateDelegate(call.execute());
+    }
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final TaskReactivateOptions taskReactivateOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        String ifMatch = null;
+        String ifNoneMatch = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.reactivate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(reactivateDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+        if (jobId == null) {
+            throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
+        }
+        if (taskId == null) {
+            throw new IllegalArgumentException("Parameter taskId is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(taskReactivateOptions);
+        Integer timeout = null;
+        if (taskReactivateOptions != null) {
+            timeout = taskReactivateOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (taskReactivateOptions != null) {
+            clientRequestId = taskReactivateOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskReactivateOptions != null) {
+            returnClientRequestId = taskReactivateOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskReactivateOptions != null) {
+            ocpDate = taskReactivateOptions.ocpDate();
+        }
+        String ifMatch = null;
+        if (taskReactivateOptions != null) {
+            ifMatch = taskReactivateOptions.ifMatch();
+        }
+        String ifNoneMatch = null;
+        if (taskReactivateOptions != null) {
+            ifNoneMatch = taskReactivateOptions.ifNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskReactivateOptions != null) {
+            ifModifiedSince = taskReactivateOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskReactivateOptions != null) {
+            ifUnmodifiedSince = taskReactivateOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.reactivate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return reactivateDelegate(call.execute());
+    }
+
+    /**
+     * Reactivates the specified task.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     *
+     * @param jobId The id of the job containing the task.
+     * @param taskId The id of the task to reactivate.
+     * @param taskReactivateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(taskReactivateOptions, serviceCallback);
+        Integer timeout = null;
+        if (taskReactivateOptions != null) {
+            timeout = taskReactivateOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (taskReactivateOptions != null) {
+            clientRequestId = taskReactivateOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (taskReactivateOptions != null) {
+            returnClientRequestId = taskReactivateOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (taskReactivateOptions != null) {
+            ocpDate = taskReactivateOptions.ocpDate();
+        }
+        String ifMatch = null;
+        if (taskReactivateOptions != null) {
+            ifMatch = taskReactivateOptions.ifMatch();
+        }
+        String ifNoneMatch = null;
+        if (taskReactivateOptions != null) {
+            ifNoneMatch = taskReactivateOptions.ifNoneMatch();
+        }
+        DateTime ifModifiedSince = null;
+        if (taskReactivateOptions != null) {
+            ifModifiedSince = taskReactivateOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (taskReactivateOptions != null) {
+            ifUnmodifiedSince = taskReactivateOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.reactivate(jobId, taskId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(reactivateDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
+    }
+
+    private ServiceResponseWithHeaders<Void, TaskReactivateHeaders> reactivateDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, BatchErrorException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(BatchErrorException.class)
+                .buildWithHeaders(response, TaskReactivateHeaders.class);
     }
 
     /**

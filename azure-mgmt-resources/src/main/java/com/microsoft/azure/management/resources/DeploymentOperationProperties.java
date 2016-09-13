@@ -15,42 +15,42 @@ import org.joda.time.DateTime;
  */
 public class DeploymentOperationProperties {
     /**
-     * Gets or sets the state of the provisioning.
+     * The state of the provisioning.
      */
     private String provisioningState;
 
     /**
-     * Gets or sets the date and time of the operation.
+     * The date and time of the operation.
      */
     private DateTime timestamp;
 
     /**
-     * Gets or sets deployment operation service request id.
+     * Deployment operation service request id.
      */
     private String serviceRequestId;
 
     /**
-     * Gets or sets operation status code.
+     * Operation status code.
      */
     private String statusCode;
 
     /**
-     * Gets or sets operation status message.
+     * Operation status message.
      */
     private Object statusMessage;
 
     /**
-     * Gets or sets the target resource.
+     * The target resource.
      */
     private TargetResource targetResource;
 
     /**
-     * Gets or sets the HTTP request message.
+     * The HTTP request message.
      */
     private HttpMessage request;
 
     /**
-     * Gets or sets the HTTP response message.
+     * The HTTP response message.
      */
     private HttpMessage response;
 

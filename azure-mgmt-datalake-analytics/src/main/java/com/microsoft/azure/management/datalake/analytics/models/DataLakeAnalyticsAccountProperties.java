@@ -39,7 +39,7 @@ public class DataLakeAnalyticsAccountProperties {
     private String defaultDataLakeStoreAccount;
 
     /**
-     * the maximum supported degree of parallelism for this acocunt.
+     * the maximum supported degree of parallelism for this account.
      */
     private Integer maxDegreeOfParallelism;
 

@@ -18,32 +18,32 @@ import com.microsoft.azure.Resource;
  */
 public class GenericResourceInner extends Resource {
     /**
-     * Gets or sets the plan of the resource.
+     * The plan of the resource.
      */
     private Plan plan;
 
     /**
-     * Gets or sets the resource properties.
+     * The resource properties.
      */
     private Object properties;
 
     /**
-     * Gets or sets the kind of the resource.
+     * The kind of the resource.
      */
     private String kind;
 
     /**
-     * Gets or sets the managedBy property of the resource.
+     * Id of the resource that manages this resource.
      */
     private String managedBy;
 
     /**
-     * Gets or sets the sku of the resource.
+     * The sku of the resource.
      */
     private Sku sku;
 
     /**
-     * Gets or sets the identity of the resource.
+     * The identity of the resource.
      */
     private Identity identity;
 

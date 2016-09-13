@@ -25,7 +25,7 @@ final class DeploymentOperationImpl extends
     private final DeploymentOperationsInner client;
 
     DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
         this.client = client;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.deploymentName = ResourceUtils.extractFromResourceId(innerModel.id(), "deployments");
@@ -78,7 +78,7 @@ final class DeploymentOperationImpl extends
 
     @Override
     public DeploymentOperation refresh() throws Exception {
-        this.setInner(client.get(resourceGroupName, deploymentName, operationId()).getBody());
+        this.setInner(client.get(resourceGroupName, deploymentName, operationId()));
         return this;
     }
 }

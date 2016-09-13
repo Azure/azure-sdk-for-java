@@ -105,7 +105,7 @@ public final class ManageStorageAccount {
 
                 StorageAccounts storageAccounts = azure.storageAccounts();
 
-                List accounts = storageAccounts.listByGroup(rgName);
+                List<StorageAccount> accounts = storageAccounts.listByGroup(rgName);
                 StorageAccount sa;
                 for (int i = 0; i < accounts.size(); i++) {
                     sa = (StorageAccount) accounts.get(i);

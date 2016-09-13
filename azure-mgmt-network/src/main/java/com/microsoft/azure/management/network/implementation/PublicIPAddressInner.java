@@ -8,7 +8,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.management.network.IPConfiguration;
+import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -24,13 +25,20 @@ public class PublicIPAddressInner extends Resource {
      * values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.publicIPAllocationMethod")
-    private String publicIPAllocationMethod;
+    private IPAllocationMethod publicIPAllocationMethod;
+
+    /**
+     * Gets or sets PublicIP address version (IPv4/IPv6). Possible values
+     * include: 'IPv4', 'IPv6'.
+     */
+    @JsonProperty(value = "properties.publicIPAddressVersion")
+    private IPVersion publicIPAddressVersion;
 
     /**
      * The ipConfiguration property.
      */
-    @JsonProperty(value = "properties.ipConfiguration")
-    private IPConfiguration ipConfiguration;
+    @JsonProperty(value = "properties.ipConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    private IPConfigurationInner ipConfiguration;
 
     /**
      * Gets or sets FQDN of the DNS record associated with the public IP
@@ -58,7 +66,7 @@ public class PublicIPAddressInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -75,7 +83,7 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the publicIPAllocationMethod value
      */
-    public String publicIPAllocationMethod() {
+    public IPAllocationMethod publicIPAllocationMethod() {
         return this.publicIPAllocationMethod;
     }
 
@@ -85,8 +93,28 @@ public class PublicIPAddressInner extends Resource {
      * @param publicIPAllocationMethod the publicIPAllocationMethod value to set
      * @return the PublicIPAddressInner object itself.
      */
-    public PublicIPAddressInner withPublicIPAllocationMethod(String publicIPAllocationMethod) {
+    public PublicIPAddressInner withPublicIPAllocationMethod(IPAllocationMethod publicIPAllocationMethod) {
         this.publicIPAllocationMethod = publicIPAllocationMethod;
+        return this;
+    }
+
+    /**
+     * Get the publicIPAddressVersion value.
+     *
+     * @return the publicIPAddressVersion value
+     */
+    public IPVersion publicIPAddressVersion() {
+        return this.publicIPAddressVersion;
+    }
+
+    /**
+     * Set the publicIPAddressVersion value.
+     *
+     * @param publicIPAddressVersion the publicIPAddressVersion value to set
+     * @return the PublicIPAddressInner object itself.
+     */
+    public PublicIPAddressInner withPublicIPAddressVersion(IPVersion publicIPAddressVersion) {
+        this.publicIPAddressVersion = publicIPAddressVersion;
         return this;
     }
 
@@ -95,19 +123,8 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the ipConfiguration value
      */
-    public IPConfiguration ipConfiguration() {
+    public IPConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
-    }
-
-    /**
-     * Set the ipConfiguration value.
-     *
-     * @param ipConfiguration the ipConfiguration value to set
-     * @return the PublicIPAddressInner object itself.
-     */
-    public PublicIPAddressInner withIpConfiguration(IPConfiguration ipConfiguration) {
-        this.ipConfiguration = ipConfiguration;
-        return this;
     }
 
     /**

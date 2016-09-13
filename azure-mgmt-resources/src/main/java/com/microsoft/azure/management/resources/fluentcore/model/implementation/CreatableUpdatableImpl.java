@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
 
 /**
  * The base class for all updatable resource.
@@ -15,8 +17,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
-public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
-        extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT> {
+public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+        extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+        implements Appliable<FluentModelT> {
 
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
@@ -34,5 +37,15 @@ public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentMo
     @SuppressWarnings("unchecked")
     public FluentModelImplT update() {
         return (FluentModelImplT) this;
+    }
+
+    @Override
+    public FluentModelT apply() throws Exception {
+        return applyAsync().toBlocking().last();
+    }
+
+    @Override
+    public ServiceCall<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
+        return observableToFuture(applyAsync(), callback);
     }
 }

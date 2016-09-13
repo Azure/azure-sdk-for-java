@@ -7,11 +7,12 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.storage.implementation.UsageInner;
 
 /**
  * An immutable client-side representation of an Azure storage resource usage info object.
  */
-public interface StorageUsage extends Wrapper<Usage> {
+public interface StorageUsage extends Wrapper<UsageInner> {
     /**
      * @return the unit of measurement. Possible values include: 'Count',
      * 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'.

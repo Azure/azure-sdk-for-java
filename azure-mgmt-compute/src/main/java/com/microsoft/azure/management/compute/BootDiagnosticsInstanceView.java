@@ -14,12 +14,12 @@ package com.microsoft.azure.management.compute;
  */
 public class BootDiagnosticsInstanceView {
     /**
-     * Gets or sets the console screenshot blob Uri.
+     * the console screenshot blob Uri.
      */
     private String consoleScreenshotBlobUri;
 
     /**
-     * Gets or sets the Linux serial console log blob Uri.
+     * the Linux serial console log blob Uri.
      */
     private String serialConsoleLogBlobUri;
 

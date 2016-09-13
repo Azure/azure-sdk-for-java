@@ -8,9 +8,11 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The base class for all creatable resource.
@@ -19,17 +21,23 @@ import com.microsoft.rest.ServiceCallback;
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
  */
-public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements CreatableTaskGroup.RootResourceCreator {
+        implements CreatorTaskGroup.ResourceCreator<FluentModelT> {
     /**
-     * The group of tasks to create this resource and creatable it depends on.
+     * The name of the creatable resource.
      */
-    private CreatableTaskGroup creatableTaskGroup;
+    private String name;
+
+    /**
+     * The group of tasks to create this resource and it's dependencies.
+     */
+    private CreatorTaskGroup<FluentModelT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
-        super(name, innerObject);
-        creatableTaskGroup = new CreatableTaskGroup(name, (Creatable<? extends Resource>) this, this);
+        super(innerObject);
+        this.name = name;
+        creatorTaskGroup = new CreatorTaskGroup<>(this.key(), this);
     }
 
     /**
@@ -37,23 +45,22 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      *
      * @param creatableResource the creatable dependency.
      */
-    protected void addCreatableDependency(Creatable<?> creatableResource) {
-        CreatableTaskGroup childGroup = ((CreatableImpl) creatableResource).creatableTaskGroup;
-        childGroup.merge(this.creatableTaskGroup);
-    }
-
-    @Override
-    public void createRootResource() throws Exception {
-        this.createResource();
-    }
-
-    @Override
-    public ServiceCall createRootResourceAsync(ServiceCallback<Void> callback) {
-        return this.createResourceAsync(callback);
+    @SuppressWarnings("unchecked")
+    protected void addCreatableDependency(Creatable<? extends Resource> creatableResource) {
+        CreatorTaskGroup<FluentModelT> childGroup =
+                ((CreatorTaskGroup.ResourceCreator<FluentModelT>) creatableResource).creatorTaskGroup();
+        childGroup.merge(this.creatorTaskGroup);
     }
 
     protected Resource createdResource(String key) {
-        return this.creatableTaskGroup.taskResult(key);
+        return (Resource) this.creatorTaskGroup.createdResource(key);
+    }
+
+    /**
+     * @return the name of the creatable resource.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -63,63 +70,67 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
      * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelImplT create() throws Exception {
-        // This method get's called in two ways:
-        // 1. User explicitly call Creatable::create requesting creation of the resource.
-        // 2. Gets called as a part of creating dependent resources for the resource user requested to create in #1.
-        //
-        // The creatableTaskGroup of the 'Creatable' on which user called 'create' (#1) is known as the preparer.
-        // Preparer is the one responsible for preparing the underlying DAG for traversal.
-        //
-        // Initially creatableTaskGroup of all creatables as preparer, but as soon as user calls Create in one of
-        // them (say A::Create) all other creatables that A depends on will be marked as non-preparer.
-        //
-        // This achieve two goals:
-        //
-        // a. When #2 happens we know group is already prepared and all left is to create the currently requested resource.
-        // b. User can call 'Create' on any of the creatables not just the ROOT creatable. [ROOT is the one who does not
-        //    have any dependent]
-        //
-        // After the creation of each resource in the creatableTaskGroup owned by the user chosen Creatable (#1), each
-        // sub-creatableTaskGroup of the created resource will be marked back as preparer. Hence user can again call
-        // Update on any of these resources [which is nothing but equivalent to calling create again]
-        //
-        if (creatableTaskGroup.isPreparer()) {
-            creatableTaskGroup.prepare();
-            creatableTaskGroup.execute();
-        } else {
-            createResource();
-        }
-        return (FluentModelImplT) this;
+    public FluentModelT create() throws Exception {
+        return createAsync().toBlocking().single();
+    }
+
+    /**
+     * Puts the request into the queue and allow the HTTP client to execute
+     * it when system resources are available.
+     *
+     * @param callback the callback to handle success and failure
+     * @return a handle to cancel the request
+     */
+    public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        return observableToFuture(createAsync(), callback);
     }
 
     /**
      * Default implementation of createAsync().
      *
-     * @param callback the callback to call on success or failure
      * @return the handle to the create REST call
      */
     @SuppressWarnings("unchecked")
-    public ServiceCall createAsync(ServiceCallback<FluentModelT> callback) {
-        if (creatableTaskGroup.isPreparer()) {
-            creatableTaskGroup.prepare();
-            return creatableTaskGroup.executeAsync(Utils.toVoidCallback((FluentModelT) this, callback));
-        } else {
-            return createResourceAsync(Utils.toVoidCallback((FluentModelT) this, callback));
+    public Observable<FluentModelT> createAsync() {
+        if (creatorTaskGroup.isPreparer()) {
+            creatorTaskGroup.prepare();
+            return creatorTaskGroup.executeAsync().last();
         }
+        throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
     }
 
     /**
-     * Creates this resource.
-     *
-     * @throws Exception when anything goes wrong
+     * @return the task group associated with this creatable.
      */
-    protected abstract void createResource() throws Exception;
+    @Override
+    public CreatorTaskGroup<FluentModelT> creatorTaskGroup() {
+        return this.creatorTaskGroup;
+    }
 
-    /**
-     * Creates this resource asynchronously.
-     *
-     * @throws Exception when anything goes wrong
-     */
-    protected abstract ServiceCall createResourceAsync(ServiceCallback<Void> callback);
+    @Override
+    public FluentModelT createResource() throws Exception {
+        return this.createResourceAsync().toBlocking().last();
+    }
+
+    protected Func1<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
+        return new Func1<InnerModelT, FluentModelT>() {
+            @Override
+            public FluentModelT call(InnerModelT innerModelT) {
+                fluentModelImplT.setInner(innerModelT);
+                return (FluentModelT) fluentModelImplT;
+            }
+        };
+    }
+
+    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable, final ServiceCallback<FluentModelT> callback) {
+        return ServiceCall.create(
+                observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
+                    @Override
+                    public ServiceResponse<FluentModelT> call(FluentModelT fluentModelT) {
+                        // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map (and this method) can be removed
+                        return new ServiceResponse<>(fluentModelT, null);
+                    }
+                }), callback
+        );
+    }
 }

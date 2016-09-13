@@ -9,17 +9,9 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
+import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
+import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import java.util.List;
-import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendIPConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendPort;
-import com.microsoft.azure.management.network.ApplicationGatewayProbe;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendAddressPool;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpSettings;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
-import com.microsoft.azure.management.network.ApplicationGatewayUrlPathMap;
-import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -30,94 +22,105 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ApplicationGatewayInner extends Resource {
     /**
-     * Gets or sets sku of application gateway resource.
+     * Sku of application gateway resource.
      */
     @JsonProperty(value = "properties.sku")
     private ApplicationGatewaySku sku;
 
     /**
-     * Gets operational state of application gateway resource. Possible values
+     * SSL policy of application gateway resource.
+     */
+    @JsonProperty(value = "properties.sslPolicy")
+    private ApplicationGatewaySslPolicy sslPolicy;
+
+    /**
+     * Operational state of application gateway resource. Possible values
      * include: 'Stopped', 'Starting', 'Running', 'Stopping'.
      */
     @JsonProperty(value = "properties.operationalState", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationalState;
+    private ApplicationGatewayOperationalState operationalState;
 
     /**
-     * Gets or sets subnets of application gateway resource.
+     * Subnets of application gateway resource.
      */
     @JsonProperty(value = "properties.gatewayIPConfigurations")
-    private List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations;
+    private List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations;
 
     /**
-     * Gets or sets ssl certificates of application gateway resource.
+     * Authentication certificates of application gateway resource.
+     */
+    @JsonProperty(value = "properties.authenticationCertificates")
+    private List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates;
+
+    /**
+     * SSL certificates of application gateway resource.
      */
     @JsonProperty(value = "properties.sslCertificates")
-    private List<ApplicationGatewaySslCertificate> sslCertificates;
+    private List<ApplicationGatewaySslCertificateInner> sslCertificates;
 
     /**
-     * Gets or sets frontend IP addresses of application gateway resource.
+     * Frontend IP addresses of application gateway resource.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations;
+    private List<ApplicationGatewayFrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Gets or sets frontend ports of application gateway resource.
+     * Frontend ports of application gateway resource.
      */
     @JsonProperty(value = "properties.frontendPorts")
-    private List<ApplicationGatewayFrontendPort> frontendPorts;
+    private List<ApplicationGatewayFrontendPortInner> frontendPorts;
 
     /**
-     * Gets or sets probes of application gateway resource.
+     * Probes of application gateway resource.
      */
     @JsonProperty(value = "properties.probes")
-    private List<ApplicationGatewayProbe> probes;
+    private List<ApplicationGatewayProbeInner> probes;
 
     /**
-     * Gets or sets backend address pool of application gateway resource.
+     * Backend address pool of application gateway resource.
      */
     @JsonProperty(value = "properties.backendAddressPools")
-    private List<ApplicationGatewayBackendAddressPool> backendAddressPools;
+    private List<ApplicationGatewayBackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Gets or sets backend http settings of application gateway resource.
+     * Backend http settings of application gateway resource.
      */
     @JsonProperty(value = "properties.backendHttpSettingsCollection")
-    private List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection;
+    private List<ApplicationGatewayBackendHttpSettingsInner> backendHttpSettingsCollection;
 
     /**
-     * Gets or sets HTTP listeners of application gateway resource.
+     * HTTP listeners of application gateway resource.
      */
     @JsonProperty(value = "properties.httpListeners")
-    private List<ApplicationGatewayHttpListener> httpListeners;
+    private List<ApplicationGatewayHttpListenerInner> httpListeners;
 
     /**
-     * Gets or sets URL path map of application gateway resource.
+     * URL path map of application gateway resource.
      */
     @JsonProperty(value = "properties.urlPathMaps")
-    private List<ApplicationGatewayUrlPathMap> urlPathMaps;
+    private List<ApplicationGatewayUrlPathMapInner> urlPathMaps;
 
     /**
-     * Gets or sets request routing rules of application gateway resource.
+     * Request routing rules of application gateway resource.
      */
     @JsonProperty(value = "properties.requestRoutingRules")
-    private List<ApplicationGatewayRequestRoutingRule> requestRoutingRules;
+    private List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules;
 
     /**
-     * Gets or sets resource guid property of the ApplicationGateway resource.
+     * Resource guid property of the ApplicationGateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the ApplicationGateway resource
+     * Provisioning state of the ApplicationGateway resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
@@ -142,11 +145,31 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
+     * Get the sslPolicy value.
+     *
+     * @return the sslPolicy value
+     */
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.sslPolicy;
+    }
+
+    /**
+     * Set the sslPolicy value.
+     *
+     * @param sslPolicy the sslPolicy value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
+        this.sslPolicy = sslPolicy;
+        return this;
+    }
+
+    /**
      * Get the operationalState value.
      *
      * @return the operationalState value
      */
-    public String operationalState() {
+    public ApplicationGatewayOperationalState operationalState() {
         return this.operationalState;
     }
 
@@ -155,7 +178,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the gatewayIPConfigurations value
      */
-    public List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations() {
+    public List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations() {
         return this.gatewayIPConfigurations;
     }
 
@@ -165,8 +188,28 @@ public class ApplicationGatewayInner extends Resource {
      * @param gatewayIPConfigurations the gatewayIPConfigurations value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations) {
+    public ApplicationGatewayInner withGatewayIPConfigurations(List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations) {
         this.gatewayIPConfigurations = gatewayIPConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the authenticationCertificates value.
+     *
+     * @return the authenticationCertificates value
+     */
+    public List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates() {
+        return this.authenticationCertificates;
+    }
+
+    /**
+     * Set the authenticationCertificates value.
+     *
+     * @param authenticationCertificates the authenticationCertificates value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
+        this.authenticationCertificates = authenticationCertificates;
         return this;
     }
 
@@ -175,7 +218,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the sslCertificates value
      */
-    public List<ApplicationGatewaySslCertificate> sslCertificates() {
+    public List<ApplicationGatewaySslCertificateInner> sslCertificates() {
         return this.sslCertificates;
     }
 
@@ -185,7 +228,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param sslCertificates the sslCertificates value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates) {
+    public ApplicationGatewayInner withSslCertificates(List<ApplicationGatewaySslCertificateInner> sslCertificates) {
         this.sslCertificates = sslCertificates;
         return this;
     }
@@ -195,7 +238,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the frontendIPConfigurations value
      */
-    public List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations() {
+    public List<ApplicationGatewayFrontendIPConfigurationInner> frontendIPConfigurations() {
         return this.frontendIPConfigurations;
     }
 
@@ -205,7 +248,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param frontendIPConfigurations the frontendIPConfigurations value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations) {
+    public ApplicationGatewayInner withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfigurationInner> frontendIPConfigurations) {
         this.frontendIPConfigurations = frontendIPConfigurations;
         return this;
     }
@@ -215,7 +258,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the frontendPorts value
      */
-    public List<ApplicationGatewayFrontendPort> frontendPorts() {
+    public List<ApplicationGatewayFrontendPortInner> frontendPorts() {
         return this.frontendPorts;
     }
 
@@ -225,7 +268,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param frontendPorts the frontendPorts value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts) {
+    public ApplicationGatewayInner withFrontendPorts(List<ApplicationGatewayFrontendPortInner> frontendPorts) {
         this.frontendPorts = frontendPorts;
         return this;
     }
@@ -235,7 +278,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the probes value
      */
-    public List<ApplicationGatewayProbe> probes() {
+    public List<ApplicationGatewayProbeInner> probes() {
         return this.probes;
     }
 
@@ -245,7 +288,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param probes the probes value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withProbes(List<ApplicationGatewayProbe> probes) {
+    public ApplicationGatewayInner withProbes(List<ApplicationGatewayProbeInner> probes) {
         this.probes = probes;
         return this;
     }
@@ -255,7 +298,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the backendAddressPools value
      */
-    public List<ApplicationGatewayBackendAddressPool> backendAddressPools() {
+    public List<ApplicationGatewayBackendAddressPoolInner> backendAddressPools() {
         return this.backendAddressPools;
     }
 
@@ -265,7 +308,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param backendAddressPools the backendAddressPools value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
+    public ApplicationGatewayInner withBackendAddressPools(List<ApplicationGatewayBackendAddressPoolInner> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
@@ -275,7 +318,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the backendHttpSettingsCollection value
      */
-    public List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection() {
+    public List<ApplicationGatewayBackendHttpSettingsInner> backendHttpSettingsCollection() {
         return this.backendHttpSettingsCollection;
     }
 
@@ -285,7 +328,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
+    public ApplicationGatewayInner withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettingsInner> backendHttpSettingsCollection) {
         this.backendHttpSettingsCollection = backendHttpSettingsCollection;
         return this;
     }
@@ -295,7 +338,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the httpListeners value
      */
-    public List<ApplicationGatewayHttpListener> httpListeners() {
+    public List<ApplicationGatewayHttpListenerInner> httpListeners() {
         return this.httpListeners;
     }
 
@@ -305,7 +348,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param httpListeners the httpListeners value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners) {
+    public ApplicationGatewayInner withHttpListeners(List<ApplicationGatewayHttpListenerInner> httpListeners) {
         this.httpListeners = httpListeners;
         return this;
     }
@@ -315,7 +358,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the urlPathMaps value
      */
-    public List<ApplicationGatewayUrlPathMap> urlPathMaps() {
+    public List<ApplicationGatewayUrlPathMapInner> urlPathMaps() {
         return this.urlPathMaps;
     }
 
@@ -325,7 +368,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param urlPathMaps the urlPathMaps value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps) {
+    public ApplicationGatewayInner withUrlPathMaps(List<ApplicationGatewayUrlPathMapInner> urlPathMaps) {
         this.urlPathMaps = urlPathMaps;
         return this;
     }
@@ -335,7 +378,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the requestRoutingRules value
      */
-    public List<ApplicationGatewayRequestRoutingRule> requestRoutingRules() {
+    public List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules() {
         return this.requestRoutingRules;
     }
 
@@ -345,7 +388,7 @@ public class ApplicationGatewayInner extends Resource {
      * @param requestRoutingRules the requestRoutingRules value to set
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRule> requestRoutingRules) {
+    public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
         return this;
     }

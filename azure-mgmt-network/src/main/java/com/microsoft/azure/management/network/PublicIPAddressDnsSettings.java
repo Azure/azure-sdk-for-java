@@ -30,7 +30,7 @@ public class PublicIPAddressDnsSettings {
     private String fqdn;
 
     /**
-     * Gets or Sests the Reverse FQDN. A user-visible, fully qualified domain
+     * Gets or Sets the Reverse FQDN. A user-visible, fully qualified domain
      * name that resolves to this public IP address. If the reverseFqdn is
      * specified, then a PTR DNS record is created pointing from the IP
      * address in the in-addr.arpa domain to the reverse FQDN.

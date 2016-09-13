@@ -14,17 +14,17 @@ package com.microsoft.azure.management.compute;
  */
 public class ApiErrorBase {
     /**
-     * Gets or sets the error code.
+     * the error code.
      */
     private String code;
 
     /**
-     * Gets or sets the target of the particular error.
+     * the target of the particular error.
      */
     private String target;
 
     /**
-     * Gets or sets the error message.
+     * the error message.
      */
     private String message;
 

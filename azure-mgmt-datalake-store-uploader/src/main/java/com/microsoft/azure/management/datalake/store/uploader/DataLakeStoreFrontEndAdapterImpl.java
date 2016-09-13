@@ -56,7 +56,7 @@ public class DataLakeStoreFrontEndAdapterImpl implements FrontEndAdapter {
             toCreate = new byte[byteCount];
             System.arraycopy(data, 0, toCreate, 0, byteCount);
         }
-        client.fileSystems().create(accountName, streamPath, data, overwrite);
+        client.fileSystems().create(accountName, streamPath, toCreate, overwrite);
     }
 
     /**

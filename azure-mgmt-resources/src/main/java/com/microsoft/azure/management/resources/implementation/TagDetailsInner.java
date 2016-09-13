@@ -16,22 +16,22 @@ import java.util.List;
  */
 public class TagDetailsInner {
     /**
-     * Gets or sets the tag ID.
+     * The tag ID.
      */
     private String id;
 
     /**
-     * Gets or sets the tag name.
+     * The tag name.
      */
     private String tagName;
 
     /**
-     * Gets or sets the tag count.
+     * The tag count.
      */
     private TagCount count;
 
     /**
-     * Gets or sets the list of tag values.
+     * The list of tag values.
      */
     private List<TagValueInner> values;
 

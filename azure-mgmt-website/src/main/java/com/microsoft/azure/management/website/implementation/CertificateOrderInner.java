@@ -12,7 +12,6 @@ import java.util.Map;
 import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.ProvisioningState;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
-import com.microsoft.azure.management.website.CertificateDetails;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -85,7 +84,7 @@ public class CertificateOrderInner extends Resource {
      * Signed certificate.
      */
     @JsonProperty(value = "properties.signedCertificate")
-    private CertificateDetails signedCertificate;
+    private CertificateDetailsInner signedCertificate;
 
     /**
      * Last CSR that was created for this order.
@@ -97,13 +96,13 @@ public class CertificateOrderInner extends Resource {
      * Intermediate certificate.
      */
     @JsonProperty(value = "properties.intermediate")
-    private CertificateDetails intermediate;
+    private CertificateDetailsInner intermediate;
 
     /**
      * Root certificate.
      */
     @JsonProperty(value = "properties.root")
-    private CertificateDetails root;
+    private CertificateDetailsInner root;
 
     /**
      * Current serial number of the certificate.
@@ -308,7 +307,7 @@ public class CertificateOrderInner extends Resource {
      *
      * @return the signedCertificate value
      */
-    public CertificateDetails signedCertificate() {
+    public CertificateDetailsInner signedCertificate() {
         return this.signedCertificate;
     }
 
@@ -318,7 +317,7 @@ public class CertificateOrderInner extends Resource {
      * @param signedCertificate the signedCertificate value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner withSignedCertificate(CertificateDetails signedCertificate) {
+    public CertificateOrderInner withSignedCertificate(CertificateDetailsInner signedCertificate) {
         this.signedCertificate = signedCertificate;
         return this;
     }
@@ -348,7 +347,7 @@ public class CertificateOrderInner extends Resource {
      *
      * @return the intermediate value
      */
-    public CertificateDetails intermediate() {
+    public CertificateDetailsInner intermediate() {
         return this.intermediate;
     }
 
@@ -358,7 +357,7 @@ public class CertificateOrderInner extends Resource {
      * @param intermediate the intermediate value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner withIntermediate(CertificateDetails intermediate) {
+    public CertificateOrderInner withIntermediate(CertificateDetailsInner intermediate) {
         this.intermediate = intermediate;
         return this;
     }
@@ -368,7 +367,7 @@ public class CertificateOrderInner extends Resource {
      *
      * @return the root value
      */
-    public CertificateDetails root() {
+    public CertificateDetailsInner root() {
         return this.root;
     }
 
@@ -378,7 +377,7 @@ public class CertificateOrderInner extends Resource {
      * @param root the root value to set
      * @return the CertificateOrderInner object itself.
      */
-    public CertificateOrderInner withRoot(CertificateDetails root) {
+    public CertificateOrderInner withRoot(CertificateDetailsInner root) {
         this.root = root;
         return this;
     }

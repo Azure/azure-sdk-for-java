@@ -17,4 +17,12 @@ public interface Wrapper<T> {
      * auto-generated API implementation, based on Azure REST API
      */
     T inner();
+
+    /**
+     * Set the wrapped inner model.
+     * (For internal use only)
+     *
+     * @param inner the new inner model
+     */
+    void setInner(T inner);
 }

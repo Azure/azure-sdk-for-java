@@ -15,30 +15,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageReference {
     /**
-     * The publisher of the Azure Virtual Machines Marketplace image. For
-     * example, Canonical or MicrosoftWindowsServer.
+     * The publisher of the Azure Virtual Machines Marketplace image.
+     * For example, Canonical or MicrosoftWindowsServer.
      */
     @JsonProperty(required = true)
     private String publisher;
 
     /**
-     * The offer type of the Azure Virtual Machines Marketplace image. For
-     * example, UbuntuServer or WindowsServer.
+     * The offer type of the Azure Virtual Machines Marketplace image.
+     * For example, UbuntuServer or WindowsServer.
      */
     @JsonProperty(required = true)
     private String offer;
 
     /**
-     * The SKU of the Azure Virtual Machines Marketplace image. For example,
-     * 14.04.0-LTS or 2012-R2-Datacenter.
+     * The SKU of the Azure Virtual Machines Marketplace image.
+     * For example, 14.04.0-LTS or 2012-R2-Datacenter.
      */
     @JsonProperty(required = true)
     private String sku;
 
     /**
-     * The version of the Azure Virtual Machines Marketplace image. A value of
-     * 'latest' can be specified to select the latest version of an image. If
-     * omitted, the default is 'latest'.
+     * The version of the Azure Virtual Machines Marketplace image.
+     * A value of 'latest' can be specified to select the latest version of an
+     * image. If omitted, the default is 'latest'.
      */
     private String version;
 

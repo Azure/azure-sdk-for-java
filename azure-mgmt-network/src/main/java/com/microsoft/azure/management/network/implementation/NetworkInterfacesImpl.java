@@ -4,7 +4,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -32,17 +31,17 @@ class NetworkInterfacesImpl
 
     @Override
     public PagedList<NetworkInterface> list() throws CloudException, IOException {
-        return wrapList(innerCollection.listAll().getBody());
+        return wrapList(innerCollection.listAll());
     }
 
     @Override
     public PagedList<NetworkInterface> listByGroup(String groupName) throws CloudException, IOException {
-        return wrapList(innerCollection.list(groupName).getBody());
+        return wrapList(innerCollection.list(groupName));
     }
 
     @Override
     public NetworkInterface getByGroup(String groupName, String name) throws CloudException, IOException {
-        return wrapModel(this.innerCollection.get(groupName, name).getBody());
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
@@ -63,7 +62,7 @@ class NetworkInterfacesImpl
     @Override
     protected NetworkInterfaceImpl wrapModel(String name) {
         NetworkInterfaceInner inner = new NetworkInterfaceInner();
-        inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfiguration>());
+        inner.withIpConfigurations(new ArrayList<NetworkInterfaceIPConfigurationInner>());
         inner.withDnsSettings(new NetworkInterfaceDnsSettings());
         return new NetworkInterfaceImpl(name,
                 inner,

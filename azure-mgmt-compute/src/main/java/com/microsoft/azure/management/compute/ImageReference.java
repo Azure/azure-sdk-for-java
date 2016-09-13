@@ -14,24 +14,24 @@ package com.microsoft.azure.management.compute;
  */
 public class ImageReference {
     /**
-     * Gets or sets the image publisher.
+     * the image publisher.
      */
     private String publisher;
 
     /**
-     * Gets or sets the image offer.
+     * the image offer.
      */
     private String offer;
 
     /**
-     * Gets or sets the image sku.
+     * the image sku.
      */
     private String sku;
 
     /**
-     * Gets or sets the image version. The allowed formats are
-     * Major.Minor.Build or 'latest'. Major, Minor and Build being decimal
-     * numbers. Specify 'latest' to use the latest version of image.
+     * the image version. The allowed formats are Major.Minor.Build or
+     * 'latest'. Major, Minor and Build being decimal numbers. Specify
+     * 'latest' to use the latest version of image.
      */
     private String version;
 

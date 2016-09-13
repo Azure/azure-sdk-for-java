@@ -9,22 +9,23 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
 
 /**
  * Describes a virtual machine scale set extension profile.
  */
 public class VirtualMachineScaleSetExtensionProfile {
     /**
-     * Gets the virtual machine scale set child extension resources.
+     * the virtual machine scale set child extension resources.
      */
-    private List<VirtualMachineScaleSetExtension> extensions;
+    private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /**
      * Get the extensions value.
      *
      * @return the extensions value
      */
-    public List<VirtualMachineScaleSetExtension> extensions() {
+    public List<VirtualMachineScaleSetExtensionInner> extensions() {
         return this.extensions;
     }
 
@@ -34,7 +35,7 @@ public class VirtualMachineScaleSetExtensionProfile {
      * @param extensions the extensions value to set
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
-    public VirtualMachineScaleSetExtensionProfile withExtensions(List<VirtualMachineScaleSetExtension> extensions) {
+    public VirtualMachineScaleSetExtensionProfile withExtensions(List<VirtualMachineScaleSetExtensionInner> extensions) {
         this.extensions = extensions;
         return this;
     }

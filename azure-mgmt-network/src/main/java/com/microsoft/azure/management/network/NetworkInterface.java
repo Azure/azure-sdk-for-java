@@ -18,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Network interface.
@@ -32,11 +33,6 @@ public interface NetworkInterface extends
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
     boolean isIpForwardingEnabled();
-
-    /**
-     * @return <tt>true</tt> if this is primary network interface in a virtual machine
-     */
-    boolean isPrimary();
 
     /**
      * @return the MAC Address of the network interface
@@ -59,9 +55,19 @@ public interface NetworkInterface extends
     String internalFqdn();
 
     /**
+     * @return the internal domain name suffix
+     */
+    String internalDomainNameSuffix();
+
+    /**
      * @return IP addresses of this network interface's DNS servers
      */
     List<String> dnsServers();
+
+    /**
+     * @return applied DNS servers
+     */
+    List<String> appliedDnsServers();
 
     /**
      * Gets the public IP address associated with this network interface.
@@ -103,12 +109,17 @@ public interface NetworkInterface extends
      * @return the private IP allocation method (Dynamic, Static) of this network interface's
      * primary IP configuration.
      */
-    String primaryPrivateIpAllocationMethod();
+    IPAllocationMethod primaryPrivateIpAllocationMethod();
 
     /**
-     * @return the IP configurations of this network interface
+     * @return the IP configurations of this network interface, indexed by their names
      */
-    List<NicIpConfiguration> ipConfigurations();
+    Map<String, NicIpConfiguration> ipConfigurations();
+
+    /**
+     * @return the primary IP configuration of this network interface
+     */
+    NicIpConfiguration primaryIpConfiguration();
 
     /**
      * @return the network security group resource id or null if there is no network security group
@@ -569,7 +580,7 @@ public interface NetworkInterface extends
      */
     interface Update extends
             Appliable<NetworkInterface>,
-           Resource.UpdateWithTags<Update>,
+            Resource.UpdateWithTags<Update>,
             UpdateStages.WithPrimaryNetworkSubnet,
             UpdateStages.WithPrimaryPrivateIp,
             UpdateStages.WithPrimaryPublicIpAddress,
