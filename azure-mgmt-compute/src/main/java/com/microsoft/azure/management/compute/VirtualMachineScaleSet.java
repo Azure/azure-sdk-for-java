@@ -54,6 +54,11 @@ public interface VirtualMachineScaleSet extends
     CachingTypes osDiskCachingType();
 
     /**
+     * @return gets the name of the OS disk of virtual machines in the scale set.
+     */
+    String osDiskName();
+
+    /**
      * @return the upgradePolicy
      */
     UpgradePolicy upgradePolicy();
@@ -310,7 +315,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the backend names
              * @return the next stage of the virtual machine scale set definition
              */
-            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackend(String ...backendNames);
+            WithPrimaryInternetFacingLoadBalancerNatPool withPrimaryInternetFacingLoadBalancerBackends(String ...backendNames);
         }
 
         /**
@@ -326,7 +331,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames the inbound NAT pool names
              * @return the next stage of the virtual machine scale set definition
              */
-            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPool(String ...natPoolNames);
+            WithPrimaryInternalLoadBalancer withPrimaryInternetFacingLoadBalancerInboundNatPools(String ...natPoolNames);
         }
 
         /**
@@ -342,7 +347,7 @@ public interface VirtualMachineScaleSet extends
              * @param backendNames the backend names
              * @return the next stage of the virtual machine scale set definition
              */
-            WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackend(String ...backendNames);
+            WithInternalInternalLoadBalancerNatPool withPrimaryInternalLoadBalancerBackends(String ...backendNames);
          }
 
         /**
@@ -358,7 +363,7 @@ public interface VirtualMachineScaleSet extends
              * @param natPoolNames inbound NAT pool names
              * @return the next stage of the virtual machine scale set definition
              */
-            WithOS withPrimaryInternalLoadBalancerInboundNatPool(String ...natPoolNames);
+            WithOS withPrimaryInternalLoadBalancerInboundNatPools(String ...natPoolNames);
         }
 
         /**
@@ -607,6 +612,14 @@ public interface VirtualMachineScaleSet extends
              * @return the stage representing creatable VM scale set definition
              */
             WithCreate withOsDiskCaching(CachingTypes cachingType);
+
+            /**
+             * Specifies the name for the OS Disk.
+             *
+             * @param name the OS Disk name.
+             * @return the stage representing creatable VM scale set definition
+             */
+            WithCreate withOsDiskName(String name);
         }
 
         /**
