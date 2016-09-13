@@ -4,6 +4,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -18,8 +19,8 @@ import java.util.TreeMap;
  */
 class VirtualMachineExtensionImpl
         extends ExternalChildResourceImpl<VirtualMachineExtension,
-        VirtualMachineExtensionInner,
-        VirtualMachineImpl>
+                VirtualMachineExtensionInner,
+                VirtualMachineImpl>
         implements VirtualMachineExtension,
         VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
         VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,

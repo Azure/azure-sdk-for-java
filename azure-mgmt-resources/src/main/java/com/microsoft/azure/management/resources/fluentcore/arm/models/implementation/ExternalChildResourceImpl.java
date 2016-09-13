@@ -1,6 +1,6 @@
-package com.microsoft.azure.management.compute.implementation;
+package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
-import com.microsoft.azure.management.compute.ExternalChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 
