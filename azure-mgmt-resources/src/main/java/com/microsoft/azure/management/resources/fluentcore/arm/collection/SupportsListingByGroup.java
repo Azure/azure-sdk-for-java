@@ -8,6 +8,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 
 import java.io.IOException;
 
@@ -18,6 +20,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the resources listed.
  */
+@LangDefinition(ContainerName="CollectionActions", CreateAsyncMethods=true, MethodConversionType=MethodConversion.OnlyMethod)
 public interface SupportsListingByGroup<T> {
     /**
      * Lists resources of the specified type in the specified resource group.

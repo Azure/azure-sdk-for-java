@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -18,6 +19,7 @@ import java.io.IOException;
 /**
  * Entry point to resource group management API.
  */
+@LangDefinition(ContainerName="~/")
 public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ProviderInner;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure resource provider.
  */
+@LangDefinition(ContainerName="~/")
 public interface Provider extends
         Indexable,
         Wrapper<ProviderInner> {

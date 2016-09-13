@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 /**
  * Entry point to features management API.
  */
+@LangDefinition(ContainerName="~/")
 public interface Features extends
         SupportsListing<Feature> {
     /**
@@ -28,6 +30,7 @@ public interface Features extends
     /**
      * Entry point to features management API in a specific resource provider.
      */
+    @LangDefinition(ContainerName="~/Feature")
     interface InResourceProvider extends
             SupportsListing<Feature>,
             SupportsGettingByName<Feature> {

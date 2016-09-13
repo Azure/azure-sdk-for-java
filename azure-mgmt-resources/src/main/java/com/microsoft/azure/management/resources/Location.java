@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.LocationInner;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.implementation.LocationInner;
 /**
  * An immutable client-side representation of an Azure location.
  */
+@LangDefinition(ContainerName="~/")
 public interface Location extends
         Indexable,
         Wrapper<LocationInner> {

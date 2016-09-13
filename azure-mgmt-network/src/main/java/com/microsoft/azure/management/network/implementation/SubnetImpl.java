@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.Subnet;
@@ -17,6 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  *  Implementation for {@link Subnet} and its create and update interfaces.
  */
+@LangDefinition
 class SubnetImpl
     extends ChildResourceImpl<SubnetInner, NetworkImpl>
     implements

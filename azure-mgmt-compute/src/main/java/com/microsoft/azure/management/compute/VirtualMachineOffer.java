@@ -5,11 +5,13 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Represents a virtual machine image offer.
  */
+@LangDefinition(ContainerName="~/")
 public interface VirtualMachineOffer {
     /**
      * @return the region where this virtual machine image offer is available

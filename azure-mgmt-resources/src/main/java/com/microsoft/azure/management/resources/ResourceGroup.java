@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -22,6 +23,7 @@ import java.io.IOException;
 /**
  * An immutable client-side representation of an Azure resource group.
  */
+@LangDefinition(ContainerName="~/")
 public interface ResourceGroup extends
         Indexable,
         Resource,
@@ -55,6 +57,7 @@ public interface ResourceGroup extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
+    @LangDefinition(ContainerName="~/ResourceGroup.Definition", ContainerFileName="IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithCreate {
@@ -63,6 +66,7 @@ public interface ResourceGroup extends
     /**
      * Grouping of all the resource group definition stages.
      */
+     @LangDefinition(ContainerName="~/ResourceGroup.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
     interface DefinitionStages {
         /**
          * A resource group definition allowing location to be set.
@@ -84,6 +88,7 @@ public interface ResourceGroup extends
     /**
      * Grouping of all the resource group update stages.
      */
+    @LangDefinition(ContainerName="~/ResourceGroup.Update", ContainerFileName="IUpdate")
     interface UpdateStages {
     }
 
@@ -92,6 +97,7 @@ public interface ResourceGroup extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource group in Azure.
      */
+    @LangDefinition(ContainerName="~/ResourceGroup.Update", ContainerFileName="IUpdate")
     interface Update extends
             Appliable<ResourceGroup>,
             Resource.UpdateWithTags<Update> {

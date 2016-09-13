@@ -8,6 +8,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.HardwareProfile;
 import com.microsoft.azure.management.compute.NetworkProfile;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 /**
  * The implementation for {@link VirtualMachines}.
  */
+@LangDefinition
 class VirtualMachinesImpl
         extends GroupableResourcesImpl<
         VirtualMachine,
