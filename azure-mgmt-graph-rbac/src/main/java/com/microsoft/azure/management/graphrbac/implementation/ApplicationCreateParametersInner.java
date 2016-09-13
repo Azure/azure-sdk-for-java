@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.graphrbac.KeyCredential;
-import com.microsoft.azure.management.graphrbac.PasswordCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,7 +30,6 @@ public class ApplicationCreateParametersInner {
     /**
      * Application homepage.
      */
-    @JsonProperty(required = true)
     private String homepage;
 
     /**
@@ -47,14 +44,14 @@ public class ApplicationCreateParametersInner {
     private List<String> replyUrls;
 
     /**
-     * Gets or sets the list of KeyCredential objects.
+     * the list of KeyCredential objects.
      */
-    private List<KeyCredential> keyCredentials;
+    private List<KeyCredentialInner> keyCredentials;
 
     /**
-     * Gets or sets the list of PasswordCredential objects.
+     * the list of PasswordCredential objects.
      */
-    private List<PasswordCredential> passwordCredentials;
+    private List<PasswordCredentialInner> passwordCredentials;
 
     /**
      * Get the availableToOtherTenants value.
@@ -161,7 +158,7 @@ public class ApplicationCreateParametersInner {
      *
      * @return the keyCredentials value
      */
-    public List<KeyCredential> keyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -171,7 +168,7 @@ public class ApplicationCreateParametersInner {
      * @param keyCredentials the keyCredentials value to set
      * @return the ApplicationCreateParametersInner object itself.
      */
-    public ApplicationCreateParametersInner withKeyCredentials(List<KeyCredential> keyCredentials) {
+    public ApplicationCreateParametersInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -181,7 +178,7 @@ public class ApplicationCreateParametersInner {
      *
      * @return the passwordCredentials value
      */
-    public List<PasswordCredential> passwordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -191,7 +188,7 @@ public class ApplicationCreateParametersInner {
      * @param passwordCredentials the passwordCredentials value to set
      * @return the ApplicationCreateParametersInner object itself.
      */
-    public ApplicationCreateParametersInner withPasswordCredentials(List<PasswordCredential> passwordCredentials) {
+    public ApplicationCreateParametersInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }

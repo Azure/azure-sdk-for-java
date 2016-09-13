@@ -19,7 +19,6 @@ public abstract class DataLakeStoreManagementTestBase {
                 System.getenv("arm.domain"),
                 System.getenv("arm.username"),
                 System.getenv("arm.password"),
-                null,
                 AzureEnvironment.AZURE);
 
         RestClient restClient = new RestClient.Builder()

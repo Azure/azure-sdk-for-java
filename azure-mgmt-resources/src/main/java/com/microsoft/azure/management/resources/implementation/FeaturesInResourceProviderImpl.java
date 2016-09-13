@@ -11,6 +11,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.rest.RestException;
 
 import java.io.IOException;
 
@@ -28,7 +29,7 @@ final class FeaturesInResourceProviderImpl
     }
 
     @Override
-    public PagedList<Feature> list() throws CloudException, IOException {
+    public PagedList<Feature> list() throws RestException, IOException {
         PagedListConverter<FeatureResultInner, Feature> converter = new PagedListConverter<FeatureResultInner, Feature>() {
             @Override
             public Feature typeConvert(FeatureResultInner tenantInner) {

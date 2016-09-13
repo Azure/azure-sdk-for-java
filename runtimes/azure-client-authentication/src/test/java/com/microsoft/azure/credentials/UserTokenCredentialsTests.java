@@ -21,7 +21,6 @@ public class UserTokenCredentialsTests {
             "domain",
             "username",
             "password",
-            "redirect",
             AzureEnvironment.AZURE
     );
 
@@ -36,8 +35,8 @@ public class UserTokenCredentialsTests {
     public static class MockUserTokenCredentials extends UserTokenCredentials {
         private AuthenticationResult authenticationResult;
 
-        public MockUserTokenCredentials(String clientId, String domain, String username, String password, String clientRedirectUri, AzureEnvironment environment) {
-            super(clientId, domain, username, password, clientRedirectUri, environment);
+        public MockUserTokenCredentials(String clientId, String domain, String username, String password, AzureEnvironment environment) {
+            super(clientId, domain, username, password, environment);
         }
 
         @Override

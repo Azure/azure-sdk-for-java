@@ -6,9 +6,9 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AzureTests {
-    private static final ServiceClientCredentials CREDENTIALS = new ApplicationTokenCredentials(
+    private static final ApplicationTokenCredentials CREDENTIALS = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),
@@ -41,23 +40,35 @@ public class AzureTests {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
 
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         final File authFileNoSubscription = new File("nosub.azureauth");
         azure = Azure.authenticate(authFileNoSubscription).withDefaultSubscription();
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
     }
 
     @Before
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.BODY)
+                .withLogLevel(Level.NONE)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -125,11 +136,19 @@ public class AzureTests {
         Assert.assertTrue(publishers.size() > 0);
         for (VirtualMachinePublisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
-            for (VirtualMachineOffer o : p.offers().list()) {
-                System.out.println(String.format("\tOffer name: %s", o.name()));
-                for (VirtualMachineSku s : o.skus().list()) {
-                    System.out.println(String.format("\t\tSku name: %s", s.name()));
+            try {
+                for (VirtualMachineOffer o : p.offers().list()) {
+                    System.out.println(String.format("\tOffer name: %s", o.name()));
+                    try {
+                        for (VirtualMachineSku s : o.skus().list()) {
+                            System.out.println(String.format("\t\tSku name: %s", s.name()));
+                        }
+                    } catch (com.microsoft.rest.RestException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (com.microsoft.rest.RestException e) {
+                e.printStackTrace();
             }
         }
         List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);

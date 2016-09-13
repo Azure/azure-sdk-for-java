@@ -9,6 +9,8 @@ package com.microsoft.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,9 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 /**
  * The builder for building a {@link ServiceResponse}.
@@ -144,9 +143,10 @@ public class ServiceResponseBuilder<T, E extends RestException> {
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
         } else {
             try {
-                E exception = (E) exceptionType.getConstructor(String.class).newInstance("Invalid status code " + statusCode);
+                Object errorBody = buildBody(statusCode, responseBody);
+                E exception = (E) exceptionType.getConstructor(String.class).newInstance(mapperAdapter.serialize(errorBody));
                 exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
-                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, buildBody(statusCode, responseBody));
+                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, errorBody);
                 throw exception;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()

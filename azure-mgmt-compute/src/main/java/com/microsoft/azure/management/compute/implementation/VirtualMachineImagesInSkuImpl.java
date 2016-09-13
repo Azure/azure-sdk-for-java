@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
@@ -25,7 +24,7 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
         this.innerCollection = innerCollection;
     }
 
-    public PagedList<VirtualMachineImage> list() throws CloudException, IOException {
+    public PagedList<VirtualMachineImage> list() throws RestException, IOException {
         final List<VirtualMachineImage> images = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
                 : innerCollection.list(

@@ -42,7 +42,7 @@ public interface Creatable<T> extends Indexable {
      * Puts the request into the queue and allow the HTTP client to execute
      * it when system resources are available.
      *
-     * @return a handle to cancel the request
+     * @return an observable of the request
      */
     Observable<T> createAsync();
 }

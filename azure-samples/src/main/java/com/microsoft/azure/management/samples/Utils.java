@@ -7,17 +7,20 @@
 
 package com.microsoft.azure.management.samples;
 
+import com.google.common.base.Joiner;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.AvailabilitySet;
-import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.DataDisk;
+import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.keyvault.AccessPolicy;
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
@@ -269,6 +272,26 @@ public final class Utils {
                 .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
                 .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod())
                 .toString());
+    }
+
+    /**
+     * Print a key vault.
+     * @param vault the key vault resource
+     */
+    public static void print(Vault vault) {
+        StringBuilder info = new StringBuilder().append("Key Vault: ").append(vault.id())
+                .append("Name: ").append(vault.name())
+                .append("\n\tResource group: ").append(vault.resourceGroupName())
+                .append("\n\tRegion: ").append(vault.region())
+                .append("\n\tSku: ").append(vault.sku().name()).append(" - ").append(vault.sku().family())
+                .append("\n\tVault URI: ").append(vault.vaultUri())
+                .append("\n\tAccess policies: ");
+        for (AccessPolicy accessPolicy: vault.accessPolicies()) {
+            info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
+                    .append("\n\t\tKey permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().keys()))
+                    .append("\n\t\tSecret permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().secrets()));
+        }
+        System.out.println(info.toString());
     }
 
 
