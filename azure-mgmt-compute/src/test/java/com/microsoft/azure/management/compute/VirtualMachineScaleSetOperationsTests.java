@@ -34,29 +34,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .define(RG_NAME)
                 .withRegion(LOCATION);
 
-        /**
-         LoadBalancer lb = this.networkManager
-         .loadBalancers()
-         .define("foo")
-         .withRegion(LOCATION)
-         .withNewResourceGroup(resourceGroupCreatable)
-         .definePublicFrontend("primary")
-         .withExistingPublicIpAddress("abc")
-         .attach()
-         .defineBackend("aa")
-         .attach()
-         .defineHttpProbe("httpProbe")
-         .withRequestPath("/")
-         .attach()
-         .defineLoadBalancingRule("")
-         .withProtocol(TransportProtocol.TCP)
-         .withFrontend("primary")
-         .withFrontendPort(80)
-         .withProbe("httpProbe")
-         .withBackend("aa")
-         .attach()
-         **/
-
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
                 .define(VMSCALESETNAME)
                 .withRegion(LOCATION)

@@ -69,7 +69,7 @@ public class VirtualMachineScaleSetsImpl
         VirtualMachineScaleSetNetworkConfigurationInner primaryNetworkInterfaceConfiguration =
                 new VirtualMachineScaleSetNetworkConfigurationInner()
                         .withPrimary(true)
-                        .withName("default")
+                        .withName("primary-nic-cfg")
                         .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfigurationInner>());
         primaryNetworkInterfaceConfiguration
                 .ipConfigurations()
