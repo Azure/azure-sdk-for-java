@@ -8,7 +8,6 @@
 package com.microsoft.rest;
 
 import com.google.common.util.concurrent.AbstractFuture;
-
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -128,6 +127,17 @@ public class ServiceCall<T> extends AbstractFuture<T> {
 
     protected void setSubscription(Subscription subscription) {
         this.subscription = subscription;
+    }
+
+    /**
+     * Invoke this method to report completed, allowing
+     * {@link AbstractFuture#get()} to be unblocked.
+     *
+     * @param result the service response returned.
+     * @return true if successfully reported; false otherwise.
+     */
+    public boolean success(T result) {
+        return set(result);
     }
 
     @Override
