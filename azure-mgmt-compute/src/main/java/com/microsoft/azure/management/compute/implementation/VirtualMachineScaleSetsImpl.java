@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSDisk;
@@ -9,6 +10,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfi
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 
@@ -39,13 +41,58 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl define(String name) {
-        return wrapModel(name);
+    public VirtualMachineScaleSet getByGroup(String groupName, String name) throws CloudException, IOException {
+        return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
-    public VirtualMachineScaleSet getByGroup(String groupName, String name) throws CloudException, IOException {
-        return null;
+    public PagedList<VirtualMachineScaleSet> listByGroup(String groupName) throws CloudException, IOException {
+        return wrapList(this.innerCollection.list(groupName));
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSet> list() throws CloudException, IOException {
+        return wrapList(this.innerCollection.listAll());
+    }
+
+    @Override
+    public void delete(String id) throws Exception {
+        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public void delete(String groupName, String name) throws Exception {
+        this.innerCollection.delete(groupName, name);
+    }
+
+    @Override
+    public void deallocate(String groupName, String name) throws CloudException, IOException, InterruptedException {
+        this.innerCollection.deallocate(groupName, name);
+    }
+
+    @Override
+    public void powerOff(String groupName, String name) throws CloudException, IOException, InterruptedException {
+        this.innerCollection.powerOff(groupName, name);
+    }
+
+    @Override
+    public void restart(String groupName, String name) throws CloudException, IOException, InterruptedException {
+        this.innerCollection.restart(groupName, name);
+    }
+
+    @Override
+    public void start(String groupName, String name) throws CloudException, IOException, InterruptedException {
+        this.innerCollection.start(groupName, name);
+    }
+
+    @Override
+    public void reimage(String groupName, String name) throws CloudException, IOException, InterruptedException {
+        this.innerCollection.reimage(groupName, name);
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl define(String name) {
+        return wrapModel(name);
     }
 
     @Override

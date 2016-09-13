@@ -18,7 +18,7 @@ public class VirtualMachineScaleSetExtensionImpl
         implements
         VirtualMachineScaleSetExtension,
         VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
-        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.Update>,
+        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApplicable>,
         VirtualMachineScaleSetExtension.Update {
 
     private HashMap<String, Object> publicSettings;
