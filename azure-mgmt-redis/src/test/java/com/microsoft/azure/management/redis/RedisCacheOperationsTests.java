@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.*;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
@@ -63,7 +63,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku(2)
-                .withRedisConfiguration("maxclients","2")
+                .withRedisConfiguration("maxclients", "2")
                 .withNonSslPortEnabled();
 
         CreatedResources<RedisCache> batchRedisCaches = redisManager.redisCaches()

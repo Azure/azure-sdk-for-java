@@ -6,7 +6,10 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.*;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;

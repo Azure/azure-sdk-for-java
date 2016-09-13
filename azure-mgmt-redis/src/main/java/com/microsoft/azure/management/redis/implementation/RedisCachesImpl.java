@@ -8,8 +8,8 @@ package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.redis.*;
 import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
@@ -22,9 +22,9 @@ class RedisCachesImpl
         extends GroupableResourcesImpl<
         RedisCache,
         RedisCacheImpl,
-            RedisResourceInner,
-            RedisInner,
-            RedisManager>
+        RedisResourceInner,
+        RedisInner,
+        RedisManager>
         implements RedisCaches {
 
     RedisCachesImpl(

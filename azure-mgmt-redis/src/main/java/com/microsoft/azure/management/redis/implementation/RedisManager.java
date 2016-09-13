@@ -21,6 +21,13 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
     // Collections
     private RedisCaches redisCaches;
 
+    private RedisManager(RestClient restClient, String subscriptionId) {
+        super(
+                restClient,
+                subscriptionId,
+                new RedisManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+    }
+
     /**
      * Get a Configurable instance that can be used to create RedisManager with optional configuration.
      *
@@ -33,7 +40,7 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
     /**
      * Creates an instance of RedisManager that exposes Redis resource management API entry points.
      *
-     * @param credentials the credentials to use
+     * @param credentials    the credentials to use
      * @param subscriptionId the subscription UUID
      * @return the RedisManager
      */
@@ -46,12 +53,24 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
     /**
      * Creates an instance of RedisManager that exposes redis resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
+     * @param restClient     the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
      * @return the RedisManager
      */
     public static RedisManager authenticate(RestClient restClient, String subscriptionId) {
         return new RedisManager(restClient, subscriptionId);
+    }
+
+    /**
+     * @return the Redis Cache management API entry point
+     */
+    public RedisCaches redisCaches() {
+        if (redisCaches == null) {
+            redisCaches = new RedisCachesImpl(
+                    super.innerManagementClient.redis(),
+                    this);
+        }
+        return redisCaches;
     }
 
     /**
@@ -61,7 +80,7 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         /**
          * Creates an instance of RedisManager that exposes Redis management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credentials    the credentials to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing Redis management API entry points that work across subscriptions
          */
@@ -75,24 +94,5 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         public RedisManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
             return RedisManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
-    }
-
-    private RedisManager(RestClient restClient, String subscriptionId) {
-        super(
-                restClient,
-                subscriptionId,
-                new RedisManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
-        }
-
-    /**
-     * @return the Redis Cache management API entry point
-     */
-    public RedisCaches redisCaches() {
-        if (redisCaches == null) {
-            redisCaches = new RedisCachesImpl(
-                    super.innerManagementClient.redis(),
-                    this);
-        }
-        return redisCaches;
     }
 }

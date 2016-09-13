@@ -8,10 +8,10 @@ package com.microsoft.azure.management.redis;
 
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.redis.implementation.RedisManager;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -23,7 +23,7 @@ public abstract class RedisManagementTestBase {
     protected static RedisManager redisManager;
     protected static StorageManager storageManager;
 
-    protected static void createClients(){
+    protected static void createClients() {
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
                 System.getenv("client-id"),
                 System.getenv("domain"),

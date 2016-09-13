@@ -10,7 +10,11 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.*;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -86,9 +90,8 @@ public interface RedisCache extends
 
     /**
      * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
+     * @throws CloudException           exception thrown from REST call
+     * @throws IOException              exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
      */
     RedisAccessKeys keys() throws CloudException, IOException, IllegalArgumentException;
@@ -97,9 +100,8 @@ public interface RedisCache extends
      * Fetch the up-to-date access keys from Azure for this Redis Cache.
      *
      * @return the access keys for this Redis Cache
-     *
      * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IOException    exception thrown from serialization/deserialization
      */
     RedisAccessKeys refreshKeys() throws CloudException, IOException;
 
@@ -109,7 +111,7 @@ public interface RedisCache extends
      * @param keyType key type to regenerate
      * @return the generated access keys for this Redis Cache
      * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IOException    exception thrown from serialization/deserialization
      */
     RedisAccessKeys regenerateKey(RedisKeyType keyType) throws CloudException, IOException;
     /**************************************************************
@@ -120,9 +122,9 @@ public interface RedisCache extends
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate {
+            DefinitionStages.Blank,
+            DefinitionStages.WithGroup,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -148,12 +150,14 @@ public interface RedisCache extends
 
             /**
              * Specifies the Basic sku of the Redis Cache.
+             *
              * @return the next stage of Redis Cache definition.
              */
             WithCreate withBasicSku();
 
             /**
              * Specifies the Basic sku of the Redis Cache.
+             *
              * @param capacity specifies what size of Redis Cache to deploy for Basic sku with C family (0, 1, 2, 3, 4, 5, 6).
              * @return the next stage of Redis Cache definition.
              */
@@ -161,12 +165,14 @@ public interface RedisCache extends
 
             /**
              * Specifies the Standard Sku of the Redis Cache.
+             *
              * @return the next stage of Redis Cache definition.
              */
             WithCreate withStandardSku();
 
             /**
              * Specifies the Standard sku of the Redis Cache.
+             *
              * @param capacity specifies what size of Redis Cache to deploy for Standard sku with C family (0, 1, 2, 3, 4, 5, 6).
              * @return the next stage of Redis Cache definition.
              */
@@ -174,12 +180,14 @@ public interface RedisCache extends
 
             /**
              * Specifies the Premium sku of the Redis Cache.
+             *
              * @return the next stage of Redis Cache definition.
              */
             WithCreate withPremiumSku();
 
             /**
              * Specifies the Premium sku of the Redis Cache.
+             *
              * @param capacity specifies what size of Redis Cache to deploy for Standard sku with P family (1, 2, 3, 4).
              * @return the next stage of Redis Cache definition.
              */
@@ -192,18 +200,20 @@ public interface RedisCache extends
          * specify.
          */
         interface WithCreate extends
-            Creatable<RedisCache>,
-            DefinitionStages.WithSku,
-            DefinitionWithTags<WithCreate> {
+                Creatable<RedisCache>,
+                DefinitionStages.WithSku,
+                DefinitionWithTags<WithCreate> {
 
             /**
              * Enables non-ssl Redis server port (6379).
+             *
              * @return the next stage of Redis Cache definition.
              */
             WithCreate withNonSslPortEnabled();
 
             /**
              * Disables non-ssl Redis server port (6379).
+             *
              * @return the next stage of Redis Cache definition.
              */
             WithCreate withNonSslPortDisabled();
@@ -214,10 +224,11 @@ public interface RedisCache extends
              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
+             *
              * @param redisConfiguration configuration of Redis Cache as a map indexed by configuration name
              * @return the next stage of Redis Cache definition.
              */
-            WithCreate withRedisConfiguration(Map<String,String> redisConfiguration);
+            WithCreate withRedisConfiguration(Map<String, String> redisConfiguration);
 
             /**
              * Specifies Redis Setting.
@@ -225,7 +236,8 @@ public interface RedisCache extends
              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
-             * @param key Redis configuration name.
+             *
+             * @param key   Redis configuration name.
              * @param value Redis configuration value.
              * @return the next stage of Redis Cache definition.
              */
@@ -269,6 +281,7 @@ public interface RedisCache extends
 
             /**
              * Updates Redis Cache to Basic sku with new capacity.
+             *
              * @param capacity specifies what size of Redis Cache to update to for Basic sku with C family (0, 1, 2, 3, 4, 5, 6).
              * @return the next stage of Redis Cache update.
              */
@@ -276,12 +289,14 @@ public interface RedisCache extends
 
             /**
              * Updates Redis Cache to Standard sku.
+             *
              * @return the next stage of Redis Cache update.
              */
             Update withStandardSku();
 
             /**
              * Updates Redis Cache to Standard sku with new capacity.
+             *
              * @param capacity specifies what size of Redis Cache to update to for Standard sku with C family (0, 1, 2, 3, 4, 5, 6).
              * @return the next stage of Redis Cache update.
              */
@@ -289,12 +304,14 @@ public interface RedisCache extends
 
             /**
              * Updates Redis Cache to Premium sku.
+             *
              * @return the next stage of Redis Cache update.
              */
             Update withPremiumSku();
 
             /**
              * Updates Redis Cache to Premium sku with new capacity.
+             *
              * @param capacity specifies what size of Redis Cache to update to for Premium sku with P family (1, 2, 3, 4).
              * @return the next stage of Redis Cache update.
              */
@@ -307,12 +324,14 @@ public interface RedisCache extends
         interface WithNonSslPort {
             /**
              * Enables non-ssl Redis server port (6379).
+             *
              * @return the next stage of Redis Cache update.
              */
             Update withNonSslPortEnabled();
 
             /**
              * Disables non-ssl Redis server port (6379).
+             *
              * @return the next stage of Redis Cache update.
              */
             Update withNonSslPortDisabled();
@@ -328,10 +347,11 @@ public interface RedisCache extends
              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
+             *
              * @param redisConfiguration configuration of Redis Cache as a map indexed by configuration name
              * @return the next stage of Redis Cache update.
              */
-            Update withRedisConfiguration(Map<String,String> redisConfiguration);
+            Update withRedisConfiguration(Map<String, String> redisConfiguration);
 
             /**
              * Specifies Redis Setting.
@@ -339,20 +359,23 @@ public interface RedisCache extends
              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
-             * @param key Redis configuration name.
+             *
+             * @param key   Redis configuration name.
              * @param value Redis configuration value.
              * @return the next stage of Redis Cache update.
              */
             Update withRedisConfiguration(String key, String value);
 
             /**
-             * Cleans all the configuration settings being set on Redis Cache
+             * Cleans all the configuration settings being set on Redis Cache.
+             *
              * @return the next stage of Redis Cache update.
              */
             Update withoutRedisConfiguration();
 
             /**
              * Removes specified Redis Cache configuration setting.
+             *
              * @param key Redis configuration name.
              * @return the next stage of Redis Cache update.
              */
