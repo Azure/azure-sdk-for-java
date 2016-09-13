@@ -49,8 +49,8 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 authEnv = new AzureEnvironment(
                         "https://login.windows-ppe.net/",
                         "https://management.core.windows.net/",
-                        true,
-                        "https://api-dogfood.resources.windows-int.net");
+                        "https://api-dogfood.resources.windows-int.net",
+                        "https://graph.windows.net");
                 break;
             case "test":
                 armUri = "https://api-dogfood.resources.windows-int.net";
@@ -59,8 +59,8 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 authEnv = new AzureEnvironment(
                         "https://login.windows-ppe.net/",
                         "https://management.core.windows.net/",
-                        true,
-                        "https://api-dogfood.resources.windows-int.net");
+                        "https://api-dogfood.resources.windows-int.net",
+                        "https://graph.windows.net");
                 break;
             default: // default to production
                 armUri = "https://management.azure.com";
@@ -74,7 +74,6 @@ public abstract class DataLakeAnalyticsManagementTestBase {
                 System.getenv("arm.domain"),
                 System.getenv("arm.username"),
                 System.getenv("arm.password"),
-                null,
                 authEnv);
 
         RestClient restClient = new RestClient.Builder()

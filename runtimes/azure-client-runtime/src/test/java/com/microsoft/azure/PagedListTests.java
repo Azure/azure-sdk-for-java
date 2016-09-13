@@ -21,11 +21,11 @@ public class PagedListTests {
 
     @Before
     public void setupList() {
-        list = new PagedList<Integer>(new TestPage(0, 20)) {
+        list = new PagedList<Integer>(new TestPage(0, 21)) {
             @Override
             public Page<Integer> nextPage(String nextPageLink) throws CloudException, IOException {
                 int pageNum = Integer.parseInt(nextPageLink);
-                return new TestPage(pageNum, 20);
+                return new TestPage(pageNum, 21);
             }
         };
     }
@@ -119,9 +119,13 @@ public class PagedListTests {
 
         @Override
         public List<Integer> getItems() {
-            List<Integer> items = new ArrayList<>();
-            items.add(page);
-            return items;
+            if (page + 1 != max) {
+                List<Integer> items = new ArrayList<>();
+                items.add(page);
+                return items;
+            } else {
+                return new ArrayList<>();
+            }
         }
     }
 }
