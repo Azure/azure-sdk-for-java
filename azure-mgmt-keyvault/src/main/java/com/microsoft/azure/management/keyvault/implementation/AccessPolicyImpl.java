@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
-import com.microsoft.azure.management.graphrbac.Group;
+import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
@@ -155,7 +155,7 @@ class AccessPolicyImpl
     }
 
     @Override
-    public AccessPolicyImpl forGroup(Group group) {
+    public AccessPolicyImpl forGroup(ActiveDirectoryGroup group) {
         inner().withObjectId(UUID.fromString(group.objectId()));
         return this;
     }

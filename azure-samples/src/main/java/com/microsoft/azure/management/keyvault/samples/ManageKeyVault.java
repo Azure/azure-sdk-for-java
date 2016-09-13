@@ -97,8 +97,8 @@ public final class ManageKeyVault {
                 System.out.println("Update a key vault to enable deployments and add permissions to the application...");
 
                 vault1 = vault1.update()
-                        .enableDeployment()
-                        .enableTemplateDeployment()
+                        .withDeploymentEnabled()
+                        .withTemplateDeploymentEnabled()
                         .updateAccessPolicy(vault1.accessPolicies().get(0).objectId())
                             .allowSecretAllPermissions()
                             .parent()

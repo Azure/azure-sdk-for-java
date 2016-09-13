@@ -18,8 +18,8 @@ import java.util.List;
  * Entry point to AD group management API.
  */
 public interface Groups extends
-        SupportsCreating<Group.DefinitionStages.Blank>,
-        SupportsListing<Group>,
+        SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
+        SupportsListing<ActiveDirectoryGroup>,
         SupportsDeleting {
     /**
      * Gets the information about a group.
@@ -29,7 +29,7 @@ public interface Groups extends
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    Group getByObjectId(String objectId) throws CloudException, IOException;
+    ActiveDirectoryGroup getByObjectId(String objectId) throws CloudException, IOException;
 
     /**
      * Gets the information about a group.
@@ -39,5 +39,5 @@ public interface Groups extends
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    List<Group> searchByDisplayName(String displayNamePrefix) throws CloudException, IOException;
+    List<ActiveDirectoryGroup> searchByDisplayName(String displayNamePrefix) throws CloudException, IOException;
 }

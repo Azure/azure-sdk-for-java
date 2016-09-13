@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an Azure AD group.
  */
-public interface Group extends
+public interface ActiveDirectoryGroup extends
         Wrapper<ADGroupInner> {
     /**
      * @return object Id.
@@ -96,7 +96,7 @@ public interface Group extends
          * specify.
          */
         interface WithCreate extends
-                Creatable<Group> {
+                Creatable<ActiveDirectoryGroup> {
         }
     }
 
