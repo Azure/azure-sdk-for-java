@@ -2,13 +2,14 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachinePublishers;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+
 import java.io.IOException;
 
 /**
@@ -35,11 +36,7 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<VirtualMachinePublisher, VirtualMachineOffer>() {
                     @Override
                     public PagedList<VirtualMachineOffer> loadList(VirtualMachinePublisher publisher) throws CloudException, IOException  {
-                        try {
-                            return publisher.offers().list();
-                        } catch (com.microsoft.rest.RestException e) {
-                            e.printStackTrace();
-                        }
+                        return publisher.offers().list();
                     }
                 }).flatten();
 
@@ -47,11 +44,7 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(offers, new ChildListFlattener.ChildListLoader<VirtualMachineOffer, VirtualMachineSku>() {
                     @Override
                     public PagedList<VirtualMachineSku> loadList(VirtualMachineOffer offer) throws CloudException, IOException  {
-                        try {
-                            return offer.skus().list();
-                        } catch (com.microsoft.rest.RestException e) {
-                            e.printStackTrace();
-                        }
+                        return offer.skus().list();
                     }
                 }).flatten();
 
@@ -59,11 +52,7 @@ class VirtualMachineImagesImpl
                 new ChildListFlattener<>(skus, new ChildListFlattener.ChildListLoader<VirtualMachineSku, VirtualMachineImage>() {
                     @Override
                     public PagedList<VirtualMachineImage> loadList(VirtualMachineSku sku) throws CloudException, IOException  {
-                        try {
-                            return sku.images().list();
-                        } catch (com.microsoft.rest.RestException e) {
-                            e.printStackTrace();
-                        }
+                        return sku.images().list();
                     }
                 }).flatten();
 

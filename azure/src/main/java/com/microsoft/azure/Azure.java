@@ -30,8 +30,8 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
+import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -260,10 +260,7 @@ public final class Azure {
             if (this.defaultSubscription != null) {
                 return withSubscription(this.defaultSubscription);
             } else {
-                try {PagedList<Subscription> subs = this.subscriptions().list();
-                } catch (com.microsoft.rest.RestException e) {
-                    e.printStackTrace();
-                }
+                PagedList<Subscription> subs = this.subscriptions().list();
                 if (!subs.isEmpty()) {
                     return withSubscription(subs.get(0).subscriptionId());
                 } else {

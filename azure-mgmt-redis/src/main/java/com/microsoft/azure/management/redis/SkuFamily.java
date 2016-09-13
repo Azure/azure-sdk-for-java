@@ -8,11 +8,12 @@
 
 package com.microsoft.azure.management.redis;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for SkuFamily.
  */
 public final class SkuFamily {
-<<<<<<< 1d9c0c339ddb625c8c18b60f5f1f76db20d3729c:azure-mgmt-redis/src/main/java/com/microsoft/azure/management/redis/SkuFamily.java
     /** Static value C for SkuFamily. */
     public static final SkuFamily C = new SkuFamily("C");
 
@@ -39,11 +40,20 @@ public final class SkuFamily {
     public int hashCode() {
         return value.hashCode();
     }
-=======
-    /** Static value A for SkuFamily. */
-    public static final String A = "A";
->>>>>>> Basic impl for vault:azure-mgmt-keyvault/src/main/java/com/microsoft/azure/management/keyvault/SkuFamily.java
 
-    private SkuFamily() {
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SkuFamily)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        SkuFamily rhs = (SkuFamily) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }
