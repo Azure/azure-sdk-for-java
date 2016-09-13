@@ -147,6 +147,31 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public void deallocate() throws CloudException, IOException, InterruptedException {
+        this.client.deallocate(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void powerOff() throws CloudException, IOException, InterruptedException {
+        this.client.powerOff(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void restart() throws CloudException, IOException, InterruptedException {
+        this.client.restart(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void start() throws CloudException, IOException, InterruptedException {
+        this.client.start(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void reimage() throws CloudException, IOException, InterruptedException {
+        this.client.reimage(this.resourceGroupName(), this.name());
+    }
+
+    @Override
     public String computerNamePrefix() {
         return this.inner().virtualMachineProfile().osProfile().computerNamePrefix();
     }

@@ -37,6 +37,55 @@ public interface VirtualMachineScaleSet extends
      */
     PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException;
 
+    /**
+     * Shuts down the Virtual Machine in the scale set and releases the compute resources.
+     * <p>
+     * You are not billed for the compute resources that the Virtual Machines uses
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void deallocate() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Power off (stop) the virtual machines in the scale set.
+     * <p>
+     * You will be billed for the compute resources that the Virtual Machines uses.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void powerOff() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Restart the virtual machines in the scale set.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void restart() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Start the virtual machines  in the scale set.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void start() throws CloudException, IOException, InterruptedException;
+
+    /**
+     * Re-image (update the version of the installed operating system) the virtual machines in the scale set.
+     *
+     * @throws CloudException thrown for an invalid response from the service.
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws InterruptedException exception thrown when the operation is interrupted
+     */
+    void reimage() throws CloudException, IOException, InterruptedException;
+
     // Getters
     //
 
