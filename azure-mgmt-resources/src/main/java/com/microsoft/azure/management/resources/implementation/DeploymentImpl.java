@@ -281,7 +281,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl create() throws Exception {
+    public DeploymentImpl create() {
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }

@@ -27,9 +27,8 @@ public interface Creatable<T> extends Indexable {
      * Execute the create request.
      *
      * @return the create resource
-     * @throws Exception exceptions from Azure
      */
-    T create() throws Exception;
+    T create();
 
     /**
      * Puts the request into the queue and allow the HTTP client to execute

@@ -117,7 +117,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResourceImpl create() throws Exception {
+    public GenericResourceImpl create() {
         createResource();
         return this;
     }

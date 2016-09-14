@@ -297,7 +297,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public CreatableResourcesRoot<ResourceT> createResource() throws Exception {
+        public CreatableResourcesRoot<ResourceT> createResource() {
             return this;
         }
 
