@@ -7,6 +7,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -17,6 +18,7 @@ import java.io.IOException;
 /**
  * The implementation for {@link VirtualMachineSizes}.
  */
+@LangDefinition
 class VirtualMachineSizesImpl
         extends ReadableWrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
         implements VirtualMachineSizes {

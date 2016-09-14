@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Entry point to generic resources management API.
  */
+@LangDefinition(ContainerName = "~/")
 public interface GenericResources extends
         SupportsListingByGroup<GenericResource>,
         SupportsGettingById<GenericResource>,

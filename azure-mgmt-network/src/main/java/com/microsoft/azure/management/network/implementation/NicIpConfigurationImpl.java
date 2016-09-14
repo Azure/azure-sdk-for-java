@@ -2,6 +2,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
  */
+@LangDefinition()
 class NicIpConfigurationImpl
         extends
             ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl>

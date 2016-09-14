@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceResponse;
@@ -16,6 +17,7 @@ import java.io.IOException;
 /**
  * Entry point to providers management API.
  */
+@LangDefinition(ContainerName = "~/")
 public interface Providers extends
         SupportsListing<Provider>,
         SupportsGettingByName<Provider> {
