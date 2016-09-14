@@ -81,7 +81,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
         try {
             // Create a key on a vault.
             CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build();
-            KeyBundle         keyBundle = keyVaultClient.createKey(request).getBody();
+            KeyBundle         keyBundle = keyVaultClient.createKey(request);
             
             try
             {
@@ -116,7 +116,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request        = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle   = keyVaultClient.setSecret(request).getBody();
+             SecretBundle     secretBundle   = keyVaultClient.setSecret(request);
     
              if ( secretBundle != null )
              {
@@ -176,7 +176,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle = keyVaultClient.setSecret( request ).getBody();
+             SecretBundle     secretBundle = keyVaultClient.setSecret( request );
     
              if ( secretBundle != null )
              {
@@ -249,7 +249,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle = keyVaultClient.setSecret( request ).getBody();
+             SecretBundle     secretBundle = keyVaultClient.setSecret( request );
     
              if ( secretBundle != null )
              {

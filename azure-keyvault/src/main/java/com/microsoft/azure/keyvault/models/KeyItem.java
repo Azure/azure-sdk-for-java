@@ -111,17 +111,6 @@ public class KeyItem {
     }
 
     /**
-     * Set the managed value.
-     *
-     * @param managed the managed value to set
-     * @return the KeyItem object itself.
-     */
-    public KeyItem withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
      * The key identifier.
      * @return The Identifier value
      */
