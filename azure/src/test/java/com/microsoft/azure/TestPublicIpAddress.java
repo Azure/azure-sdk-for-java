@@ -47,7 +47,11 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
     }
 
     @Override
-    public void print(PublicIpAddress resource) {
+    public void print(PublicIpAddress pip) {
+        TestPublicIpAddress.printPIP(pip);
+    }
+
+    public static void printPIP(PublicIpAddress resource) {
         System.out.println(new StringBuilder().append("Public IP Address: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
