@@ -1,19 +1,7 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.cryptography;
@@ -78,19 +66,19 @@ public class SymmetricKey implements IKey {
 
         switch (_key.length) {
         case KeySize128:
-            return Aes128Cbc.AlgorithmName;
+            return Aes128Cbc.ALGORITHM_NAME;
 
         case KeySize192:
-            return Aes192Cbc.AlgorithmName;
+            return Aes192Cbc.ALGORITHM_NAME;
 
         case KeySize256:
-            return Aes128CbcHmacSha256.AlgorithmName;
+            return Aes128CbcHmacSha256.ALGORITHM_NAME;
 
         case KeySize384:
-            return Aes192CbcHmacSha384.AlgorithmName;
+            return Aes192CbcHmacSha384.ALGORITHM_NAME;
 
         case KeySize512:
-            return Aes256CbcHmacSha512.AlgorithmName;
+            return Aes256CbcHmacSha512.ALGORITHM_NAME;
         }
 
         return null;
@@ -101,21 +89,21 @@ public class SymmetricKey implements IKey {
 
         switch (_key.length) {
         case KeySize128:
-            return AesKw128.AlgorithmName;
+            return AesKw128.ALGORITHM_NAME;
 
         case KeySize192:
-            return AesKw192.AlgorithmName;
+            return AesKw192.ALGORITHM_NAME;
 
         case KeySize256:
-            return AesKw256.AlgorithmName;
+            return AesKw256.ALGORITHM_NAME;
 
         case KeySize384:
             // Default to longest allowed key length for wrap
-            return AesKw256.AlgorithmName;
+            return AesKw256.ALGORITHM_NAME;
 
         case KeySize512:
             // Default to longest allowed key length for wrap
-            return AesKw256.AlgorithmName;
+            return AesKw256.ALGORITHM_NAME;
         }
 
         return null;

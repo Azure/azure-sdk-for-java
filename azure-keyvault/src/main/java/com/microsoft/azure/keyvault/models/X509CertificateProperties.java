@@ -23,7 +23,7 @@ public class X509CertificateProperties {
     private String subject;
 
     /**
-     * The enhaunced key usage.
+     * The enhanced key usage.
      */
     private List<String> ekus;
 
@@ -40,7 +40,7 @@ public class X509CertificateProperties {
     private List<KeyUsageType> keyUsage;
 
     /**
-     * The subject alternate names.
+     * The duration that the ceritifcate is valid in months.
      */
     @JsonProperty(value = "validity_months")
     private Integer validityInMonths;

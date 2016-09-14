@@ -29,6 +29,16 @@ public class KeyVaultErrorException extends RestException {
      * Initializes a new instance of the KeyVaultErrorException class.
      */
     public KeyVaultErrorException() { }
+    
+    @Override
+    public String getMessage() {
+        if (body != null && body.error() != null
+                && body.error().message() != null
+                && !body.error().message().isEmpty()) {
+            return body.error().message();
+        }
+        return super.getMessage();
+    }
     /**
      * Initializes a new instance of the KeyVaultErrorException class.
      *
