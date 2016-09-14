@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * Represents a virtual machine image offer.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineOffer {
     /**
      * @return the region where this virtual machine image offer is available

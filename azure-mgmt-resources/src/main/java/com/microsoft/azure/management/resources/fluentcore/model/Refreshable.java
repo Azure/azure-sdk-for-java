@@ -13,7 +13,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
  *
  * @param <T> the fluent type of the resource
  */
-@LangDefinition(ContainerName="ResourceActions")
+@LangDefinition(ContainerName = "ResourceActions")
 public interface Refreshable<T> {
     /**
      * Refreshes the resource to sync with Azure.

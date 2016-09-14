@@ -13,7 +13,7 @@ import com.microsoft.azure.management.storage.implementation.UsageInner;
 /**
  * An immutable client-side representation of an Azure storage resource usage info object.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface StorageUsage extends Wrapper<UsageInner> {
     /**
      * @return the unit of measurement. Possible values include: 'Count',

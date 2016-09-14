@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
 /**
  * An immutable client-side representation of a deployment operation.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface DeploymentOperation extends
         Indexable,
         Refreshable<DeploymentOperation>,

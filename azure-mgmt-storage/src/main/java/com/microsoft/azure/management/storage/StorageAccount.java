@@ -106,7 +106,7 @@ public interface StorageAccount extends
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    @LangMethodDefinition(AsType=LangMethodType.Method)
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> keys() throws CloudException, IOException;
 
     /**
@@ -117,7 +117,7 @@ public interface StorageAccount extends
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    @LangMethodDefinition(AsType=LangMethodType.Method)
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> refreshKeys() throws CloudException, IOException;
 
     /**
@@ -128,7 +128,7 @@ public interface StorageAccount extends
      * @throws CloudException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      */
-    @LangMethodDefinition(AsType=LangMethodType.Method)
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException;
 
     /**************************************************************
@@ -138,7 +138,7 @@ public interface StorageAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName="~/StorageAccount.Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -149,7 +149,7 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account definition stages.
      */
-    @LangDefinition(ContainerName="~/StorageAccount.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the storage account definition.
@@ -283,7 +283,7 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account update stages.
      */
-    @LangDefinition(ContainerName="~/StorageAccount.Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A storage account update stage allowing to change the parameters.
@@ -371,7 +371,7 @@ public interface StorageAccount extends
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName="~/StorageAccount.Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<StorageAccount>,
             UpdateStages.WithSku,

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
  *
  * (Note: this interface is not intended to be implemented by user code)
  */
-@LangDefinition(ContainerName="CollectionActions", CreateAsyncMethods=true, MethodConversionType=MethodConversion.OnlyMethod)
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsDeletingByGroup {
     /**
      * Deletes a resource from Azure, identifying it by its name and its resource group.

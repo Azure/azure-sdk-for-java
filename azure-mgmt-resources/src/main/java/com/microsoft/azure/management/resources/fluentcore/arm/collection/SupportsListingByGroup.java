@@ -20,7 +20,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the resources listed.
  */
-@LangDefinition(ContainerName="CollectionActions", CreateAsyncMethods=true, MethodConversionType=MethodConversion.OnlyMethod)
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsListingByGroup<T> {
     /**
      * Lists resources of the specified type in the specified resource group.

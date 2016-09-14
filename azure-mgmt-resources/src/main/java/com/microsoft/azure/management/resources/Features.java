@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Entry point to features management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Features extends
         SupportsListing<Feature> {
     /**
@@ -30,7 +30,7 @@ public interface Features extends
     /**
      * Entry point to features management API in a specific resource provider.
      */
-    @LangDefinition(ContainerName="~/Feature")
+    @LangDefinition(ContainerName = "~/Feature")
     interface InResourceProvider extends
             SupportsListing<Feature>,
             SupportsGettingByName<Feature> {

@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to tenant management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Tenants extends
         SupportsListing<Tenant> {
 }

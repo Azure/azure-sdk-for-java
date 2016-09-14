@@ -5,6 +5,6 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to virtual machine sku images.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineImagesInSku extends SupportsListing<VirtualMachineImage> {
 }

@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Entry point to resource group management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface ResourceGroups extends
         SupportsListing<ResourceGroup>,
         SupportsGettingByName<ResourceGroup>,

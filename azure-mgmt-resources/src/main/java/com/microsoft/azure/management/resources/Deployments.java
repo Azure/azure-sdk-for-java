@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * Entry point to template deployment in Azure.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Deployments extends
         SupportsCreating<Deployment.DefinitionStages.Blank>,
         SupportsListing<Deployment>,

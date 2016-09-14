@@ -13,7 +13,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
  * <p>
  * (Note: this interface is not intended to be implemented by user code)
  */
-@LangDefinition(ContainerName="CollectionActions", CreateAsyncMethods=true)
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true)
 public interface SupportsDeleting {
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.

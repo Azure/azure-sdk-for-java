@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to availability set management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface AvailabilitySets extends
         SupportsListingByGroup<AvailabilitySet>,
         SupportsGettingByGroup<AvailabilitySet>,

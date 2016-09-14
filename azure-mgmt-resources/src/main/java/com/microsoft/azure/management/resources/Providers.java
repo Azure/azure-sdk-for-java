@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Entry point to providers management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Providers extends
         SupportsListing<Provider>,
         SupportsGettingByName<Provider> {

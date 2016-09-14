@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  *  Entry point to virtual machine management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachines extends
         SupportsListing<VirtualMachine>,
         SupportsListingByGroup<VirtualMachine>,

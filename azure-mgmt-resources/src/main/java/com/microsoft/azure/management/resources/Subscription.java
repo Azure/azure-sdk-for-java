@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * An immutable client-side representation of an Azure subscription.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Subscription extends
         Indexable,
         Wrapper<SubscriptionInner> {

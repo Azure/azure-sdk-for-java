@@ -53,7 +53,7 @@ public interface NetworkSecurityGroup extends
     /**
      * The entirety of the network security group definition.
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -63,7 +63,7 @@ public interface NetworkSecurityGroup extends
     /**
      * Grouping of network security group definition stages.
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the definition.
@@ -109,7 +109,7 @@ public interface NetworkSecurityGroup extends
     /**
      * Grouping of network security group update stages.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the resource definition allowing to add or remove security rules.
@@ -144,7 +144,7 @@ public interface NetworkSecurityGroup extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<NetworkSecurityGroup>,
         Resource.UpdateWithTags<Update>,

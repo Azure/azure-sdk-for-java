@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * Represents a virtual machine image publisher.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachinePublisher {
     /**
      * @return the region where virtual machine images from this publisher is available

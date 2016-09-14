@@ -14,7 +14,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
  * Implementations of this class can let users browse resources inside a
  * specific resource group.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface ResourceConnector {
     /**
      * Implementations of this interface defines how to create a connector.

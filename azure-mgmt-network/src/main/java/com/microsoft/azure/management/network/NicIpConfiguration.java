@@ -62,7 +62,7 @@ public interface NicIpConfiguration extends
      * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -75,7 +75,7 @@ public interface NicIpConfiguration extends
      * Grouping of network interface IP configuration definition stages applicable as part of a
      * network interface update.
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -222,7 +222,7 @@ public interface NicIpConfiguration extends
     /** The entirety of a network interface IP configuration definition as part of a network interface update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName="UpdateDefinition", ContainerFileName="IUpdateDefinition")
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
@@ -235,7 +235,7 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration definition stages.
      */
-    @LangDefinition(ContainerName="UpdateDefinition", ContainerFileName="IUpdateDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -382,7 +382,7 @@ public interface NicIpConfiguration extends
     /**
      * The entirety of a network interface IP configuration update as part of a network interface update.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
@@ -395,7 +395,7 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration update stages.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network interface IP configuration update allowing to specify subnet.

@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to virtual machine image publishers.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachinePublishers extends SupportsListingByRegion<VirtualMachinePublisher> {
 }
 

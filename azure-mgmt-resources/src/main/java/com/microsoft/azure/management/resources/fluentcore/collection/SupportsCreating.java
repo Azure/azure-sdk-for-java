@@ -16,7 +16,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
  * (Note: this interface is not intended to be implemented by user code)
  * @param <T> the initial blank definition interface
  */
-@LangDefinition(ContainerName="CollectionActions", MethodConversionType=MethodConversion.OnlyMethod)
+@LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsCreating<T> {
     /**
      * Begins a definition for a new resource.

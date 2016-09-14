@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to deployment operation management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface DeploymentOperations extends
         SupportsListing<DeploymentOperation>,
         SupportsGettingById<DeploymentOperation> {

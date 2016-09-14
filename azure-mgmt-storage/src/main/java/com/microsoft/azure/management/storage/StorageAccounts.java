@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * Entry point for storage accounts management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface StorageAccounts extends
         SupportsListing<StorageAccount>,
         SupportsCreating<StorageAccount.DefinitionStages.Blank>,

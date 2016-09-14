@@ -14,7 +14,6 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.RestClient;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;

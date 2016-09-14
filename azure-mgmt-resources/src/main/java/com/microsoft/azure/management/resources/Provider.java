@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure resource provider.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Provider extends
         Indexable,
         Wrapper<ProviderInner> {

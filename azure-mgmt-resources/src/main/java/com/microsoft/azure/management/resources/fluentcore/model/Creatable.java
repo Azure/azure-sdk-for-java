@@ -16,7 +16,7 @@ import rx.Observable;
  *
  * @param <T> the fluent type of the resource to be created
  */
-@LangDefinition(ContainerName="ResourceActions", CreateAsyncMultiThreadMethodParam=true)
+@LangDefinition(ContainerName = "ResourceActions", CreateAsyncMultiThreadMethodParam = true)
 public interface Creatable<T> extends Indexable {
     /**
      * @return the name of the creatable resource.

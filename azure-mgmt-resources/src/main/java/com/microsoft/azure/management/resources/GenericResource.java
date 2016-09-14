@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.implementation.GenericResourceIn
 /**
  * An immutable client-side representation of an Azure generic resource.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
@@ -58,7 +58,7 @@ public interface GenericResource extends
     /**
      * The entirety of the generic resource definition.
      */
-    @LangDefinition(ContainerName="~/GenericResource.Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "~/GenericResource.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -73,7 +73,7 @@ public interface GenericResource extends
     /**
      * Grouping of generic resource definition stages.
      */
-    @LangDefinition(ContainerName="~/GenericResource.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/GenericResource.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * A generic resource definition allowing region to be specified.
@@ -184,7 +184,7 @@ public interface GenericResource extends
     /**
      * Grouping of generic resource update stages.
      */
-    @LangDefinition(ContainerName="~/GenericResource.Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/GenericResource.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A generic resource update allowing to change the resource properties.
@@ -252,7 +252,7 @@ public interface GenericResource extends
     /**
      * The template for a generic resource update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName="~/GenericResource.Update")
+    @LangDefinition(ContainerName = "~/GenericResource.Update")
     interface Update extends
             Appliable<GenericResource>,
             UpdateStages.WithPlan,

@@ -70,7 +70,7 @@ public interface LoadBalancer extends
     /**
      * The entirety of the load balancer definition.
      */
-    @LangDefinition(ContainerName="~/LoadBalancer.Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "~/LoadBalancer.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -90,7 +90,7 @@ public interface LoadBalancer extends
     /**
      * Grouping of load balancer definition stages.
      */
-    @LangDefinition(ContainerName="~/LoadBalancer.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/LoadBalancer.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a load balancer definition.
@@ -389,7 +389,7 @@ public interface LoadBalancer extends
     /**
      * Grouping of load balancer update stages.
      */
-    @LangDefinition(ContainerName="~/LoadBalancer.Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/LoadBalancer.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the load balancer update allowing to add or remove backends.
@@ -649,7 +649,7 @@ public interface LoadBalancer extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName="~/LoadBalancer.Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "~/LoadBalancer.Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<LoadBalancer>,
         Resource.UpdateWithTags<Update>,

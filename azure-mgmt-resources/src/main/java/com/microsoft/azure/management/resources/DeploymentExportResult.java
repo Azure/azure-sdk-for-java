@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.implementation.DeploymentExportR
 /**
  * An immutable client-side representation of an Azure deployment template export result.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface DeploymentExportResult extends
         Wrapper<DeploymentExportResultInner> {
 

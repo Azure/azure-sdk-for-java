@@ -8,7 +8,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
  *
  * @param <ParentT> the parent definition {@link Settable#parent()} returns to
  */
-@LangDefinition(ContainerName="ChildResourceActions")
+@LangDefinition(ContainerName = "ChildResourceActions")
 public interface Settable<ParentT> {
     /**
      * Begins an update for a child resource.

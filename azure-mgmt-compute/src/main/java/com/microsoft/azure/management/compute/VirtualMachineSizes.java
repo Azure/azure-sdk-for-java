@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  *  Entry point to virtual machine sizes API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineSizes extends
         SupportsListingByRegion<VirtualMachineSize> {
 }

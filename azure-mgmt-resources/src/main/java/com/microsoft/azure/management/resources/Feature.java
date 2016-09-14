@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.implementation.FeatureResultInne
 /**
  * An immutable client-side representation of an Azure feature.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Feature extends
         Indexable,
         Wrapper<FeatureResultInner> {

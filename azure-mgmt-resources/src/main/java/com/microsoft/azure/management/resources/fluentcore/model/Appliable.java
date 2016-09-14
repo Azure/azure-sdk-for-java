@@ -16,7 +16,7 @@ import rx.Observable;
  *
  * @param <T> the type of the resource returned from the update.
  */
-@LangDefinition(ContainerName="ResourceActions", CreateAsyncMultiThreadMethodParam=true)
+@LangDefinition(ContainerName = "ResourceActions", CreateAsyncMultiThreadMethodParam = true)
 public interface Appliable<T> extends Indexable {
     /**
      * Execute the update request.

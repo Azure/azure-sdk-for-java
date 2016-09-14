@@ -18,7 +18,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the resource collection
  */
-@LangDefinition(ContainerName="CollectionActions", CreateAsyncMethods=true, MethodConversionType=MethodConversion.OnlyMethod)
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsGettingByName<T> {
     /**
      * Gets the information about a resource from Azure based on the resource name within the current resource group.

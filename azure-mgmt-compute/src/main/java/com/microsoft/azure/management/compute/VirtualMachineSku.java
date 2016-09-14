@@ -11,7 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * Represents a virtual machine image SKU.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineSku {
     /**
      * @return the region where this virtual machine image offer SKU is available

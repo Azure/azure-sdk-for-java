@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure deployment.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Deployment extends
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
@@ -101,7 +101,7 @@ public interface Deployment extends
     /**
      * @return the operations related to this deployment
      */
-    @LangMethodDefinition(AsType=LangMethodType.Property)
+    @LangMethodDefinition(AsType = LangMethodType.Property)
     DeploymentOperations deploymentOperations();
 
     /**
@@ -124,7 +124,7 @@ public interface Deployment extends
     /**
      * Container interface for all the deployment definitions.
      */
-    @LangDefinition(ContainerName="~/Deployment.Definition")
+    @LangDefinition(ContainerName = "~/Deployment.Definition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -137,7 +137,7 @@ public interface Deployment extends
     /**
      * Grouping of all the deployment definition stages.
      */
-    @LangDefinition(ContainerName="~/Deployment.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/Deployment.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of deployment definition.
@@ -251,7 +251,7 @@ public interface Deployment extends
     /**
      * Grouping of all the deployment updates stages.
      */
-    @LangDefinition(ContainerName="~/Deployment.Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/Deployment.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A deployment update allowing to change the deployment mode.
@@ -335,7 +335,7 @@ public interface Deployment extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
      */
-    @LangDefinition(ContainerName="~/Deployment.Update")
+    @LangDefinition(ContainerName = "~/Deployment.Update")
     interface Update extends
             Appliable<Deployment>,
             UpdateStages.WithTemplate,

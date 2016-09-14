@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure virtual machine image.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineImage extends
         Wrapper<VirtualMachineImageInner> {
     /**

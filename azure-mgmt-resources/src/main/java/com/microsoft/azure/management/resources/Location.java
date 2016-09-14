@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.implementation.LocationInner;
 /**
  * An immutable client-side representation of an Azure location.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Location extends
         Indexable,
         Wrapper<LocationInner> {

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Entry point to generic resources management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface GenericResources extends
         SupportsListingByGroup<GenericResource>,
         SupportsGettingById<GenericResource>,

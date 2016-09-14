@@ -52,7 +52,7 @@ public interface Network extends
     /**
      * The entirety of the virtual network definition.
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -64,7 +64,7 @@ public interface Network extends
     /**
      * Grouping of virtual network definition stages.
      */
-    @LangDefinition(ContainerName="Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual network definition.
@@ -165,7 +165,7 @@ public interface Network extends
     /**
      * Grouping of virtual network update stages.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the virtual network update allowing to add or remove subnets.
@@ -251,7 +251,7 @@ public interface Network extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName="Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<Network>,
         Resource.UpdateWithTags<Update>,

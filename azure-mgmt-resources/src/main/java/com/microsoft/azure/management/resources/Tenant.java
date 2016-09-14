@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.implementation.TenantIdDescripti
 /**
  * An immutable client-side representation of an Azure tenant.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Tenant extends
         Indexable,
         Wrapper<TenantIdDescriptionInner> {

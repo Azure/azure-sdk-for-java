@@ -198,7 +198,7 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.    
+    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.
     public NetworkInterfaceImpl withoutIpConfiguration(String name) {
         this.nicIpConfigurations.remove(name);
         return this;
@@ -442,7 +442,7 @@ class NetworkInterfaceImpl
         }
 
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
-        
+
         // Reset and update IP configs
         this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
     }

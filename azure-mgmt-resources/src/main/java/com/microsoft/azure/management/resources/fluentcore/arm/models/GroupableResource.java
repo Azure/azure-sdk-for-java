@@ -23,8 +23,8 @@ public interface GroupableResource extends Resource {
     /**
      * Grouping of all the definition stages.
      */
-    
-    @LangDefinition(ContainerName="GroupableResource.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+
+    @LangDefinition(ContainerName = "GroupableResource.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * A resource definition allowing a resource group to be selected.

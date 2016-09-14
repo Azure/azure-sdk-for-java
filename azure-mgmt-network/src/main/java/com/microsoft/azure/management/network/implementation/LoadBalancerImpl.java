@@ -502,7 +502,7 @@ class LoadBalancerImpl
             return new FrontendImpl(inner, this);
         } else {
             return (FrontendImpl) frontend;
-        }        
+        }
     }
 
     @Override

@@ -12,6 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for storage resource usage management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Usages extends SupportsListing<StorageUsage> {
 }

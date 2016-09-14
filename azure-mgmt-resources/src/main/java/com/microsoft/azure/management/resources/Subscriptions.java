@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to subscription management API.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface Subscriptions extends
         SupportsListing<Subscription>,
         SupportsGettingByName<Subscription> {

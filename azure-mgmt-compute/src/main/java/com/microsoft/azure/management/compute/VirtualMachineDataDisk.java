@@ -9,7 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * A data disk of a virtual machine.
  */
-@LangDefinition(ContainerName="~/")
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineDataDisk extends
         Wrapper<DataDisk>,
         ChildResource {
@@ -68,7 +68,7 @@ public interface VirtualMachineDataDisk extends
     /**
      * Grouping of data disk definition stages applicable as part of a virtual machine creation.
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Definition", ContainerFileName="IDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a  data disk definition.
@@ -165,7 +165,7 @@ public interface VirtualMachineDataDisk extends
      * The entirety of a data disk definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Definition")
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Definition")
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
@@ -175,7 +175,7 @@ public interface VirtualMachineDataDisk extends
     /**
      * Grouping of data disk definition stages applicable as part of a virtual machine update.
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Update", ContainerFileName="IUpdateDefinition", IsContainerOnly=true)
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Update", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a  data disk definition.
@@ -271,7 +271,7 @@ public interface VirtualMachineDataDisk extends
     /** The entirety of a data disk definition as part of a virtual machine update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Update", ContainerFileName="IUpdateDefinition")
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Update", ContainerFileName = "IUpdateDefinition")
        interface UpdateDefinition<ParentT>  extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
@@ -281,7 +281,7 @@ public interface VirtualMachineDataDisk extends
     /**
      * Grouping of data disk update stages.
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Update", ContainerFileName = "IUpdate")
     interface UpdateStages {
         /**
          * Specifies the new size in GB for data disk.
@@ -311,7 +311,7 @@ public interface VirtualMachineDataDisk extends
     /**
      * The entirety of a data disk update as part of a virtual machine update.
      */
-    @LangDefinition(ContainerName="~/VirtualMachineDataDisk.Update")
+    @LangDefinition(ContainerName = "~/VirtualMachineDataDisk.Update")
     interface Update extends
             UpdateStages,
             Settable<VirtualMachine.Update> {
