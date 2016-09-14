@@ -1,6 +1,6 @@
-package com.microsoft.azure.management.compute.childresource;
+package com.microsoft.azure.management.resources.childresource;
 
-import com.microsoft.azure.management.compute.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
 import java.util.ArrayList;
 import java.util.List;
 

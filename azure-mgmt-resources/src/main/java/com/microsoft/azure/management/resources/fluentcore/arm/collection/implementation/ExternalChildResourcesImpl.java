@@ -1,6 +1,7 @@
-package com.microsoft.azure.management.compute.implementation;
+package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.compute.ExternalChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.exceptions.CompositeException;
 import rx.functions.Action0;
