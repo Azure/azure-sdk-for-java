@@ -628,12 +628,12 @@ public interface VirtualMachineScaleSet extends
          */
         interface WithUpgradePolicy {
             /**
-             * Specifies virtual machine scale set upgrade policy.
+             * Specifies virtual machine scale set upgrade policy mode.
              *
-             * @param upgradePolicy upgrade policy
+             * @param upgradeMode upgrade policy mode
              * @return the stage representing creatable VM scale set definition
              */
-            WithCreate withUpgradePolicy(UpgradePolicy upgradePolicy);
+            WithCreate withUpgradeMode(UpgradeMode upgradeMode);
         }
 
         /**
@@ -742,6 +742,7 @@ public interface VirtualMachineScaleSet extends
                 DefinitionStages.WithOsDiskSettings,
                 DefinitionStages.WithComputerNamePrefix,
                 DefinitionStages.WithCapacity,
+                DefinitionStages.WithUpgradePolicy,
                 DefinitionStages.WithOverProvision,
                 DefinitionStages.WithStorageAccount,
                 DefinitionStages.WithExtension,

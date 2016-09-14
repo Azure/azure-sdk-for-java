@@ -120,7 +120,8 @@ public class VirtualMachineScaleSetsImpl
                         .withIpConfigurations(new ArrayList<VirtualMachineScaleSetIPConfigurationInner>());
         primaryNetworkInterfaceConfiguration
                 .ipConfigurations()
-                .add(new VirtualMachineScaleSetIPConfigurationInner());
+                .add(new VirtualMachineScaleSetIPConfigurationInner()
+                        .withName("primary-nic-ip-cfg"));
 
         inner.virtualMachineProfile()
                 .networkProfile()

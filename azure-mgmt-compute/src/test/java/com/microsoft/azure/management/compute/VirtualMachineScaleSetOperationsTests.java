@@ -54,7 +54,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                    .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUserName("jvuser")

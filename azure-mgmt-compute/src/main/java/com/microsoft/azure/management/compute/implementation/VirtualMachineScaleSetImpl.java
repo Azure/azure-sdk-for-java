@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.LinuxConfiguration;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
+import com.microsoft.azure.management.compute.UpgradeMode;
 import com.microsoft.azure.management.compute.UpgradePolicy;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
@@ -559,7 +560,7 @@ public class VirtualMachineScaleSetImpl
         this.inner()
                 .virtualMachineProfile()
                 .osProfile()
-                .withAdminPassword(adminUserName);
+                .withAdminUsername(adminUserName);
         return this;
     }
 
@@ -662,6 +663,13 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withUpgradeMode(UpgradeMode upgradeMode) {
+        this.inner()
+                .withUpgradePolicy(new UpgradePolicy().withMode(upgradeMode));
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withOverProvision(boolean enabled) {
         this.inner()
                 .withOverProvision(enabled);
@@ -683,7 +691,7 @@ public class VirtualMachineScaleSetImpl
         this.inner()
                 .sku().withCapacity(capacity);
         return this;
-    }
+   }
 
     @Override
     public VirtualMachineScaleSetImpl withNewStorageAccount(String name) {
@@ -715,7 +723,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl defineNewExtension(String name) {
-        return new VirtualMachineScaleSetExtensionImpl(new VirtualMachineScaleSetExtensionInner(), this);
+        return new VirtualMachineScaleSetExtensionImpl(new VirtualMachineScaleSetExtensionInner().withName(name), this);
     }
 
     protected VirtualMachineScaleSetImpl withExtension(VirtualMachineScaleSetExtensionImpl extension) {
@@ -795,6 +803,19 @@ public class VirtualMachineScaleSetImpl
             return;
         }
 
+        if (this.inner().sku().capacity() == null) {
+            this.inner()
+                    .sku()
+                    .withCapacity(new Long(2));
+        }
+
+        if (this.inner().upgradePolicy() == null
+                || this.inner().upgradePolicy().mode() == null) {
+            this.inner()
+                    .withUpgradePolicy(new UpgradePolicy()
+                            .withMode(UpgradeMode.AUTOMATIC));
+        }
+
         VirtualMachineScaleSetOSProfile osProfile = this.inner()
                 .virtualMachineProfile()
                 .osProfile();
@@ -829,9 +850,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     private boolean isCustomImage(VirtualMachineScaleSetStorageProfile storageProfile) {
-        return storageProfile.osDisk().image() == null
-                || storageProfile.osDisk().image().uri() == null
-                || storageProfile.osDisk().image().uri() == "";
+        return storageProfile.osDisk().image() != null
+                && storageProfile.osDisk().image().uri() != null;
     }
 
     private Observable<Void> handleOSDiskContainersAsync() {
@@ -864,7 +884,7 @@ public class VirtualMachineScaleSetImpl
                             }
                             storageProfile.osDisk()
                                     .vhdContainers()
-                                    .add(storageAccount.endPoints().primary().blob() + "/" + containerName);
+                                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
                             vhdContainerName = null;
                             creatableStorageAccountKeys.clear();
                             existingStorageAccountsToAssociate.clear();
@@ -888,13 +908,13 @@ public class VirtualMachineScaleSetImpl
                 StorageAccount storageAccount = (StorageAccount) createdResource(storageAccountKey);
                 storageProfile.osDisk()
                         .vhdContainers()
-                        .add(storageAccount.endPoints().primary().blob() + "/" + containerName);
+                        .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
             }
 
             for (StorageAccount storageAccount : this.existingStorageAccountsToAssociate) {
                 storageProfile.osDisk()
                         .vhdContainers()
-                        .add(storageAccount.endPoints().primary().blob() + "/" + containerName);
+                        .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
             }
 
             this.vhdContainerName = null;
@@ -1134,7 +1154,7 @@ public class VirtualMachineScaleSetImpl
                                                     String... backendNames) {
         List<SubResource> backendSubResourcesToAssociate = new ArrayList<>();
         for (String backendName : backendNames) {
-            String backendPoolId = loadBalancerId + "/" + "backendAddressPools" + "/" + backendName;
+            String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
                 if (subResource.id().equalsIgnoreCase(backendPoolId)) {
@@ -1157,7 +1177,7 @@ public class VirtualMachineScaleSetImpl
                                                     String... inboundNatPools) {
         List<SubResource> inboundNatPoolSubResourcesToAssociate = new ArrayList<>();
         for (String inboundNatPool : inboundNatPools) {
-            String inboundNatPoolId = loadBalancerId + "/" + "inboundNatPools" + "/" + inboundNatPool;
+            String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", inboundNatPool);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
                 if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
@@ -1181,7 +1201,7 @@ public class VirtualMachineScaleSetImpl
         Map<String, Backend> attachedBackends = new HashMap<>();
         Map<String, Backend> lbBackends = loadBalancer.backends();
         for (Backend lbBackend : lbBackends.values()) {
-            String backendId =  loadBalancerId + "/" + "backendAddressPools" + "/" + lbBackend.name();
+            String backendId =  mergePath(loadBalancerId, "backendAddressPools", lbBackend.name());
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
                 if (subResource.id().equalsIgnoreCase(backendId)) {
                     attachedBackends.put(lbBackend.name(), lbBackend);
@@ -1197,7 +1217,7 @@ public class VirtualMachineScaleSetImpl
         Map<String, InboundNatPool> attachedInboundNatPools = new HashMap<>();
         Map<String, InboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
         for (InboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
-            String inboundNatPoolId =  loadBalancerId + "/" + "inboundNatPools" + "/" + lbInboundNatPool.name();
+            String inboundNatPoolId =  mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
                 if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     attachedInboundNatPools.put(lbInboundNatPool.name(), lbInboundNatPool);
@@ -1273,7 +1293,7 @@ public class VirtualMachineScaleSetImpl
                                                    String... backendNames) {
         List<SubResource> toRemove = new ArrayList<>();
         for (String backendName : backendNames) {
-            String backendPoolId = loadBalancerId + "/" + "backendAddressPools" + "/" + backendName;
+            String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
                 if (subResource.id().equalsIgnoreCase(backendPoolId)) {
                     toRemove.add(subResource);
@@ -1292,7 +1312,7 @@ public class VirtualMachineScaleSetImpl
                                                           String... inboundNatPoolNames) {
         List<SubResource> toRemove = new ArrayList<>();
         for (String natPoolName : inboundNatPoolNames) {
-            String inboundNatPoolId = loadBalancerId + "/" + "inboundNatPools" + "/" + natPoolName;
+            String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", natPoolName);
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
                 if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     toRemove.add(subResource);
@@ -1310,5 +1330,25 @@ public class VirtualMachineScaleSetImpl
         for (T item : items) {
             list.add(item);
         }
+    }
+
+    private static String mergePath(String... segments) {
+        StringBuilder builder = new StringBuilder();
+        for (String segment : segments) {
+            while (segment.length() > 1 && segment.endsWith("/")) {
+                segment = segment.substring(0, segment.length() - 1);
+            }
+
+            if (segment.length() > 0) {
+                builder.append(segment);
+                builder.append("/");
+            }
+        }
+
+        String merged = builder.toString();
+        if (merged.endsWith("/")) {
+            merged = merged.substring(0, merged.length() - 1);
+        }
+        return merged;
     }
 }
