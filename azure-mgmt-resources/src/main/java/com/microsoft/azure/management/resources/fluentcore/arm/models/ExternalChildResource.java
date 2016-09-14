@@ -1,6 +1,5 @@
-package com.microsoft.azure.management.compute;
+package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 
 /**
