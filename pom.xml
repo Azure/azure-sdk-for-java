@@ -301,10 +301,11 @@
     <module>./runtimes</module>
     <module>./azure</module>
     <module>./azure-batch</module>
-    <!--<module>./azure-keyvault</module>
+    <module>./azure-keyvault</module>
     <module>./azure-keyvault-core</module>
     <module>./azure-keyvault-cryptography</module>
-    <module>./azure-keyvault-extensions</module>-->
+    <module>./azure-keyvault-extensions</module>
+    <module>./azure-keyvault-webkey</module>
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-keyvault</module>

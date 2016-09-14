@@ -1,19 +1,7 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
@@ -22,6 +10,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -35,6 +24,8 @@ import com.microsoft.azure.keyvault.cryptography.SymmetricEncryptionAlgorithm;
 
 public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
+    final int keySizeInBytes;
+    final int keySize;
     static class AesCbcDecryptor implements ICryptoTransform {
 
         private final Cipher _cipher;
@@ -79,31 +70,49 @@ public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         }
     }
 
-    protected AesCbc(String name) {
+    protected AesCbc(String name, int size) {
         super(name);
+        keySize = size;
+        keySizeInBytes = size >> 3;
     }
 
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-
-        return new AesCbcEncryptor(key, iv, null);
+        
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, null);
     }
 
     @Override
     public ICryptoTransform CreateEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcEncryptor(key, iv, provider);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcDecryptor(key, iv, null);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, null);
     }
 
     @Override
     public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
-        return new AesCbcDecryptor(key, iv, provider);
+        if (key == null || key.length < keySizeInBytes) {
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
+        }
+        
+        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 }

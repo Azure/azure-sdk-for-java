@@ -29,12 +29,12 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.RsaKey;
-import com.microsoft.azure.keyvault.cryptography.Strings;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
-import com.microsoft.azure.keyvault.models.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import com.microsoft.rest.ServiceResponse;
 
 /**
  * The key vault key that performs cryptography operations.
@@ -44,22 +44,22 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of decrypt operation to byte array.
      */
-    class DecryptResultTransform implements Function<ServiceResponse<KeyOperationResult>, byte[]> {
+    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
 
         DecryptResultTransform() {
             super();
         }
 
         @Override
-        public byte[] apply(ServiceResponse<KeyOperationResult> result) {
-            return result.getBody().result();
+        public byte[] apply(KeyOperationResult result) {
+            return result.result();
         }
     }
 
     /**
      * Transforms the result of sign operation to byte array and algorithm pair.
      */
-    class SignResultTransform implements Function<ServiceResponse<KeyOperationResult>, Pair<byte[], String>> {
+    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
 
         private final String algorithm;
 
@@ -69,9 +69,9 @@ public class KeyVaultKey implements IKey {
         }
         
         @Override
-        public Pair<byte[], String> apply(ServiceResponse<KeyOperationResult> input) {
+        public Pair<byte[], String> apply(KeyOperationResult input) {
 
-            return Pair.of(input.getBody().result(), algorithm);
+            return Pair.of(input.result(), algorithm);
         }
     }
 
@@ -97,7 +97,7 @@ public class KeyVaultKey implements IKey {
         if (key.kty().equals(JsonWebKeyType.RSA)) {
             // The private key is not available for KeyVault keys
             implementation = new RsaKey(key.kid(), key.toRSA(false));
-        } else if (key.kty().equals(JsonWebKeyType.RSAHSM)) {
+        } else if (key.kty().equals(JsonWebKeyType.RSA_HSM)) {
             // The private key is not available for KeyVault keys
             implementation = new RsaKey(key.kid(), key.toRSA(false));
         }
@@ -167,10 +167,10 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall =
+        ListenableFuture<KeyOperationResult> futureCall =
                 client.decryptAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
         return Futures.transform(futureCall, new DecryptResultTransform());
@@ -205,10 +205,10 @@ public class KeyVaultKey implements IKey {
         }
 
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>> futureCall = 
+        ListenableFuture<KeyOperationResult> futureCall = 
                 client.unwrapKeyAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
         return Futures.transform(futureCall, new DecryptResultTransform());
@@ -225,10 +225,10 @@ public class KeyVaultKey implements IKey {
         }
         
         // Never local
-        ListenableFuture<ServiceResponse<KeyOperationResult>>  futureCall = 
+        ListenableFuture<KeyOperationResult>  futureCall = 
                 client.signAsync(
                         implementation.getKid(),
-                        algorithm,
+                        new JsonWebKeySignatureAlgorithm(algorithm),
                         digest,
                         null);
         return Futures.transform(futureCall, new SignResultTransform(algorithm));

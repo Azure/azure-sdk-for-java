@@ -3,6 +3,7 @@ package com.microsoft.azure.keyvault.requests;
 import java.util.Collections;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.SecretAttributes;
 
 /**
@@ -66,8 +67,8 @@ public final class SetSecretRequest {
          *            The secret management attributes.
          * @return the Builder object itself.
          */
-        public Builder withAttributes(SecretAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (SecretAttributes) attributes;
             return this;
         }
 

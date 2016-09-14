@@ -22,6 +22,7 @@ import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.SecretBundle;
 import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.requests.SetSecretRequest;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 //
 //Copyright © Microsoft Corporation, All Rights Reserved
@@ -79,8 +80,8 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
     {
         try {
             // Create a key on a vault.
-            CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, "RSA").build();
-            KeyBundle         keyBundle = keyVaultClient.createKey(request).getBody();
+            CreateKeyRequest  request   = new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build();
+            KeyBundle         keyBundle = keyVaultClient.createKey(request);
             
             try
             {
@@ -115,7 +116,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request        = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle   = keyVaultClient.setSecret(request).getBody();
+             SecretBundle     secretBundle   = keyVaultClient.setSecret(request);
     
              if ( secretBundle != null )
              {
@@ -175,7 +176,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle = keyVaultClient.setSecret( request ).getBody();
+             SecretBundle     secretBundle = keyVaultClient.setSecret( request );
     
              if ( secretBundle != null )
              {
@@ -248,7 +249,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
 
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
-             SecretBundle     secretBundle = keyVaultClient.setSecret( request ).getBody();
+             SecretBundle     secretBundle = keyVaultClient.setSecret( request );
     
              if ( secretBundle != null )
              {

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
-import com.microsoft.azure.keyvault.models.JsonWebKey;
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 /**
  * The import key request class.
@@ -71,8 +73,8 @@ public final class ImportKeyRequest {
          *            the key management attributes value to set
          * @return the Builder object itself.
          */
-        public Builder withAttributes(KeyAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (KeyAttributes) attributes;
             return this;
         }
 
@@ -109,7 +111,7 @@ public final class ImportKeyRequest {
                     .withD(builder.key.d()).withP(builder.key.p()).withQ(builder.key.q()).withDp(builder.key.dp())
                     .withDq(builder.key.dq()).withQi(builder.key.qi()).withK(builder.key.k()).withT(builder.key.t());
             if (builder.key.keyOps() != null) {
-                key.withKeyOps(new ArrayList<String>(builder.key.keyOps()));
+                key.withKeyOps(new ArrayList<JsonWebKeyOperation>(builder.key.keyOps()));
             }
         } else {
             key = null;
