@@ -173,34 +173,12 @@ public class SecretBundle {
     }
 
     /**
-     * Set the kid value.
-     *
-     * @param kid the kid value to set
-     * @return the SecretBundle object itself.
-     */
-    public SecretBundle withKid(String kid) {
-        this.kid = kid;
-        return this;
-    }
-
-    /**
      * Get the managed value.
      *
      * @return the managed value
      */
     public Boolean managed() {
         return this.managed;
-    }
-
-    /**
-     * Set the managed value.
-     *
-     * @param managed the managed value to set
-     * @return the SecretBundle object itself.
-     */
-    public SecretBundle withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
     }
 
     /**

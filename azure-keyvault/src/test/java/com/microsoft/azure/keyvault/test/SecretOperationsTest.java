@@ -49,7 +49,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                         .withAttributes(attributes)
                         .withContentType(contentType)
                         .withTags(tags)
-                        .build()).getBody();
+                        .build());
             validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, contentType, attributes);
         }
 
@@ -57,7 +57,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         // 401, which must be transparently handled by KeyVaultCredentials.
         {
             SecretBundle secret = keyVaultClient.setSecret(
-                    new SetSecretRequest.Builder(getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+                    new SetSecretRequest.Builder(getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE).build());
             validateSecret(secret, getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
         }
 
@@ -70,7 +70,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         {
             // Create secret
             secret = keyVaultClient.setSecret(
-                    new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+                    new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build());
             validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
         }
 
@@ -79,25 +79,25 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         {
             // Get secret using kid WO version
-            SecretBundle readBundle = keyVaultClient.getSecret(secretId.baseIdentifier()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(secretId.baseIdentifier());
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using full kid as defined in the bundle
-            SecretBundle readBundle = keyVaultClient.getSecret(secret.id()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(secret.id());
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using vault and secret name.
-            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME);
             compareSecrets(secret, readBundle);
         }
 
         {
             // Get secret using vault, secret name and version.
-            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME, secretId.version()).getBody();
+            SecretBundle readBundle = keyVaultClient.getSecret(getVaultUri(), SECRET_NAME, secretId.version());
             compareSecrets(secret, readBundle);
         }
 
@@ -119,7 +119,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                             .withContentType(secret.contentType())
                             .withAttributes(secret.attributes())
                             .withTags(secret.tags())
-                            .build()).getBody();
+                            .build());
             compareSecrets(secret, updatedSecret);
 
             // Subsequent operations must use the updated bundle for comparison.
@@ -146,7 +146,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
                             .withContentType(secret.contentType())
                             .withAttributes(secret.attributes())
                             .withTags(secret.tags())
-                            .build()).getBody();
+                            .build());
 
             compareSecrets(secret, updatedSecret);
             validateSecret(updatedSecret, 
@@ -157,7 +157,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         {
             // Delete secret
-            SecretBundle deleteBundle = keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME).getBody();
+            SecretBundle deleteBundle = keyVaultClient.deleteSecret(getVaultUri(), SECRET_NAME);
             compareSecrets(secret, deleteBundle);
         }
 
@@ -181,7 +181,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             for (;;) {
                 try {
                     SecretBundle secret = keyVaultClient.setSecret(
-                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build()).getBody();
+                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build());
                     SecretIdentifier id = new SecretIdentifier(secret.id());
                     secrets.add(id.baseIdentifier());
                     break;
@@ -197,7 +197,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS).getBody();
+        PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
         Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
 
         HashSet<String> toDelete = new HashSet<String>();
@@ -233,7 +233,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             for (;;) {
                 try {
                     SecretBundle secret = keyVaultClient.setSecret(
-                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build()).getBody();
+                            new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build());
                     secrets.add(secret.id());
                     break;
                 } catch (KeyVaultErrorException e) {
@@ -248,10 +248,10 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<SecretItem> listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME, PAGELIST_MAX_SECRETS).getBody();
+        PagedList<SecretItem> listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME, PAGELIST_MAX_SECRETS);
         Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().getItems().size());
 
-        listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME).getBody();
+        listResult = keyVaultClient.listSecretVersions(getVaultUri(), SECRET_NAME);
         for (SecretItem item : listResult) {
             if(item != null) {
                 secrets.remove(item.id());

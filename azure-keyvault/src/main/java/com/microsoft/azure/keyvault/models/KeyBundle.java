@@ -117,17 +117,6 @@ public class KeyBundle {
     }
 
     /**
-     * Set the managed value.
-     *
-     * @param managed the managed value to set
-     * @return the KeyBundle object itself.
-     */
-    public KeyBundle withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
      * The key identifier.
      * @return identifier for the key
      */

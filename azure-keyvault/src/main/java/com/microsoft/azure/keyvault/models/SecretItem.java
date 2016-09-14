@@ -136,17 +136,6 @@ public class SecretItem {
     }
 
     /**
-     * Set the managed value.
-     *
-     * @param managed the managed value to set
-     * @return the SecretItem object itself.
-     */
-    public SecretItem withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
      * the secret identifier.
      * @return The Identifier value
      */

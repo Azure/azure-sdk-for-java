@@ -68,7 +68,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                         .withKeyOperations(keyOps)
                         .withKeySize(2048)
                         .withTags(tags)
-                        .build()).getBody();
+                        .build());
             
             validateRsaKeyBundle(bundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, keyOps, attribute);
         }
@@ -76,7 +76,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         // Create a key on a different vault. Key Vault Data Plane returns 401,
         // which must be transparently handled by KeyVaultCredentials.
         {
-            KeyBundle bundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build()).getBody();
+            KeyBundle bundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
             validateRsaKeyBundle(bundle, getSecondaryVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
         }
 
@@ -112,7 +112,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                         .withHsm(importToHardware)
                         .withAttributes(attribute)
                         .withTags(tags)
-                        .build()).getBody();
+                        .build());
         
         validateRsaKeyBundle(importResultBundle, getVaultUri(), KEY_NAME, importToHardware ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA, importedJwk.keyOps(), attribute);
         checkEncryptDecryptSequence(importedJwk, importResultBundle);
@@ -127,7 +127,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Encrypt in the service.
         {
-            KeyOperationResult result = keyVaultClient.encrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText).getBody();
+            KeyOperationResult result = keyVaultClient.encrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
             cipherText = result.result();
         }
 
@@ -152,7 +152,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Decrypt in the service.
         {
-            KeyOperationResult result = keyVaultClient.decrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA1_5, cipherText).getBody();
+            KeyOperationResult result = keyVaultClient.decrypt(importedKeyBundle.key().kid(), JsonWebKeyEncryptionAlgorithm.RSA1_5, cipherText);
 
             byte[] beforeEncrypt = plainText;
             byte[] afterDecrypt = result.result();
@@ -166,7 +166,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         KeyBundle createdBundle;
         {
             // Create key
-            createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build()).getBody();
+            createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
             validateRsaKeyBundle(createdBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
         }
 
@@ -175,31 +175,31 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         {
             // Get key using kid WO version
-            KeyBundle readBundle = keyVaultClient.getKey(keyId.baseIdentifier()).getBody();
+            KeyBundle readBundle = keyVaultClient.getKey(keyId.baseIdentifier());
             compareKeyBundles(createdBundle, readBundle);
         }
 
         {
             // Get key using full kid as defined in the bundle
-            KeyBundle readBundle = keyVaultClient.getKey(createdBundle.key().kid()).getBody();
+            KeyBundle readBundle = keyVaultClient.getKey(createdBundle.key().kid());
             compareKeyBundles(createdBundle, readBundle);
         }
 
         {
             // Get key using vault and key name.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME).getBody();
+            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
             compareKeyBundles(createdBundle, readBundle);
         }
 
         {
             // Get key using vault, key name and version.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME, keyId.version()).getBody();
+            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME, keyId.version());
             compareKeyBundles(createdBundle, readBundle);
         }
 
         {
             // Get key using vault, key name and a null version.
-            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME).getBody();
+            KeyBundle readBundle = keyVaultClient.getKey(getVaultUri(), KEY_NAME);
             compareKeyBundles(createdBundle, readBundle);
         }
 
@@ -224,7 +224,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                             .withKeyOperations(key_ops)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
-                            .build()).getBody();
+                            .build());
 
             compareKeyBundles(createdBundle, updatedBundle);
 
@@ -253,14 +253,14 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                             .withKeyOperations(key_ops)
                             .withAttributes(createdBundle.attributes())
                             .withTags(createdBundle.tags())
-                            .build()).getBody();
+                            .build());
             
             compareKeyBundles(createdBundle, updatedBundle);
         }
 
         {
             // Delete key
-            KeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME).getBody();
+            KeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
             compareKeyBundles(createdBundle, deleteBundle);
         }
 
@@ -285,14 +285,14 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         {
             createdBundle = keyVaultClient.createKey(
                     new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA)
-                                        .build()).getBody();
+                                        .build());
             validateRsaKeyBundle(createdBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
         }
 
         // Creates a backup of key.
         byte[] keyBackup;
         {
-            keyBackup = keyVaultClient.backupKey(getVaultUri(), KEY_NAME).getBody().value();
+            keyBackup = keyVaultClient.backupKey(getVaultUri(), KEY_NAME).value();
         }
 
         // Deletes the key.
@@ -302,7 +302,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Restores the key.
         {
-            KeyBundle restoredBundle = keyVaultClient.restoreKey(getVaultUri(), keyBackup).getBody();
+            KeyBundle restoredBundle = keyVaultClient.restoreKey(getVaultUri(), keyBackup);
             compareKeyBundles(createdBundle, restoredBundle);
         }
 
@@ -316,7 +316,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             int failureCount = 0;
             for (;;) {
                 try {
-                    KeyBundle createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME + i, JsonWebKeyType.RSA).build()).getBody();
+                    KeyBundle createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME + i, JsonWebKeyType.RSA).build());
                     KeyIdentifier kid = new KeyIdentifier(createdBundle.key().kid());
                     keys.add(kid.baseIdentifier());
                     break;
@@ -332,7 +332,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<KeyItem> listResult = keyVaultClient.listKeys(getVaultUri(), PAGELIST_MAX_KEYS).getBody();
+        PagedList<KeyItem> listResult = keyVaultClient.listKeys(getVaultUri(), PAGELIST_MAX_KEYS);
         Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
 
         HashSet<String> toDelete = new HashSet<String>();
@@ -367,7 +367,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             int failureCount = 0;
             for (;;) {
                 try {
-                    KeyBundle createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build()).getBody();
+                    KeyBundle createdBundle = keyVaultClient.createKey(new CreateKeyRequest.Builder(getVaultUri(), KEY_NAME, JsonWebKeyType.RSA).build());
                     keys.add(createdBundle.key().kid());
                     break;
                 } catch (KeyVaultErrorException e) {
@@ -382,10 +382,10 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             }
         }
 
-        PagedList<KeyItem> listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME, MAX_KEYS).getBody();
+        PagedList<KeyItem> listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME, MAX_KEYS);
         //TODO bug: Assert.assertTrue(PAGELIST_MAX_KEYS >= listResult.currentPage().getItems().size());
 
-        listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME).getBody();
+        listResult = keyVaultClient.listKeyVersions(getVaultUri(), KEY_NAME);
         
         for (KeyItem item : listResult) {
             if(item != null) {
@@ -413,19 +413,19 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // encrypt and decrypt using kid WO version
         {
-            result = keyVaultClient.encrypt(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText).getBody();
+            result = keyVaultClient.encrypt(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
             cipherText = result.result();
 
-            result = keyVaultClient.decrypt(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText).getBody();
+            result = keyVaultClient.decrypt(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText);
             Assert.assertArrayEquals(plainText, result.result());
         }
 
         // encrypt and decrypt using full kid
         {
-            result = keyVaultClient.encrypt(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText).getBody();
+            result = keyVaultClient.encrypt(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
             cipherText = result.result();
 
-            result = keyVaultClient.decrypt(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText).getBody();
+            result = keyVaultClient.decrypt(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText);
             Assert.assertArrayEquals(plainText, result.result());
         }
     }
@@ -445,19 +445,19 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // wrap and unwrap using kid WO version
         {
-            result = keyVaultClient.wrapKey(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText).getBody();
+            result = keyVaultClient.wrapKey(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
             cipherText = result.result();
 
-            result = keyVaultClient.unwrapKey(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText).getBody();
+            result = keyVaultClient.unwrapKey(keyId.baseIdentifier(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText);
             Assert.assertArrayEquals(plainText, result.result());
         }
 
         // wrap and unwrap using full kid
         {
-            result = keyVaultClient.wrapKey(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText).getBody();
+            result = keyVaultClient.wrapKey(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, plainText);
             cipherText = result.result();
 
-            result = keyVaultClient.unwrapKey(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText).getBody();
+            result = keyVaultClient.unwrapKey(testKey.kid(), JsonWebKeyEncryptionAlgorithm.RSA_OAEP, cipherText);
             Assert.assertArrayEquals(plainText, result.result());
         }
     }
@@ -481,19 +481,19 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         // Using kid WO version
         {
-            result = keyVaultClient.sign(keyId.baseIdentifier(), JsonWebKeySignatureAlgorithm.RS256, digest).getBody();
+            result = keyVaultClient.sign(keyId.baseIdentifier(), JsonWebKeySignatureAlgorithm.RS256, digest);
             signature = result.result();
 
-            verifyResult = keyVaultClient.verify(keyId.baseIdentifier(), JsonWebKeySignatureAlgorithm.RS256, digest, signature).getBody();
+            verifyResult = keyVaultClient.verify(keyId.baseIdentifier(), JsonWebKeySignatureAlgorithm.RS256, digest, signature);
             Assert.assertEquals(new Boolean(true), verifyResult.value());
         }
 
         // Using full kid
         {
-            result = keyVaultClient.sign(testKey.kid(), JsonWebKeySignatureAlgorithm.RS256, digest).getBody();
+            result = keyVaultClient.sign(testKey.kid(), JsonWebKeySignatureAlgorithm.RS256, digest);
             signature = result.result();
 
-            verifyResult = keyVaultClient.verify(testKey.kid(), JsonWebKeySignatureAlgorithm.RS256, digest, signature).getBody();
+            verifyResult = keyVaultClient.verify(testKey.kid(), JsonWebKeySignatureAlgorithm.RS256, digest, signature);
             Assert.assertEquals(new Boolean(true), verifyResult.value());
 
         }
@@ -511,7 +511,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 new ImportKeyRequest
                     .Builder(getVaultUri(), KEY_NAME, key)
                         .withHsm(false)
-                        .build()).getBody();
+                        .build());
         
         validateRsaKeyBundle(keyBundle, getVaultUri(), KEY_NAME, JsonWebKeyType.RSA, null, null);
 
