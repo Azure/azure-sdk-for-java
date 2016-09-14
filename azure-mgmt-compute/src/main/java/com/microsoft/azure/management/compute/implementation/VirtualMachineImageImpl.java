@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.VirtualMachineImage;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.DataDiskImage;
 import com.microsoft.azure.management.compute.ImageReference;
 import com.microsoft.azure.management.compute.OSDiskImage;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImage}.
  */
+@LangDefinition
 class VirtualMachineImageImpl
         extends IndexableWrapperImpl<VirtualMachineImageInner>
         implements VirtualMachineImage {

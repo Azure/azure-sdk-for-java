@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * The implementation for {@link AvailabilitySet} and its create and update interfaces.
  */
+@LangDefinition
 class AvailabilitySetImpl
     extends
         GroupableResourceImpl<

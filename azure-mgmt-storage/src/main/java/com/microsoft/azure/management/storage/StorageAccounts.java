@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -21,6 +22,7 @@ import java.io.IOException;
 /**
  * Entry point for storage accounts management API.
  */
+@LangDefinition(ContainerName = "~/")
 public interface StorageAccounts extends
         SupportsListing<StorageAccount>,
         SupportsCreating<StorageAccount.DefinitionStages.Blank>,

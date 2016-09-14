@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -23,6 +24,7 @@ import java.util.Map;
 /**
  * Network interface.
  */
+@LangDefinition()
 public interface NetworkInterface extends
         GroupableResource,
         Refreshable<NetworkInterface>,
@@ -148,6 +150,7 @@ public interface NetworkInterface extends
     /**
      * The entirety of the network interface definition.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -160,6 +163,7 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the network interface.
@@ -380,6 +384,7 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network interface update allowing to specify subnet.
@@ -583,6 +588,7 @@ public interface NetworkInterface extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<NetworkInterface>,
             Resource.UpdateWithTags<Update>,

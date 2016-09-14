@@ -1,5 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,9 +13,9 @@ import java.util.Map;
  */
 class VirtualMachineExtensionsImpl extends
         ExternalChildResourcesImpl<VirtualMachineExtensionImpl,
-                VirtualMachineExtension,
-                VirtualMachineExtensionInner,
-                VirtualMachineImpl> {
+                        VirtualMachineExtension,
+                        VirtualMachineExtensionInner,
+                        VirtualMachineImpl> {
     private final VirtualMachineExtensionsInner client;
 
     /**

@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
@@ -16,6 +17,7 @@ import java.util.UUID;
 /**
  * The implementation for {@link DataDisk} and its create and update interfaces.
  */
+@LangDefinition
 class DataDiskImpl
     extends ChildResourceImpl<DataDisk, VirtualMachineImpl>
     implements
