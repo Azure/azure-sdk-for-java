@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 
 import java.io.IOException;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the resource to get.
  */
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsGettingByGroup<T> {
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.

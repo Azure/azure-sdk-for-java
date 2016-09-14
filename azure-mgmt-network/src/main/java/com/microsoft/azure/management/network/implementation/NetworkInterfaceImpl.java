@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -33,6 +34,7 @@ import java.util.TreeMap;
 /**
  *  Implementation for {@link NetworkInterface} and its create and update interfaces.
  */
+@LangDefinition
 class NetworkInterfaceImpl
         extends GroupableParentResourceImpl<
             NetworkInterface,
@@ -196,7 +198,7 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.    
+    //TODO: Networking doesn't support this yet, even though it exposes the API; so we have the impl but not exposed via the interface yet.
     public NetworkInterfaceImpl withoutIpConfiguration(String name) {
         this.nicIpConfigurations.remove(name);
         return this;
@@ -440,7 +442,7 @@ class NetworkInterfaceImpl
         }
 
         NicIpConfigurationImpl.ensureConfigurations(this.nicIpConfigurations.values());
-        
+
         // Reset and update IP configs
         this.inner().withIpConfigurations(innersFromWrappers(this.nicIpConfigurations.values()));
     }

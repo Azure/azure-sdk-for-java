@@ -106,7 +106,7 @@ public final class UpdateCertificatePolicyRequest {
                         new SecretProperties().withContentType(builder.policy.secretProperties().contentType()));
             }
         } else {
-            certificatePolicy = null;
+            certificatePolicy = new CertificatePolicy();
         }
     }
 

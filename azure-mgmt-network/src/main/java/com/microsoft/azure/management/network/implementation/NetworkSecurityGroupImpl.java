@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -19,6 +20,7 @@ import java.util.TreeMap;
 /**
  *  Implementation for {@link NetworkSecurityGroup} and its create and update interfaces.
  */
+@LangDefinition
 class NetworkSecurityGroupImpl
     extends GroupableParentResourceImpl<
         NetworkSecurityGroup,

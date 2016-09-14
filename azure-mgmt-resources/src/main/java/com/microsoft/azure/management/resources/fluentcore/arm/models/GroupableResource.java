@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * Base interface for resources in resource groups.
  */
+@LangDefinition()
 public interface GroupableResource extends Resource {
     /**
      * @return the name of the resource group
@@ -21,6 +23,8 @@ public interface GroupableResource extends Resource {
     /**
      * Grouping of all the definition stages.
      */
+
+    @LangDefinition(ContainerName = "GroupableResource.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * A resource definition allowing a resource group to be selected.

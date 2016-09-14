@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.SecurityRuleAccess;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  *  Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
  */
+@LangDefinition
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
     implements

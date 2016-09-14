@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
@@ -39,6 +40,7 @@ import java.util.TreeMap;
 /**
  * Implementation of the LoadBalancer interface.
  */
+@LangDefinition
 class LoadBalancerImpl
     extends GroupableParentResourceImpl<
         LoadBalancer,
@@ -500,7 +502,7 @@ class LoadBalancerImpl
             return new FrontendImpl(inner, this);
         } else {
             return (FrontendImpl) frontend;
-        }        
+        }
     }
 
     @Override

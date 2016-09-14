@@ -21,7 +21,7 @@ public class CertificateIssuerItem {
     private String id;
 
     /**
-     * The name of the issuer.
+     * The issuer provider.
      */
     private String provider;
 
