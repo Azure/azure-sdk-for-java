@@ -827,7 +827,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Map<String, VirtualMachineExtension> extensions() {
+    public Map<String, VirtualMachineExtension> extensions() throws CloudException, IOException {
         return this.virtualMachineExtensions.asMap();
     }
 

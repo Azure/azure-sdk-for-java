@@ -1,7 +1,9 @@
 package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,11 +34,19 @@ class VirtualMachineExtensionsImpl extends
 
     /**
      * @return the extension as a map indexed by name.
+     * @throws IOException the io exception
      */
-    public Map<String, VirtualMachineExtension> asMap() {
+    public Map<String, VirtualMachineExtension> asMap() throws IOException {
         Map<String, VirtualMachineExtension> result = new HashMap<>();
         for (Map.Entry<String, VirtualMachineExtensionImpl> entry : this.collection().entrySet()) {
-            result.put(entry.getKey(), entry.getValue());
+            VirtualMachineExtensionImpl extension = entry.getValue();
+            if (extension.isReference()) {
+                extension = new VirtualMachineExtensionImpl(entry.getKey(),
+                        this.parent(),
+                        this.client.get(parent().resourceGroupName(), parent().name(), entry.getKey()),
+                        this.client);
+            }
+            result.put(entry.getKey(), extension);
         }
         return Collections.unmodifiableMap(result);
     }
@@ -84,10 +94,18 @@ class VirtualMachineExtensionsImpl extends
         List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
         if (parent().inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : parent().inner().resources()) {
-                childResources.add(new VirtualMachineExtensionImpl(inner.name(),
-                        this.parent(),
-                        inner,
-                        this.client));
+                if (inner.name() == null) {
+                    inner.withLocation(parent().regionName());
+                    childResources.add(new VirtualMachineExtensionImpl(ResourceUtils.nameFromResourceId(inner.id()),
+                            this.parent(),
+                            inner,
+                            this.client));
+                } else {
+                    childResources.add(new VirtualMachineExtensionImpl(inner.name(),
+                            this.parent(),
+                            inner,
+                            this.client));
+                }
             }
         }
         return childResources;
