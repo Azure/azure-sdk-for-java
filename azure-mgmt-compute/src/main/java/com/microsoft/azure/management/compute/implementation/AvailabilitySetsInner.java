@@ -85,12 +85,9 @@ public final class AvailabilitySetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Availability Set operation.
      * @param parameters Parameters supplied to the Create Availability Set operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySetInner object if successful.
      */
-    public AvailabilitySetInner createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public AvailabilitySetInner createOrUpdate(String resourceGroupName, String name, AvailabilitySetInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -175,11 +172,8 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String resourceGroupName, String availabilitySetName) {
         deleteWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 
@@ -257,12 +251,9 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AvailabilitySetInner object if successful.
      */
-    public AvailabilitySetInner get(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+    public AvailabilitySetInner get(String resourceGroupName, String availabilitySetName) {
         return getWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 
@@ -339,12 +330,9 @@ public final class AvailabilitySetsInner {
      * The operation to list the availability sets.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;AvailabilitySetInner&gt; object if successful.
      */
-    public List<AvailabilitySetInner> list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public List<AvailabilitySetInner> list(String resourceGroupName) {
         return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
@@ -417,12 +405,9 @@ public final class AvailabilitySetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String availabilitySetName) {
         return listAvailableSizesWithServiceResponseAsync(resourceGroupName, availabilitySetName).toBlocking().single().getBody();
     }
 

@@ -63,12 +63,9 @@ public final class QueryKeysInner {
      *
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service for which to list query keys.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ListQueryKeysResultInner object if successful.
      */
-    public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+    public ListQueryKeysResultInner list(String resourceGroupName, String serviceName) {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 

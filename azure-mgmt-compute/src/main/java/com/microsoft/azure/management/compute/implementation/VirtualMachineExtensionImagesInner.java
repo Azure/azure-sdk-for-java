@@ -74,12 +74,9 @@ public final class VirtualMachineExtensionImagesInner {
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtensionImageInner object if successful.
      */
-    public VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version) {
         return getWithServiceResponseAsync(location, publisherName, type, version).toBlocking().single().getBody();
     }
 
@@ -169,12 +166,9 @@ public final class VirtualMachineExtensionImagesInner {
      *
      * @param location the String value
      * @param publisherName the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
-    public List<VirtualMachineExtensionImageInner> listTypes(String location, String publisherName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineExtensionImageInner> listTypes(String location, String publisherName) {
         return listTypesWithServiceResponseAsync(location, publisherName).toBlocking().single().getBody();
     }
 
@@ -253,12 +247,9 @@ public final class VirtualMachineExtensionImagesInner {
      * @param location the String value
      * @param publisherName the String value
      * @param type the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
-    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type) {
         return listVersionsWithServiceResponseAsync(location, publisherName, type).toBlocking().single().getBody();
     }
 
@@ -342,12 +333,9 @@ public final class VirtualMachineExtensionImagesInner {
      * @param filter The filter to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineExtensionImageInner&gt; object if successful.
      */
-    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type, String filter, Integer top, String orderby) {
         return listVersionsWithServiceResponseAsync(location, publisherName, type, filter, top, orderby).toBlocking().single().getBody();
     }
 

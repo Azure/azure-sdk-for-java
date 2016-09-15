@@ -76,12 +76,9 @@ public final class ServicesInner {
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service to create or update.
      * @param parameters The properties to set or update on the Search service.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SearchServiceResourceInner object if successful.
      */
-    public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public SearchServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName, SearchServiceCreateOrUpdateParametersInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, serviceName, parameters).toBlocking().single().getBody();
     }
 
@@ -167,11 +164,8 @@ public final class ServicesInner {
      *
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service to delete.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String resourceGroupName, String serviceName) {
         deleteWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 
@@ -249,12 +243,9 @@ public final class ServicesInner {
      * Returns a list of all Search services in the given resource group.
      *
      * @param resourceGroupName The name of the resource group within the current subscription.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SearchServiceListResultInner object if successful.
      */
-    public SearchServiceListResultInner list(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public SearchServiceListResultInner list(String resourceGroupName) {
         return listWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 

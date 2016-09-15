@@ -114,7 +114,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public List<StorageAccountKey> keys() throws CloudException, IOException {
+    public List<StorageAccountKey> keys() {
         if (cachedAccountKeys == null) {
             cachedAccountKeys = refreshKeys();
         }
@@ -122,7 +122,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public List<StorageAccountKey> refreshKeys() throws CloudException, IOException {
+    public List<StorageAccountKey> refreshKeys() {
         StorageAccountListKeysResultInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
         cachedAccountKeys = response.keys();
@@ -130,7 +130,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException {
+    public List<StorageAccountKey> regenerateKey(String keyName) {
         StorageAccountListKeysResultInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
         cachedAccountKeys = response.keys();

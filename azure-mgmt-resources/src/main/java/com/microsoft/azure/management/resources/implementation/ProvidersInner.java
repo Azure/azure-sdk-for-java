@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -85,12 +84,9 @@ public final class ProvidersInner {
      * Unregisters provider from a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ProviderInner object if successful.
      */
-    public ProviderInner unregister(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public ProviderInner unregister(String resourceProviderNamespace) {
         return unregisterWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
@@ -161,12 +157,9 @@ public final class ProvidersInner {
      * Registers provider to be used with a subscription.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ProviderInner object if successful.
      */
-    public ProviderInner register(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public ProviderInner register(String resourceProviderNamespace) {
         return registerWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
@@ -236,16 +229,13 @@ public final class ProvidersInner {
     /**
      * Gets a list of resource providers.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public PagedList<ProviderInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> list() {
         ServiceResponse<Page<ProviderInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ProviderInner>(response.getBody()) {
             @Override
-            public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ProviderInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -336,16 +326,13 @@ public final class ProvidersInner {
      *
      * @param top Query parameters. If null is passed returns all deployments.
      * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public PagedList<ProviderInner> list(final Integer top, final String expand) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> list(final Integer top, final String expand) {
         ServiceResponse<Page<ProviderInner>> response = listSinglePageAsync(top, expand).toBlocking().single();
         return new PagedList<ProviderInner>(response.getBody()) {
             @Override
-            public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ProviderInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -448,12 +435,9 @@ public final class ProvidersInner {
      * Gets a resource provider.
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ProviderInner object if successful.
      */
-    public ProviderInner get(String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public ProviderInner get(String resourceProviderNamespace) {
         return getWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().getBody();
     }
 
@@ -519,12 +503,9 @@ public final class ProvidersInner {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param expand The $expand query parameter. e.g. To include property aliases in response, use $expand=resourceTypes/aliases.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ProviderInner object if successful.
      */
-    public ProviderInner get(String resourceProviderNamespace, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public ProviderInner get(String resourceProviderNamespace, String expand) {
         return getWithServiceResponseAsync(resourceProviderNamespace, expand).toBlocking().single().getBody();
     }
 
@@ -598,16 +579,13 @@ public final class ProvidersInner {
      * Gets a list of resource providers.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ProviderInner&gt; object if successful.
      */
-    public PagedList<ProviderInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ProviderInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ProviderInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ProviderInner>(response.getBody()) {
             @Override
-            public Page<ProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ProviderInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

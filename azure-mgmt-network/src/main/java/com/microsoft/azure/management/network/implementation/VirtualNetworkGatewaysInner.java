@@ -18,7 +18,6 @@ import com.microsoft.azure.management.network.ProcessorArchitecture;
 import com.microsoft.azure.management.network.VpnClientParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -113,13 +112,9 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGatewayInner object if successful.
      */
-    public VirtualNetworkGatewayInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualNetworkGatewayInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().last().getBody();
     }
 
@@ -188,12 +183,9 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayInner object if successful.
      */
-    public VirtualNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().single().getBody();
     }
 
@@ -279,12 +271,9 @@ public final class VirtualNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayInner object if successful.
      */
-    public VirtualNetworkGatewayInner get(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkGatewayInner get(String resourceGroupName, String virtualNetworkGatewayName) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().single().getBody();
     }
 
@@ -362,12 +351,8 @@ public final class VirtualNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String virtualNetworkGatewayName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().last().getBody();
     }
 
@@ -428,11 +413,8 @@ public final class VirtualNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String virtualNetworkGatewayName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().single().getBody();
     }
 
@@ -510,16 +492,13 @@ public final class VirtualNetworkGatewaysInner {
      * The List VirtualNetworkGateways operation retrieves all the virtual network gateways stored.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualNetworkGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -623,13 +602,9 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Reset Virtual Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGatewayInner object if successful.
      */
-    public VirtualNetworkGatewayInner reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualNetworkGatewayInner reset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
         return resetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().last().getBody();
     }
 
@@ -698,12 +673,9 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param parameters Parameters supplied to the Begin Reset Virtual Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayInner object if successful.
      */
-    public VirtualNetworkGatewayInner beginReset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkGatewayInner beginReset(String resourceGroupName, String virtualNetworkGatewayName, VirtualNetworkGatewayInner parameters) {
         return beginResetWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toBlocking().single().getBody();
     }
 
@@ -789,12 +761,9 @@ public final class VirtualNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the String object if successful.
      */
-    public String generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public String generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName) {
         return generatevpnclientpackageWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).toBlocking().single().getBody();
     }
 
@@ -869,12 +838,9 @@ public final class VirtualNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayName The name of the virtual network gateway.
      * @param processorArchitecture VPN client Processor Architecture -Amd64/X86. Possible values include: 'Amd64', 'X86'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the String object if successful.
      */
-    public String generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture) throws CloudException, IOException, IllegalArgumentException {
+    public String generatevpnclientpackage(String resourceGroupName, String virtualNetworkGatewayName, ProcessorArchitecture processorArchitecture) {
         return generatevpnclientpackageWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName, processorArchitecture).toBlocking().single().getBody();
     }
 
@@ -956,16 +922,13 @@ public final class VirtualNetworkGatewaysInner {
      * The List VirtualNetworkGateways operation retrieves all the virtual network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

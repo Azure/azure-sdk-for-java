@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -119,13 +118,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway connection operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
-    public VirtualNetworkGatewayConnectionInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualNetworkGatewayConnectionInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().last().getBody();
     }
 
@@ -194,12 +189,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the Begin Create or update Virtual Network Gateway connection operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
-    public VirtualNetworkGatewayConnectionInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkGatewayConnectionInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toBlocking().single().getBody();
     }
 
@@ -285,12 +277,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkGatewayConnectionInner object if successful.
      */
-    public VirtualNetworkGatewayConnectionInner get(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkGatewayConnectionInner get(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
     }
 
@@ -368,12 +357,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().last().getBody();
     }
 
@@ -434,11 +419,8 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
     }
 
@@ -517,12 +499,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param connectionSharedKeyName The virtual network gateway connection shared key name.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionSharedKeyResultInner object if successful.
      */
-    public ConnectionSharedKeyResultInner getSharedKey(String resourceGroupName, String connectionSharedKeyName) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionSharedKeyResultInner getSharedKey(String resourceGroupName, String connectionSharedKeyName) {
         return getSharedKeyWithServiceResponseAsync(resourceGroupName, connectionSharedKeyName).toBlocking().single().getBody();
     }
 
@@ -599,16 +578,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayConnectionInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkGatewayConnectionInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayConnectionInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -711,13 +687,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionResetSharedKeyInner object  if successful.
      */
-    public ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return resetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().last().getBody();
     }
 
@@ -781,13 +753,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param keyLength The virtual network connection reset shared key length
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionResetSharedKeyInner object if successful.
      */
-    public ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) {
         return resetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().last().getBody();
     }
 
@@ -853,12 +821,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionResetSharedKeyInner object if successful.
      */
-    public ConnectionResetSharedKeyInner beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionResetSharedKeyInner beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return beginResetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
     }
 
@@ -933,12 +898,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param keyLength The virtual network connection reset shared key length
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionResetSharedKeyInner object if successful.
      */
-    public ConnectionResetSharedKeyInner beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionResetSharedKeyInner beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, Long keyLength) {
         return beginResetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, keyLength).toBlocking().single().getBody();
     }
 
@@ -1022,13 +984,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionSharedKeyInner object  if successful.
      */
-    public ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return setSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().last().getBody();
     }
 
@@ -1092,13 +1050,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param value The virtual network connection shared key value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ConnectionSharedKeyInner object if successful.
      */
-    public ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) {
         return setSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().last().getBody();
     }
 
@@ -1164,12 +1118,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionSharedKeyInner object if successful.
      */
-    public ConnectionSharedKeyInner beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionSharedKeyInner beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName) {
         return beginSetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName).toBlocking().single().getBody();
     }
 
@@ -1244,12 +1195,9 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param value The virtual network connection shared key value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionSharedKeyInner object if successful.
      */
-    public ConnectionSharedKeyInner beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionSharedKeyInner beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, String value) {
         return beginSetSharedKeyWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayConnectionName, value).toBlocking().single().getBody();
     }
 
@@ -1332,16 +1280,13 @@ public final class VirtualNetworkGatewayConnectionsInner {
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkGatewayConnectionInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkGatewayConnectionInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkGatewayConnectionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkGatewayConnectionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkGatewayConnectionInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkGatewayConnectionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

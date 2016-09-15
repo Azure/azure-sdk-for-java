@@ -17,7 +17,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batch.ActivateApplicationPackageParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -115,11 +114,8 @@ public final class ApplicationsInner {
      * @param id The id of the application.
      * @param version The version of the application to activate.
      * @param format The format of the application package binary file.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void activateApplicationPackage(String resourceGroupName, String accountName, String id, String version, String format) throws CloudException, IOException, IllegalArgumentException {
+    public void activateApplicationPackage(String resourceGroupName, String accountName, String id, String version, String format) {
         activateApplicationPackageWithServiceResponseAsync(resourceGroupName, accountName, id, version, format).toBlocking().single().getBody();
     }
 
@@ -217,12 +213,9 @@ public final class ApplicationsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner addApplication(String resourceGroupName, String accountName, String applicationId) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationInner addApplication(String resourceGroupName, String accountName, String applicationId) {
         return addApplicationWithServiceResponseAsync(resourceGroupName, accountName, applicationId).toBlocking().single().getBody();
     }
 
@@ -302,12 +295,9 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
      * @param parameters The parameters for the request.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner addApplication(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationInner addApplication(String resourceGroupName, String accountName, String applicationId, AddApplicationParametersInner parameters) {
         return addApplicationWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).toBlocking().single().getBody();
     }
 
@@ -396,11 +386,8 @@ public final class ApplicationsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void deleteApplication(String resourceGroupName, String accountName, String applicationId) throws CloudException, IOException, IllegalArgumentException {
+    public void deleteApplication(String resourceGroupName, String accountName, String applicationId) {
         deleteApplicationWithServiceResponseAsync(resourceGroupName, accountName, applicationId).toBlocking().single().getBody();
     }
 
@@ -484,12 +471,9 @@ public final class ApplicationsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner getApplication(String resourceGroupName, String accountName, String applicationId) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationInner getApplication(String resourceGroupName, String accountName, String applicationId) {
         return getApplicationWithServiceResponseAsync(resourceGroupName, accountName, applicationId).toBlocking().single().getBody();
     }
 
@@ -575,11 +559,8 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
      * @param parameters The parameters for the request.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updateApplication(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public void updateApplication(String resourceGroupName, String accountName, String applicationId, UpdateApplicationParametersInner parameters) {
         updateApplicationWithServiceResponseAsync(resourceGroupName, accountName, applicationId, parameters).toBlocking().single().getBody();
     }
 
@@ -671,12 +652,9 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
      * @param version The version of the application.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AddApplicationPackageResultInner object if successful.
      */
-    public AddApplicationPackageResultInner addApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) throws CloudException, IOException, IllegalArgumentException {
+    public AddApplicationPackageResultInner addApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) {
         return addApplicationPackageWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
     }
 
@@ -768,11 +746,8 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
      * @param version The version of the application to delete.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void deleteApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) throws CloudException, IOException, IllegalArgumentException {
+    public void deleteApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) {
         deleteApplicationPackageWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
     }
 
@@ -863,12 +838,9 @@ public final class ApplicationsInner {
      * @param accountName The name of the Batch account.
      * @param applicationId The id of the application.
      * @param version The version of the application.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the GetApplicationPackageResultInner object if successful.
      */
-    public GetApplicationPackageResultInner getApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) throws CloudException, IOException, IllegalArgumentException {
+    public GetApplicationPackageResultInner getApplicationPackage(String resourceGroupName, String accountName, String applicationId, String version) {
         return getApplicationPackageWithServiceResponseAsync(resourceGroupName, accountName, applicationId, version).toBlocking().single().getBody();
     }
 
@@ -958,16 +930,13 @@ public final class ApplicationsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationInner&gt; object if successful.
      */
-    public PagedList<ApplicationInner> list(final String resourceGroupName, final String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationInner> list(final String resourceGroupName, final String accountName) {
         ServiceResponse<Page<ApplicationInner>> response = listSinglePageAsync(resourceGroupName, accountName).toBlocking().single();
         return new PagedList<ApplicationInner>(response.getBody()) {
             @Override
-            public Page<ApplicationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1072,16 +1041,13 @@ public final class ApplicationsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationInner&gt; object if successful.
      */
-    public PagedList<ApplicationInner> list(final String resourceGroupName, final String accountName, final Integer maxresults) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationInner> list(final String resourceGroupName, final String accountName, final Integer maxresults) {
         ServiceResponse<Page<ApplicationInner>> response = listSinglePageAsync(resourceGroupName, accountName, maxresults).toBlocking().single();
         return new PagedList<ApplicationInner>(response.getBody()) {
             @Override
-            public Page<ApplicationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1194,16 +1160,13 @@ public final class ApplicationsInner {
      * Lists all of the applications in the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationInner&gt; object if successful.
      */
-    public PagedList<ApplicationInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ApplicationInner>(response.getBody()) {
             @Override
-            public Page<ApplicationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

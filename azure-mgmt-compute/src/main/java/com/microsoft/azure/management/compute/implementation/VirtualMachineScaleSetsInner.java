@@ -18,7 +18,6 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceID
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -177,13 +176,9 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
      * @param parameters Parameters supplied to the Create Virtual Machine Scale Set operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineScaleSetInner object if successful.
      */
-    public VirtualMachineScaleSetInner createOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualMachineScaleSetInner createOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
@@ -252,12 +247,9 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param name Parameters supplied to the Create Virtual Machine Scale Set operation.
      * @param parameters Parameters supplied to the Create Virtual Machine Scale Set operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetInner object if successful.
      */
-    public VirtualMachineScaleSetInner beginCreateOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineScaleSetInner beginCreateOrUpdate(String resourceGroupName, String name, VirtualMachineScaleSetInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -343,12 +335,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void deallocate(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void deallocate(String resourceGroupName, String vmScaleSetName) {
         deallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -412,12 +400,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void deallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void deallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         deallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -487,11 +471,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDeallocate(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDeallocate(String resourceGroupName, String vmScaleSetName) {
         beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -566,11 +547,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDeallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDeallocate(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginDeallocateWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -656,12 +634,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String vmScaleSetName) {
         deleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -722,11 +696,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String vmScaleSetName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -805,12 +776,9 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetInner object if successful.
      */
-    public VirtualMachineScaleSetInner get(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineScaleSetInner get(String resourceGroupName, String vmScaleSetName) {
         return getWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -889,12 +857,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void deleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void deleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         deleteInstancesWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -965,11 +929,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDeleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDeleteInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginDeleteInstancesWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -1055,12 +1016,9 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineScaleSetInstanceViewInner object if successful.
      */
-    public VirtualMachineScaleSetInstanceViewInner getInstanceView(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineScaleSetInstanceViewInner getInstanceView(String resourceGroupName, String vmScaleSetName) {
         return getInstanceViewWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -1137,16 +1095,13 @@ public final class VirtualMachineScaleSetsInner {
      * Lists all virtual machine scale sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1247,16 +1202,13 @@ public final class VirtualMachineScaleSetsInner {
     /**
      * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetInner> listAll() {
         ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1352,16 +1304,13 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetSkuInner> listSkus(final String resourceGroupName, final String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetSkuInner> listSkus(final String resourceGroupName, final String vmScaleSetName) {
         ServiceResponse<Page<VirtualMachineScaleSetSkuInner>> response = listSkusSinglePageAsync(resourceGroupName, vmScaleSetName).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetSkuInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetSkuInner> nextPage(String nextPageLink) {
                 return listSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1471,12 +1420,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void powerOff(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void powerOff(String resourceGroupName, String vmScaleSetName) {
         powerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -1540,12 +1485,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void powerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void powerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         powerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -1615,11 +1556,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginPowerOff(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginPowerOff(String resourceGroupName, String vmScaleSetName) {
         beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -1694,11 +1632,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginPowerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginPowerOff(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginPowerOffWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -1784,12 +1719,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void restart(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void restart(String resourceGroupName, String vmScaleSetName) {
         restartWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -1853,12 +1784,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void restart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void restart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         restartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -1928,11 +1855,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginRestart(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginRestart(String resourceGroupName, String vmScaleSetName) {
         beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -2007,11 +1931,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginRestart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginRestart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginRestartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -2097,12 +2018,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void start(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void start(String resourceGroupName, String vmScaleSetName) {
         startWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -2166,12 +2083,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void start(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void start(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         startWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -2241,11 +2154,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginStart(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginStart(String resourceGroupName, String vmScaleSetName) {
         beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -2320,11 +2230,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginStart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginStart(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginStartWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -2411,12 +2318,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void updateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void updateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         updateInstancesWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().last().getBody();
     }
 
@@ -2487,11 +2390,8 @@ public final class VirtualMachineScaleSetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
      * @param instanceIds the virtual machine scale set instance ids.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginUpdateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) throws CloudException, IOException, IllegalArgumentException {
+    public void beginUpdateInstances(String resourceGroupName, String vmScaleSetName, List<String> instanceIds) {
         beginUpdateInstancesWithServiceResponseAsync(resourceGroupName, vmScaleSetName, instanceIds).toBlocking().single().getBody();
     }
 
@@ -2577,12 +2477,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void reimage(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void reimage(String resourceGroupName, String vmScaleSetName) {
         reimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().last().getBody();
     }
 
@@ -2643,11 +2539,8 @@ public final class VirtualMachineScaleSetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginReimage(String resourceGroupName, String vmScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginReimage(String resourceGroupName, String vmScaleSetName) {
         beginReimageWithServiceResponseAsync(resourceGroupName, vmScaleSetName).toBlocking().single().getBody();
     }
 
@@ -2723,16 +2616,13 @@ public final class VirtualMachineScaleSetsInner {
      * Lists all virtual machine scale sets under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2829,16 +2719,13 @@ public final class VirtualMachineScaleSetsInner {
      * Lists all Virtual Machine Scale Sets in the subscription. Use nextLink property in the response to get the next page of Virtual Machine Scale Sets. Do this till nextLink is not null to fetch all the Virtual Machine Scale Sets.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineScaleSetInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2935,16 +2822,13 @@ public final class VirtualMachineScaleSetsInner {
      * Displays available skus for your virtual machine scale set including the minimum and maximum vm instances allowed for a particular sku.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineScaleSetSkuInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineScaleSetSkuInner> listSkusNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineScaleSetSkuInner> listSkusNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineScaleSetSkuInner>> response = listSkusNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineScaleSetSkuInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineScaleSetSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineScaleSetSkuInner> nextPage(String nextPageLink) {
                 return listSkusNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
