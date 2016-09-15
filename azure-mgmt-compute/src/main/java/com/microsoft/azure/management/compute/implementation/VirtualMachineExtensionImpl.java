@@ -255,7 +255,7 @@ class VirtualMachineExtensionImpl
                                         (LinkedHashMap<String, Object>) inner().settings();
                                 if (innerPublicSettings == null) {
                                     inner().withSettings(new LinkedHashMap<String, Object>());
-                                    innerPublicSettings = (LinkedHashMap<String, Object>)inner().settings();
+                                    innerPublicSettings = (LinkedHashMap<String, Object>) inner().settings();
                                 }
 
                                 for (Map.Entry<String, Object> entry : publicSettings.entrySet()) {
