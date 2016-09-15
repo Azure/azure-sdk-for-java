@@ -30,7 +30,7 @@ public class CreatorTaskItem<ResourceT> implements TaskItem<ResourceT> {
 
     @Override
     public Observable<ResourceT> executeAsync() {
-        return this.resourceCreator.createResourceAsync()
+        return this.resourceCreator.executeCreateOrUpdateAsync()
             .subscribeOn(Schedulers.io())
             .doOnNext(new Action1<ResourceT>() {
                         @Override
