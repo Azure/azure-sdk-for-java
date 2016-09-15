@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -80,12 +79,9 @@ public final class SubscriptionsInner {
      * Gets a list of the subscription locations.
      *
      * @param subscriptionId Id of the subscription
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;LocationInner&gt; object if successful.
      */
-    public List<LocationInner> listLocations(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
+    public List<LocationInner> listLocations(String subscriptionId) {
         return listLocationsWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
     }
 
@@ -154,12 +150,9 @@ public final class SubscriptionsInner {
      * Gets details about particular subscription.
      *
      * @param subscriptionId Id of the subscription.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SubscriptionInner object if successful.
      */
-    public SubscriptionInner get(String subscriptionId) throws CloudException, IOException, IllegalArgumentException {
+    public SubscriptionInner get(String subscriptionId) {
         return getWithServiceResponseAsync(subscriptionId).toBlocking().single().getBody();
     }
 
@@ -226,16 +219,13 @@ public final class SubscriptionsInner {
     /**
      * Gets a list of the subscriptionIds.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public PagedList<SubscriptionInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubscriptionInner> list() {
         ServiceResponse<Page<SubscriptionInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
-            public Page<SubscriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SubscriptionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -327,16 +317,13 @@ public final class SubscriptionsInner {
      * Gets a list of the subscriptionIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
-    public PagedList<SubscriptionInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubscriptionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SubscriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SubscriptionInner>(response.getBody()) {
             @Override
-            public Page<SubscriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SubscriptionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

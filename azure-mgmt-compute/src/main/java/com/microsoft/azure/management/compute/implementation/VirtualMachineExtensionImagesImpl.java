@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
@@ -10,8 +9,6 @@ import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachinePublishers;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-
-import java.io.IOException;
 
 /**
  * The implementation for {@link VirtualMachineExtensionImages}.
@@ -25,18 +22,18 @@ class VirtualMachineExtensionImagesImpl
     }
 
     @Override
-    public PagedList<VirtualMachineExtensionImage> listByRegion(Region region) throws CloudException, IOException {
+    public PagedList<VirtualMachineExtensionImage> listByRegion(Region region) {
         return listByRegion(region.toString());
     }
 
     @Override
-    public PagedList<VirtualMachineExtensionImage> listByRegion(String regionName) throws CloudException, IOException {
+    public PagedList<VirtualMachineExtensionImage> listByRegion(String regionName) {
         PagedList<VirtualMachinePublisher> publishers = this.publishers().listByRegion(regionName);
 
         PagedList<VirtualMachineExtensionImageType> extensionTypes =
                 new ChildListFlattener<>(publishers, new ChildListFlattener.ChildListLoader<VirtualMachinePublisher, VirtualMachineExtensionImageType>() {
                     @Override
-                    public PagedList<VirtualMachineExtensionImageType> loadList(VirtualMachinePublisher publisher) throws CloudException, IOException  {
+                    public PagedList<VirtualMachineExtensionImageType> loadList(VirtualMachinePublisher publisher)  {
                         return publisher.extensionTypes().list();
                     }
                 }).flatten();
@@ -44,7 +41,7 @@ class VirtualMachineExtensionImagesImpl
         PagedList<VirtualMachineExtensionImageVersion> extensionTypeVersions =
                 new ChildListFlattener<>(extensionTypes, new ChildListFlattener.ChildListLoader<VirtualMachineExtensionImageType, VirtualMachineExtensionImageVersion>() {
                     @Override
-                    public PagedList<VirtualMachineExtensionImageVersion> loadList(VirtualMachineExtensionImageType type) throws CloudException, IOException  {
+                    public PagedList<VirtualMachineExtensionImageVersion> loadList(VirtualMachineExtensionImageType type)  {
                         return type.versions().list();
                     }
                 }).flatten();
@@ -53,13 +50,7 @@ class VirtualMachineExtensionImagesImpl
                 new PagedListConverter<VirtualMachineExtensionImageVersion, VirtualMachineExtensionImage>() {
                     @Override
                     public VirtualMachineExtensionImage typeConvert(VirtualMachineExtensionImageVersion virtualMachineExtensionImageVersion) {
-                        try {
-                            return virtualMachineExtensionImageVersion.image();
-                        } catch (CloudException cloudException) {
-                            throw new RuntimeException(cloudException);
-                        } catch (IOException ioException) {
-                            throw new RuntimeException(ioException);
-                        }
+                        return virtualMachineExtensionImageVersion.image();
                     }
                 };
 

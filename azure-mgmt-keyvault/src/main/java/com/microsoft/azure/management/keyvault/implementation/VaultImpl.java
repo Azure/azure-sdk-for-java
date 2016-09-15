@@ -257,7 +257,7 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl refresh() throws Exception {
+    public VaultImpl refresh() {
         setInner(client.get(resourceGroupName(), name()));
         return this;
     }

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
@@ -24,7 +23,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,7 +78,7 @@ class NetworkInterfaceImpl
     // Verbs
 
     @Override
-    public NetworkInterface refresh() throws Exception {
+    public NetworkInterface refresh() {
         NetworkInterfaceInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         clearCachedRelatedResources();
@@ -287,7 +285,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIp == null) {
             this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
         }
@@ -300,7 +298,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public Network primaryNetwork() throws CloudException, IOException {
+    public Network primaryNetwork() {
         if (this.primaryNetwork == null) {
             this.primaryNetwork = this.primaryIpConfiguration().network();
         }
@@ -331,7 +329,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkSecurityGroup getNetworkSecurityGroup() throws CloudException, IOException {
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
             this.networkSecurityGroup = super.myManager

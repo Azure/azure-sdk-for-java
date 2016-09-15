@@ -17,7 +17,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.website.TopLevelDomainAgreementOption;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -86,16 +85,13 @@ public final class TopLevelDomainsInner {
     /**
      * Lists all top level domains supported for registration.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
-    public PagedList<TopLevelDomainInner> getGetTopLevelDomains() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TopLevelDomainInner> getGetTopLevelDomains() {
         ServiceResponse<Page<TopLevelDomainInner>> response = getGetTopLevelDomainsSinglePageAsync().toBlocking().single();
         return new PagedList<TopLevelDomainInner>(response.getBody()) {
             @Override
-            public Page<TopLevelDomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
                 return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -190,12 +186,9 @@ public final class TopLevelDomainsInner {
      * Gets details of a top level domain.
      *
      * @param name Name of the top level domain
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TopLevelDomainInner object if successful.
      */
-    public TopLevelDomainInner getTopLevelDomain(String name) throws CloudException, IOException, IllegalArgumentException {
+    public TopLevelDomainInner getTopLevelDomain(String name) {
         return getTopLevelDomainWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
@@ -266,16 +259,13 @@ public final class TopLevelDomainsInner {
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsSinglePageAsync(name).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
-            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -374,16 +364,13 @@ public final class TopLevelDomainsInner {
      *
      * @param name Name of the top level domain
      * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name, final Boolean includePrivacy) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name, final Boolean includePrivacy) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsSinglePageAsync(name, includePrivacy).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
-            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -491,16 +478,13 @@ public final class TopLevelDomainsInner {
      * Lists all top level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
-    public PagedList<TopLevelDomainInner> getGetTopLevelDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TopLevelDomainInner> getGetTopLevelDomainsNext(final String nextPageLink) {
         ServiceResponse<Page<TopLevelDomainInner>> response = getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TopLevelDomainInner>(response.getBody()) {
             @Override
-            public Page<TopLevelDomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
                 return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -597,16 +581,13 @@ public final class TopLevelDomainsInner {
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreementsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreementsNext(final String nextPageLink) {
         ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
-            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
                 return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

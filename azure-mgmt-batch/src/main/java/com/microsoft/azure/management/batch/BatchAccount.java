@@ -6,18 +6,15 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.batch.implementation.AccountResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.storage.StorageAccount;
-
-import java.io.IOException;
 
 /**
  * An immutable client-side representation of an Azure batch account.
@@ -62,38 +59,26 @@ public interface BatchAccount extends
 
     /**
      * @return the access keys for this batch account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    BatchAccountKeys keys() throws CloudException, IOException;
+    BatchAccountKeys keys();
 
     /**
      * @return the access keys for this batch account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    BatchAccountKeys refreshKeys() throws CloudException, IOException;
+    BatchAccountKeys refreshKeys();
 
     /**
      * Regenerates the access keys for batch account.
      *
      * @param keyType either primary or secondary key to be regenerated
      * @return the access keys for this batch account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    BatchAccountKeys regenerateKeys(AccountKeyType keyType) throws CloudException, IOException;
+    BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
      * Synchronize the storage account keys for batch account.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    void synchronizeAutoStorageKeys() throws CloudException, IOException;
+    void synchronizeAutoStorageKeys();
 
     /**************************************************************
      * Fluent interfaces to provision a BatchAccount

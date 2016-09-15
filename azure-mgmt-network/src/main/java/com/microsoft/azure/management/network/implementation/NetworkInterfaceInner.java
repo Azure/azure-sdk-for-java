@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.SubResource;
-import java.util.List;
-import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * A NetworkInterface in a resource group.

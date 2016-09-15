@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
@@ -13,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -92,7 +90,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public PublicIpAddress publicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress publicIpAddress() {
         String id = publicIpAddressId();
         if (id == null) {
             return null;
@@ -108,7 +106,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public Network network() throws CloudException, IOException {
+    public Network network() {
         String id = subnetId();
         return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));

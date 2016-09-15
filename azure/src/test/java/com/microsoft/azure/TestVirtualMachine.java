@@ -15,7 +15,6 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
-import rx.Subscriber;
 import rx.functions.Action1;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {

@@ -46,7 +46,7 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
-    public FluentModelT apply() throws Exception {
+    public FluentModelT apply() {
         return applyAsync().toBlocking().last();
     }
 

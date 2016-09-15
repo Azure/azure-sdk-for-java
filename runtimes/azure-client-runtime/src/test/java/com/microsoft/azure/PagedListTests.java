@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +22,7 @@ public class PagedListTests {
     public void setupList() {
         list = new PagedList<Integer>(new TestPage(0, 21)) {
             @Override
-            public Page<Integer> nextPage(String nextPageLink) throws CloudException, IOException {
+            public Page<Integer> nextPage(String nextPageLink) {
                 int pageNum = Integer.parseInt(nextPageLink);
                 return new TestPage(pageNum, 21);
             }

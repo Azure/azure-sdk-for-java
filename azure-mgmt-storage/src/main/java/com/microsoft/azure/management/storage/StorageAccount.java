@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
@@ -21,7 +20,6 @@ import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -102,34 +100,26 @@ public interface StorageAccount extends
 
     /**
      * @return the access keys for this storage account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
     @LangMethodDefinition(AsType = LangMethodType.Method)
-    List<StorageAccountKey> keys() throws CloudException, IOException;
+    List<StorageAccountKey> keys();
 
     /**
      * Fetch the up-to-date access keys from Azure for this storage account.
      *
      * @return the access keys for this storage account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
     @LangMethodDefinition(AsType = LangMethodType.Method)
-    List<StorageAccountKey> refreshKeys() throws CloudException, IOException;
+    List<StorageAccountKey> refreshKeys();
 
     /**
      * Regenerates the access keys for this storage account.
      *
      * @param keyName if the key name
      * @return the generated access keys for this storage account
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
     @LangMethodDefinition(AsType = LangMethodType.Method)
-    List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException;
+    List<StorageAccountKey> regenerateKey(String keyName);
 
     /**************************************************************
      * Fluent interfaces to provision a StorageAccount

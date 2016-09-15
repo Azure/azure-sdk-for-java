@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,12 +97,8 @@ public final class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String virtualNetworkName, String subnetName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
     }
 
@@ -261,12 +253,9 @@ public final class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SubnetInner object if successful.
      */
-    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) throws CloudException, IOException, IllegalArgumentException {
+    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName).toBlocking().single().getBody();
     }
 
@@ -346,12 +335,9 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SubnetInner object if successful.
      */
-    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand).toBlocking().single().getBody();
     }
 
@@ -440,13 +426,9 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SubnetInner object if successful.
      */
-    public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().last().getBody();
     }
 
@@ -522,12 +504,9 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Parameters supplied to the create/update Subnet operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SubnetInner object if successful.
      */
-    public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) throws CloudException, IOException, IllegalArgumentException {
+    public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).toBlocking().single().getBody();
     }
 
@@ -619,16 +598,13 @@ public final class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
-    public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubnetInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<SubnetInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
         return new PagedList<SubnetInner>(response.getBody()) {
             @Override
-            public Page<SubnetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SubnetInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -737,16 +713,13 @@ public final class SubnetsInner {
      * The List subnets operation retrieves all the subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SubnetInner&gt; object if successful.
      */
-    public PagedList<SubnetInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SubnetInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SubnetInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SubnetInner>(response.getBody()) {
             @Override
-            public Page<SubnetInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SubnetInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -58,7 +58,7 @@ class NetworkImpl
     // Verbs
 
     @Override
-    public NetworkImpl refresh() throws Exception {
+    public NetworkImpl refresh() {
         VirtualNetworkInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();

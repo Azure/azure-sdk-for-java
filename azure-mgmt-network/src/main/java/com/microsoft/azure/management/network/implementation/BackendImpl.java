@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -88,7 +87,7 @@ class BackendImpl
                     } else {
                         vmIds.add(nic.virtualMachineId());
                     }
-                } catch (CloudException | IllegalArgumentException | IOException e) {
+                } catch (CloudException | IllegalArgumentException e) {
                     continue;
                 }
             }

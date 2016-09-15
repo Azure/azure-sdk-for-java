@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -90,16 +89,13 @@ public final class ProvidersInner {
     /**
      * Gets the source controls available for Azure websites.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SourceControlInner&gt; object if successful.
      */
-    public PagedList<SourceControlInner> getSourceControls() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SourceControlInner> getSourceControls() {
         ServiceResponse<Page<SourceControlInner>> response = getSourceControlsSinglePageAsync().toBlocking().single();
         return new PagedList<SourceControlInner>(response.getBody()) {
             @Override
-            public Page<SourceControlInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SourceControlInner> nextPage(String nextPageLink) {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -191,12 +187,9 @@ public final class ProvidersInner {
      * Gets source control token.
      *
      * @param sourceControlType Type of source control
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SourceControlInner object if successful.
      */
-    public SourceControlInner getSourceControl(String sourceControlType) throws CloudException, IOException, IllegalArgumentException {
+    public SourceControlInner getSourceControl(String sourceControlType) {
         return getSourceControlWithServiceResponseAsync(sourceControlType).toBlocking().single().getBody();
     }
 
@@ -265,12 +258,9 @@ public final class ProvidersInner {
      *
      * @param sourceControlType Type of source control
      * @param requestMessage Source control token information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SourceControlInner object if successful.
      */
-    public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+    public SourceControlInner updateSourceControl(String sourceControlType, SourceControlInner requestMessage) {
         return updateSourceControlWithServiceResponseAsync(sourceControlType, requestMessage).toBlocking().single().getBody();
     }
 
@@ -344,12 +334,9 @@ public final class ProvidersInner {
     /**
      * Gets publishing user.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner getPublishingUser() throws CloudException, IOException, IllegalArgumentException {
+    public UserInner getPublishingUser() {
         return getPublishingUserWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -411,12 +398,9 @@ public final class ProvidersInner {
      * Updates publishing user.
      *
      * @param requestMessage Details of publishing user
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner updatePublishingUser(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner updatePublishingUser(UserInner requestMessage) {
         return updatePublishingUserWithServiceResponseAsync(requestMessage).toBlocking().single().getBody();
     }
 
@@ -485,16 +469,13 @@ public final class ProvidersInner {
      * Gets the source controls available for Azure websites.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SourceControlInner&gt; object if successful.
      */
-    public PagedList<SourceControlInner> getSourceControlsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SourceControlInner> getSourceControlsNext(final String nextPageLink) {
         ServiceResponse<Page<SourceControlInner>> response = getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SourceControlInner>(response.getBody()) {
             @Override
-            public Page<SourceControlInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SourceControlInner> nextPage(String nextPageLink) {
                 return getSourceControlsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

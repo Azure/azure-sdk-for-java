@@ -62,12 +62,9 @@ public final class UsagesInner {
     /**
      * Gets the current usage count and the limit for the resources under the subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;UsageInner&gt; object if successful.
      */
-    public List<UsageInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public List<UsageInner> list() {
         return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 

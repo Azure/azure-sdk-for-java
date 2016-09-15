@@ -122,21 +122,17 @@ public final class Utils {
         }
 
         StringBuilder extensions = new StringBuilder().append("\n\tExtensions: ");
-        try {
-            for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.extensions().entrySet()) {
-                VirtualMachineExtension extension = extensionEntry.getValue();
-                extensions.append("\n\t\tExtension: ").append(extension.id())
-                        .append("\n\t\t\tName: ").append(extension.name())
-                        .append("\n\t\t\tTags: ").append(extension.tags())
-                        .append("\n\t\t\tProvisioningState: ").append(extension.provisioningState())
-                        .append("\n\t\t\tAuto upgrade minor version enabled: ").append(extension.autoUpgradeMinorVersionEnabled())
-                        .append("\n\t\t\tPublisher: ").append(extension.publisherName())
-                        .append("\n\t\t\tType: ").append(extension.typeName())
-                        .append("\n\t\t\tVersion: ").append(extension.versionName())
-                        .append("\n\t\t\tPublic Settings: ").append(extension.publicSettingsAsJsonString());
-            }
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
+        for (Map.Entry<String, VirtualMachineExtension> extensionEntry : resource.extensions().entrySet()) {
+            VirtualMachineExtension extension = extensionEntry.getValue();
+            extensions.append("\n\t\tExtension: ").append(extension.id())
+                    .append("\n\t\t\tName: ").append(extension.name())
+                    .append("\n\t\t\tTags: ").append(extension.tags())
+                    .append("\n\t\t\tProvisioningState: ").append(extension.provisioningState())
+                    .append("\n\t\t\tAuto upgrade minor version enabled: ").append(extension.autoUpgradeMinorVersionEnabled())
+                    .append("\n\t\t\tPublisher: ").append(extension.publisherName())
+                    .append("\n\t\t\tType: ").append(extension.typeName())
+                    .append("\n\t\t\tVersion: ").append(extension.versionName())
+                    .append("\n\t\t\tPublic Settings: ").append(extension.publicSettingsAsJsonString());
         }
 
 

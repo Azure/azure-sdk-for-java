@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -97,16 +96,13 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
      * @param resourceGroupName Name of the resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public PagedList<DomainInner> getDomains(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getDomains(final String resourceGroupName) {
         ServiceResponse<Page<DomainInner>> response = getDomainsSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<DomainInner>(response.getBody()) {
             @Override
-            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DomainInner> nextPage(String nextPageLink) {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -209,12 +205,9 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainInner object if successful.
      */
-    public DomainInner getDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
+    public DomainInner getDomain(String resourceGroupName, String domainName) {
         return getDomainWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
     }
 
@@ -293,12 +286,9 @@ public final class DomainsInner {
      * @param resourceGroupName &amp;gt;Name of the resource group
      * @param domainName Name of the domain
      * @param domain Domain registration information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainInner object if successful.
      */
-    public DomainInner createOrUpdateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
+    public DomainInner createOrUpdateDomain(String resourceGroupName, String domainName, DomainInner domain) {
         return createOrUpdateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
     }
 
@@ -384,12 +374,9 @@ public final class DomainsInner {
      *
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteDomain(String resourceGroupName, String domainName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteDomain(String resourceGroupName, String domainName) {
         return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName).toBlocking().single().getBody();
     }
 
@@ -462,12 +449,9 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
      * @param forceHardDeleteDomain If true then the domain will be deleted immediately instead of after 24 hours
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteDomain(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteDomain(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
         return deleteDomainWithServiceResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain).toBlocking().single().getBody();
     }
 
@@ -549,12 +533,9 @@ public final class DomainsInner {
      * @param resourceGroupName &amp;gt;Name of the resource group
      * @param domainName Name of the domain
      * @param domain Domain registration information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainInner object if successful.
      */
-    public DomainInner updateDomain(String resourceGroupName, String domainName, DomainInner domain) throws CloudException, IOException, IllegalArgumentException {
+    public DomainInner updateDomain(String resourceGroupName, String domainName, DomainInner domain) {
         return updateDomainWithServiceResponseAsync(resourceGroupName, domainName, domain).toBlocking().single().getBody();
     }
 
@@ -641,12 +622,9 @@ public final class DomainsInner {
      * @param resourceGroupName Name of the resource group
      * @param domainName Name of the domain
      * @param operationId Domain purchase operation Id
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainInner object if successful.
      */
-    public DomainInner getDomainOperation(String resourceGroupName, String domainName, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public DomainInner getDomainOperation(String resourceGroupName, String domainName, String operationId) {
         return getDomainOperationWithServiceResponseAsync(resourceGroupName, domainName, operationId).toBlocking().single().getBody();
     }
 
@@ -731,16 +709,13 @@ public final class DomainsInner {
      * Lists domains under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public PagedList<DomainInner> getDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getDomainsNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DomainInner>(response.getBody()) {
             @Override
-            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DomainInner> nextPage(String nextPageLink) {
                 return getDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

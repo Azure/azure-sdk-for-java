@@ -64,11 +64,8 @@ public final class GlobalResourceGroupsInner {
      *
      * @param resourceGroupName the String value
      * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public void moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
         moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().getBody();
     }
 

@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -88,16 +87,13 @@ public final class FeaturesInner {
     /**
      * Gets a list of previewed features for all the providers in the current subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public PagedList<FeatureResultInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listAll() {
         ServiceResponse<Page<FeatureResultInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<FeatureResultInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -192,16 +188,13 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public PagedList<FeatureResultInner> list(final String resourceProviderNamespace) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> list(final String resourceProviderNamespace) {
         ServiceResponse<Page<FeatureResultInner>> response = listSinglePageAsync(resourceProviderNamespace).toBlocking().single();
         return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<FeatureResultInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -304,12 +297,9 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FeatureResultInner object if successful.
      */
-    public FeatureResultInner get(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
+    public FeatureResultInner get(String resourceProviderNamespace, String featureName) {
         return getWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
     }
 
@@ -387,12 +377,9 @@ public final class FeaturesInner {
      *
      * @param resourceProviderNamespace Namespace of the resource provider.
      * @param featureName Previewed feature name in the resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the FeatureResultInner object if successful.
      */
-    public FeatureResultInner register(String resourceProviderNamespace, String featureName) throws CloudException, IOException, IllegalArgumentException {
+    public FeatureResultInner register(String resourceProviderNamespace, String featureName) {
         return registerWithServiceResponseAsync(resourceProviderNamespace, featureName).toBlocking().single().getBody();
     }
 
@@ -469,16 +456,13 @@ public final class FeaturesInner {
      * Gets a list of previewed features for all the providers in the current subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public PagedList<FeatureResultInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<FeatureResultInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<FeatureResultInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -575,16 +559,13 @@ public final class FeaturesInner {
      * Gets a list of previewed features of a resource provider.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;FeatureResultInner&gt; object if successful.
      */
-    public PagedList<FeatureResultInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<FeatureResultInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<FeatureResultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<FeatureResultInner>(response.getBody()) {
             @Override
-            public Page<FeatureResultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<FeatureResultInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

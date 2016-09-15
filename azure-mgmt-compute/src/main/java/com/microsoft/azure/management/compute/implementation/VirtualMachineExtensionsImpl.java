@@ -3,7 +3,6 @@ import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,9 +33,8 @@ class VirtualMachineExtensionsImpl extends
 
     /**
      * @return the extension as a map indexed by name.
-     * @throws IOException the io exception
      */
-    public Map<String, VirtualMachineExtension> asMap() throws IOException {
+    public Map<String, VirtualMachineExtension> asMap() {
         Map<String, VirtualMachineExtension> result = new HashMap<>();
         for (Map.Entry<String, VirtualMachineExtensionImpl> entry : this.collection().entrySet()) {
             VirtualMachineExtensionImpl extension = entry.getValue();

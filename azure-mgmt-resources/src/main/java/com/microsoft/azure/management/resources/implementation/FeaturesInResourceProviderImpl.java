@@ -6,14 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.rest.RestException;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link Features.InResourceProvider}.
@@ -29,7 +25,7 @@ final class FeaturesInResourceProviderImpl
     }
 
     @Override
-    public PagedList<Feature> list() throws RestException, IOException {
+    public PagedList<Feature> list() {
         PagedListConverter<FeatureResultInner, Feature> converter = new PagedListConverter<FeatureResultInner, Feature>() {
             @Override
             public Feature typeConvert(FeatureResultInner tenantInner) {
@@ -40,12 +36,12 @@ final class FeaturesInResourceProviderImpl
     }
 
     @Override
-    public Feature register(String featureName) throws IOException, CloudException {
+    public Feature register(String featureName) {
         return new FeatureImpl(client.register(resourceProviderNamespace, featureName));
     }
 
     @Override
-    public Feature getByName(String name) throws CloudException, IOException {
+    public Feature getByName(String name) {
         return new FeatureImpl(client.get(resourceProviderNamespace, name));
     }
 }

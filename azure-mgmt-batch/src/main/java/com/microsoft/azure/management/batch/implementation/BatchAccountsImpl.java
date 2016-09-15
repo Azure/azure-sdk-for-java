@@ -1,14 +1,11 @@
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-
-import java.io.IOException;
 
 /**
  * Implementation for BatchAccounts and its parent interfaces.
@@ -24,12 +21,12 @@ public class BatchAccountsImpl
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 
@@ -45,12 +42,12 @@ public class BatchAccountsImpl
     }
 
     @Override
-    public PagedList<BatchAccount> list() throws CloudException, IOException {
+    public PagedList<BatchAccount> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    public PagedList<BatchAccount> listByGroup(String resourceGroupName) throws CloudException, IOException {
+    public PagedList<BatchAccount> listByGroup(String resourceGroupName) {
         return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
     }
 
@@ -70,7 +67,7 @@ public class BatchAccountsImpl
     }
 
     @Override
-    public BatchAccount getByGroup(String groupName, String name) throws CloudException, IOException {
+    public BatchAccount getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 }
