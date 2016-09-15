@@ -4,6 +4,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -200,8 +201,14 @@ class VirtualMachineExtensionImpl
 
     @Override
     public VirtualMachineExtensionImpl refresh() throws Exception {
+        String name;
+        if (this.isReference()) {
+            name = ResourceUtils.nameFromResourceId(this.inner().id());
+        } else {
+            name = this.inner().name();
+        }
         VirtualMachineExtensionInner inner =
-                this.client.get(this.parent.resourceGroupName(), this.parent.name(), this.name());
+                this.client.get(this.parent.resourceGroupName(), this.parent.name(), name);
         this.setInner(inner);
         return this;
     }
@@ -227,7 +234,43 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Observable<VirtualMachineExtension> updateAsync() {
-        return this.createAsync();
+        if (this.isReference()) {
+            String extensionName = ResourceUtils.nameFromResourceId(this.inner().id());
+            return this.client.getAsync(this.parent().resourceGroupName(),
+                    this.parent().name(), extensionName)
+                    .flatMap(new Func1<VirtualMachineExtensionInner, Observable<VirtualMachineExtension>>() {
+                        @Override
+                        public Observable<VirtualMachineExtension> call(VirtualMachineExtensionInner resource) {
+                            inner()
+                                .withPublisher(resource.publisher())
+                                .withVirtualMachineExtensionType(resource.virtualMachineExtensionType())
+                                .withTypeHandlerVersion(resource.typeHandlerVersion());
+                            if (inner().autoUpgradeMinorVersion() == null) {
+                                inner().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
+                            }
+                            if (resource.settings() != null) {
+                                LinkedHashMap<String, Object> settings =
+                                        (LinkedHashMap<String, Object>) resource.settings();
+                                if (settings.size() > 0) {
+                                    if (inner().settings() == null) {
+                                        inner().withSettings(settings);
+                                    } else {
+                                        LinkedHashMap<String, Object> innerSettings =
+                                                (LinkedHashMap<String, Object>) inner().settings();
+                                        for (Map.Entry<String, Object> entry : settings.entrySet()) {
+                                            if (!innerSettings.containsKey(entry.getKey())) {
+                                                innerSettings.put(entry.getKey(), entry.getValue());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            return createAsync();
+                        }
+                    });
+        } else {
+            return this.createAsync();
+        }
     }
 
     @Override
@@ -240,6 +283,17 @@ class VirtualMachineExtensionImpl
                 return result;
             }
         });
+    }
+
+    /**
+     * @return true if this is just a reference to the extension.
+     * <p>
+     * An extension will present as a reference when the parent virtual machine was fetched using
+     * VM list, a GET on a specific VM will return fully expanded extension details.
+     * </p>
+     */
+    public boolean isReference() {
+        return this.inner().name() == null;
     }
 
     // Helper methods

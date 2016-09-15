@@ -116,4 +116,81 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
 
         Assert.assertTrue(vm.extensions().size() == 0);
     }
+
+    @Test
+    public void canHandleExtensionReference() throws Exception {
+        final String RG_NAME = ResourceNamer.randomResourceName("vmexttest", 15);
+        final String LOCATION = "eastus";
+        final String VMNAME = "javavm";
+
+        // Create a Linux VM
+        //
+        VirtualMachine vm = computeManager.virtualMachines()
+                .define(VMNAME)
+                .withRegion(LOCATION)
+                .withNewResourceGroup(RG_NAME)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName("Foo12")
+                .withPassword("BaR@12abc!")
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .defineNewExtension("VMAccessForLinux")
+                    .withPublisher("Microsoft.OSTCExtensions")
+                    .withType("VMAccessForLinux")
+                    .withVersion("1.4")
+                    .withProtectedSetting("username", "Foo12")
+                    .withProtectedSetting("password", "B12a6@12xyz!")
+                    .withProtectedSetting("reset_ssh", "true")
+                .attach()
+                .create();
+
+        Assert.assertTrue(vm.extensions().size() > 0);
+
+        // Get the created virtual machine via VM List not by VM GET
+        List<VirtualMachine> virtualMachines = computeManager.virtualMachines()
+                .listByGroup(RG_NAME);
+        VirtualMachine vmWithExtensionReference = null;
+        for (VirtualMachine virtualMachine : virtualMachines) {
+            if (virtualMachine.name().equalsIgnoreCase(VMNAME)) {
+                vmWithExtensionReference = virtualMachine;
+                break;
+            }
+        }
+        // The VM retrieved from the list will contain extensions as reference (i.e. with only id)
+        Assert.assertNotNull(vmWithExtensionReference);
+
+        // Update the extension
+        VirtualMachine vmWithExtensionUpdated = vmWithExtensionReference.update()
+                .updateExtension("VMAccessForLinux")
+                .withProtectedSetting("username", "Foo12")
+                .withProtectedSetting("password", "muy!234OR")
+                .withProtectedSetting("reset_ssh", "true")
+                .parent()
+                .apply();
+
+        // Again getting VM with extension reference
+        virtualMachines = computeManager.virtualMachines()
+                .listByGroup(RG_NAME);
+        vmWithExtensionReference = null;
+        for (VirtualMachine virtualMachine : virtualMachines) {
+            vmWithExtensionReference = virtualMachine;
+        }
+        Assert.assertNotNull(vmWithExtensionReference);
+
+        VirtualMachineExtension accessExtension = null;
+        for (VirtualMachineExtension extension : vmWithExtensionReference.extensions().values()) {
+            if (extension.name().equalsIgnoreCase("VMAccessForLinux")) {
+                accessExtension = extension;
+                break;
+            }
+        }
+        // Even though VM's inner contain just extension reference VirtualMachine::extensions()
+        // should resolve the reference and get full extension.
+        Assert.assertNotNull(accessExtension);
+        Assert.assertNull(accessExtension.publisherName());
+        Assert.assertNull(accessExtension.typeName());
+        Assert.assertNull(accessExtension.versionName());
+    }
 }
