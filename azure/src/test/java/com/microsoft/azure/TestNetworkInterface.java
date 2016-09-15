@@ -53,6 +53,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
                 .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
                 .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
+                .append("\n\tVirtual machine ID: ").append(resource.virtualMachineId())
                 .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
                 .append("\n\tDNS server IPs: ");
 
@@ -61,7 +62,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\tIP forwarding enabled: ").append(resource.isIpForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())

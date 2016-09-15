@@ -7,8 +7,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 
@@ -107,13 +111,26 @@ class PublicIpAddressImpl
     }
 
     @Override
+    public IPVersion version() {
+        return this.inner().publicIPAddressVersion();
+    }
+
+    @Override
     public String fqdn() {
-        return this.inner().dnsSettings().fqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().fqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String reverseFqdn() {
-        return this.inner().dnsSettings().reverseFqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().reverseFqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -145,5 +162,29 @@ class PublicIpAddressImpl
 
         return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public PublicFrontend getAssignedLoadBalancerFrontend() {
+        if (this.hasAssignedLoadBalancerFrontend()) {
+            final String refId = this.inner().ipConfiguration().id();
+            final String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
+            final String frontendName = ResourceUtils.nameFromResourceId(refId);
+            return (PublicFrontend) lb.frontends().get(frontendName);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean hasAssignedLoadBalancerFrontend() {
+        if (this.inner().ipConfiguration() == null) {
+            return false;
+        } else {
+            final String refId = this.inner().ipConfiguration().id();
+            final String resourceType = ResourceUtils.resourceTypeFromResourceId(refId);
+            return resourceType.equalsIgnoreCase("frontendIPConfigurations");
+        }
     }
 }

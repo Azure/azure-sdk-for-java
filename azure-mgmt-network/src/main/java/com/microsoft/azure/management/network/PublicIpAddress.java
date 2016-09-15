@@ -25,9 +25,12 @@ public interface PublicIpAddress extends
         Wrapper<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    // Getters
+
+    /**
+     * @return the IP version of the public IP address
+     */
+    IPVersion version();
 
     /**
      * @return the assigned IP address
@@ -58,6 +61,16 @@ public interface PublicIpAddress extends
      * @return the idle connection timeout setting (in minutes)
      */
     int idleTimeoutInMinutes();
+
+    /**
+     * @return the load balancer frontend that this public IP address is assigned to
+     */
+    Frontend getAssignedLoadBalancerFrontend();
+
+    /**
+     * @return true if this public IP address is assigned to a load balancer frontend
+     */
+    boolean hasAssignedLoadBalancerFrontend();
 
     /**************************************************************
      * Fluent interfaces for builder pattern
