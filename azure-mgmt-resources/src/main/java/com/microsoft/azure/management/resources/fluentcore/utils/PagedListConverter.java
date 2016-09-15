@@ -9,7 +9,9 @@ package com.microsoft.azure.management.resources.fluentcore.utils;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
+import com.microsoft.rest.RestException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -47,7 +49,7 @@ public abstract class PagedListConverter<U, V> {
         }
         return new PagedList<V>(vPage) {
             @Override
-            public Page<V> nextPage(String nextPageLink) {
+            public Page<V> nextPage(String nextPageLink) throws RestException, IOException {
                 Page<U> uPage = uList.nextPage(nextPageLink);
                 PageImpl<V> vPage = new PageImpl<>();
                 vPage.setNextPageLink(uPage.getNextPageLink());
