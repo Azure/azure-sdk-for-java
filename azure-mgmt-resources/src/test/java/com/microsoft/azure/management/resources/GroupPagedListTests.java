@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -10,7 +9,6 @@ import com.microsoft.azure.management.resources.implementation.ResourceGroupInne
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -108,7 +106,7 @@ public class GroupPagedListTests {
     private static ResourceGroup resourceGroup(final String name) {
         return new ResourceGroup() {
             @Override
-            public Update update() throws Exception {
+            public Update update() {
                 return null;
             }
 
@@ -148,7 +146,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
                 return null;
             }
 

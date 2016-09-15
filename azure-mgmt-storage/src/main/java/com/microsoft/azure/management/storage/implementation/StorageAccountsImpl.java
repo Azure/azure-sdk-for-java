@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -14,8 +13,6 @@ import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-
-import java.io.IOException;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -36,7 +33,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
+    public CheckNameAvailabilityResult checkNameAvailability(String name) {
         return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name));
     }
 
@@ -56,7 +53,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.Deployments;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -75,7 +73,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
@@ -90,7 +88,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException {
+    public boolean checkExistence(String resourceGroupName, String deploymentName) {
         return client.checkExistence(resourceGroupName, deploymentName);
     }
 

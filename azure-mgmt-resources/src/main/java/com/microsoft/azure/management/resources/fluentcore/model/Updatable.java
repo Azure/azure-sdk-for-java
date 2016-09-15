@@ -23,7 +23,6 @@ public interface Updatable<T> {
      * process in Azure is {@link Appliable#apply()}.
      *
      * @return the stage of new resource update
-     * @throws Exception exceptions thrown from Azure
      */
-    T update() throws Exception;
+    T update();
 }

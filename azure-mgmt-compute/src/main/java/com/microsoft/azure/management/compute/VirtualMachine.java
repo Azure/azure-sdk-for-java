@@ -68,6 +68,8 @@ public interface VirtualMachine extends
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
+     * 
+     * @return the virtual machine sizes
      */
     PagedList<VirtualMachineSize> availableSizes();
 

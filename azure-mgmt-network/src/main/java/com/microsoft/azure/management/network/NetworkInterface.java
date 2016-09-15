@@ -6,18 +6,16 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -131,10 +129,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the Network Security Group resource.
      *
      * @return the network security group associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
+    NetworkSecurityGroup networkSecurityGroup();
 
     // Setters (fluent)
 

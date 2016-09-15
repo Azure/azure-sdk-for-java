@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.Dependency;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentExportResult;
@@ -168,12 +167,12 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public void cancel() throws CloudException, IOException {
+    public void cancel() {
         client.cancel(resourceGroupName, name());
     }
 
     @Override
-    public DeploymentExportResult exportTemplate() throws CloudException, IOException {
+    public DeploymentExportResult exportTemplate() {
         DeploymentExportResultInner inner = client.exportTemplate(resourceGroupName(), name());
         return new DeploymentExportResultImpl(inner);
     }
@@ -268,7 +267,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl beginCreate() throws Exception {
+    public DeploymentImpl beginCreate() {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());

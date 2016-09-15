@@ -6,12 +6,9 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-
-import java.io.IOException;
 
 /**
  * Entry point to features management API.
@@ -39,9 +36,7 @@ public interface Features extends
          *
          * @param featureName the name of the feature
          * @return the immutable client-side feature object created
-         * @throws IOException exception from serialization/deserialization
-         * @throws CloudException exception from Azure
          */
-        Feature register(String featureName) throws IOException, CloudException;
+        Feature register(String featureName);
     }
 }

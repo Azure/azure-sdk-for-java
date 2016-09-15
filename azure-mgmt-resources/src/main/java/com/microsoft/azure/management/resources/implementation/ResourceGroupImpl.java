@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
@@ -14,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,7 +71,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());

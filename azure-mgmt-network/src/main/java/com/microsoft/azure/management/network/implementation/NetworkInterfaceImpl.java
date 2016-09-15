@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
@@ -24,7 +23,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -322,7 +320,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException {
+    public NetworkSecurityGroup networkSecurityGroup() {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
             this.networkSecurityGroup = super.myManager

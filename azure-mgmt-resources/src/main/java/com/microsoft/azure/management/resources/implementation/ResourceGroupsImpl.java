@@ -6,13 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
-
-import java.io.IOException;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -44,7 +41,7 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public void delete(String name) throws Exception {
+    public void delete(String name) {
         client.delete(name);
     }
 
@@ -54,7 +51,7 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public boolean checkExistence(String name) throws CloudException, IOException {
+    public boolean checkExistence(String name) {
         return client.checkExistence(name);
     }
 

@@ -18,7 +18,6 @@ import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -46,7 +45,7 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         innerCollection.delete(id);
     }
 
@@ -66,17 +65,17 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServicePrincipalImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
+    public ServicePrincipalImpl getByObjectId(String objectId) {
         return new ServicePrincipalImpl(innerCollection.get(objectId), innerCollection);
     }
 
     @Override
-    public ServicePrincipal getByAppId(String appId) throws GraphErrorException, IOException {
+    public ServicePrincipal getByAppId(String appId) {
         return null;
     }
 
     @Override
-    public ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException {
+    public ServicePrincipal getByServicePrincipalName(String spn) {
         List<ServicePrincipalInner> spList = innerCollection.list(String.format("servicePrincipalNames/any(c:c eq '%s')", spn));
         if (spList == null || spList.isEmpty()) {
             return null;

@@ -22,18 +22,16 @@ public interface SupportsBatchCreation<ResourceT extends Resource> {
      *
      * @param creatables the creatables in the batch
      * @return the batch operation result from which created resources in this batch can be accessed.
-     * @throws Exception exceptions from Azure
      */
-    CreatedResources<ResourceT> create(Creatable<ResourceT>... creatables) throws Exception;
+    CreatedResources<ResourceT> create(Creatable<ResourceT>... creatables);
 
     /**
      * Executes the create requests on a collection (batch) of resources.
      *
      * @param creatables the list of creatables in the batch
      * @return the batch operation result from which created resources in this batch can be accessed.
-     * @throws Exception exceptions from Azure
      */
-    CreatedResources<ResourceT> create(List<Creatable<ResourceT>> creatables) throws Exception;
+    CreatedResources<ResourceT> create(List<Creatable<ResourceT>> creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when

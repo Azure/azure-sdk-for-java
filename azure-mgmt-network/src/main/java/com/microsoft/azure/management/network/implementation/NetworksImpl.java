@@ -51,7 +51,7 @@ class NetworksImpl
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 

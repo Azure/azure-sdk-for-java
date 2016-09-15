@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Location;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.resources.SubscriptionPolicies;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -54,7 +52,7 @@ final class SubscriptionImpl extends
     }
 
     @Override
-    public PagedList<Location> listLocations() throws IOException, CloudException {
+    public PagedList<Location> listLocations() {
         PagedListConverter<LocationInner, Location> converter = new PagedListConverter<LocationInner, Location>() {
             @Override
             public Location typeConvert(LocationInner locationInner) {

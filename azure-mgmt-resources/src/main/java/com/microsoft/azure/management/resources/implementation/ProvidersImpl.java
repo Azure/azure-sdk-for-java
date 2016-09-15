@@ -6,13 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-
-import java.io.IOException;
 
 /**
  * The implementation for {@link Providers}.
@@ -32,12 +29,12 @@ final class ProvidersImpl
     }
 
     @Override
-    public Provider unregister(String resourceProviderNamespace) throws CloudException, IOException {
+    public Provider unregister(String resourceProviderNamespace) {
         return wrapModel(client.unregister(resourceProviderNamespace));
     }
 
     @Override
-    public Provider register(String resourceProviderNamespace) throws CloudException, IOException {
+    public Provider register(String resourceProviderNamespace) {
         return wrapModel(client.register(resourceProviderNamespace));
     }
 

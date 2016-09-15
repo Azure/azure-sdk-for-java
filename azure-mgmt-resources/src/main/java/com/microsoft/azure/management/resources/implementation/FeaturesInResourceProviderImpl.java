@@ -6,13 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link Features.InResourceProvider}.
@@ -39,7 +36,7 @@ final class FeaturesInResourceProviderImpl
     }
 
     @Override
-    public Feature register(String featureName) throws IOException, CloudException {
+    public Feature register(String featureName) {
         return new FeatureImpl(client.register(resourceProviderNamespace, featureName));
     }
 
