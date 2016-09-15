@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -78,16 +77,13 @@ public final class GlobalCertificateOrdersInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderInner> getAllCertificateOrders() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getAllCertificateOrders() {
         ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersSinglePageAsync().toBlocking().single();
         return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -182,12 +178,9 @@ public final class GlobalCertificateOrdersInner {
      * Validate certificate purchase information.
      *
      * @param certificateOrder Certificate order
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) throws CloudException, IOException, IllegalArgumentException {
+    public Object validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) {
         return validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder).toBlocking().single().getBody();
     }
 
@@ -259,16 +252,13 @@ public final class GlobalCertificateOrdersInner {
      * Lists all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderInner> getAllCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getAllCertificateOrdersNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
                 return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

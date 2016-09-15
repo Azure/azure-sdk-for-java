@@ -73,7 +73,7 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySet refresh() throws Exception {
+    public AvailabilitySet refresh() {
         AvailabilitySetInner response = client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         this.idOfVMsInSet = null;

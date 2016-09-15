@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -105,12 +104,8 @@ public final class NetworkSecurityGroupsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String networkSecurityGroupName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class NetworkSecurityGroupsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String networkSecurityGroupName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().getBody();
     }
 
@@ -254,12 +246,9 @@ public final class NetworkSecurityGroupsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkSecurityGroupInner object if successful.
      */
-    public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName) {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single().getBody();
     }
 
@@ -332,12 +321,9 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkSecurityGroupInner object if successful.
      */
-    public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, expand).toBlocking().single().getBody();
     }
 
@@ -419,13 +405,9 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create/update Network Security Group operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the NetworkSecurityGroupInner object if successful.
      */
-    public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().last().getBody();
     }
 
@@ -494,12 +476,9 @@ public final class NetworkSecurityGroupsInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param parameters Parameters supplied to the create/update Network Security Group operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkSecurityGroupInner object if successful.
      */
-    public NetworkSecurityGroupInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkSecurityGroupInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, parameters).toBlocking().single().getBody();
     }
 
@@ -583,16 +562,13 @@ public final class NetworkSecurityGroupsInner {
     /**
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkSecurityGroupInner> listAll() {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
-            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -687,16 +663,13 @@ public final class NetworkSecurityGroupsInner {
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkSecurityGroupInner> list(final String resourceGroupName) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
-            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -798,16 +771,13 @@ public final class NetworkSecurityGroupsInner {
      * The list NetworkSecurityGroups returns all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkSecurityGroupInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
-            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -904,16 +874,13 @@ public final class NetworkSecurityGroupsInner {
      * The list NetworkSecurityGroups returns all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
-    public PagedList<NetworkSecurityGroupInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkSecurityGroupInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkSecurityGroupInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkSecurityGroupInner>(response.getBody()) {
             @Override
-            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkSecurityGroupInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

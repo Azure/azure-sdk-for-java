@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
@@ -106,20 +105,15 @@ public interface Deployment extends
 
     /**
      * Cancel a currently running template deployment.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    void cancel() throws CloudException, IOException;
+    void cancel();
 
     /**
      * Exports a deployment template.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      * @return the export result
      */
-    DeploymentExportResult exportTemplate() throws CloudException, IOException;
+    DeploymentExportResult exportTemplate();
 
     /**
      * Container interface for all the deployment definitions.
@@ -244,7 +238,7 @@ public interface Deployment extends
          * deployment in the cloud, but exposing additional optional inputs to specify.
          */
         interface WithCreate extends Creatable<Deployment> {
-            Deployment beginCreate() throws Exception;
+            Deployment beginCreate();
         }
     }
 

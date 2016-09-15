@@ -68,7 +68,7 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public ServicePrincipal refresh() throws Exception {
+    public ServicePrincipal refresh() {
         return null;
     }
 

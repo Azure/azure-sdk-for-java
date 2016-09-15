@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -91,11 +90,8 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+    public void deleteValue(String tagName, String tagValue) {
         deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
     }
 
@@ -173,12 +169,9 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagValueInner object if successful.
      */
-    public TagValueInner createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+    public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
         return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
     }
 
@@ -256,12 +249,9 @@ public final class TagsInner {
      * Create a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the TagDetailsInner object if successful.
      */
-    public TagDetailsInner createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException {
+    public TagDetailsInner createOrUpdate(String tagName) {
         return createOrUpdateWithServiceResponseAsync(tagName).toBlocking().single().getBody();
     }
 
@@ -333,11 +323,8 @@ public final class TagsInner {
      * Delete a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String tagName) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String tagName) {
         deleteWithServiceResponseAsync(tagName).toBlocking().single().getBody();
     }
 
@@ -407,16 +394,13 @@ public final class TagsInner {
     /**
      * Get a list of subscription resource tags.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public PagedList<TagDetailsInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TagDetailsInner> list() {
         ServiceResponse<Page<TagDetailsInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<TagDetailsInner>(response.getBody()) {
             @Override
-            public Page<TagDetailsInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TagDetailsInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -511,16 +495,13 @@ public final class TagsInner {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public PagedList<TagDetailsInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TagDetailsInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TagDetailsInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TagDetailsInner>(response.getBody()) {
             @Override
-            public Page<TagDetailsInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TagDetailsInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

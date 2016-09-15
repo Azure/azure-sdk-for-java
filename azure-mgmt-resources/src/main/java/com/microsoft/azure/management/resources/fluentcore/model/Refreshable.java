@@ -19,7 +19,6 @@ public interface Refreshable<T> {
      * Refreshes the resource to sync with Azure.
      *
      * @return the refreshed resource
-     * @throws Exception exceptions thrown from Azure
      */
-    T refresh() throws Exception;
+    T refresh();
 }

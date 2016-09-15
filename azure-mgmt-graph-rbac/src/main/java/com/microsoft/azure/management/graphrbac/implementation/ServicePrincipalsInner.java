@@ -18,7 +18,6 @@ import com.microsoft.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -107,12 +106,9 @@ public final class ServicePrincipalsInner {
      * Creates a service principal in the  directory.
      *
      * @param parameters Parameters to create a service principal.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServicePrincipalInner object if successful.
      */
-    public ServicePrincipalInner create(ServicePrincipalCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ServicePrincipalInner create(ServicePrincipalCreateParametersInner parameters) {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
     }
 
@@ -183,16 +179,13 @@ public final class ServicePrincipalsInner {
     /**
      * Gets list of service principals from the current tenant.
      *
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServicePrincipalInner&gt; object if successful.
      */
-    public PagedList<ServicePrincipalInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ServicePrincipalInner> list() {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
-            public Page<ServicePrincipalInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ServicePrincipalInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -281,16 +274,13 @@ public final class ServicePrincipalsInner {
      * Gets list of service principals from the current tenant.
      *
      * @param filter The filter to apply on the operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServicePrincipalInner&gt; object if successful.
      */
-    public PagedList<ServicePrincipalInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ServicePrincipalInner> list(final String filter) {
         ServiceResponse<Page<ServicePrincipalInner>> response = listSinglePageAsync(filter).toBlocking().single();
         return new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
-            public Page<ServicePrincipalInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ServicePrincipalInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -389,11 +379,8 @@ public final class ServicePrincipalsInner {
      * Deletes service principal from the directory.
      *
      * @param objectId Object id to delete service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void delete(String objectId) {
         deleteWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -464,12 +451,9 @@ public final class ServicePrincipalsInner {
      * Gets service principal information from the directory.
      *
      * @param objectId Object id to get service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServicePrincipalInner object if successful.
      */
-    public ServicePrincipalInner get(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ServicePrincipalInner get(String objectId) {
         return getWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -540,12 +524,9 @@ public final class ServicePrincipalsInner {
      * Get keyCredentials associated with the service principal by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param objectId Object id to get service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;KeyCredentialInner&gt; object if successful.
      */
-    public List<KeyCredentialInner> listKeyCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<KeyCredentialInner> listKeyCredentials(String objectId) {
         return listKeyCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -617,11 +598,8 @@ public final class ServicePrincipalsInner {
      * Update keyCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param objectId Object id to get service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updateKeyCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updateKeyCredentials(String objectId) {
         updateKeyCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -689,11 +667,8 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId Object id to get service principal information.
      * @param value KeyCredential list.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value) {
         updateKeyCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().getBody();
     }
 
@@ -770,12 +745,9 @@ public final class ServicePrincipalsInner {
      * Gets passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
      *
      * @param objectId Object id to get service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PasswordCredentialInner&gt; object if successful.
      */
-    public List<PasswordCredentialInner> listPasswordCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<PasswordCredentialInner> listPasswordCredentials(String objectId) {
         return listPasswordCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -847,11 +819,8 @@ public final class ServicePrincipalsInner {
      * Updates passwordCredentials associated with an existing service principal. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
      *
      * @param objectId Object id to get service principal information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updatePasswordCredentials(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updatePasswordCredentials(String objectId) {
         updatePasswordCredentialsWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -919,11 +888,8 @@ public final class ServicePrincipalsInner {
      *
      * @param objectId Object id to get service principal information.
      * @param value PasswordCredential list.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) {
         updatePasswordCredentialsWithServiceResponseAsync(objectId, value).toBlocking().single().getBody();
     }
 
@@ -1000,16 +966,13 @@ public final class ServicePrincipalsInner {
      * Gets list of service principals from the current tenant.
      *
      * @param nextLink Next link for list operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServicePrincipalInner&gt; object if successful.
      */
-    public PagedList<ServicePrincipalInner> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ServicePrincipalInner> listNext(final String nextLink) {
         ServiceResponse<Page<ServicePrincipalInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
         return new PagedList<ServicePrincipalInner>(response.getBody()) {
             @Override
-            public Page<ServicePrincipalInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ServicePrincipalInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };

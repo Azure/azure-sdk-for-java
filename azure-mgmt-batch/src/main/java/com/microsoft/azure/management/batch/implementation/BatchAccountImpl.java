@@ -1,20 +1,17 @@
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.AccountProvisioningState;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
-import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
 import rx.functions.Func1;
-
-import java.io.IOException;
 
 /**
  * Implementation for BatchAccount and its parent interfaces.
@@ -44,7 +41,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccount refresh() throws Exception {
+    public BatchAccount refresh() {
         AccountResourceInner response =
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
@@ -141,7 +138,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccountKeys keys() throws CloudException, IOException {
+    public BatchAccountKeys keys() {
         if (cachedKeys == null) {
             cachedKeys = refreshKeys();
         }
@@ -150,7 +147,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccountKeys refreshKeys() throws CloudException, IOException {
+    public BatchAccountKeys refreshKeys() {
         BatchAccountListKeyResultInner keys = this.innerCollection.listKeys(this.resourceGroupName(), this.name());
         cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
 
@@ -158,7 +155,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccountKeys regenerateKeys(AccountKeyType keyType) throws CloudException, IOException {
+    public BatchAccountKeys regenerateKeys(AccountKeyType keyType) {
         BatchAccountRegenerateKeyResultInner keys = this.innerCollection.regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
 
@@ -166,7 +163,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public void synchronizeAutoStorageKeys() throws CloudException, IOException {
+    public void synchronizeAutoStorageKeys() {
         this.innerCollection.synchronizeAutoStorageKeys(this.resourceGroupName(), this.name());
     }
 

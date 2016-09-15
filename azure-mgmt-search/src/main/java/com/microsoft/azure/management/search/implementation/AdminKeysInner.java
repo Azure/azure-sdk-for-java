@@ -63,12 +63,9 @@ public final class AdminKeysInner {
      *
      * @param resourceGroupName The name of the resource group within the current subscription.
      * @param serviceName The name of the Search service for which to list admin keys.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AdminKeyResultInner object if successful.
      */
-    public AdminKeyResultInner list(String resourceGroupName, String serviceName) throws CloudException, IOException, IllegalArgumentException {
+    public AdminKeyResultInner list(String resourceGroupName, String serviceName) {
         return listWithServiceResponseAsync(resourceGroupName, serviceName).toBlocking().single().getBody();
     }
 

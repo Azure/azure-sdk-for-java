@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
@@ -9,8 +8,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.io.IOException;
 
 /**
  * An IP configuration in a network interface.
@@ -35,10 +32,8 @@ public interface NicIpConfiguration extends
      * This method makes a rest API call to fetch the public IP.
      *
      * @return the public IP associated with this IP configuration or null if there is no public IP associated
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress publicIpAddress() throws CloudException, IOException;
+    PublicIpAddress publicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this IP configuration.
@@ -51,10 +46,8 @@ public interface NicIpConfiguration extends
      * This method makes a rest API call to fetch the public IP.
      *
      * @return the virtual network associated with this this IP configuration.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    Network network() throws CloudException, IOException;
+    Network network();
 
     // Setters (fluent)
 

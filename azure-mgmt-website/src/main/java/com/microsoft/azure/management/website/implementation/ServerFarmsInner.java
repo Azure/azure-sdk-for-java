@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -166,16 +165,13 @@ public final class ServerFarmsInner {
      * Gets collection of App Service Plans in a resource group for a given subscription.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getServerFarms(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getServerFarms(final String resourceGroupName) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getServerFarmsSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -278,12 +274,9 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServerFarmWithRichSkuInner getServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner getServerFarm(String resourceGroupName, String name) {
         return getServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -362,13 +355,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServerFarmWithRichSkuInner object  if successful.
      */
-    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
         return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).toBlocking().last().getBody();
     }
 
@@ -438,13 +427,9 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
      * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
         return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).toBlocking().last().getBody();
     }
 
@@ -516,12 +501,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
         return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).toBlocking().single().getBody();
     }
 
@@ -602,12 +584,9 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
      * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
         return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).toBlocking().single().getBody();
     }
 
@@ -696,12 +675,9 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteServerFarm(String resourceGroupName, String name) {
         return deleteServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -779,16 +755,13 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -895,16 +868,13 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param details If true, metrics are broken down per App Service Plan instance
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1022,16 +992,13 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getServerFarmMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1141,12 +1108,9 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
-    public List<VnetInfoInner> getVnetsForServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetInfoInner> getVnetsForServerFarm(String resourceGroupName, String name) {
         return getVnetsForServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1225,12 +1189,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
@@ -1316,12 +1277,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
-    public List<VnetRouteInner> getRoutesForVnet(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetRouteInner> getRoutesForVnet(String resourceGroupName, String name, String vnetName) {
         return getRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
@@ -1407,12 +1365,9 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
-    public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) {
         return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
     }
 
@@ -1506,12 +1461,9 @@ public final class ServerFarmsInner {
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
      * @param route The route object
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetRouteInner object if successful.
      */
-    public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) throws CloudException, IOException, IllegalArgumentException {
+    public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
     }
 
@@ -1612,12 +1564,9 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
         return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
     }
 
@@ -1711,12 +1660,9 @@ public final class ServerFarmsInner {
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
      * @param route The route object
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetRouteInner object if successful.
      */
-    public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) throws CloudException, IOException, IllegalArgumentException {
+    public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
     }
 
@@ -1817,12 +1763,9 @@ public final class ServerFarmsInner {
      * @param name Name of the App Service Plan
      * @param vnetName Name of the virtual network
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner getServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner getServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
         return getServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
     }
 
@@ -1915,12 +1858,9 @@ public final class ServerFarmsInner {
      * @param vnetName The name of the virtual network
      * @param gatewayName The name of the gateway. Only 'primary' is supported.
      * @param connectionEnvelope The gateway entity.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner updateServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner updateServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         return updateServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -2017,16 +1957,13 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = getServerFarmSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2135,16 +2072,13 @@ public final class ServerFarmsInner {
      * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
         ServiceResponse<Page<SiteInner>> response = getServerFarmSitesSinglePageAsync(resourceGroupName, name, skipToken, filter, top).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2267,12 +2201,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
      * @param workerName Name of worker machine, typically starts with RD
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object rebootWorkerForServerFarm(String resourceGroupName, String name, String workerName) throws CloudException, IOException, IllegalArgumentException {
+    public Object rebootWorkerForServerFarm(String resourceGroupName, String name, String workerName) {
         return rebootWorkerForServerFarmWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
     }
 
@@ -2356,12 +2287,9 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSitesForServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSitesForServerFarm(String resourceGroupName, String name) {
         return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -2434,12 +2362,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSitesForServerFarm(String resourceGroupName, String name, Boolean softRestart) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSitesForServerFarm(String resourceGroupName, String name, Boolean softRestart) {
         return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
     }
 
@@ -2521,12 +2446,9 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
      * @param operationId Id of Server farm operation"&amp;gt;
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServerFarmWithRichSkuInner getServerFarmOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner getServerFarmOperation(String resourceGroupName, String name, String operationId) {
         return getServerFarmOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
@@ -2609,16 +2531,13 @@ public final class ServerFarmsInner {
      * Gets collection of App Service Plans in a resource group for a given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getServerFarmsNext(final String nextPageLink) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2715,16 +2634,13 @@ public final class ServerFarmsInner {
      * Queries for App Serice Plan metrics.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getServerFarmMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getServerFarmMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2821,16 +2737,13 @@ public final class ServerFarmsInner {
      * List of metrics that can be queried for an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintionsNext(final String nextPageLink) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2927,16 +2840,13 @@ public final class ServerFarmsInner {
      * Gets list of Apps associated with an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getServerFarmSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getServerFarmSitesNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

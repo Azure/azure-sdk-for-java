@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -14,8 +13,6 @@ import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
-
-import java.io.IOException;
 
 /**
  * The implementation of StorageAccounts and its parent interfaces.
@@ -36,32 +33,32 @@ class StorageAccountsImpl
     }
 
     @Override
-    public CheckNameAvailabilityResult checkNameAvailability(String name) throws CloudException, IOException {
+    public CheckNameAvailabilityResult checkNameAvailability(String name) {
         return new CheckNameAvailabilityResult(this.innerCollection.checkNameAvailability(name));
     }
 
     @Override
-    public PagedList<StorageAccount> list() throws CloudException, IOException {
+    public PagedList<StorageAccount> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<StorageAccount> listByGroup(String groupName) {
         return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override
-    public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
+    public StorageAccount getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.getProperties(groupName, name));
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

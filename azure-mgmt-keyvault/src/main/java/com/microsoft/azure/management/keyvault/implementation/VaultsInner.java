@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -15,28 +16,24 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import rx.Observable;
-import rx.functions.Func1;
-
 import java.io.IOException;
 import java.util.List;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -85,12 +82,12 @@ public final class VaultsInner {
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -100,12 +97,9 @@ public final class VaultsInner {
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault
      * @param parameters Parameters to create or update the vault
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VaultInner object if successful.
      */
-    public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VaultInner createOrUpdate(String resourceGroupName, String vaultName, VaultCreateOrUpdateParametersInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vaultName, parameters).toBlocking().single().getBody();
     }
 
@@ -191,11 +185,8 @@ public final class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String resourceGroupName, String vaultName) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String resourceGroupName, String vaultName) {
         deleteWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
     }
 
@@ -272,12 +263,9 @@ public final class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VaultInner object if successful.
      */
-    public VaultInner get(String resourceGroupName, String vaultName) throws CloudException, IOException, IllegalArgumentException {
+    public VaultInner get(String resourceGroupName, String vaultName) {
         return getWithServiceResponseAsync(resourceGroupName, vaultName).toBlocking().single().getBody();
     }
 
@@ -354,16 +342,13 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -460,16 +445,13 @@ public final class VaultsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> listByResourceGroup(final String resourceGroupName, final Integer top) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, top).toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -574,16 +556,13 @@ public final class VaultsInner {
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> list() {
         ServiceResponse<Page<VaultInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -671,16 +650,13 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> list(final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> list(final Integer top) {
         ServiceResponse<Page<VaultInner>> response = listSinglePageAsync(top).toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -778,16 +754,13 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<VaultInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -884,16 +857,13 @@ public final class VaultsInner {
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VaultInner&gt; object if successful.
      */
-    public PagedList<VaultInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VaultInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VaultInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VaultInner>(response.getBody()) {
             @Override
-            public Page<VaultInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VaultInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

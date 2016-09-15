@@ -63,12 +63,9 @@ public final class VirtualMachineSizesInner {
      * Lists all available virtual machine sizes for a subscription in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public List<VirtualMachineSizeInner> list(String location) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineSizeInner> list(String location) {
         return listWithServiceResponseAsync(location).toBlocking().single().getBody();
     }
 

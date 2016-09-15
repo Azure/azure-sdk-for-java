@@ -78,12 +78,9 @@ public final class PatchSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param scheduleEntries List of patch schedules for redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisPatchSchedulesResponseInner object if successful.
      */
-    public RedisPatchSchedulesResponseInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) throws CloudException, IOException, IllegalArgumentException {
+    public RedisPatchSchedulesResponseInner createOrUpdate(String resourceGroupName, String name, List<ScheduleEntryInner> scheduleEntries) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, scheduleEntries).toBlocking().single().getBody();
     }
 
@@ -170,11 +167,8 @@ public final class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String resourceGroupName, String name) {
         deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -251,12 +245,9 @@ public final class PatchSchedulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisPatchSchedulesResponseInner object if successful.
      */
-    public RedisPatchSchedulesResponseInner get(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public RedisPatchSchedulesResponseInner get(String resourceGroupName, String name) {
         return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 

@@ -200,7 +200,7 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl refresh() throws Exception {
+    public VirtualMachineExtensionImpl refresh() {
         String name;
         if (this.isReference()) {
             name = ResourceUtils.nameFromResourceId(this.inner().id());

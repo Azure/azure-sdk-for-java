@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -105,12 +104,8 @@ public final class RouteTablesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String routeTableName) {
         deleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class RouteTablesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String routeTableName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
     }
 
@@ -254,12 +246,9 @@ public final class RouteTablesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner get(String resourceGroupName, String routeTableName) throws CloudException, IOException, IllegalArgumentException {
+    public RouteTableInner get(String resourceGroupName, String routeTableName) {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName).toBlocking().single().getBody();
     }
 
@@ -332,12 +321,9 @@ public final class RouteTablesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, routeTableName, expand).toBlocking().single().getBody();
     }
 
@@ -419,13 +405,9 @@ public final class RouteTablesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create/update Route Table operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().last().getBody();
     }
 
@@ -494,12 +476,9 @@ public final class RouteTablesInner {
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create/update Route Table operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RouteTableInner object if successful.
      */
-    public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, routeTableName, parameters).toBlocking().single().getBody();
     }
 
@@ -584,16 +563,13 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public PagedList<RouteTableInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> list(final String resourceGroupName) {
         ServiceResponse<Page<RouteTableInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
-            public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RouteTableInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -694,16 +670,13 @@ public final class RouteTablesInner {
     /**
      * The list RouteTables returns all route tables in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public PagedList<RouteTableInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listAll() {
         ServiceResponse<Page<RouteTableInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
-            public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RouteTableInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -798,16 +771,13 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public PagedList<RouteTableInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
-            public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RouteTableInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -904,16 +874,13 @@ public final class RouteTablesInner {
      * The list RouteTables returns all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
-    public PagedList<RouteTableInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RouteTableInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<RouteTableInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<RouteTableInner>(response.getBody()) {
             @Override
-            public Page<RouteTableInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RouteTableInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

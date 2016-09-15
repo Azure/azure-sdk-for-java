@@ -26,7 +26,7 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
         this.innerCollection = innerCollection;
     }
 
-    public PagedList<VirtualMachineImage> list() throws RestException, IOException {
+    public PagedList<VirtualMachineImage> list() {
         final List<VirtualMachineImage> images = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
                 : innerCollection.list(

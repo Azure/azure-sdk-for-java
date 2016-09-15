@@ -67,10 +67,9 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
      * Default implementation of create().
      *
      * @return the created resource
-     * @throws Exception when anything goes wrong
      */
     @SuppressWarnings("unchecked")
-    public FluentModelT create() throws Exception {
+    public FluentModelT create() {
         return createAsync().toBlocking().single();
     }
 
@@ -108,7 +107,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     }
 
     @Override
-    public FluentModelT createResource() throws Exception {
+    public FluentModelT createResource() {
         return this.createResourceAsync().toBlocking().last();
     }
 
@@ -117,6 +116,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
         return this.createResourceAsync();
     }
 
+    @SuppressWarnings("unchecked")
     protected Func1<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
         return new Func1<InnerModelT, FluentModelT>() {
             @Override

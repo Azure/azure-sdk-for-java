@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -105,12 +104,8 @@ public final class LoadBalancersInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String loadBalancerName) {
         deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class LoadBalancersInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String loadBalancerName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
     }
 
@@ -254,12 +246,9 @@ public final class LoadBalancersInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LoadBalancerInner object if successful.
      */
-    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) throws CloudException, IOException, IllegalArgumentException {
+    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
     }
 
@@ -332,12 +321,9 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LoadBalancerInner object if successful.
      */
-    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, loadBalancerName, expand).toBlocking().single().getBody();
     }
 
@@ -419,13 +405,9 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the LoadBalancerInner object if successful.
      */
-    public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().last().getBody();
     }
 
@@ -494,12 +476,9 @@ public final class LoadBalancersInner {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the loadBalancer.
      * @param parameters Parameters supplied to the create/delete LoadBalancer operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LoadBalancerInner object if successful.
      */
-    public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, loadBalancerName, parameters).toBlocking().single().getBody();
     }
 
@@ -583,16 +562,13 @@ public final class LoadBalancersInner {
     /**
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public PagedList<LoadBalancerInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listAll() {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
-            public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LoadBalancerInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -687,16 +663,13 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public PagedList<LoadBalancerInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> list(final String resourceGroupName) {
         ServiceResponse<Page<LoadBalancerInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
-            public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LoadBalancerInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -798,16 +771,13 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public PagedList<LoadBalancerInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
-            public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LoadBalancerInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -904,16 +874,13 @@ public final class LoadBalancersInner {
      * The List loadBalancer operation retrieves all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
-    public PagedList<LoadBalancerInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LoadBalancerInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<LoadBalancerInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<LoadBalancerInner>(response.getBody()) {
             @Override
-            public Page<LoadBalancerInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LoadBalancerInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

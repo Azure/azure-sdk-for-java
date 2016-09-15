@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -70,16 +69,13 @@ public final class ExpressRouteServiceProvidersInner {
     /**
      * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteServiceProviderInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteServiceProviderInner> list() {
         ServiceResponse<Page<ExpressRouteServiceProviderInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ExpressRouteServiceProviderInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -174,16 +170,13 @@ public final class ExpressRouteServiceProvidersInner {
      * The List ExpressRouteServiceProvider operation retrieves all the available ExpressRouteServiceProviders.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteServiceProviderInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteServiceProviderInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteServiceProviderInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteServiceProviderInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ExpressRouteServiceProviderInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteServiceProviderInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
