@@ -62,6 +62,16 @@ public interface PublicIpAddress extends
      */
     int idleTimeoutInMinutes();
 
+    /**
+     * @return the load balancer frontend that this public IP address is assigned to
+     */
+    Frontend getAssignedLoadBalancerFrontend();
+
+    /**
+     * @return true if this public IP address is assigned to a load balancer frontend
+     */
+    boolean hasAssignedLoadBalancerFrontend();
+
     /**************************************************************
      * Fluent interfaces for builder pattern
      **************************************************************/

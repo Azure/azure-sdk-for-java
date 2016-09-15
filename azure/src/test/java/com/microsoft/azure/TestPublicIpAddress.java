@@ -52,8 +52,8 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
     }
 
     public static void printPIP(PublicIpAddress resource) {
-        System.out.println(new StringBuilder().append("Public IP Address: ").append(resource.id())
-                .append("Name: ").append(resource.name())
+        StringBuilder info = new StringBuilder().append("Public IP Address: ").append(resource.id())
+                .append("\n\tName: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
@@ -63,7 +63,16 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .append("\n\tReverse FQDN: ").append(resource.reverseFqdn())
                 .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
                 .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod().toString())
-                .append("\n\tIP version: ").append(resource.version().toString())
-                .toString());
+                .append("\n\tIP version: ").append(resource.version().toString());
+
+        // Show the associated load balancer frontend if any
+        info.append("\n\tAssociated load balancer frontend name: ");
+        if (resource.hasAssignedLoadBalancerFrontend()) {
+            info.append(resource.getAssignedLoadBalancerFrontend().name());
+        } else {
+            info.append("(None)");
+        }
+
+        System.out.println(info.toString());
     }
 }
