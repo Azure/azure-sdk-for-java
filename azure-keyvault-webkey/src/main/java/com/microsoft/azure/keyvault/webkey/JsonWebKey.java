@@ -20,15 +20,22 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Objects;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -401,7 +408,7 @@ public class JsonWebKey {
      */
     private RSAPublicKeySpec getRSAPublicKeySpec() {
 
-        return new RSAPublicKeySpec(toBigInteger(n()), toBigInteger(e()));
+        return new RSAPublicKeySpec(toBigInteger(n), toBigInteger(e));
     }
 
     /**
@@ -411,8 +418,8 @@ public class JsonWebKey {
      */
     private RSAPrivateKeySpec getRSAPrivateKeySpec() {
 
-        return new RSAPrivateCrtKeySpec(toBigInteger(n()), toBigInteger(e()), toBigInteger(d()), toBigInteger(p()),
-                toBigInteger(q()), toBigInteger(dp()), toBigInteger(dq()), toBigInteger(qi()));
+        return new RSAPrivateCrtKeySpec(toBigInteger(n), toBigInteger(e), toBigInteger(d), toBigInteger(p),
+                toBigInteger(q), toBigInteger(dp), toBigInteger(dq), toBigInteger(qi));
     }
 
     /**
@@ -455,7 +462,7 @@ public class JsonWebKey {
      * Verifies if the key is an RSA key.
      */
     private void checkRSACompatible() {
-        if (!JsonWebKeyType.RSA.equals(kty()) && !JsonWebKeyType.RSA_HSM.equals(kty())) {
+        if (!JsonWebKeyType.RSA.equals(kty) && !JsonWebKeyType.RSA_HSM.equals(kty)) {
             throw new UnsupportedOperationException("Not an RSA key");
         }
     }
@@ -556,5 +563,251 @@ public class JsonWebKey {
         } else {
             return new KeyPair(getRSAPublicKey(provider), null);
         }
+    }
+
+    /**
+     * Converts AES key to JSON web key.
+     * @param secretKey AES key
+     * @return the JSON web key, converted from AES key.
+     */
+    public static JsonWebKey fromAes(SecretKey secretKey) {
+        if(secretKey == null) {
+            return null;
+        }
+        
+        return new JsonWebKey()
+                .withK(secretKey.getEncoded())
+                .withKty(JsonWebKeyType.OCT);
+    }
+    
+    /**
+     * Converts JSON web key to AES key.
+     * @return AES key
+     */
+    public SecretKey toAes() {
+        if(k == null) {
+            return null;
+        }
+        
+        SecretKey secretKey = new SecretKeySpec(k, "AES");
+        return secretKey;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof JsonWebKey) {
+            return this.equals((JsonWebKey) obj);
+        }
+        return super.equals(obj);
+    }
+    
+    /**
+     * Indicates whether some other {@link JsonWebKey} is "equal to" this one.
+     * @param jwk the other {@link JsonWebKey} to compare with.
+     * @return true if this {@link JsonWebKey} is the same as the jwk argument; false otherwise.
+     */
+    public boolean equals(JsonWebKey jwk) {
+        if (jwk == null) {
+            return false;
+        }
+        
+        if(!Objects.equal(kid, jwk.kid)) {
+            return false;
+        }
+            
+        if (!Objects.equal(kty, jwk.kty)) {
+            return false;
+        }
+        
+        if (!Objects.equal(keyOps, jwk.keyOps)) {
+            return false;
+        }
+        
+        if (!Arrays.equals(k, jwk.k)) {
+            return false;
+        }
+        
+        // Public parameters
+        if (!Arrays.equals(n, jwk.n)) {
+            return false;
+        }
+        if (!Arrays.equals(e, jwk.e)) {
+            return false;
+        }
+
+        // Private parameters
+        if (!Arrays.equals(d, jwk.d)) {
+            return false;
+        }
+        if (!Arrays.equals(dp, jwk.dp)) {
+            return false;
+        }
+        if (!Arrays.equals(dq, jwk.dq)) {
+            return false;
+        }
+        if (!Arrays.equals(qi, jwk.qi)) {
+            return false;
+        }
+        if (!Arrays.equals(p, jwk.p)) {
+            return false;
+        }
+        if (!Arrays.equals(q, jwk.q)) {
+            return false;
+        }
+        
+        // HSM token
+        if (!Arrays.equals(t, jwk.t)) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * Verifies whether the {@link JsonWebKey} has private key.
+     * @return true if the {@link JsonWebKey} has private key; false otherwise.
+     */
+    public boolean hasPrivateKey() {
+        
+        if(JsonWebKeyType.OCT.equals(kty)) {
+            return k != null;
+        }
+        
+        else if(JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
+            return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
+        }
+        
+        return false;
+    }
+
+    /**
+     * Verifies whether the {@link JsonWebKey} is valid.
+     * @return true if the {@link JsonWebKey} is valid; false otherwise.
+     */
+    @JsonIgnore
+    public boolean isValid() {
+        if(kty == null) {
+            return false;
+        }
+        
+        if(keyOps != null) {
+            final Set<JsonWebKeyOperation> set = new HashSet<JsonWebKeyOperation>(JsonWebKeyOperation.ALL_OPERATIONS);
+            for(int i = 0; i < keyOps.size(); i++) {
+                if(!set.contains(keyOps.get(i)))
+                    return false;
+            }
+        }
+        
+        if(JsonWebKeyType.OCT.equals(kty)) {
+            return isValidOctet();
+        }
+        
+        else if(JsonWebKeyType.RSA.equals(kty)) {
+            return isValidRsa();
+        }
+        
+        else if(JsonWebKeyType.RSA_HSM.equals(kty)) {
+            return isValidRsaHsm();
+        }
+        return false;
+    }
+
+    private boolean isValidOctet() {
+        if (k != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isValidRsa() {
+        if (n == null || e == null) {
+            return false;
+        }
+        
+        return hasPrivateKey()
+                || (d == null && dp == null && dq == null && qi == null && p == null && q == null);
+    }
+    
+    private boolean isValidRsaHsm() {
+        // MAY have public key parameters
+        if ((n == null && e != null) || (n != null && e == null)) {
+            return false;
+        }
+
+        // no private key
+        if(hasPrivateKey()) {
+            return false;
+        }
+        
+        // MUST have ( T || ( N && E ) )
+        boolean tokenParameters  = t != null;
+        boolean publicParameters = (n != null && e != null);
+
+        if (tokenParameters && publicParameters) {
+            return false;
+        }
+
+        return (tokenParameters || publicParameters);
+    }
+    
+    /**
+     * Clear key materials.
+     */
+    public void clearMemory() {
+        zeroArray(k);
+        zeroArray(n);
+        zeroArray(e);
+        zeroArray(d);
+        zeroArray(dp);
+        zeroArray(dq);
+        zeroArray(qi);
+        zeroArray(p);
+        zeroArray(q);
+        zeroArray(t);
+        k = n = e = d = dp = dq = qi = p = q = t = null;
+    }
+
+    private static void zeroArray(byte[] bytes) {
+        if(bytes != null) {
+            Arrays.fill(bytes, (byte) 0);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 48313; // setting it to a random prime number
+        if(kid != null) {
+            hashCode += kid.hashCode();
+        }
+        
+        if(JsonWebKeyType.OCT.equals(kty)) {
+            hashCode += hashCode(k);
+        }
+        
+        else if(JsonWebKeyType.RSA.equals(kty)) {
+            hashCode += hashCode(n);
+        }
+        
+        else if(JsonWebKeyType.RSA_HSM.equals(kty)) {
+            hashCode += hashCode(t);
+        }
+        
+        return hashCode;
+    }
+    
+    private static int hashCode(byte[] obj) {
+        int hashCode = 0;
+        
+        if(obj == null || obj.length == 0) {
+            return 0;
+        }
+        
+        for(int i = 0; i < obj.length; i += 1) {
+            hashCode = (hashCode << 3) | (hashCode >> 29) ^ obj [i];
+        }
+        return hashCode;
     }
 }
