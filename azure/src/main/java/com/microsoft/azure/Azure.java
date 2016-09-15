@@ -8,6 +8,8 @@ package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.batch.BatchAccounts;
+import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -49,6 +51,7 @@ public final class Azure {
     private final ComputeManager computeManager;
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
+    private final BatchManager batchManager;
     private final String subscriptionId;
 
     /**
@@ -278,6 +281,7 @@ public final class Azure {
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
         this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
+        this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -399,4 +403,12 @@ public final class Azure {
     public Vaults vaults() {
         return this.keyVaultManager.vaults();
     }
+
+    /**
+     * @return entry point to managing batch accounts.
+     */
+    public BatchAccounts batchAccounts() {
+        return batchManager.batchAccounts();
+    }
+
 }

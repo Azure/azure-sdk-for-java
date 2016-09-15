@@ -128,8 +128,8 @@ final class GenericResourceImpl
     }
 
     @Override
-    public Observable<GenericResource> applyAsync() {
-        return createAsync();
+    public Observable<GenericResource> applyUpdateAsync() {
+        return createResourceAsync();
     }
 
     // CreatorTaskGroup.ResourceCreator implementation

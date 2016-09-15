@@ -32,7 +32,7 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     /**
      * The group of tasks to create this resource and it's dependencies.
      */
-    private CreatorTaskGroup<FluentModelT> creatorTaskGroup;
+    protected CreatorTaskGroup<FluentModelT> creatorTaskGroup;
 
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(innerObject);
@@ -109,6 +109,11 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     @Override
     public FluentModelT createResource() {
         return this.createResourceAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<FluentModelT> executeCreateOrUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     @SuppressWarnings("unchecked")

@@ -16,7 +16,7 @@ public abstract class ComputeManagementTestBase {
                 System.getenv("client-id"),
                 System.getenv("domain"),
                 System.getenv("secret"),
-                null);
+                AzureEnvironment.AZURE);
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)

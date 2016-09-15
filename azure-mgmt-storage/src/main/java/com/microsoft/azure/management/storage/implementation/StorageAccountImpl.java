@@ -188,7 +188,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public Observable<StorageAccount> applyAsync() {
+    public Observable<StorageAccount> applyUpdateAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
     }
