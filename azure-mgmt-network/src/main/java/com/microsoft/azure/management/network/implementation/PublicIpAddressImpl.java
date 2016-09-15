@@ -114,12 +114,20 @@ class PublicIpAddressImpl
 
     @Override
     public String fqdn() {
-        return this.inner().dnsSettings().fqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().fqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String reverseFqdn() {
-        return this.inner().dnsSettings().reverseFqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().reverseFqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
