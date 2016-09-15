@@ -80,7 +80,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl refresh() throws Exception {
+    public NetworkSecurityGroupImpl refresh() {
         NetworkSecurityGroupInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         initializeChildrenFromInner();

@@ -37,7 +37,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<GenericResource> listByGroup(String groupName) {
         return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
     }
 
@@ -63,7 +63,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getById(String id) throws CloudException, IOException {
+    public GenericResource getById(String id) {
         return this.get(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.resourceProviderFromResourceId(id),
@@ -76,7 +76,7 @@ final class GenericResourcesImpl
             String resourceGroupName,
             String providerNamespace,
             String resourceType,
-            String name) throws CloudException, IOException {
+            String name) {
 
         PagedList<GenericResource> genericResources = this.listByGroup(resourceGroupName);
         for (GenericResource resource : genericResources) {
@@ -166,7 +166,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getByGroup(String groupName, String name) throws CloudException, IOException {
+    public GenericResource getByGroup(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         return null;
     }

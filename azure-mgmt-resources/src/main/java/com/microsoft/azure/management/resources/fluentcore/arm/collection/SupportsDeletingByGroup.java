@@ -21,7 +21,6 @@ public interface SupportsDeletingByGroup {
      *
      * @param groupName The group the resource is part of
      * @param name The name of the resource
-     * @throws Exception error to throw
      */
-    void delete(String groupName, String name) throws Exception;
+    void delete(String groupName, String name);
 }

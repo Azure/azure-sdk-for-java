@@ -30,5 +30,5 @@ public interface SupportsGettingByGroup<T> {
      * @throws CloudException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    T getByGroup(String resourceGroupName, String name) throws CloudException, IOException;
+    T getByGroup(String resourceGroupName, String name);
 }

@@ -101,7 +101,7 @@ class UserImpl
     }
 
     @Override
-    public User refresh() throws Exception {
+    public User refresh() {
         return null;
     }
 

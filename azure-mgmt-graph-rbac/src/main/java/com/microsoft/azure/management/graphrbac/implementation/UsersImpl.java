@@ -11,7 +11,6 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -40,7 +39,7 @@ class UsersImpl
     }
 
     @Override
-    public PagedList<User> list() throws RestException, IOException {
+    public PagedList<User> list() {
         return wrapList(this.innerCollection.list());
     }
 

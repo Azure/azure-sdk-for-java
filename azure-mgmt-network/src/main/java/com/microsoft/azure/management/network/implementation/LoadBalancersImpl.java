@@ -5,15 +5,12 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-
-import java.io.IOException;
 
 /**
  *  Implementation for {@link LoadBalancers}.
@@ -35,17 +32,17 @@ class LoadBalancersImpl
     }
 
     @Override
-    public PagedList<LoadBalancer> list() throws CloudException, IOException {
+    public PagedList<LoadBalancer> list() {
         return wrapList(this.innerCollection.listAll());
     }
 
     @Override
-    public PagedList<LoadBalancer> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<LoadBalancer> listByGroup(String groupName) {
         return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
-    public LoadBalancerImpl getByGroup(String groupName, String name) throws CloudException, IOException {
+    public LoadBalancerImpl getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
@@ -55,7 +52,7 @@ class LoadBalancersImpl
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

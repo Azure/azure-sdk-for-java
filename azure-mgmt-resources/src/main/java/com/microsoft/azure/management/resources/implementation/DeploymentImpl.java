@@ -308,7 +308,7 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment refresh() throws Exception {
+    public Deployment refresh() {
         return null;
     }
 

@@ -80,7 +80,7 @@ class NetworkInterfaceImpl
     // Verbs
 
     @Override
-    public NetworkInterface refresh() throws Exception {
+    public NetworkInterface refresh() {
         NetworkInterfaceInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         clearCachedRelatedResources();
@@ -278,7 +278,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIp == null) {
             this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
         }
@@ -291,7 +291,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public Network primaryNetwork() throws CloudException, IOException {
+    public Network primaryNetwork() {
         if (this.primaryNetwork == null) {
             this.primaryNetwork = this.primaryIpConfiguration().network();
         }

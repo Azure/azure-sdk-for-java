@@ -59,17 +59,17 @@ class VirtualMachinesImpl
     // Actions
 
     @Override
-    public PagedList<VirtualMachine> list() throws CloudException, IOException {
+    public PagedList<VirtualMachine> list() {
         return wrapList(this.innerCollection.listAll());
     }
 
     @Override
-    public PagedList<VirtualMachine> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<VirtualMachine> listByGroup(String groupName) {
         return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
-    public VirtualMachine getByGroup(String groupName, String name) throws CloudException, IOException {
+    public VirtualMachine getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
@@ -79,7 +79,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

@@ -199,7 +199,7 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl refresh() throws Exception {
+    public VirtualMachineExtensionImpl refresh() {
         VirtualMachineExtensionInner inner =
                 this.client.get(this.parent.resourceGroupName(), this.parent.name(), this.name());
         this.setInner(inner);

@@ -34,12 +34,12 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public PagedList<ResourceGroup> list() throws CloudException, IOException {
+    public PagedList<ResourceGroup> list() {
         return wrapList(client.list());
     }
 
     @Override
-    public ResourceGroupImpl getByName(String name) throws CloudException, IOException {
+    public ResourceGroupImpl getByName(String name) {
         return wrapModel(client.get(name));
     }
 

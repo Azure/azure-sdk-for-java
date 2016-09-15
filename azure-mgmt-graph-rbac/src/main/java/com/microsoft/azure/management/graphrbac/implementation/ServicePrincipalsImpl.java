@@ -41,7 +41,7 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public PagedList<ServicePrincipal> list() throws GraphErrorException, IOException {
+    public PagedList<ServicePrincipal> list() {
         return wrapList(this.innerCollection.list());
     }
 

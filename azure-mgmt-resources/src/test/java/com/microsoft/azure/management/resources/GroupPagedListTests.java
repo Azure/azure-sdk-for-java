@@ -7,7 +7,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import com.microsoft.rest.RestException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -85,7 +84,7 @@ public class GroupPagedListTests {
 
         PagedList<ResourceGroup> pagedResourceList = new PagedList<ResourceGroup>(pages.get(0)) {
             @Override
-            public Page<ResourceGroup> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ResourceGroup> nextPage(String nextLink) {
                 Assert.assertSame(itr.next(), nextLink);
                 int index = Integer.parseInt(nextLink);
                 return pages.get(index);
@@ -94,7 +93,7 @@ public class GroupPagedListTests {
 
         GroupPagedList<String> groupedResourceList = new GroupPagedList<String>(pagedResourceList) {
             @Override
-            public List<String> listNextGroup(String s) throws RestException, IOException {
+            public List<String> listNextGroup(String s) {
                 List<String> groupItems = new ArrayList<>();
                 groupItems.add(s + "Vm1");
                 groupItems.add(s + "Vm2");
@@ -159,7 +158,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public ResourceGroup refresh() throws Exception {
+            public ResourceGroup refresh() {
                 return null;
             }
 

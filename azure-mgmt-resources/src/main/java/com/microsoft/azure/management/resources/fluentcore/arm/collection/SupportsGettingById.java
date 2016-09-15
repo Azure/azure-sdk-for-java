@@ -29,5 +29,5 @@ public interface SupportsGettingById<T> {
      * @throws IOException exceptions thrown from serialization/deserialization
      * @throws IllegalArgumentException exceptions thrown when something is wrong with the input parameters
      */
-    T getById(String id) throws CloudException, IllegalArgumentException, IOException;
+    T getById(String id);
 }

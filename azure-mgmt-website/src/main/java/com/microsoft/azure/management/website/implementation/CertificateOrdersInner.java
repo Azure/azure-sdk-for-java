@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -144,12 +143,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param certificateOrderName Certificate name
      * @param name Certificate name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderCertificateInner object if successful.
      */
-    public CertificateOrderCertificateInner getCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderCertificateInner getCertificate(String resourceGroupName, String certificateOrderName, String name) {
         return getCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
     }
 
@@ -235,12 +231,9 @@ public final class CertificateOrdersInner {
      * @param certificateOrderName Certificate name
      * @param name Certificate name
      * @param keyVaultCertificate Key Vault secret csm Id
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderCertificateInner object if successful.
      */
-    public CertificateOrderCertificateInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderCertificateInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
         return createOrUpdateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().getBody();
     }
 
@@ -332,12 +325,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param certificateOrderName Certificate name
      * @param name Certificate name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteCertificate(String resourceGroupName, String certificateOrderName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteCertificate(String resourceGroupName, String certificateOrderName, String name) {
         return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
     }
 
@@ -423,12 +413,9 @@ public final class CertificateOrdersInner {
      * @param certificateOrderName Certificate name
      * @param name Certificate name
      * @param keyVaultCertificate Key Vault secret csm Id
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderCertificateInner object if successful.
      */
-    public CertificateOrderCertificateInner updateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderCertificateInner updateCertificate(String resourceGroupName, String certificateOrderName, String name, CertificateOrderCertificateInner keyVaultCertificate) {
         return updateCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).toBlocking().single().getBody();
     }
 
@@ -519,12 +506,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderInner object if successful.
      */
-    public CertificateOrderInner getCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderInner getCertificateOrder(String resourceGroupName, String name) {
         return getCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -603,12 +587,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
      * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderInner object if successful.
      */
-    public CertificateOrderInner createOrUpdateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderInner createOrUpdateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
         return createOrUpdateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single().getBody();
     }
 
@@ -693,12 +674,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteCertificateOrder(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteCertificateOrder(String resourceGroupName, String name) {
         return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -777,12 +755,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
      * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CertificateOrderInner object if successful.
      */
-    public CertificateOrderInner updateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) throws CloudException, IOException, IllegalArgumentException {
+    public CertificateOrderInner updateCertificateOrder(String resourceGroupName, String name, CertificateOrderInner certificateDistinguishedName) {
         return updateCertificateOrderWithServiceResponseAsync(resourceGroupName, name, certificateDistinguishedName).toBlocking().single().getBody();
     }
 
@@ -866,16 +841,13 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param resourceGroupName Azure resource group name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderInner> getCertificateOrders(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getCertificateOrders(final String resourceGroupName) {
         ServiceResponse<Page<CertificateOrderInner>> response = getCertificateOrdersSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -978,16 +950,13 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param certificateOrderName Certificate name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderCertificateInner> getCertificates(final String resourceGroupName, final String certificateOrderName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderCertificateInner> getCertificates(final String resourceGroupName, final String certificateOrderName) {
         ServiceResponse<Page<CertificateOrderCertificateInner>> response = getCertificatesSinglePageAsync(resourceGroupName, certificateOrderName).toBlocking().single();
         return new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1098,12 +1067,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
      * @param reissueCertificateOrderRequest Reissue parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object reissueCertificateOrder(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
+    public Object reissueCertificateOrder(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
         return reissueCertificateOrderWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single().getBody();
     }
 
@@ -1189,12 +1155,9 @@ public final class CertificateOrdersInner {
      * @param resourceGroupName Azure resource group name
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object renewCertificateOrder(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) throws CloudException, IOException, IllegalArgumentException {
+    public Object renewCertificateOrder(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
         return renewCertificateOrderWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single().getBody();
     }
 
@@ -1279,12 +1242,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate order name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CertificateOrderActionInner&gt; object if successful.
      */
-    public List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public List<CertificateOrderActionInner> retrieveCertificateActions(String resourceGroupName, String name) {
         return retrieveCertificateActionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1362,12 +1322,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate order name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;CertificateEmailInner&gt; object if successful.
      */
-    public List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public List<CertificateEmailInner> retrieveCertificateEmailHistory(String resourceGroupName, String name) {
         return retrieveCertificateEmailHistoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1445,12 +1402,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate order name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object resendCertificateEmail(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object resendCertificateEmail(String resourceGroupName, String name) {
         return resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1528,12 +1482,9 @@ public final class CertificateOrdersInner {
      *
      * @param resourceGroupName Azure resource group name
      * @param name Certificate order name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object verifyDomainOwnership(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object verifyDomainOwnership(String resourceGroupName, String name) {
         return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1610,16 +1561,13 @@ public final class CertificateOrdersInner {
      * Get certificate orders in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderInner> getCertificateOrdersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderInner> getCertificateOrdersNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateOrderInner>> response = getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CertificateOrderInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
                 return getCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1716,16 +1664,13 @@ public final class CertificateOrdersInner {
      * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateOrderCertificateInner&gt; object if successful.
      */
-    public PagedList<CertificateOrderCertificateInner> getCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateOrderCertificateInner> getCertificatesNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateOrderCertificateInner>> response = getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CertificateOrderCertificateInner>(response.getBody()) {
             @Override
-            public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateOrderCertificateInner> nextPage(String nextPageLink) {
                 return getCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

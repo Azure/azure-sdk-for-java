@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
@@ -49,11 +49,10 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.RestException;
 import rx.Observable;
+import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +145,7 @@ class VirtualMachineImpl
     // Verbs
 
     @Override
-    public VirtualMachine refresh() throws Exception {
+    public VirtualMachine refresh() {
         VirtualMachineInner response =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
@@ -162,61 +161,65 @@ class VirtualMachineImpl
     }
 
     @Override
-    public void deallocate() throws CloudException, IOException, InterruptedException {
+    public void deallocate() {
         this.client.deallocate(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void generalize() throws CloudException, IOException {
+    public void generalize() {
         this.client.generalize(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void powerOff() throws CloudException, IOException, InterruptedException {
+    public void powerOff() {
         this.client.powerOff(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void restart() throws CloudException, IOException, InterruptedException {
+    public void restart() {
         this.client.restart(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void start() throws CloudException, IOException, InterruptedException {
+    public void start() {
         this.client.start(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void redeploy() throws CloudException, IOException, InterruptedException {
+    public void redeploy() {
         this.client.redeploy(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException {
+    public PagedList<VirtualMachineSize> availableSizes() {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
         page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
-            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) {
                 return null;
             }
         });
     }
 
     @Override
-    public String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException {
+    public String capture(String containerName, boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
         VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
-        return mapper.writeValueAsString(captureResult.output());
+        try {
+            return mapper.writeValueAsString(captureResult.output());
+        } catch (JsonProcessingException e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
     @Override
-    public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
+    public VirtualMachineInstanceView refreshInstanceView() {
         this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
                 this.name(),
                 InstanceViewTypes.INSTANCE_VIEW).instanceView();
@@ -754,7 +757,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public NetworkInterface primaryNetworkInterface() throws CloudException, IOException {
+    public NetworkInterface primaryNetworkInterface() {
         if (this.primaryNetworkInterface == null) {
             String primaryNicId = primaryNetworkInterfaceId();
             this.primaryNetworkInterface = this.networkManager.networkInterfaces().getById(primaryNicId);
@@ -763,7 +766,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIpAddress == null) {
             this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
         }
@@ -857,7 +860,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() throws CloudException, IOException {
+    public VirtualMachineInstanceView instanceView() {
         if (this.virtualMachineInstanceView == null) {
             this.refreshInstanceView();
         }
@@ -981,7 +984,7 @@ class VirtualMachineImpl
         }
     }
 
-    private void handleStorageSettings() throws Exception {
+    private void handleStorageSettings() {
         StorageAccount storageAccount = null;
         if (this.creatableStorageAccountKey != null) {
             storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);

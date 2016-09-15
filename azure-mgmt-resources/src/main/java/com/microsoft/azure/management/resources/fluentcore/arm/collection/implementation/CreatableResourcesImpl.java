@@ -306,7 +306,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // resources.
 
         @Override
-        public CreatableResourcesRoot<ResourceT> refresh() throws Exception {
+        public CreatableResourcesRoot<ResourceT> refresh() {
             return null;
         }
 

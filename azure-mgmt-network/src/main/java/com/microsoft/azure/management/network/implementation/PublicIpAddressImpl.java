@@ -45,7 +45,7 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicIpAddress refresh() throws Exception {
+    public PublicIpAddress refresh() {
         PublicIPAddressInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         return this;

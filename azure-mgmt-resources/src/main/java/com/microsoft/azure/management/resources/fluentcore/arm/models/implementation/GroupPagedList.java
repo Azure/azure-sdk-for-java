@@ -10,9 +10,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
-import com.microsoft.rest.RestException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,15 +30,11 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
      */
     public GroupPagedList(PagedList<ResourceGroup> resourceGroupList) {
         this.resourceGroupItr = resourceGroupList.iterator();
-        try {
-            setCurrentPage(nextPage("dummy"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        setCurrentPage(nextPage("dummy"));
     }
 
     @Override
-    public Page<E> nextPage(String s) throws RestException, IOException {
+    public Page<E> nextPage(String s) {
         if (resourceGroupItr.hasNext()) {
             ResourceGroup resourceGroup = resourceGroupItr.next();
             PageImpl<E> page = new PageImpl<>();
@@ -60,8 +54,6 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
      *
      * @param resourceGroupName the name of the resource group
      * @return the list of resources in this group.
-     * @throws RestException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    public abstract List<E> listNextGroup(String resourceGroupName) throws RestException, IOException;
+    public abstract List<E> listNextGroup(String resourceGroupName);
 }

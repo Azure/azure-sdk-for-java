@@ -77,10 +77,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the public IP.
      *
      * @return the public IP associated with this network interface
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException;
+    PublicIpAddress primaryPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this network interface.
@@ -93,10 +91,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the virtual network.
      *
      * @return the virtual network associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    Network primaryNetwork() throws CloudException, IOException;
+    Network primaryNetwork();
 
     /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.

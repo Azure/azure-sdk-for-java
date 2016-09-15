@@ -41,17 +41,17 @@ class StorageAccountsImpl
     }
 
     @Override
-    public PagedList<StorageAccount> list() throws CloudException, IOException {
+    public PagedList<StorageAccount> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    public PagedList<StorageAccount> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<StorageAccount> listByGroup(String groupName) {
         return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override
-    public StorageAccount getByGroup(String groupName, String name) throws CloudException, IOException {
+    public StorageAccount getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.getProperties(groupName, name));
     }
 
@@ -61,7 +61,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

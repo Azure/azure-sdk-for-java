@@ -7,9 +7,6 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.RestException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -54,17 +51,13 @@ public abstract class PagedList<E> implements List<E> {
     }
 
     private void cachePage(String nextPageLink) {
-        try {
-            while (nextPageLink != null) {
-                cachedPage = nextPage(nextPageLink);
-                nextPageLink = cachedPage.getNextPageLink();
-                if (hasNextPage()) {
-                    // a legit, non-empty page has been fetched, otherwise keep fetching
-                    break;
-                }
+        while (nextPageLink != null) {
+            cachedPage = nextPage(nextPageLink);
+            nextPageLink = cachedPage.getNextPageLink();
+            if (hasNextPage()) {
+                // a legit, non-empty page has been fetched, otherwise keep fetching
+                break;
             }
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
         }
     }
 
@@ -73,10 +66,8 @@ public abstract class PagedList<E> implements List<E> {
      *
      * @param nextPageLink the link to get the next page of items.
      * @return the {@link Page} object storing a page of items and a link to the next page.
-     * @throws RestException thrown if an error is raised from Azure.
-     * @throws IOException thrown if there's any failure in deserialization.
      */
-    public abstract Page<E> nextPage(String nextPageLink) throws RestException, IOException;
+    public abstract Page<E> nextPage(String nextPageLink);
 
     /**
      * If there are more pages available.

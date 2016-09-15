@@ -6,12 +6,9 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-
-import java.io.IOException;
 
 /**
  * Provides access to listing Azure resources of a specific type in a specific resource group.
@@ -27,8 +24,6 @@ public interface SupportsListingByGroup<T> {
      *
      * @param resourceGroupName the name of the resource group to list the resources from
      * @return the list of resources
-     * @throws CloudException exception thrown from the cloud
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    PagedList<T> listByGroup(String resourceGroupName) throws CloudException, IOException;
+    PagedList<T> listByGroup(String resourceGroupName);
 }

@@ -27,7 +27,7 @@ final class ProvidersImpl
     }
 
     @Override
-    public PagedList<Provider> list() throws CloudException, IOException {
+    public PagedList<Provider> list() {
         return wrapList(client.list());
     }
 
@@ -42,7 +42,7 @@ final class ProvidersImpl
     }
 
     @Override
-    public Provider getByName(String resourceProviderNamespace) throws CloudException, IOException {
+    public Provider getByName(String resourceProviderNamespace) {
         return wrapModel(client.get(resourceProviderNamespace));
     }
 

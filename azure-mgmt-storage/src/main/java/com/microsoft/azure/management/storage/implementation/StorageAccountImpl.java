@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.storage.AccessTier;
 import com.microsoft.azure.management.storage.CustomDomain;
@@ -23,7 +22,6 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -138,7 +136,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl refresh() throws Exception {
+    public StorageAccountImpl refresh() {
         StorageAccountInner response =
             this.client.getProperties(this.resourceGroupName(), this.name());
         this.setInner(response);

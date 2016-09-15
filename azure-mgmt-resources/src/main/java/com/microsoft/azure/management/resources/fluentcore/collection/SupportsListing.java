@@ -29,5 +29,5 @@ public interface SupportsListing<T> {
      * @throws RestException exceptions thrown from the cloud.
      * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PagedList<T> list() throws RestException, IOException;
+    PagedList<T> list();
 }

@@ -72,7 +72,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResource refresh() throws Exception {
+    public GenericResource refresh() {
         return null;
     }
 

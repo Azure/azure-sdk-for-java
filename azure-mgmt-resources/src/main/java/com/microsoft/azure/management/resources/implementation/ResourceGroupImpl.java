@@ -120,7 +120,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl refresh() throws Exception {
+    public ResourceGroupImpl refresh() {
         this.setInner(client.get(this.key));
         return this;
     }
