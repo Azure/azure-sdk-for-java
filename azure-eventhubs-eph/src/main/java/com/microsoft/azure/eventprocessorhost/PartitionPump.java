@@ -123,6 +123,13 @@ abstract class PartitionPump
             }
         }
         
+        if (reason != CloseReason.LeaseLost)
+        {
+	        // Since this pump is dead, release the lease. 
+	        this.host.getLeaseManager().releaseLease(this.partitionContext.getLease());
+        }
+        // else we already lost the lease, releasing is unnecessary and would fail if we try
+        
         this.pumpStatus = PartitionPumpStatus.PP_CLOSED;
     }
     
