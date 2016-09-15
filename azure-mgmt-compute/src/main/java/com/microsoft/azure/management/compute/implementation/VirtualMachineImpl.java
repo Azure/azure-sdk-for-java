@@ -157,8 +157,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Observable<VirtualMachine> applyAsync() {
-        return this.createAsync();
+    public Observable<VirtualMachine> applyUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     @Override
@@ -978,39 +978,6 @@ class VirtualMachineImpl
         HardwareProfile hardwareProfile = this.inner().hardwareProfile();
         if (hardwareProfile.vmSize() == null) {
             hardwareProfile.withVmSize(VirtualMachineSizeTypes.BASIC_A0);
-        }
-    }
-
-    private void handleStorageSettings() throws Exception {
-        StorageAccount storageAccount = null;
-        if (this.creatableStorageAccountKey != null) {
-            storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
-        } else if (this.existingStorageAccountToAssociate != null) {
-            storageAccount = this.existingStorageAccountToAssociate;
-        } else if (osDiskRequiresImplicitStorageAccountCreation()
-                || dataDisksRequiresImplicitStorageAccountCreation()) {
-            storageAccount = this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName())
-                    .create();
-        }
-
-        if (isInCreateMode()) {
-            if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
-                String uri = this.inner()
-                        .storageProfile()
-                        .osDisk().vhd().uri()
-                        .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                this.inner().storageProfile().osDisk().vhd().withUri(uri);
-            }
-            DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
-        } else {
-            if (storageAccount != null) {
-                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
-            } else {
-                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, this.vmName);
-            }
         }
     }
 
