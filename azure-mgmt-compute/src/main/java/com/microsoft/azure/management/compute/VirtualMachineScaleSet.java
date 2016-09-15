@@ -192,7 +192,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * @return the list of ids of public Ip addresses associated with the primary internet facing load balancer
      * of the scale set.
-     * @throws Exception the IO exception
+     * @throws IOException the IO exception
      */
     List<String> primaryPublicIpAddressIds() throws IOException;
 
