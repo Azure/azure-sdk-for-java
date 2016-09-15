@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.IssuerIdentifier;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 /**
  * The issuer for Key Vault certificate.
@@ -29,7 +30,7 @@ public class IssuerBundle {
     private String id;
 
     /**
-     * The name of the issuer.
+     * The issuer provider.
      */
     private String provider;
 
@@ -151,7 +152,8 @@ public class IssuerBundle {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

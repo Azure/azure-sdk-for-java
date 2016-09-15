@@ -13,10 +13,12 @@ package com.microsoft.azure.keyvault.models;
 import java.io.IOException;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.SecretIdentifier;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 /**
  * A Secret consisting of a value, id and its attributes.
@@ -48,9 +50,18 @@ public class SecretBundle {
     private Map<String, String> tags;
 
     /**
-     * The key id for certificate.
+     * If this is a secret backing a KV certificate, then this field specifies
+     * the corresponding key backing the KV certificate.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String kid;
+
+    /**
+     * True if the secret's lifetime is managed by key vault i.e. if this is a
+     * secret backing a certificate, then managed will be true.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean managed;
 
     /**
      * Get the value value.
@@ -162,14 +173,12 @@ public class SecretBundle {
     }
 
     /**
-     * Set the kid value.
+     * Get the managed value.
      *
-     * @param kid the kid value to set
-     * @return the SecretBundle object itself.
+     * @return the managed value
      */
-    public SecretBundle withKid(String kid) {
-        this.kid = kid;
-        return this;
+    public Boolean managed() {
+        return this.managed;
     }
 
     /**
@@ -185,7 +194,8 @@ public class SecretBundle {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

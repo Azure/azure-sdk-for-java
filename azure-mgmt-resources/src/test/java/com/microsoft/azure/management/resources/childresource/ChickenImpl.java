@@ -1,4 +1,4 @@
-package com.microsoft.azure.management.compute.childresource;
+package com.microsoft.azure.management.resources.childresource;
 
 import rx.Observable;
 import rx.functions.Func1;

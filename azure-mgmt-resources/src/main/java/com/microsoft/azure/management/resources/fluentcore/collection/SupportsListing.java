@@ -8,6 +8,8 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.RestException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 
 import java.io.IOException;
 
@@ -18,6 +20,7 @@ import java.io.IOException;
  *
  * @param <T> the fluent type of the resource
  */
+@LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsListing<T> {
     /**
      * Lists all the resources of the specified type in the currently selected subscription.

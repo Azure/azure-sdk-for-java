@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -15,6 +16,7 @@ import rx.Observable;
  *
  * @param <T> the type of the resource returned from the update.
  */
+@LangDefinition(ContainerName = "ResourceActions", CreateAsyncMultiThreadMethodParam = true)
 public interface Appliable<T> extends Indexable {
     /**
      * Execute the update request.

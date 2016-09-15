@@ -2,6 +2,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 /**
  *  Implementation for {@link NetworkInterfaces}.
  */
+@LangDefinition
 class NetworkInterfacesImpl
         extends GroupableResourcesImpl<
             NetworkInterface,

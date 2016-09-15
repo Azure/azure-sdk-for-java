@@ -10,10 +10,12 @@ import java.util.List;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 
 /**
  * Interface exposing a list of network interfaces.
  */
+@LangDefinition()
 public interface HasNetworkInterfaces {
     /**
      * Gets the primary network interface.
