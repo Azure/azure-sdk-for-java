@@ -13,7 +13,6 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
@@ -136,15 +135,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	// Normally the lease will already be created, checkpoint store is initialized after lease store.
     	AzureBlobLease lease = createLeaseIfNotExistsSync(partitionId);
-    	if (lease.getOffset() == null)
+    	
+    	Checkpoint checkpoint = null;
+    	if (lease.getOffset() != null)
     	{
-	    	lease.setOffset(PartitionReceiver.START_OF_STREAM);
-	    	lease.setSequenceNumber(0);
-	    	updateLeaseSync(lease);
+    		checkpoint = new Checkpoint(partitionId, lease.getOffset(), lease.getSequenceNumber());
     	}
-    	Checkpoint checkpoint = new Checkpoint(partitionId);
-    	checkpoint.setOffset(lease.getOffset());
-    	checkpoint.setSequenceNumber(lease.getSequenceNumber());
+    	
     	return checkpoint;
     }
 
@@ -309,10 +306,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	{
     		CloudBlockBlob leaseBlob = this.consumerGroupDirectory.getBlockBlobReference(partitionId);
     		returnLease = new AzureBlobLease(partitionId, leaseBlob);
-    		String jsonLease = this.gson.toJson(returnLease);
     		this.host.logWithHostAndPartition(Level.INFO, partitionId,
     				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName());
-    		leaseBlob.uploadText(jsonLease, null, AccessCondition.generateIfNoneMatchCondition("*"), null, null);
+    		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), "created");
     	}
     	catch (StorageException se)
     	{
@@ -382,7 +378,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	lease.setToken(newToken);
 	    	lease.setOwner(this.host.getHostName());
 	    	lease.incrementEpoch(); // Increment epoch each time lease is acquired or stolen by a new host
-	    	leaseBlob.uploadText(this.gson.toJson(lease), null, AccessCondition.generateLeaseCondition(lease.getToken()), null, null);
+	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), "acquire");
     	}
     	catch (StorageException se)
     	{
@@ -449,7 +445,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		AzureBlobLease releasedCopy = new AzureBlobLease(lease);
     		releasedCopy.setToken("");
     		releasedCopy.setOwner("");
-    		leaseBlob.uploadText(this.gson.toJson(releasedCopy), null, AccessCondition.generateLeaseCondition(leaseId), null, null);
+    		uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), "release");
     		leaseBlob.releaseLease(AccessCondition.generateLeaseCondition(leaseId));
     	}
     	catch (StorageException se)
@@ -497,9 +493,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	try
     	{
-    		String jsonToUpload = this.gson.toJson(lease);
-    		//this.host.logWithHost(Level.FINE, "Raw JSON uploading: " + jsonToUpload);
-    		leaseBlob.uploadText(jsonToUpload, null, AccessCondition.generateLeaseCondition(token), null, null);
+    		uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), "update");
     	}
     	catch (StorageException se)
     	{
@@ -523,6 +517,15 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	AzureBlobLease rehydrated = this.gson.fromJson(jsonLease, AzureBlobLease.class);
     	AzureBlobLease blobLease = new AzureBlobLease(rehydrated, blob);
     	return blobLease;
+    }
+    
+    private void uploadLease(AzureBlobLease lease, CloudBlockBlob blob, AccessCondition condition, String activity) throws StorageException, IOException
+    {
+    	String jsonLease = this.gson.toJson(lease);
+ 		blob.uploadText(jsonLease, null, condition, null, null);
+		// During create, we blindly try upload and it may throw. Doing the logging after the upload
+		// avoids a spurious trace in that case.
+		//this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Raw JSON uploading for " + activity + ": " + jsonLease);
     }
     
     private boolean wasLeaseLost(StorageException se, String partitionId)
