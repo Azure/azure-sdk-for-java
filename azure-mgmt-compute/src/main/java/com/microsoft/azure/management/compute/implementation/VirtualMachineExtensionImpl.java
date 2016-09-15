@@ -248,20 +248,19 @@ class VirtualMachineExtensionImpl
                             if (inner().autoUpgradeMinorVersion() == null) {
                                 inner().withAutoUpgradeMinorVersion(resource.autoUpgradeMinorVersion());
                             }
-                            if (resource.settings() != null) {
-                                LinkedHashMap<String, Object> settings =
-                                        (LinkedHashMap<String, Object>) resource.settings();
-                                if (settings.size() > 0) {
-                                    if (inner().settings() == null) {
-                                        inner().withSettings(settings);
-                                    } else {
-                                        LinkedHashMap<String, Object> innerSettings =
-                                                (LinkedHashMap<String, Object>) inner().settings();
-                                        for (Map.Entry<String, Object> entry : settings.entrySet()) {
-                                            if (!innerSettings.containsKey(entry.getKey())) {
-                                                innerSettings.put(entry.getKey(), entry.getValue());
-                                            }
-                                        }
+                            LinkedHashMap<String, Object> publicSettings =
+                                    (LinkedHashMap<String, Object>) resource.settings();
+                            if (publicSettings != null && publicSettings.size() > 0) {
+                                LinkedHashMap<String, Object> innerPublicSettings =
+                                        (LinkedHashMap<String, Object>) inner().settings();
+                                if (innerPublicSettings == null) {
+                                    inner().withSettings(new LinkedHashMap<String, Object>());
+                                    innerPublicSettings = (LinkedHashMap<String, Object>)inner().settings();
+                                }
+
+                                for (Map.Entry<String, Object> entry : publicSettings.entrySet()) {
+                                    if (!innerPublicSettings.containsKey(entry.getKey())) {
+                                        innerPublicSettings.put(entry.getKey(), entry.getValue());
                                     }
                                 }
                             }
