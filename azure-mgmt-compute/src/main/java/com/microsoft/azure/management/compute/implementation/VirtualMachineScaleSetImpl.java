@@ -28,10 +28,10 @@ import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -71,8 +71,6 @@ public class VirtualMachineScaleSetImpl
     // used to generate unique name for any dependency resources
     private final ResourceNamer namer;
     private boolean isMarketplaceLinuxImage = false;
-    // unique key of a creatable network that needs to be used in virtual machine's primary network interface
-    private String creatablePrimaryNetworkKey;
     // reference to an existing network that needs to be used in virtual machine's primary network interface
     private Network existingPrimaryNetworkToAssociate;
     // name of an existing subnet in the primary network to use
@@ -103,6 +101,8 @@ public class VirtualMachineScaleSetImpl
     private List<String> primaryInternetFacingLBInboundNatPoolsToAddOnUpdate = new ArrayList<>();
     private List<String> primaryInternalLBBackendsToAddOnUpdate = new ArrayList<>();
     private List<String> primaryInternalLBInboundNatPoolsToAddOnUpdate = new ArrayList<>();
+    // cached primary virtual network
+    private Network primaryVirtualNetwork;
     // The paged converter for virtual machine scale set sku
     private PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku> skuConverter;
 
@@ -188,8 +188,9 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public UpgradePolicy upgradePolicy() {
-        return this.inner().upgradePolicy();
+    public UpgradeMode upgradeModel() {
+        // upgradePolicy is a required property so no null check
+        return this.inner().upgradePolicy().mode();
     }
 
     @Override
@@ -203,8 +204,27 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public int capacity() {
+        return this.inner().sku().capacity().intValue();
+    }
+
+    @Override
+    public Network primaryNetwork() throws IOException {
+        if (this.primaryVirtualNetwork == null) {
+            String subnetId = primaryNicDefaultIPConfiguration().subnet().id();
+            String virtualNetworkId = ResourceUtils.parentResourcePathFromResourceId(subnetId);
+            this.primaryVirtualNetwork = this.networkManager
+                    .networks()
+                    .getById(virtualNetworkId);
+        }
+        return this.primaryVirtualNetwork;
+    }
+
+    @Override
     public LoadBalancer primaryInternetFacingLoadBalancer() throws IOException {
-        loadCurrentPrimaryLoadBalancersIfAvailable();
+        if (this.primaryInternetFacingLoadBalancer == null) {
+            loadCurrentPrimaryLoadBalancersIfAvailable();
+        }
         return this.primaryInternetFacingLoadBalancer;
     }
 
@@ -228,7 +248,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public LoadBalancer primaryInternalLoadBalancer() throws IOException {
-        loadCurrentPrimaryLoadBalancersIfAvailable();
+        if (this.primaryInternalLoadBalancer == null) {
+            loadCurrentPrimaryLoadBalancersIfAvailable();
+        }
         return this.primaryInternalLoadBalancer;
     }
 
@@ -248,6 +270,25 @@ public class VirtualMachineScaleSetImpl
                     primaryNicDefaultIPConfiguration());
         }
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> primaryPublicIpAddressIds() throws IOException {
+        LoadBalancer loadBalancer = this.primaryInternetFacingLoadBalancer();
+        if (loadBalancer != null) {
+            return loadBalancer.publicIpAddressIds();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> vhdContainers() {
+        if (this.storageProfile() != null
+                && this.storageProfile().osDisk() != null
+                && this.storageProfile().osDisk().vhdContainers() != null) {
+            return this.storageProfile().osDisk().vhdContainers();
+        }
+        return new ArrayList<>();
     }
 
     @Override
@@ -280,28 +321,6 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
-        this.addCreatableDependency(creatable);
-        this.creatablePrimaryNetworkKey = creatable.key();
-        return this;
-    }
-
-    @Override
-    public VirtualMachineScaleSetImpl withNewPrimaryNetwork(String addressSpace) {
-        Network.DefinitionStages.WithGroup definitionWithGroup = this.networkManager
-                .networks()
-                .define(this.namer.randomName("vnet", 20))
-                .withRegion(this.region());
-        Network.DefinitionStages.WithCreate definitionAfterGroup;
-        if (this.creatableGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
-        } else {
-            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
-        }
-        return withNewPrimaryNetwork(definitionAfterGroup.withAddressSpace(addressSpace));
-    }
-
-    @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryNetwork(Network network) {
         this.existingPrimaryNetworkToAssociate = network;
         return this;
@@ -318,6 +337,7 @@ public class VirtualMachineScaleSetImpl
         if (loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
         }
+
         if (isInCreateMode()) {
             this.primaryInternetFacingLoadBalancer = loadBalancer;
             associateLoadBalancerToIpConfiguration(this.primaryInternetFacingLoadBalancer,
@@ -362,11 +382,40 @@ public class VirtualMachineScaleSetImpl
         if (!loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
+        String lbNetworkId = null;
+        for (Frontend frontEnd : loadBalancer.frontends().values()) {
+            if (frontEnd.inner().subnet().id() != null) {
+                lbNetworkId = ResourceUtils.parentResourcePathFromResourceId(frontEnd.inner().subnet().id());
+            }
+        }
+
         if (isInCreateMode()) {
+            String vmNICNetworkId = this.existingPrimaryNetworkToAssociate.id();
+            // Azure has a really wired BUG that - it throws exception when vnet of VMSS and LB are not same
+            // (code: NetworkInterfaceAndInternalLoadBalancerMustUseSameVnet) but at the same time Azure update
+            // the VMSS's network section to refer this invalid internal LB. This makes VMSS un-usable and portal
+            // will show a error above VMSS profile page.
+            //
+            if (!vmNICNetworkId.equalsIgnoreCase(lbNetworkId)) {
+                throw new IllegalArgumentException("Virtual network associated with scale set virtual machines"
+                        + " and internal load balancer must be same. "
+                        + "'" + vmNICNetworkId + "'"
+                        + "'" + lbNetworkId);
+            }
+
             this.primaryInternalLoadBalancer = loadBalancer;
             associateLoadBalancerToIpConfiguration(this.primaryInternalLoadBalancer,
                     this.primaryNicDefaultIPConfiguration());
         } else {
+            String vmNicVnetId = ResourceUtils.parentResourcePathFromResourceId(primaryNicDefaultIPConfiguration()
+                    .subnet()
+                    .id());
+            if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
+                throw new IllegalArgumentException("Virtual network associated with scale set virtual machines"
+                        + " and internal load balancer must be same. "
+                        + "'" + vmNicVnetId + "'"
+                        + "'" + lbNetworkId);
+            }
             this.primaryInternalLoadBalancerToAttachOnUpdate = loadBalancer;
         }
         return this;
@@ -665,7 +714,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withUpgradeMode(UpgradeMode upgradeMode) {
         this.inner()
-                .withUpgradePolicy(new UpgradePolicy().withMode(upgradeMode));
+                .upgradePolicy()
+                .withMode(upgradeMode);
         return this;
     }
 
@@ -687,9 +737,9 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withCapacity(long capacity) {
+    public VirtualMachineScaleSetImpl withCapacity(int capacity) {
         this.inner()
-                .sku().withCapacity(capacity);
+                .sku().withCapacity(new Long(capacity));
         return this;
    }
 
@@ -804,9 +854,7 @@ public class VirtualMachineScaleSetImpl
         }
 
         if (this.inner().sku().capacity() == null) {
-            this.inner()
-                    .sku()
-                    .withCapacity(new Long(2));
+            this.withCapacity(2);
         }
 
         if (this.inner().upgradePolicy() == null
@@ -930,20 +978,11 @@ public class VirtualMachineScaleSetImpl
         }
 
         VirtualMachineScaleSetIPConfigurationInner ipConfig = this.primaryNicDefaultIPConfiguration();
-        if (this.creatablePrimaryNetworkKey != null) {
-            Network primaryNetwork = (Network) this.createdResource(this.creatablePrimaryNetworkKey);
-            for (Subnet subnet : primaryNetwork.subnets().values()) {
-                ipConfig.withSubnet(new ApiEntityReference().withId(subnet.inner().id()));
-                break;
-            }
-        } else if (this.existingPrimaryNetworkToAssociate != null) {
-            ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkToAssociate.id()
-                    + "/"
-                    + "subnets"
-                    + "/"
-                    + existingPrimaryNetworkSubnetNameToAssociate));
-        }
-        this.creatablePrimaryNetworkKey = null;
+        ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkToAssociate.id()
+                + "/"
+                + "subnets"
+                + "/"
+                + existingPrimaryNetworkSubnetNameToAssociate));
         this.existingPrimaryNetworkToAssociate = null;
     }
 
@@ -1063,6 +1102,7 @@ public class VirtualMachineScaleSetImpl
     private void clearCachedProperties() {
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
+        this.primaryVirtualNetwork = null;
     }
 
     private void loadCurrentPrimaryLoadBalancersIfAvailable() throws IOException {
@@ -1097,9 +1137,11 @@ public class VirtualMachineScaleSetImpl
 
         String secondLoadBalancerId = null;
         for (SubResource subResource: ipConfig.loadBalancerBackendAddressPools()) {
+            if (!subResource.id().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
                 secondLoadBalancerId = ResourceUtils
-                            .parentResourcePathFromResourceId(subResource.id());
+                        .parentResourcePathFromResourceId(subResource.id());
                 break;
+            }
         }
 
         if (secondLoadBalancerId == null) {

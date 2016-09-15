@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -110,9 +111,9 @@ public interface VirtualMachineScaleSet extends
     String osDiskName();
 
     /**
-     * @return the upgradePolicy
+     * @return the upgradeModel
      */
-    UpgradePolicy upgradePolicy();
+    UpgradeMode upgradeModel();
 
     /**
      * @return true if over provision is enabled for the virtual machines, false otherwise.
@@ -123,6 +124,22 @@ public interface VirtualMachineScaleSet extends
      * @return the sku of the virtual machines in the scale set.
      */
     VirtualMachineScaleSetSkuTypes sku();
+
+    /**
+     * @return the number of virtual machine instances in the scale set.
+     */
+    int capacity();
+
+    /**
+     * @return the virtual network associated with the primary network interfaces of the virtual machines
+     * in the scale set.
+     * <p>
+     * A primary internal load balancer associated with the primary network interfaces of the scale set
+     * virtual machine will be also belongs to this network.
+     * </p>
+     * @throws IOException the IO exception
+     */
+    Network primaryNetwork() throws IOException;
 
     /**
      * @return the internet facing load balancer associated with the primary network interface of
@@ -171,6 +188,18 @@ public interface VirtualMachineScaleSet extends
      * @throws IOException the IO exception
      */
     Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() throws IOException;
+
+    /**
+     * @return the list of ids of public Ip addresses associated with the primary internet facing load balancer
+     * of the scale set.
+     * @throws Exception the IO exception
+     */
+    List<String> primaryPublicIpAddressIds() throws IOException;
+
+    /**
+     * @return the url to storage containers that stores vhds of virtual machines in the scale set.
+     */
+    List<String> vhdContainers();
 
     /**
      * @return the storage profile.
@@ -254,28 +283,6 @@ public interface VirtualMachineScaleSet extends
          * network configuration.
          */
         interface WithNetwork {
-            /**
-             * Create a new virtual network to associate with the primary network interface of virtual machines in the
-             * virtual machine scale set, based on the provided definition.
-             *
-             * @param creatable a creatable definition for a new virtual network
-             * @return the next stage of the virtual machine scale set definition
-             */
-            WithPrimaryInternetFacingLoadBalancer withNewPrimaryNetwork(Creatable<Network> creatable);
-
-            /**
-             * Creates a new virtual network to associate with the primary network interface of the virtual machines
-             * in the scale set.
-             * <p>
-             * the virtual network will be created in the same resource group and region as of virtual machine scale set,
-             * it will be created with the specified address space and a default subnet covering the entirety of the
-             * network IP address space.
-             * </p>
-             * @param addressSpace the address space for the virtual network
-             * @return the next stage of the virtual machine scale set definition
-             */
-            WithPrimaryInternetFacingLoadBalancer withNewPrimaryNetwork(String addressSpace);
-
             /**
              * Associate an existing virtual network with the primary network interface of the virtual machines
              * in the scale set.
@@ -620,7 +627,7 @@ public interface VirtualMachineScaleSet extends
              * @param capacity the virtual machine capacity
              * @return the stage representing creatable VM scale set definition
              */
-            WithCreate withCapacity(long capacity);
+            WithCreate withCapacity(int capacity);
         }
 
         /**
@@ -894,7 +901,7 @@ public interface VirtualMachineScaleSet extends
              * @param capacity the virtual machine capacity
              * @return the next stage of the virtual machine scale set update
              */
-            WithApplicable withCapacity(long capacity);
+            WithApplicable withCapacity(int capacity);
         }
 
         /**

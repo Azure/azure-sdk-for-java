@@ -228,7 +228,7 @@ public class VirtualMachineScaleSetSkuTypes {
     @Override
     public boolean equals(Object obj) {
         String value = this.toString();
-        if (!(obj instanceof VirtualMachineSizeTypes)) {
+        if (!(obj instanceof VirtualMachineScaleSetSkuTypes)) {
             return false;
         }
         if (obj == this) {
