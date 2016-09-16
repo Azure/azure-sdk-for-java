@@ -287,7 +287,7 @@ class NetworkInterfaceImpl
     @Override
     public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIp == null) {
-            this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
+            this.primaryPublicIp = this.primaryIpConfiguration().getPublicIpAddress();
         }
         return primaryPublicIp;
     }

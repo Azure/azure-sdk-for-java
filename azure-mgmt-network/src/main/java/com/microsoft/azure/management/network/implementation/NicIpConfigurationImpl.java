@@ -90,14 +90,13 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public PublicIpAddress publicIpAddress() {
+    public PublicIpAddress getPublicIpAddress() {
         String id = publicIpAddressId();
         if (id == null) {
             return null;
         }
 
-        return this.networkManager.publicIpAddresses().getByGroup(
-                ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.networkManager.publicIpAddresses().getById(id);
     }
 
     @Override

@@ -27,13 +27,9 @@ public interface NicIpConfiguration extends
     String publicIpAddressId();
 
     /**
-     * Gets the public IP address associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the public IP associated with this IP configuration or null if there is no public IP associated
      */
-    PublicIpAddress publicIpAddress();
+    PublicIpAddress getPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this IP configuration.
