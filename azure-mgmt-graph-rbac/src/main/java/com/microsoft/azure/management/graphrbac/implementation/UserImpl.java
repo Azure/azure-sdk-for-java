@@ -111,7 +111,12 @@ class UserImpl
     }
 
     @Override
-    public Observable<User> applyAsync() {
+    public Observable<User> updateResourceAsync() {
         return null;
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return false;
     }
 }

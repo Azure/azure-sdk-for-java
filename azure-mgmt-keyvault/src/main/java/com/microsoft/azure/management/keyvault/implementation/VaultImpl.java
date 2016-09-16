@@ -261,9 +261,4 @@ class VaultImpl
         setInner(client.get(resourceGroupName(), name()));
         return this;
     }
-
-    @Override
-    public Observable<Vault> applyUpdateAsync() {
-        return createAsync();
-    }
 }

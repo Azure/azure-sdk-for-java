@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -22,38 +20,15 @@ import rx.functions.Func1;
  * @param <FluentModelImplT> the fluent model implementation type
  */
 public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
-        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements CreatorTaskGroup.ResourceCreator<FluentModelT> {
+        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> {
     /**
      * The name of the creatable resource.
      */
     private String name;
 
-    /**
-     * The group of tasks to create this resource and it's dependencies.
-     */
-    protected CreatorTaskGroup<FluentModelT> creatorTaskGroup;
-
     protected CreatableImpl(String name, InnerModelT innerObject) {
         super(innerObject);
         this.name = name;
-        creatorTaskGroup = new CreatorTaskGroup<>(this.key(), this);
-    }
-
-    /**
-     * Add a creatable resource dependency for this resource.
-     *
-     * @param creatableResource the creatable dependency.
-     */
-    @SuppressWarnings("unchecked")
-    protected void addCreatableDependency(Creatable<? extends Resource> creatableResource) {
-        CreatorTaskGroup<FluentModelT> childGroup =
-                ((CreatorTaskGroup.ResourceCreator<FluentModelT>) creatableResource).creatorTaskGroup();
-        childGroup.merge(this.creatorTaskGroup);
-    }
-
-    protected Resource createdResource(String key) {
-        return (Resource) this.creatorTaskGroup.createdResource(key);
     }
 
     /**
@@ -64,18 +39,15 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     }
 
     /**
-     * Default implementation of create().
+     * Creates the resource asynchronously and return a observable to track the
+     * asynchronous operation.
      *
-     * @return the created resource
+     * @return an observable stream that emits the resource when it is created
      */
-    @SuppressWarnings("unchecked")
-    public FluentModelT create() {
-        return createAsync().toBlocking().single();
-    }
+    abstract Observable<FluentModelT> createAsync();
 
     /**
-     * Puts the request into the queue and allow the HTTP client to execute
-     * it when system resources are available.
+     * Default implementation to create the resource asynchronously.
      *
      * @param callback the callback to handle success and failure
      * @return a handle to cancel the request
@@ -85,35 +57,13 @@ public abstract class CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT 
     }
 
     /**
-     * Default implementation of createAsync().
+     * Default implementation of create().
      *
-     * @return the handle to the create REST call
+     * @return the created resource
      */
     @SuppressWarnings("unchecked")
-    public Observable<FluentModelT> createAsync() {
-        if (creatorTaskGroup.isPreparer()) {
-            creatorTaskGroup.prepare();
-            return creatorTaskGroup.executeAsync().last();
-        }
-        throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
-    }
-
-    /**
-     * @return the task group associated with this creatable.
-     */
-    @Override
-    public CreatorTaskGroup<FluentModelT> creatorTaskGroup() {
-        return this.creatorTaskGroup;
-    }
-
-    @Override
-    public FluentModelT createResource() {
-        return this.createResourceAsync().toBlocking().last();
-    }
-
-    @Override
-    public Observable<FluentModelT> executeCreateOrUpdateAsync() {
-        return this.createResourceAsync();
+    public FluentModelT create() {
+        return createAsync().toBlocking().single();
     }
 
     @SuppressWarnings("unchecked")

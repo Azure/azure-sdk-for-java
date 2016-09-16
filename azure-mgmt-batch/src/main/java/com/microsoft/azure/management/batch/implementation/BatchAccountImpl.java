@@ -80,7 +80,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public Observable<BatchAccount> applyUpdateAsync() {
+    public Observable<BatchAccount> updateResourceAsync() {
         // TODO - ans - remove call to createResourceAsync and uncomment code below, after PATCH start sending the nulls.
         return createResourceAsync();
     /*

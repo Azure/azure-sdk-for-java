@@ -87,11 +87,6 @@ class NetworkSecurityGroupImpl
         return this;
     }
 
-    @Override
-    public Observable<NetworkSecurityGroup> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
     // Setters (fluent)
 
     @Override

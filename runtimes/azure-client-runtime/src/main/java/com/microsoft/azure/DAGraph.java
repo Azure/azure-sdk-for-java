@@ -123,6 +123,16 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     }
 
     /**
+     * Checks whether graph contains a node with the given key.
+     *
+     * @param key the key of the node
+     * @return true if there is a node with given key false otherwise.
+     */
+    public boolean containsNodeWithKey(String key) {
+        return graph.containsKey(key);
+    }
+
+    /**
      * Reports that a node is resolved hence other nodes depends on it can consume it.
      *
      * @param completed the node ready to be consumed

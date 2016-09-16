@@ -40,11 +40,6 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public Observable<PublicIpAddress> applyUpdateAsync() {
-        return this.createResourceAsync();
-    }
-
-    @Override
     public PublicIpAddress refresh() {
         PublicIPAddressInner response = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
@@ -130,7 +125,7 @@ class PublicIpAddressImpl
         }
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
     public Observable<PublicIpAddress> createResourceAsync() {
         // Clean up empty DNS settings

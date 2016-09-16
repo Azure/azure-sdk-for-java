@@ -156,11 +156,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Observable<VirtualMachine> applyUpdateAsync() {
-        return this.createResourceAsync();
-    }
-
-    @Override
     public void deallocate() {
         this.client.deallocate(this.resourceGroupName(), this.name());
     }
@@ -876,7 +871,7 @@ class VirtualMachineImpl
         return null;
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {

@@ -78,7 +78,10 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public Observable<ServicePrincipal> applyAsync() {
-        return null;
+    public Observable<ServicePrincipal> updateResourceAsync() { return null; }
+
+    @Override
+    public boolean isInCreateMode() {
+        return false;
     }
 }
