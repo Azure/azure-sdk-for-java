@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  */
 @LangDefinition
 class NetworkSecurityRuleImpl
-    extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
+    extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
     implements
         NetworkSecurityRule,
         NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,

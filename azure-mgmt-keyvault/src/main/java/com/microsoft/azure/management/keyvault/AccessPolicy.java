@@ -21,7 +21,7 @@ import java.util.UUID;
  * An immutable client-side representation of a key vault access policy.
  */
 public interface AccessPolicy extends
-        ChildResource,
+        ChildResource<Vault>,
         Wrapper<AccessPolicyEntry> {
     /**
      * @return The Azure Active Directory tenant ID that should be used for

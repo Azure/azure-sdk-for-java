@@ -73,7 +73,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                 .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
-                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod().toString())
+                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIpAddressVersion().toString())
                 .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
                 .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());
         }
