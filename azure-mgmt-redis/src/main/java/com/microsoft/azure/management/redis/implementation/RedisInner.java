@@ -18,7 +18,6 @@ import com.microsoft.azure.management.redis.RedisKeyType;
 import com.microsoft.azure.management.redis.RedisRegenerateKeyParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -146,13 +145,9 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters supplied to the Create redis operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RedisResourceInner object if successful.
      */
-    public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
         return createWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
@@ -221,12 +216,9 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters supplied to the Create redis operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisResourceInner object if successful.
      */
-    public RedisResourceInner beginCreate(String resourceGroupName, String name, RedisCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public RedisResourceInner beginCreate(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
         return beginCreateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -313,13 +305,9 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters supplied to the Update redis operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RedisResourceInner object if successful.
      */
-    public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
@@ -388,12 +376,9 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters supplied to the Update redis operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisResourceInner object if successful.
      */
-    public RedisResourceInner beginUpdate(String resourceGroupName, String name, RedisUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public RedisResourceInner beginUpdate(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
         return beginUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -478,12 +463,8 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String name) {
         deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
@@ -544,11 +525,8 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String name) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -626,12 +604,9 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisResourceInner object if successful.
      */
-    public RedisResourceInner get(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public RedisResourceInner get(String resourceGroupName, String name) {
         return getWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -708,16 +683,13 @@ public final class RedisInner {
      * Gets all redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
      */
-    public PagedList<RedisResourceInner> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RedisResourceInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<RedisResourceInner>(response.getBody()) {
             @Override
-            public Page<RedisResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RedisResourceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -818,16 +790,13 @@ public final class RedisInner {
     /**
      * Gets all redis caches in the specified subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
      */
-    public PagedList<RedisResourceInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RedisResourceInner> list() {
         ServiceResponse<Page<RedisResourceInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<RedisResourceInner>(response.getBody()) {
             @Override
-            public Page<RedisResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RedisResourceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -923,12 +892,9 @@ public final class RedisInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisAccessKeysInner object if successful.
      */
-    public RedisAccessKeysInner listKeys(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
         return listKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -1007,12 +973,9 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param keyType Which redis access key to reset. Possible values include: 'Primary', 'Secondary'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RedisAccessKeysInner object if successful.
      */
-    public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) throws CloudException, IOException, IllegalArgumentException {
+    public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, name, keyType).toBlocking().single().getBody();
     }
 
@@ -1099,11 +1062,8 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Specifies which redis node(s) to reboot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
         forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -1189,12 +1149,8 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters for redis import operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void importData(String resourceGroupName, String name, ImportRDBParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void importData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
         importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
@@ -1263,11 +1219,8 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters for redis import operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginImportData(String resourceGroupName, String name, ImportRDBParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public void beginImportData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
         beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -1352,12 +1305,8 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters for redis export operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void exportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void exportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
         exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
@@ -1426,11 +1375,8 @@ public final class RedisInner {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
      * @param parameters Parameters for redis export operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginExportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public void beginExportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
         beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
@@ -1513,16 +1459,13 @@ public final class RedisInner {
      * Gets all redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
      */
-    public PagedList<RedisResourceInner> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RedisResourceInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<RedisResourceInner>(response.getBody()) {
             @Override
-            public Page<RedisResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RedisResourceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1619,16 +1562,13 @@ public final class RedisInner {
      * Gets all redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
      */
-    public PagedList<RedisResourceInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<RedisResourceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<RedisResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<RedisResourceInner>(response.getBody()) {
             @Override
-            public Page<RedisResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<RedisResourceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

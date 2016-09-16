@@ -34,27 +34,27 @@ class RedisCachesImpl
     }
 
     @Override
-    public PagedList<RedisCache> list() throws CloudException, IOException {
+    public PagedList<RedisCache> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    public PagedList<RedisCache> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<RedisCache> listByGroup(String groupName) {
         return wrapList(this.innerCollection.listByResourceGroup(groupName));
     }
 
     @Override
-    public RedisCache getByGroup(String groupName, String name) throws CloudException, IOException {
+    public RedisCache getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

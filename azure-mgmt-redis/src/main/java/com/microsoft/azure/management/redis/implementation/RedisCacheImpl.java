@@ -117,7 +117,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisAccessKeys keys() throws CloudException, IOException {
+    public RedisAccessKeys keys() {
         if (cachedAccessKeys == null) {
             cachedAccessKeys = refreshKeys();
         }
@@ -125,7 +125,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisAccessKeys refreshKeys() throws CloudException, IOException {
+    public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
         cachedAccessKeys = new RedisAccessKeys(response);
@@ -133,7 +133,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisAccessKeys regenerateKey(RedisKeyType keyType) throws CloudException, IOException {
+    public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedAccessKeys = new RedisAccessKeys(response);
@@ -141,14 +141,14 @@ class RedisCacheImpl
     }
 
     @Override
-    public void forceReboot(RebootType rebootType) throws CloudException, IOException {
+    public void forceReboot(RebootType rebootType) {
         RedisRebootParametersInner parameters = new RedisRebootParametersInner()
                 .withRebootType(rebootType);
         this.client.forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
-    public void forceReboot(RebootType rebootType, int shardId) throws CloudException, IOException {
+    public void forceReboot(RebootType rebootType, int shardId) {
         RedisRebootParametersInner parameters = new RedisRebootParametersInner()
                 .withRebootType(rebootType)
                 .withShardId(shardId);
@@ -156,14 +156,14 @@ class RedisCacheImpl
     }
 
     @Override
-    public void importData(List<String> files) throws CloudException, IOException, InterruptedException {
+    public void importData(List<String> files) {
         ImportRDBParametersInner parameters = new ImportRDBParametersInner()
                 .withFiles(files);
         this.client.importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
-    public void importData(List<String> files, String fileFormat) throws CloudException, IOException, InterruptedException {
+    public void importData(List<String> files, String fileFormat) {
         ImportRDBParametersInner parameters = new ImportRDBParametersInner()
                 .withFiles(files)
                 .withFormat(fileFormat);
@@ -171,7 +171,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public void exportData(String containerSASUrl, String prefix) throws CloudException, IOException, InterruptedException {
+    public void exportData(String containerSASUrl, String prefix) {
         ExportRDBParametersInner parameters = new ExportRDBParametersInner()
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix);
@@ -179,7 +179,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public void exportData(String containerSASUrl, String prefix, String fileFormat) throws CloudException, IOException, InterruptedException {
+    public void exportData(String containerSASUrl, String prefix, String fileFormat) {
         ExportRDBParametersInner parameters = new ExportRDBParametersInner()
                 .withContainer(containerSASUrl)
                 .withPrefix(prefix)
@@ -188,7 +188,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl refresh() throws Exception {
+    public RedisCacheImpl refresh() {
         RedisResourceInner redisResourceInner =
                 this.client.get(this.resourceGroupName(), this.name());
         this.setInner(redisResourceInner);
@@ -389,7 +389,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public Observable<RedisCache> applyAsync() {
+    public Observable<RedisCache> applyUpdateAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
     }
