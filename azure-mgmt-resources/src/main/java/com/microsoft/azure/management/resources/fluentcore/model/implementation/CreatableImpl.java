@@ -24,7 +24,13 @@ abstract public class CreatableImpl<
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
         Creatable<FluentModelT> {
-    public CreatableImpl(String name, InnerModelT innerObject) {
+    /**
+     * Creates a CreatableImpl.
+     *
+     * @param name the creatable name
+     * @param innerObject the inner object
+     */
+    protected CreatableImpl(String name, InnerModelT innerObject) {
         super(name, innerObject);
     }
 
