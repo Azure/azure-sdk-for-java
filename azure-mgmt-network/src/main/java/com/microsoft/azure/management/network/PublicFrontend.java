@@ -68,7 +68,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
+    @LangDefinition()
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -103,7 +103,7 @@ public interface PublicFrontend extends Frontend {
     /**
      * The entirety of a public frontend update as part of an Internet-facing load balancer update.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithPublicIpAddress {
@@ -155,7 +155,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition as part of an Internet-facing load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
+    @LangDefinition()
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
