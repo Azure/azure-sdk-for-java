@@ -137,7 +137,7 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
+    @LangDefinition()
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithProtocol<ParentT>,
@@ -206,7 +206,7 @@ public interface InboundNatRule extends
     /**
      * The entirety of an inbound NAT rule update as part of a load balancer update.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithBackendPort,
@@ -305,7 +305,7 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
+    @LangDefinition()
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithProtocol<ParentT>,
