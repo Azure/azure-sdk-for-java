@@ -45,6 +45,11 @@ public interface NicIpConfiguration extends
      */
     Network network();
 
+    /**
+     * @return private IP address version
+     */
+    IPVersion privateIpAddressVersion();
+
     // Setters (fluent)
 
     /**
@@ -130,6 +135,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -290,6 +301,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -403,6 +420,12 @@ public interface NicIpConfiguration extends
          * The stage of the network interface IP configuration update allowing to specify private IP.
          */
         interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the update
+             */
+            Update withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**

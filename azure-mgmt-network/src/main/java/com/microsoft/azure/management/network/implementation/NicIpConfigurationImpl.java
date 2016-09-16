@@ -3,6 +3,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -79,6 +80,11 @@ class NicIpConfigurationImpl
     @Override
     public String name() {
         return inner().name();
+    }
+
+    @Override
+    public IPVersion privateIpAddressVersion() {
+        return this.inner().privateIPAddressVersion();
     }
 
     @Override
@@ -335,5 +341,11 @@ class NicIpConfigurationImpl
             return this.inner().publicIPAddress();
         }
         return null;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withPrivateIpVersion(IPVersion ipVersion) {
+        this.inner().withPrivateIPAddressVersion(ipVersion);
+        return this;
     }
 }
