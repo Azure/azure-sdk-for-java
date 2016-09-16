@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.FrontendIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of a load balancer frontend.
  */
+@LangDefinition()
 public interface Frontend extends
     Wrapper<FrontendIPConfigurationInner>,
     ChildResource<LoadBalancer>,

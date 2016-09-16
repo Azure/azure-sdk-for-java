@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -12,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 /**
  * An immutable client-side representation of a private frontend of an internal load balancer.
  */
+@LangDefinition()
 public interface PrivateFrontend extends
     Frontend,
     HasPrivateIpAddress {
@@ -34,6 +37,7 @@ public interface PrivateFrontend extends
     /**
      * Grouping of private frontend definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a private frontend definition.
@@ -72,6 +76,7 @@ public interface PrivateFrontend extends
     /** The entirety of a private frontend definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -81,6 +86,7 @@ public interface PrivateFrontend extends
     /**
      * Grouping of private frontend update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of a private frontend update allowing to specify a subnet from the selected network.
@@ -99,6 +105,7 @@ public interface PrivateFrontend extends
     /**
      * The entirety of a private frontend update as part of a load balancer update.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithSubnet,
@@ -108,6 +115,7 @@ public interface PrivateFrontend extends
     /**
      * Grouping of private frontend definition stages applicable as part of a load balancer update.
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a private frontend definition.
@@ -145,6 +153,7 @@ public interface PrivateFrontend extends
     /** The entirety of a private frontend definition as part of a load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,

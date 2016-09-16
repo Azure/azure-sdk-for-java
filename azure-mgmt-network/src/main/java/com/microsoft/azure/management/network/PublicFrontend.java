@@ -5,12 +5,15 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
  * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
  */
+@LangDefinition()
 public interface PublicFrontend extends Frontend {
 
     /**
@@ -21,6 +24,7 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -64,6 +68,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -73,6 +78,7 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
@@ -97,6 +103,7 @@ public interface PublicFrontend extends Frontend {
     /**
      * The entirety of a public frontend update as part of an Internet-facing load balancer update.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithPublicIpAddress {
@@ -105,6 +112,7 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update.
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -147,6 +155,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition as part of an Internet-facing load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,
