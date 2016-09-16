@@ -130,7 +130,12 @@ public interface NetworkInterface extends
      *
      * @return the network security group associated with this network interface.
      */
-    NetworkSecurityGroup networkSecurityGroup();
+    NetworkSecurityGroup getNetworkSecurityGroup();
+
+    /**
+     * @return the resource ID of the associated virtual machine, or null if none.
+     */
+    String virtualMachineId();
 
     // Setters (fluent)
 

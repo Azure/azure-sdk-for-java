@@ -17,10 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link InboundNatRule}.
  */
 class InboundNatPoolImpl
-    extends ChildResourceImpl<InboundNatPoolInner, LoadBalancerImpl>
+    extends ChildResourceImpl<InboundNatPoolInner, LoadBalancerImpl, LoadBalancer>
     implements
         InboundNatPool,
-        InboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        InboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
         InboundNatPool.UpdateDefinition<LoadBalancer.Update>,
         InboundNatPool.Update {
 

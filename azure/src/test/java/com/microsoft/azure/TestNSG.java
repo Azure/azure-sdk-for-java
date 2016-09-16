@@ -11,8 +11,12 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import okhttp3.logging.HttpLoggingInterceptor;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Subscriber;
@@ -102,7 +106,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         return resource;
     }
 
-    private StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
+    private static StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
         info.append("\n\t\tRule: ").append(rule.name())
             .append("\n\t\t\tAccess: ").append(rule.access())
             .append("\n\t\t\tDirection: ").append(rule.direction())
@@ -116,8 +120,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         return info;
     }
 
-    @Override
-    public void print(NetworkSecurityGroup resource) {
+    public static void printNSG(NetworkSecurityGroup resource) {
         StringBuilder info = new StringBuilder();
         info.append("NSG: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -137,9 +140,27 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
             info = printRule(rule, info);
         }
 
+        // Output associated NIC IDs
         info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
 
+        // Output associated subnets
+        info.append("\n\tAssociated subnets: ");
+        List<Subnet> subnets = resource.listAssociatedSubnets();
+        if (subnets == null || subnets.size() == 0) {
+            info.append("(None)");
+        } else {
+            for (Subnet subnet : subnets) {
+                info.append("\n\t\tNetwork ID: ").append(subnet.parent().id())
+                    .append("\n\t\tSubnet name: ").append(subnet.name());
+            }
+        }
+
         System.out.println(info.toString());
+    }
+
+    @Override
+    public void print(NetworkSecurityGroup resource) {
+        printNSG(resource);
     }
 
     @Test

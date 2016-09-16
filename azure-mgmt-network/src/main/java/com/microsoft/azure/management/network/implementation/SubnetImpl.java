@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  */
 @LangDefinition
 class SubnetImpl
-    extends ChildResourceImpl<SubnetInner, NetworkImpl>
+    extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     implements
         Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,

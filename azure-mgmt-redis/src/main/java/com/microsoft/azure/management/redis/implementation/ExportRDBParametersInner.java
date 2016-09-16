@@ -20,7 +20,7 @@ public class ExportRDBParametersInner {
     private String format;
 
     /**
-     * Prifix to use for exported files.
+     * Prefix to use for exported files.
      */
     @JsonProperty(required = true)
     private String prefix;

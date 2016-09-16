@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface Probe extends
     Wrapper<ProbeInner>,
-    ChildResource,
+    ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
     HasProtocol<ProbeProtocol> {
 
