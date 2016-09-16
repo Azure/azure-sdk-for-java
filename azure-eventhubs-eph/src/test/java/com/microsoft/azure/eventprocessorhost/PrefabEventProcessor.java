@@ -50,7 +50,7 @@ public class PrefabEventProcessor implements IEventProcessor
 			}
 			if (Arrays.equals(event.getBody(), this.telltaleBytes))
 			{
-				this.factory.setTelltaleFound();
+				this.factory.setTelltaleFound(context.getPartitionId());
 			}
 			if (doCheckpoint)
 			{

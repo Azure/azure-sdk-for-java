@@ -42,6 +42,7 @@ class RealEventHubUtilities
 {
 	private ConnectionStringBuilder hubConnectionString;
 	private String hubName;
+	private String consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 	private EventHubClient client;
 	private HashMap<String, PartitionSender> partitionSenders = new HashMap<String, PartitionSender>();
 	
@@ -52,8 +53,15 @@ class RealEventHubUtilities
 	ArrayList<String> setup() throws ServiceBusException, IOException
 	{
 		// Get the connection string from the environment
-		this.hubConnectionString = new ConnectionStringBuilder(System.getenv("EPHTESTHUB"));
+		this.hubConnectionString = new ConnectionStringBuilder(System.getenv("EVENT_HUB_CONNECTION_STRING"));
 		this.hubName = this.hubConnectionString.getEntityPath();
+		
+		// Get the consumer group from the environment, if present.
+		String tempConsumerGroup = System.getenv("EVENT_HUB_CONSUMER_GROUP");
+		if (tempConsumerGroup != null)
+		{
+			this.consumerGroup = tempConsumerGroup;
+		}
 		
 		// Get the partition ids in part to verify that the eventhub actually exists
 		ArrayList<String> partitionIds = getPartitionIds();
@@ -81,6 +89,11 @@ class RealEventHubUtilities
 	String getHubName()
 	{
 		return this.hubName;
+	}
+	
+	String getConsumerGroup()
+	{
+		return this.consumerGroup;
 	}
 	
 	void sendToAny(String body, int count) throws ServiceBusException

@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProcessor>
 {
@@ -14,7 +15,7 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	private boolean doMarker;
 	
 	private ArrayList<String> errors = new ArrayList<String>();
-	private boolean foundTelltale = false;
+	private HashMap<String, Boolean> foundTelltale = new HashMap<String, Boolean>(); 
 	private int eventsReceivedCount = 0;
 	
 	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker)
@@ -39,14 +40,20 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 		return this.errors.size();
 	}
 	
-	boolean getTelltaleFound()
+	boolean getTelltaleFound(String partitionId)
 	{
-		return this.foundTelltale;
+		Boolean retval = this.foundTelltale.get(partitionId);
+		return ((retval != null) ? retval : false);
 	}
 	
-	void setTelltaleFound()
+	boolean getAnyTelltaleFound()
 	{
-		this.foundTelltale = true;
+		return (this.foundTelltale.size() > 0);
+	}
+	
+	void setTelltaleFound(String partitionId)
+	{
+		this.foundTelltale.put(partitionId, true);
 	}
 	
 	synchronized void addBatch(int batchSize)
