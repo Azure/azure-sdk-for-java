@@ -107,12 +107,9 @@ public final class StorageAccountsInner {
      * Checks that account name is valid and is not in use.
      *
      * @param name the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CheckNameAvailabilityResultInner object if successful.
      */
-    public CheckNameAvailabilityResultInner checkNameAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
+    public CheckNameAvailabilityResultInner checkNameAvailability(String name) {
         return checkNameAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
@@ -187,13 +184,9 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the StorageAccountInner object if successful.
      */
-    public StorageAccountInner create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public StorageAccountInner create(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
     }
 
@@ -262,12 +255,9 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountInner object if successful.
      */
-    public StorageAccountInner beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public StorageAccountInner beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParametersInner parameters) {
         return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
@@ -353,11 +343,8 @@ public final class StorageAccountsInner {
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public void delete(String resourceGroupName, String accountName) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -435,12 +422,9 @@ public final class StorageAccountsInner {
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountInner object if successful.
      */
-    public StorageAccountInner getProperties(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public StorageAccountInner getProperties(String resourceGroupName, String accountName) {
         return getPropertiesWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -519,12 +503,9 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the updated account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountInner object if successful.
      */
-    public StorageAccountInner update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public StorageAccountInner update(String resourceGroupName, String accountName, StorageAccountUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
@@ -607,12 +588,9 @@ public final class StorageAccountsInner {
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the ListKeys operation for this.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
-    public List<StorageAccountInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public List<StorageAccountInner> list() {
         return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -678,12 +656,9 @@ public final class StorageAccountsInner {
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned; use the ListKeys operation for this.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;StorageAccountInner&gt; object if successful.
      */
-    public List<StorageAccountInner> listByResourceGroup(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public List<StorageAccountInner> listByResourceGroup(String resourceGroupName) {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
@@ -756,12 +731,9 @@ public final class StorageAccountsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the storage account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListKeysResultInner object if successful.
      */
-    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName) {
         return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -840,12 +812,9 @@ public final class StorageAccountsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param keyName the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StorageAccountListKeysResultInner object if successful.
      */
-    public StorageAccountListKeysResultInner regenerateKey(String resourceGroupName, String accountName, String keyName) throws CloudException, IOException, IllegalArgumentException {
+    public StorageAccountListKeysResultInner regenerateKey(String resourceGroupName, String accountName, String keyName) {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
     }
 

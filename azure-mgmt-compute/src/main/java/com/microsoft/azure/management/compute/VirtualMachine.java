@@ -1,23 +1,21 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -38,67 +36,42 @@ public interface VirtualMachine extends
      * Shuts down the Virtual Machine and releases the compute resources.
      * <p>
      * You are not billed for the compute resources that this Virtual Machine uses
-     *
-     * @throws CloudException thrown for an invalid response from the service.
-     * @throws IOException thrown for IO exception.
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void deallocate() throws CloudException, IOException, InterruptedException;
+    void deallocate();
 
     /**
      * Generalize the Virtual Machine.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    void generalize() throws CloudException, IOException;
+    void generalize();
 
     /**
      * Power off (stop) the virtual machine.
      * <p>
      * You will be billed for the compute resources that this Virtual Machine uses.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void powerOff() throws CloudException, IOException, InterruptedException;
+    void powerOff();
 
     /**
      * Restart the virtual machine.
-     *
-     * @throws CloudException thrown for an invalid response from the service.
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
-     */
-    void restart() throws CloudException, IOException, InterruptedException;
+=     */
+    void restart();
 
     /**
      * Start the virtual machine.
-     *
-     * @throws CloudException thrown for an invalid response from the service.
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void start() throws CloudException, IOException, InterruptedException;
+    void start();
 
     /**
      * Redeploy the virtual machine.
-     *
-     * @throws CloudException thrown for an invalid response from the service.
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    void redeploy() throws CloudException, IOException, InterruptedException;
+    void redeploy();
 
     /**
      * List of all available virtual machine sizes this virtual machine can resized to.
-     *
+     * 
      * @return the virtual machine sizes
-     * @throws CloudException thrown for an invalid response from the service.
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException;
+    PagedList<VirtualMachineSize> availableSizes();
 
     /**
      * Captures the virtual machine by copying virtual hard disks of the VM and returns template as json
@@ -107,11 +80,8 @@ public interface VirtualMachine extends
      * @param containerName destination container name to store the captured Vhd
      * @param overwriteVhd whether to overwrites destination vhd if it exists
      * @return the template as json string
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when the operation is interrupted
      */
-    String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException;
+    String capture(String containerName, boolean overwriteVhd);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
@@ -119,10 +89,8 @@ public interface VirtualMachine extends
      * this will caches the instance view which can be later retrieved using {@link VirtualMachine#instanceView()}.
      *
      * @return the refreshed instance view
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException;
+    VirtualMachineInstanceView refreshInstanceView();
 
     // Getters
     //
@@ -168,10 +136,8 @@ public interface VirtualMachine extends
      * note that this method makes a rest API call to fetch the resource.
      *
      * @return the public IP of the primary network interface
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress primaryPublicIpAddress()  throws CloudException, IOException;
+    PublicIpAddress primaryPublicIpAddress();
 
     /**
      * Returns id to the availability set this virtual machine associated with.
@@ -247,10 +213,8 @@ public interface VirtualMachine extends
      * this method returns the cached instance view, to refresh the cache call {@link VirtualMachine#refreshInstanceView()}.
      *
      * @return the virtual machine instance view
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    VirtualMachineInstanceView instanceView() throws CloudException, IOException;
+    VirtualMachineInstanceView instanceView();
 
     // Setters
     //

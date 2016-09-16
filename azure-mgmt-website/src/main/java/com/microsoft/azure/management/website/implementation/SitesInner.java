@@ -17,7 +17,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.website.CsmPublishingProfileOptions;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -846,12 +845,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner getSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner getSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
         return getSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
     }
 
@@ -944,12 +940,9 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner createOrUpdateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner createOrUpdateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
         return createOrUpdateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -1048,12 +1041,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot) {
         return deleteSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot).toBlocking().single().getBody();
     }
 
@@ -1146,12 +1136,9 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner updateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner updateSiteVNETConnectionSlot(String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope) {
         return updateSiteVNETConnectionSlotWithServiceResponseAsync(resourceGroupName, name, vnetName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -1249,12 +1236,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner getSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner getSiteVNETConnection(String resourceGroupName, String name, String vnetName) {
         return getSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
@@ -1340,12 +1324,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner createOrUpdateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
         return createOrUpdateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -1437,12 +1418,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteVNETConnection(String resourceGroupName, String name, String vnetName) {
         return deleteSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
@@ -1528,12 +1506,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param connectionEnvelope The properties of this Virtual Network Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetInfoInner object if successful.
      */
-    public VnetInfoInner updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner updateSiteVNETConnection(String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope) {
         return updateSiteVNETConnectionWithServiceResponseAsync(resourceGroupName, name, vnetName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -1626,12 +1601,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param view The type of view. This can either be "summary" or "detailed".
      * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkFeaturesInner object if successful.
      */
-    public NetworkFeaturesInner getSiteNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkFeaturesInner getSiteNetworkFeaturesSlot(String resourceGroupName, String name, String view, String slot) {
         return getSiteNetworkFeaturesSlotWithServiceResponseAsync(resourceGroupName, name, view, slot).toBlocking().single().getBody();
     }
 
@@ -1723,12 +1695,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param view The type of view. This can either be "summary" or "detailed".
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkFeaturesInner object if successful.
      */
-    public NetworkFeaturesInner getSiteNetworkFeatures(String resourceGroupName, String name, String view) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkFeaturesInner getSiteNetworkFeatures(String resourceGroupName, String name, String view) {
         return getSiteNetworkFeaturesWithServiceResponseAsync(resourceGroupName, name, view).toBlocking().single().getBody();
     }
 
@@ -1815,12 +1784,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param operationId Id of an operation
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteOperationSlot(String resourceGroupName, String name, String operationId, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteOperationSlot(String resourceGroupName, String name, String operationId, String slot) {
         return getSiteOperationSlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().getBody();
     }
 
@@ -1911,12 +1877,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param operationId Id of an operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteOperation(String resourceGroupName, String name, String operationId) {
         return getSiteOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
@@ -2001,13 +1964,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Object object if successful.
      */
-    public Object swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public Object swapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         return swapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().last().getBody();
     }
 
@@ -2076,12 +2035,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public Object beginSwapSlotWithProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         return beginSwapSlotWithProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
     }
 
@@ -2169,13 +2125,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of source slot for the swap
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Object object if successful.
      */
-    public Object swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public Object swapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         return swapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().last().getBody();
     }
 
@@ -2251,12 +2203,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of source slot for the swap
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object beginSwapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public Object beginSwapSlotsSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         return beginSwapSlotsSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
     }
 
@@ -2349,16 +2298,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProduction(final String resourceGroupName, final String name, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionSinglePageAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
-            public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2478,16 +2424,13 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of the source slot
      * @param slotSwapEntity Request body that contains the target slot name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlot(final String resourceGroupName, final String name, final String slot, final CsmSlotEntityInner slotSwapEntity) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotSinglePageAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
-            public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2613,12 +2556,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public Object applySlotConfigToProduction(String resourceGroupName, String name, CsmSlotEntityInner slotSwapEntity) {
         return applySlotConfigToProductionWithServiceResponseAsync(resourceGroupName, name, slotSwapEntity).toBlocking().single().getBody();
     }
 
@@ -2705,12 +2645,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of the source slot. Settings from the target slot will be applied onto this slot
      * @param slotSwapEntity Request body that contains the target slot name. Settings from that slot will be applied on the source slot
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object applySlotConfigSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) throws CloudException, IOException, IllegalArgumentException {
+    public Object applySlotConfigSlot(String resourceGroupName, String name, String slot, CsmSlotEntityInner slotSwapEntity) {
         return applySlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, slotSwapEntity).toBlocking().single().getBody();
     }
 
@@ -2801,12 +2738,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object resetProductionSlotConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object resetProductionSlotConfig(String resourceGroupName, String name) {
         return resetProductionSlotConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -2885,12 +2819,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object resetSlotConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object resetSlotConfigSlot(String resourceGroupName, String name, String slot) {
         return resetSlotConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -2974,12 +2905,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SlotConfigNamesResourceInner object if successful.
      */
-    public SlotConfigNamesResourceInner getSlotConfigNames(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SlotConfigNamesResourceInner getSlotConfigNames(String resourceGroupName, String name) {
         return getSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -3058,12 +2986,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slotConfigNames Request body containing the names of application settings and connection strings
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SlotConfigNamesResourceInner object if successful.
      */
-    public SlotConfigNamesResourceInner updateSlotConfigNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) throws CloudException, IOException, IllegalArgumentException {
+    public SlotConfigNamesResourceInner updateSlotConfigNames(String resourceGroupName, String name, SlotConfigNamesResourceInner slotConfigNames) {
         return updateSlotConfigNamesWithServiceResponseAsync(resourceGroupName, name, slotConfigNames).toBlocking().single().getBody();
     }
 
@@ -3148,16 +3073,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -3262,16 +3184,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param propertiesToInclude List of app properties to include in the response
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlots(final String resourceGroupName, final String name, final String propertiesToInclude) {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -3384,16 +3303,13 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSites(final String resourceGroupName) {
         ServiceResponse<Page<SiteInner>> response = getSitesSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -3494,16 +3410,13 @@ public final class SitesInner {
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
      * @param includeSlots Whether or not to include deployments slots in results
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes, final Boolean includeSlots) {
         ServiceResponse<Page<SiteInner>> response = getSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes, includeSlots).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -3618,12 +3531,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner getSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner getSite(String resourceGroupName, String name) {
         return getSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -3696,12 +3606,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param propertiesToInclude Additional web app properties included in the response
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner getSite(String resourceGroupName, String name, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner getSite(String resourceGroupName, String name, String propertiesToInclude) {
         return getSiteWithServiceResponseAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single().getBody();
     }
 
@@ -3783,13 +3690,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param siteEnvelope Details of web app if it exists already
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object  if successful.
      */
-    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) {
         return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().last().getBody();
     }
 
@@ -3866,13 +3769,9 @@ public final class SitesInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object if successful.
      */
-    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner createOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         return createOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
     }
 
@@ -3956,12 +3855,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param siteEnvelope Details of web app if it exists already
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope) {
         return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope).toBlocking().single().getBody();
     }
 
@@ -4049,12 +3945,9 @@ public final class SitesInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginCreateOrUpdateSite(String resourceGroupName, String name, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         return beginCreateOrUpdateSiteWithServiceResponseAsync(resourceGroupName, name, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
     }
 
@@ -4155,12 +4048,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSite(String resourceGroupName, String name) {
         return deleteSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -4239,12 +4129,9 @@ public final class SitesInner {
      * @param deleteEmptyServerFarm If true and App Service Plan is empty after web app deletion, App Service Plan is also deleted
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSite(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSite(String resourceGroupName, String name, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
         return deleteSiteWithServiceResponseAsync(resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single().getBody();
     }
 
@@ -4335,12 +4222,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot) {
         return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -4420,12 +4304,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param propertiesToInclude Additional web app properties included in the response
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot, String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner getSiteSlot(String resourceGroupName, String name, String slot, String propertiesToInclude) {
         return getSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, propertiesToInclude).toBlocking().single().getBody();
     }
 
@@ -4514,13 +4395,9 @@ public final class SitesInner {
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteEnvelope Details of web app if it exists already
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object  if successful.
      */
-    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
         return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().last().getBody();
     }
 
@@ -4604,13 +4481,9 @@ public final class SitesInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object if successful.
      */
-    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner createOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         return createOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().last().getBody();
     }
 
@@ -4701,12 +4574,9 @@ public final class SitesInner {
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteEnvelope Details of web app if it exists already
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope) {
         return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope).toBlocking().single().getBody();
     }
 
@@ -4801,12 +4671,9 @@ public final class SitesInner {
      * @param skipCustomDomainVerification If true, custom (non *.azurewebsites.net) domains associated with web app are not verified.
      * @param forceDnsRegistration If true, web app hostname is force registered with DNS
      * @param ttlInSeconds Time to live in seconds for web app's default domain name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginCreateOrUpdateSiteSlot(String resourceGroupName, String name, String slot, SiteInner siteEnvelope, String skipDnsRegistration, String skipCustomDomainVerification, String forceDnsRegistration, String ttlInSeconds) {
         return beginCreateOrUpdateSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteEnvelope, skipDnsRegistration, skipCustomDomainVerification, forceDnsRegistration, ttlInSeconds).toBlocking().single().getBody();
     }
 
@@ -4914,12 +4781,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteSlot(String resourceGroupName, String name, String slot) {
         return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -5005,12 +4869,9 @@ public final class SitesInner {
      * @param deleteEmptyServerFarm If true and App Service Plan is empty after web app deletion, App Service Plan is also deleted
      * @param skipDnsRegistration If true, DNS registration is skipped
      * @param deleteAllSlots If true, all slots associated with web app are also deleted
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteSlot(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteSlot(String resourceGroupName, String name, String slot, String deleteMetrics, String deleteEmptyServerFarm, String skipDnsRegistration, String deleteAllSlots) {
         return deleteSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, deleteMetrics, deleteEmptyServerFarm, skipDnsRegistration, deleteAllSlots).toBlocking().single().getBody();
     }
 
@@ -5106,12 +4967,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteCloneabilityInner object if successful.
      */
-    public SiteCloneabilityInner isSiteCloneable(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteCloneabilityInner isSiteCloneable(String resourceGroupName, String name) {
         return isSiteCloneableWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -5190,12 +5048,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of the resource group
      * @param name Name of the web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteCloneabilityInner object if successful.
      */
-    public SiteCloneabilityInner isSiteCloneableSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteCloneabilityInner isSiteCloneableSlot(String resourceGroupName, String name, String slot) {
         return isSiteCloneableSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -5280,13 +5135,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object if successful.
      */
-    public SiteInner recoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner recoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
         return recoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().last().getBody();
     }
 
@@ -5355,12 +5206,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginRecoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginRecoverSite(String resourceGroupName, String name, CsmSiteRecoveryEntityInner recoveryEntity) {
         return beginRecoverSiteWithServiceResponseAsync(resourceGroupName, name, recoveryEntity).toBlocking().single().getBody();
     }
 
@@ -5448,13 +5296,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SiteInner object if successful.
      */
-    public SiteInner recoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SiteInner recoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
         return recoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().last().getBody();
     }
 
@@ -5530,12 +5374,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param recoveryEntity Snapshot data used for web app recovery. Snapshot information can be obtained by calling GetDeletedSites or GetSiteSnapshots API.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteInner object if successful.
      */
-    public SiteInner beginRecoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) throws CloudException, IOException, IllegalArgumentException {
+    public SiteInner beginRecoverSiteSlot(String resourceGroupName, String name, String slot, CsmSiteRecoveryEntityInner recoveryEntity) {
         return beginRecoverSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, recoveryEntity).toBlocking().single().getBody();
     }
 
@@ -5627,12 +5468,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Webspace
      * @param name Website Name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteSnapshots(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteSnapshots(String resourceGroupName, String name) {
         return getSiteSnapshotsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -5711,12 +5549,9 @@ public final class SitesInner {
      * @param resourceGroupName Webspace
      * @param name Website Name
      * @param slot Website Slot
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteSnapshotsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteSnapshotsSlot(String resourceGroupName, String name, String slot) {
         return getSiteSnapshotsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -5799,16 +5634,13 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName) {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
-            public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeletedSiteInner> nextPage(String nextPageLink) {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -5907,16 +5739,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param propertiesToInclude Additional web app properties included in the response
      * @param includeSiteTypes Types of apps included in the response
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSites(final String resourceGroupName, final String propertiesToInclude, final String includeSiteTypes) {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesSinglePageAsync(resourceGroupName, propertiesToInclude, includeSiteTypes).toBlocking().single();
         return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
-            public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeletedSiteInner> nextPage(String nextPageLink) {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -6027,16 +5856,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getDeployments(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeployments(final String resourceGroupName, final String name) {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -6147,16 +5973,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getDeploymentsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -6274,16 +6097,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeployments(final String resourceGroupName, final String name, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSinglePageAsync(resourceGroupName, name, instanceId).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -6402,16 +6222,13 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsSlot(final String resourceGroupName, final String name, final String slot, final String instanceId) {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSlotSinglePageAsync(resourceGroupName, name, slot, instanceId).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -6537,12 +6354,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner getInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
         return getInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
     }
 
@@ -6635,12 +6449,9 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param instanceId Id of web app instance
      * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner createInstanceDeployment(String resourceGroupName, String name, String id, String instanceId, DeploymentInner deployment) {
         return createInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId, deployment).toBlocking().single().getBody();
     }
 
@@ -6739,12 +6550,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteInstanceDeployment(String resourceGroupName, String name, String id, String instanceId) {
         return deleteInstanceDeploymentWithServiceResponseAsync(resourceGroupName, name, id, instanceId).toBlocking().single().getBody();
     }
 
@@ -6835,12 +6643,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param id Id of the deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner getDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner getDeployment(String resourceGroupName, String name, String id) {
         return getDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
     }
 
@@ -6926,12 +6731,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner createDeployment(String resourceGroupName, String name, String id, DeploymentInner deployment) {
         return createDeploymentWithServiceResponseAsync(resourceGroupName, name, id, deployment).toBlocking().single().getBody();
     }
 
@@ -7023,12 +6825,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param id Id of the deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteDeployment(String resourceGroupName, String name, String id) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteDeployment(String resourceGroupName, String name, String id) {
         return deleteDeploymentWithServiceResponseAsync(resourceGroupName, name, id).toBlocking().single().getBody();
     }
 
@@ -7114,12 +6913,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner getDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
         return getDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
     }
 
@@ -7212,12 +7008,9 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner createDeploymentSlot(String resourceGroupName, String name, String id, String slot, DeploymentInner deployment) {
         return createDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, deployment).toBlocking().single().getBody();
     }
 
@@ -7316,12 +7109,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteDeploymentSlot(String resourceGroupName, String name, String id, String slot) {
         return deleteDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot).toBlocking().single().getBody();
     }
 
@@ -7414,12 +7204,9 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner getInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
         return getInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
     }
 
@@ -7519,12 +7306,9 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
      * @param deployment Details of deployment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentInner object if successful.
      */
-    public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentInner createInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId, DeploymentInner deployment) {
         return createInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId, deployment).toBlocking().single().getBody();
     }
 
@@ -7630,12 +7414,9 @@ public final class SitesInner {
      * @param id Id of the deployment
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId Id of web app instance
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteInstanceDeploymentSlot(String resourceGroupName, String name, String id, String slot, String instanceId) {
         return deleteInstanceDeploymentSlotWithServiceResponseAsync(resourceGroupName, name, id, slot, instanceId).toBlocking().single().getBody();
     }
 
@@ -7731,16 +7512,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiers(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiers(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
-            public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInstanceInner> nextPage(String nextPageLink) {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -7851,16 +7629,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
-            public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInstanceInner> nextPage(String nextPageLink) {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -7977,16 +7752,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public PagedList<HostNameBindingInner> getSiteHostNameBindings(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindings(final String resourceGroupName, final String name) {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
-            public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostNameBindingInner> nextPage(String nextPageLink) {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -8097,16 +7869,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
-            public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostNameBindingInner> nextPage(String nextPageLink) {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -8224,12 +7993,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param hostName Name of host
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the HostNameBindingInner object if successful.
      */
-    public HostNameBindingInner getSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
+    public HostNameBindingInner getSiteHostNameBinding(String resourceGroupName, String name, String hostName) {
         return getSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
     }
 
@@ -8315,12 +8081,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param hostName Name of host
      * @param hostNameBinding Host name binding information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the HostNameBindingInner object if successful.
      */
-    public HostNameBindingInner createOrUpdateSiteHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
+    public HostNameBindingInner createOrUpdateSiteHostNameBinding(String resourceGroupName, String name, String hostName, HostNameBindingInner hostNameBinding) {
         return createOrUpdateSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName, hostNameBinding).toBlocking().single().getBody();
     }
 
@@ -8412,12 +8175,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param hostName Name of host
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteHostNameBinding(String resourceGroupName, String name, String hostName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteHostNameBinding(String resourceGroupName, String name, String hostName) {
         return deleteSiteHostNameBindingWithServiceResponseAsync(resourceGroupName, name, hostName).toBlocking().single().getBody();
     }
 
@@ -8503,12 +8263,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Name of host
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the HostNameBindingInner object if successful.
      */
-    public HostNameBindingInner getSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
+    public HostNameBindingInner getSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
         return getSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
     }
 
@@ -8601,12 +8358,9 @@ public final class SitesInner {
      * @param hostName Name of host
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostNameBinding Host name binding information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the HostNameBindingInner object if successful.
      */
-    public HostNameBindingInner createOrUpdateSiteHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) throws CloudException, IOException, IllegalArgumentException {
+    public HostNameBindingInner createOrUpdateSiteHostNameBindingSlot(String resourceGroupName, String name, String hostName, String slot, HostNameBindingInner hostNameBinding) {
         return createOrUpdateSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, hostName, slot, hostNameBinding).toBlocking().single().getBody();
     }
 
@@ -8705,12 +8459,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param hostName Name of host
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteHostNameBindingSlot(String resourceGroupName, String name, String slot, String hostName) {
         return deleteSiteHostNameBindingSlotWithServiceResponseAsync(resourceGroupName, name, slot, hostName).toBlocking().single().getBody();
     }
 
@@ -8800,12 +8551,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner getSiteConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner getSiteConfig(String resourceGroupName, String name) {
         return getSiteConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -8884,12 +8632,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteConfig Request body that contains the configuraiton setting for the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
         return createOrUpdateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
     }
 
@@ -8975,12 +8720,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteConfig Request body that contains the configuraiton setting for the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner updateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner updateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
         return updateSiteConfigWithServiceResponseAsync(resourceGroupName, name, siteConfig).toBlocking().single().getBody();
     }
 
@@ -9066,12 +8808,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner getSiteConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner getSiteConfigSlot(String resourceGroupName, String name, String slot) {
         return getSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -9157,12 +8896,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteConfig Request body that contains the configuraiton setting for the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner createOrUpdateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner createOrUpdateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
         return createOrUpdateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
     }
 
@@ -9255,12 +8991,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteConfig Request body that contains the configuraiton setting for the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteConfigInner object if successful.
      */
-    public SiteConfigInner updateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteConfigInner updateSiteConfigSlot(String resourceGroupName, String name, String slot, SiteConfigInner siteConfig) {
         return updateSiteConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteConfig).toBlocking().single().getBody();
     }
 
@@ -9351,12 +9084,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner getSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner getSiteSourceControl(String resourceGroupName, String name) {
         return getSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -9435,12 +9165,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner createOrUpdateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
         return createOrUpdateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
     }
 
@@ -9525,12 +9252,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteSourceControl(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteSourceControl(String resourceGroupName, String name) {
         return deleteSiteSourceControlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -9609,12 +9333,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner updateSiteSourceControl(String resourceGroupName, String name, SiteSourceControlInner siteSourceControl) {
         return updateSiteSourceControlWithServiceResponseAsync(resourceGroupName, name, siteSourceControl).toBlocking().single().getBody();
     }
 
@@ -9700,12 +9421,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner getSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner getSiteSourceControlSlot(String resourceGroupName, String name, String slot) {
         return getSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -9791,12 +9509,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner createOrUpdateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner createOrUpdateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
         return createOrUpdateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
     }
 
@@ -9888,12 +9603,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteSourceControlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteSourceControlSlot(String resourceGroupName, String name, String slot) {
         return deleteSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -9979,12 +9691,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteSourceControl Request body that contains the source control parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteSourceControlInner object if successful.
      */
-    public SiteSourceControlInner updateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) throws CloudException, IOException, IllegalArgumentException {
+    public SiteSourceControlInner updateSiteSourceControlSlot(String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl) {
         return updateSiteSourceControlSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteSourceControl).toBlocking().single().getBody();
     }
 
@@ -10076,12 +9785,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner listSiteAppSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner listSiteAppSettingsSlot(String resourceGroupName, String name, String slot) {
         return listSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -10165,12 +9871,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner listSiteAppSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner listSiteAppSettings(String resourceGroupName, String name) {
         return listSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -10249,12 +9952,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param appSettings Application settings of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner updateSiteAppSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner updateSiteAppSettings(String resourceGroupName, String name, StringDictionaryInner appSettings) {
         return updateSiteAppSettingsWithServiceResponseAsync(resourceGroupName, name, appSettings).toBlocking().single().getBody();
     }
 
@@ -10341,12 +10041,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param appSettings Application settings of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner updateSiteAppSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner updateSiteAppSettingsSlot(String resourceGroupName, String name, String slot, StringDictionaryInner appSettings) {
         return updateSiteAppSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, appSettings).toBlocking().single().getBody();
     }
 
@@ -10437,12 +10134,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ConnectionStringDictionaryInner listSiteConnectionStrings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionStringDictionaryInner listSiteConnectionStrings(String resourceGroupName, String name) {
         return listSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -10521,12 +10215,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ConnectionStringDictionaryInner listSiteConnectionStringsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionStringDictionaryInner listSiteConnectionStringsSlot(String resourceGroupName, String name, String slot) {
         return listSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -10611,12 +10302,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param connectionStrings Connection strings associated with web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ConnectionStringDictionaryInner updateSiteConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionStringDictionaryInner updateSiteConnectionStrings(String resourceGroupName, String name, ConnectionStringDictionaryInner connectionStrings) {
         return updateSiteConnectionStringsWithServiceResponseAsync(resourceGroupName, name, connectionStrings).toBlocking().single().getBody();
     }
 
@@ -10703,12 +10391,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param connectionStrings Connection strings associated with web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ConnectionStringDictionaryInner object if successful.
      */
-    public ConnectionStringDictionaryInner updateSiteConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) throws CloudException, IOException, IllegalArgumentException {
+    public ConnectionStringDictionaryInner updateSiteConnectionStringsSlot(String resourceGroupName, String name, String slot, ConnectionStringDictionaryInner connectionStrings) {
         return updateSiteConnectionStringsSlotWithServiceResponseAsync(resourceGroupName, name, slot, connectionStrings).toBlocking().single().getBody();
     }
 
@@ -10799,12 +10484,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteAuthSettingsInner object if successful.
      */
-    public SiteAuthSettingsInner listSiteAuthSettings(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteAuthSettingsInner listSiteAuthSettings(String resourceGroupName, String name) {
         return listSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -10883,12 +10565,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteAuthSettingsInner object if successful.
      */
-    public SiteAuthSettingsInner listSiteAuthSettingsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteAuthSettingsInner listSiteAuthSettingsSlot(String resourceGroupName, String name, String slot) {
         return listSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -10973,12 +10652,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteAuthSettings Auth settings associated with web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteAuthSettingsInner object if successful.
      */
-    public SiteAuthSettingsInner updateSiteAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
+    public SiteAuthSettingsInner updateSiteAuthSettings(String resourceGroupName, String name, SiteAuthSettingsInner siteAuthSettings) {
         return updateSiteAuthSettingsWithServiceResponseAsync(resourceGroupName, name, siteAuthSettings).toBlocking().single().getBody();
     }
 
@@ -11065,12 +10741,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteAuthSettings Auth settings associated with web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteAuthSettingsInner object if successful.
      */
-    public SiteAuthSettingsInner updateSiteAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) throws CloudException, IOException, IllegalArgumentException {
+    public SiteAuthSettingsInner updateSiteAuthSettingsSlot(String resourceGroupName, String name, String slot, SiteAuthSettingsInner siteAuthSettings) {
         return updateSiteAuthSettingsSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteAuthSettings).toBlocking().single().getBody();
     }
 
@@ -11161,13 +10834,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the UserInner object if successful.
      */
-    public UserInner listSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public UserInner listSitePublishingCredentials(String resourceGroupName, String name) {
         return listSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
@@ -11228,12 +10897,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner beginListSitePublishingCredentials(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner beginListSitePublishingCredentials(String resourceGroupName, String name) {
         return beginListSitePublishingCredentialsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -11312,13 +10978,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the UserInner object if successful.
      */
-    public UserInner listSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public UserInner listSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
         return listSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().last().getBody();
     }
 
@@ -11386,12 +11048,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner beginListSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner beginListSitePublishingCredentialsSlot(String resourceGroupName, String name, String slot) {
         return beginListSitePublishingCredentialsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -11475,12 +11134,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner listSiteMetadata(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner listSiteMetadata(String resourceGroupName, String name) {
         return listSiteMetadataWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -11559,12 +11215,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner listSiteMetadataSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner listSiteMetadataSlot(String resourceGroupName, String name, String slot) {
         return listSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -11649,12 +11302,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param metadata Meta data of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner updateSiteMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner updateSiteMetadata(String resourceGroupName, String name, StringDictionaryInner metadata) {
         return updateSiteMetadataWithServiceResponseAsync(resourceGroupName, name, metadata).toBlocking().single().getBody();
     }
 
@@ -11741,12 +11391,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param metadata Meta data of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the StringDictionaryInner object if successful.
      */
-    public StringDictionaryInner updateSiteMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) throws CloudException, IOException, IllegalArgumentException {
+    public StringDictionaryInner updateSiteMetadataSlot(String resourceGroupName, String name, String slot, StringDictionaryInner metadata) {
         return updateSiteMetadataSlotWithServiceResponseAsync(resourceGroupName, name, slot, metadata).toBlocking().single().getBody();
     }
 
@@ -11837,12 +11484,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteLogsConfigInner object if successful.
      */
-    public SiteLogsConfigInner getSiteLogsConfig(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public SiteLogsConfigInner getSiteLogsConfig(String resourceGroupName, String name) {
         return getSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -11921,12 +11565,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param siteLogsConfig Site logs configuration
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteLogsConfigInner object if successful.
      */
-    public SiteLogsConfigInner updateSiteLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteLogsConfigInner updateSiteLogsConfig(String resourceGroupName, String name, SiteLogsConfigInner siteLogsConfig) {
         return updateSiteLogsConfigWithServiceResponseAsync(resourceGroupName, name, siteLogsConfig).toBlocking().single().getBody();
     }
 
@@ -12012,12 +11653,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteLogsConfigInner object if successful.
      */
-    public SiteLogsConfigInner getSiteLogsConfigSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public SiteLogsConfigInner getSiteLogsConfigSlot(String resourceGroupName, String name, String slot) {
         return getSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -12103,12 +11741,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param siteLogsConfig Site logs configuration
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SiteLogsConfigInner object if successful.
      */
-    public SiteLogsConfigInner updateSiteLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) throws CloudException, IOException, IllegalArgumentException {
+    public SiteLogsConfigInner updateSiteLogsConfigSlot(String resourceGroupName, String name, String slot, SiteLogsConfigInner siteLogsConfig) {
         return updateSiteLogsConfigSlotWithServiceResponseAsync(resourceGroupName, name, slot, siteLogsConfig).toBlocking().single().getBody();
     }
 
@@ -12198,12 +11833,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName the String value
      * @param name the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object listSitePremierAddOns(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object listSitePremierAddOns(String resourceGroupName, String name) {
         return listSitePremierAddOnsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -12278,12 +11910,9 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param slot the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object listSitePremierAddOnsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object listSitePremierAddOnsSlot(String resourceGroupName, String name, String slot) {
         return listSitePremierAddOnsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -12364,12 +11993,9 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param premierAddOnName the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
         return getSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
     }
 
@@ -12451,12 +12077,9 @@ public final class SitesInner {
      * @param name the String value
      * @param premierAddOnName the String value
      * @param premierAddOn the PremierAddOnRequestInner value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object addSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
+    public Object addSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName, PremierAddOnRequestInner premierAddOn) {
         return addSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, premierAddOn).toBlocking().single().getBody();
     }
 
@@ -12544,12 +12167,9 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param premierAddOnName the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSitePremierAddOn(String resourceGroupName, String name, String premierAddOnName) {
         return deleteSitePremierAddOnWithServiceResponseAsync(resourceGroupName, name, premierAddOnName).toBlocking().single().getBody();
     }
 
@@ -12631,12 +12251,9 @@ public final class SitesInner {
      * @param name the String value
      * @param premierAddOnName the String value
      * @param slot the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
         return getSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
     }
 
@@ -12725,12 +12342,9 @@ public final class SitesInner {
      * @param premierAddOnName the String value
      * @param slot the String value
      * @param premierAddOn the PremierAddOnRequestInner value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object addSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) throws CloudException, IOException, IllegalArgumentException {
+    public Object addSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot, PremierAddOnRequestInner premierAddOn) {
         return addSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot, premierAddOn).toBlocking().single().getBody();
     }
 
@@ -12825,12 +12439,9 @@ public final class SitesInner {
      * @param name the String value
      * @param premierAddOnName the String value
      * @param slot the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSitePremierAddOnSlot(String resourceGroupName, String name, String premierAddOnName, String slot) {
         return deleteSitePremierAddOnSlotWithServiceResponseAsync(resourceGroupName, name, premierAddOnName, slot).toBlocking().single().getBody();
     }
 
@@ -12917,12 +12528,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupRequestInner object if successful.
      */
-    public BackupRequestInner getSiteBackupConfiguration(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public BackupRequestInner getSiteBackupConfiguration(String resourceGroupName, String name) {
         return getSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -13001,12 +12609,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupRequestInner object if successful.
      */
-    public BackupRequestInner getSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public BackupRequestInner getSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot) {
         return getSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -13091,12 +12696,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupRequestInner object if successful.
      */
-    public BackupRequestInner updateSiteBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupRequestInner updateSiteBackupConfiguration(String resourceGroupName, String name, BackupRequestInner request) {
         return updateSiteBackupConfigurationWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
@@ -13183,12 +12785,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupRequestInner object if successful.
      */
-    public BackupRequestInner updateSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupRequestInner updateSiteBackupConfigurationSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
         return updateSiteBackupConfigurationSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
@@ -13280,12 +12879,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner backupSite(String resourceGroupName, String name, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner backupSite(String resourceGroupName, String name, BackupRequestInner request) {
         return backupSiteWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
@@ -13372,12 +12968,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner backupSiteSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner backupSiteSlot(String resourceGroupName, String name, String slot, BackupRequestInner request) {
         return backupSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
@@ -13469,12 +13062,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RestoreRequestInner object if successful.
      */
-    public RestoreRequestInner discoverSiteRestore(String resourceGroupName, String name, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public RestoreRequestInner discoverSiteRestore(String resourceGroupName, String name, RestoreRequestInner request) {
         return discoverSiteRestoreWithServiceResponseAsync(resourceGroupName, name, request).toBlocking().single().getBody();
     }
 
@@ -13561,12 +13151,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RestoreRequestInner object if successful.
      */
-    public RestoreRequestInner discoverSiteRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public RestoreRequestInner discoverSiteRestoreSlot(String resourceGroupName, String name, String slot, RestoreRequestInner request) {
         return discoverSiteRestoreSlotWithServiceResponseAsync(resourceGroupName, name, slot, request).toBlocking().single().getBody();
     }
 
@@ -13657,16 +13244,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public PagedList<BackupItemInner> listSiteBackups(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackups(final String resourceGroupName, final String name) {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
-            public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -13777,16 +13361,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public PagedList<BackupItemInner> listSiteBackupsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
-            public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -13904,12 +13485,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param backupId Id of backup
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner getSiteBackupStatus(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner getSiteBackupStatus(String resourceGroupName, String name, String backupId) {
         return getSiteBackupStatusWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
     }
 
@@ -13994,12 +13572,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param backupId Id of backup
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner deleteBackup(String resourceGroupName, String name, String backupId) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner deleteBackup(String resourceGroupName, String name, String backupId) {
         return deleteBackupWithServiceResponseAsync(resourceGroupName, name, backupId).toBlocking().single().getBody();
     }
 
@@ -14085,12 +13660,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner getSiteBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner getSiteBackupStatusSlot(String resourceGroupName, String name, String backupId, String slot) {
         return getSiteBackupStatusSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
     }
 
@@ -14182,12 +13754,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner deleteBackupSlot(String resourceGroupName, String name, String backupId, String slot) {
         return deleteBackupSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot).toBlocking().single().getBody();
     }
 
@@ -14280,12 +13849,9 @@ public final class SitesInner {
      * @param backupId Id of backup
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner getSiteBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner getSiteBackupStatusSecretsSlot(String resourceGroupName, String name, String backupId, String slot, BackupRequestInner request) {
         return getSiteBackupStatusSecretsSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
     }
 
@@ -14384,12 +13950,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup
      * @param request Information on backup request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BackupItemInner object if successful.
      */
-    public BackupItemInner getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public BackupItemInner getSiteBackupStatusSecrets(String resourceGroupName, String name, String backupId, BackupRequestInner request) {
         return getSiteBackupStatusSecretsWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
     }
 
@@ -14482,13 +14045,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup to restore
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RestoreResponseInner object if successful.
      */
-    public RestoreResponseInner restoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public RestoreResponseInner restoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
         return restoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().last().getBody();
     }
 
@@ -14564,12 +14123,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param backupId Id of backup to restore
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RestoreResponseInner object if successful.
      */
-    public RestoreResponseInner beginRestoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public RestoreResponseInner beginRestoreSite(String resourceGroupName, String name, String backupId, RestoreRequestInner request) {
         return beginRestoreSiteWithServiceResponseAsync(resourceGroupName, name, backupId, request).toBlocking().single().getBody();
     }
 
@@ -14663,13 +14219,9 @@ public final class SitesInner {
      * @param backupId Id of backup to restore
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the RestoreResponseInner object if successful.
      */
-    public RestoreResponseInner restoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public RestoreResponseInner restoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
         return restoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().last().getBody();
     }
 
@@ -14752,12 +14304,9 @@ public final class SitesInner {
      * @param backupId Id of backup to restore
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param request Information on restore request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RestoreResponseInner object if successful.
      */
-    public RestoreResponseInner beginRestoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public RestoreResponseInner beginRestoreSiteSlot(String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request) {
         return beginRestoreSiteSlotWithServiceResponseAsync(resourceGroupName, name, backupId, slot, request).toBlocking().single().getBody();
     }
 
@@ -14854,16 +14403,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -14968,16 +14514,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsages(final String resourceGroupName, final String name, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSinglePageAsync(resourceGroupName, name, filter).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15092,16 +14635,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15214,16 +14754,13 @@ public final class SitesInner {
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param filter Return only usages specified in the filter. Filter is specified by using OData syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlot(final String resourceGroupName, final String name, final String slot, final String filter) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotSinglePageAsync(resourceGroupName, name, slot, filter).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15344,16 +14881,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15460,16 +14994,13 @@ public final class SitesInner {
      * @param name Name of web app
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15588,16 +15119,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15712,16 +15240,13 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param details If true, metric details are included in response
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlot(final String resourceGroupName, final String name, final String slot, final Boolean details, final String filter) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotSinglePageAsync(resourceGroupName, name, slot, details, filter).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15847,16 +15372,13 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlot(final String resourceGroupName, final String name, final String slot) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -15973,16 +15495,13 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getSiteMetricDefinitions(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitions(final String resourceGroupName, final String name) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -16092,12 +15611,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object if successful.
      */
-    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name) {
         return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -16175,12 +15691,9 @@ public final class SitesInner {
                  FileZilla3
                  WebDeploy -- default
                  Ftp
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object if successful.
      */
-    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name, String format) throws CloudException, IOException, IllegalArgumentException {
+    public InputStream listSitePublishingProfileXml(String resourceGroupName, String name, String format) {
         return listSitePublishingProfileXmlWithServiceResponseAsync(resourceGroupName, name, format).toBlocking().single().getBody();
     }
 
@@ -16273,12 +15786,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object if successful.
      */
-    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot) {
         return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -16363,12 +15873,9 @@ public final class SitesInner {
                  FileZilla3
                  WebDeploy -- default
                  Ftp
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the InputStream object if successful.
      */
-    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot, String format) throws CloudException, IOException, IllegalArgumentException {
+    public InputStream listSitePublishingProfileXmlSlot(String resourceGroupName, String name, String slot, String format) {
         return listSitePublishingProfileXmlSlotWithServiceResponseAsync(resourceGroupName, name, slot, format).toBlocking().single().getBody();
     }
 
@@ -16467,12 +15974,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSiteSlot(String resourceGroupName, String name, String slot) {
         return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -16554,12 +16058,9 @@ public final class SitesInner {
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSiteSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSiteSlot(String resourceGroupName, String name, String slot, Boolean softRestart, Boolean synchronous) {
         return restartSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot, softRestart, synchronous).toBlocking().single().getBody();
     }
 
@@ -16649,12 +16150,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSite(String resourceGroupName, String name) {
         return restartSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -16729,12 +16227,9 @@ public final class SitesInner {
      * @param name Name of web app
      * @param softRestart Soft restart applies the configuration settings and restarts the app if necessary. Hard restart always restarts and reprovisions the app
      * @param synchronous If true then the API will block until the app has been restarted
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object restartSite(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSite(String resourceGroupName, String name, Boolean softRestart, Boolean synchronous) {
         return restartSiteWithServiceResponseAsync(resourceGroupName, name, softRestart, synchronous).toBlocking().single().getBody();
     }
 
@@ -16818,12 +16313,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object startSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object startSite(String resourceGroupName, String name) {
         return startSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -16902,12 +16394,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object startSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object startSiteSlot(String resourceGroupName, String name, String slot) {
         return startSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -16991,12 +16480,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object stopSite(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object stopSite(String resourceGroupName, String name) {
         return stopSiteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -17075,12 +16561,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object stopSiteSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object stopSiteSlot(String resourceGroupName, String name, String slot) {
         return stopSiteSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -17163,12 +16646,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName the String value
      * @param name the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object syncSiteRepository(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object syncSiteRepository(String resourceGroupName, String name) {
         return syncSiteRepositoryWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -17243,12 +16723,9 @@ public final class SitesInner {
      * @param resourceGroupName the String value
      * @param name the String value
      * @param slot the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object syncSiteRepositorySlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object syncSiteRepositorySlot(String resourceGroupName, String name, String slot) {
         return syncSiteRepositorySlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -17330,12 +16807,9 @@ public final class SitesInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
      * @param slot Name of web app slot. If not specified then will default to production slot.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object generateNewSitePublishingPasswordSlot(String resourceGroupName, String name, String slot) {
         return generateNewSitePublishingPasswordSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -17419,12 +16893,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object generateNewSitePublishingPassword(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object generateNewSitePublishingPassword(String resourceGroupName, String name) {
         return generateNewSitePublishingPasswordWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -17503,12 +16974,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner getSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner getSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) {
         return getSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
     }
 
@@ -17594,12 +17062,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param connectionEnvelope The details of the Hybrid Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
         return createOrUpdateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -17691,12 +17156,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteRelayServiceConnection(String resourceGroupName, String name, String entityName) {
         return deleteSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName).toBlocking().single().getBody();
     }
 
@@ -17782,12 +17244,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param connectionEnvelope The details of the Hybrid Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnection(String resourceGroupName, String name, String entityName, RelayServiceConnectionEntityInner connectionEnvelope) {
         return updateSiteRelayServiceConnectionWithServiceResponseAsync(resourceGroupName, name, entityName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -17880,12 +17339,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner getSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner getSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
         return getSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
     }
 
@@ -17978,12 +17434,9 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the Hybrid Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner createOrUpdateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
         return createOrUpdateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -18082,12 +17535,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot) {
         return deleteSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot).toBlocking().single().getBody();
     }
 
@@ -18180,12 +17630,9 @@ public final class SitesInner {
      * @param entityName The name by which the Hybrid Connection is identified
      * @param slot The name of the slot for the web app.
      * @param connectionEnvelope The details of the Hybrid Connection
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner updateSiteRelayServiceConnectionSlot(String resourceGroupName, String name, String entityName, String slot, RelayServiceConnectionEntityInner connectionEnvelope) {
         return updateSiteRelayServiceConnectionSlotWithServiceResponseAsync(resourceGroupName, name, entityName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -18283,12 +17730,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param slot The name of the slot for the web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner listSiteRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner listSiteRelayServiceConnectionsSlot(String resourceGroupName, String name, String slot) {
         return listSiteRelayServiceConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -18372,12 +17816,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RelayServiceConnectionEntityInner object if successful.
      */
-    public RelayServiceConnectionEntityInner listSiteRelayServiceConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public RelayServiceConnectionEntityInner listSiteRelayServiceConnections(String resourceGroupName, String name) {
         return listSiteRelayServiceConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -18458,12 +17899,9 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteVnetGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteVnetGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
         return getSiteVnetGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot).toBlocking().single().getBody();
     }
 
@@ -18564,12 +18002,9 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner createOrUpdateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner createOrUpdateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
         return createOrUpdateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -18676,12 +18111,9 @@ public final class SitesInner {
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param slot The name of the slot for this web app.
      * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner updateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner updateSiteVNETConnectionGatewaySlot(String resourceGroupName, String name, String vnetName, String gatewayName, String slot, VnetGatewayInner connectionEnvelope) {
         return updateSiteVNETConnectionGatewaySlotWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, slot, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -18786,12 +18218,9 @@ public final class SitesInner {
      * @param name The name of the web app
      * @param vnetName The name of the Virtual Network
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public Object getSiteVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
         return getSiteVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
     }
 
@@ -18885,12 +18314,9 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner createOrUpdateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         return createOrUpdateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -18990,12 +18416,9 @@ public final class SitesInner {
      * @param vnetName The name of the Virtual Network
      * @param gatewayName The name of the gateway. The only gateway that exists presently is "primary"
      * @param connectionEnvelope The properties to update this gateway with.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VnetGatewayInner object if successful.
      */
-    public VnetGatewayInner updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner updateSiteVNETConnectionGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         return updateSiteVNETConnectionGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
     }
 
@@ -19092,12 +18515,9 @@ public final class SitesInner {
      *
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
-    public List<VnetInfoInner> getSiteVNETConnections(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetInfoInner> getSiteVNETConnections(String resourceGroupName, String name) {
         return getSiteVNETConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -19176,12 +18596,9 @@ public final class SitesInner {
      * @param resourceGroupName The resource group name
      * @param name The name of the web app
      * @param slot The name of the slot for this web app.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
-    public List<VnetInfoInner> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetInfoInner> getSiteVNETConnectionsSlot(String resourceGroupName, String name, String slot) {
         return getSiteVNETConnectionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().getBody();
     }
 
@@ -19264,16 +18681,13 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesFromProductionNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
-            public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
                 return getSlotsDifferencesFromProductionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19370,16 +18784,13 @@ public final class SitesInner {
      * Get the difference in configuration settings between two web app slots.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SlotDifferenceInner&gt; object if successful.
      */
-    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SlotDifferenceInner> getSlotsDifferencesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SlotDifferenceInner>> response = getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SlotDifferenceInner>(response.getBody()) {
             @Override
-            public Page<SlotDifferenceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SlotDifferenceInner> nextPage(String nextPageLink) {
                 return getSlotsDifferencesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19476,16 +18887,13 @@ public final class SitesInner {
      * Gets all the slots for a web apps.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSiteSlotsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSiteSlotsNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSiteSlotsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19582,16 +18990,13 @@ public final class SitesInner {
      * Gets the web apps for a subscription in the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getSitesNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = getSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19688,16 +19093,13 @@ public final class SitesInner {
      * Gets deleted web apps in subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeletedSiteInner&gt; object if successful.
      */
-    public PagedList<DeletedSiteInner> getDeletedSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeletedSiteInner> getDeletedSitesNext(final String nextPageLink) {
         ServiceResponse<Page<DeletedSiteInner>> response = getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeletedSiteInner>(response.getBody()) {
             @Override
-            public Page<DeletedSiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeletedSiteInner> nextPage(String nextPageLink) {
                 return getDeletedSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19794,16 +19196,13 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -19900,16 +19299,13 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20006,16 +19402,13 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getInstanceDeploymentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getInstanceDeploymentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20112,16 +19505,13 @@ public final class SitesInner {
      * List deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentInner&gt; object if successful.
      */
-    public PagedList<DeploymentInner> getInstanceDeploymentsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentInner> getInstanceDeploymentsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentInner>> response = getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentInner>(response.getBody()) {
             @Override
-            public Page<DeploymentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentInner> nextPage(String nextPageLink) {
                 return getInstanceDeploymentsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20218,16 +19608,13 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
-            public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInstanceInner> nextPage(String nextPageLink) {
                 return getSiteInstanceIdentifiersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20324,16 +19711,13 @@ public final class SitesInner {
      * Gets all instance of a web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInstanceInner&gt; object if successful.
      */
-    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInstanceInner> getSiteInstanceIdentifiersSlotNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInstanceInner>> response = getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInstanceInner>(response.getBody()) {
             @Override
-            public Page<SiteInstanceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInstanceInner> nextPage(String nextPageLink) {
                 return getSiteInstanceIdentifiersSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20430,16 +19814,13 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public PagedList<HostNameBindingInner> getSiteHostNameBindingsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
-            public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostNameBindingInner> nextPage(String nextPageLink) {
                 return getSiteHostNameBindingsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20536,16 +19917,13 @@ public final class SitesInner {
      * Get web app hostname bindings.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostNameBindingInner&gt; object if successful.
      */
-    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostNameBindingInner> getSiteHostNameBindingsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<HostNameBindingInner>> response = getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<HostNameBindingInner>(response.getBody()) {
             @Override
-            public Page<HostNameBindingInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostNameBindingInner> nextPage(String nextPageLink) {
                 return getSiteHostNameBindingsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20642,16 +20020,13 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public PagedList<BackupItemInner> listSiteBackupsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
-            public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
                 return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20748,16 +20123,13 @@ public final class SitesInner {
      * Lists all available backups for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public PagedList<BackupItemInner> listSiteBackupsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<BackupItemInner> listSiteBackupsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<BackupItemInner>(response.getBody()) {
             @Override
-            public Page<BackupItemInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
                 return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20854,16 +20226,13 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsagesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -20960,16 +20329,13 @@ public final class SitesInner {
      * Gets the quota usage numbers for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CsmUsageQuotaInner&gt; object if successful.
      */
-    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CsmUsageQuotaInner> getSiteUsagesSlotNext(final String nextPageLink) {
         ServiceResponse<Page<CsmUsageQuotaInner>> response = getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CsmUsageQuotaInner>(response.getBody()) {
             @Override
-            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CsmUsageQuotaInner> nextPage(String nextPageLink) {
                 return getSiteUsagesSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -21066,16 +20432,13 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetricsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -21172,16 +20535,13 @@ public final class SitesInner {
      * Gets metrics for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public PagedList<ResourceMetricInner> getSiteMetricsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getSiteMetricsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceMetricInner>> response = getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ResourceMetricInner>(response.getBody()) {
             @Override
-            public Page<ResourceMetricInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
                 return getSiteMetricsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -21278,16 +20638,13 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlotNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsSlotNext(final String nextPageLink) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getSiteMetricDefinitionsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -21384,16 +20741,13 @@ public final class SitesInner {
      * Gets metric definitions for web app.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<MetricDefinitionInner> getSiteMetricDefinitionsNext(final String nextPageLink) {
         ServiceResponse<Page<MetricDefinitionInner>> response = getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<MetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
                 return getSiteMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

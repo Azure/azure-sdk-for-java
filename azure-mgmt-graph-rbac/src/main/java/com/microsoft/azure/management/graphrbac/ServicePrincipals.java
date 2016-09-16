@@ -13,8 +13,6 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
-import java.io.IOException;
-
 /**
  * Entry point to service principal management API.
  */
@@ -27,30 +25,24 @@ public interface ServicePrincipals extends
      *
      * @param objectId the unique object id
      * @return an immutable representation of the resource
-     * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException         exceptions thrown from serialization/deserialization
      */
-    ServicePrincipal getByObjectId(String objectId) throws GraphErrorException, IOException;
+    ServicePrincipal getByObjectId(String objectId);
 
     /**
      * Gets the information about a service principal.
      *
      * @param appId the application id (or the client id)
      * @return an immutable representation of the resource
-     * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException         exceptions thrown from serialization/deserialization
      */
-    ServicePrincipal getByAppId(String appId) throws GraphErrorException, IOException;
+    ServicePrincipal getByAppId(String appId);
 
     /**
      * Gets the information about a service principal.
      *
      * @param spn the service principal name
      * @return an immutable representation of the resource
-     * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException         exceptions thrown from serialization/deserialization
      */
-    ServicePrincipal getByServicePrincipalName(String spn) throws GraphErrorException, IOException;
+    ServicePrincipal getByServicePrincipalName(String spn);
 
     /**
      * Gets the information about a service principal.

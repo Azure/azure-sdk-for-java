@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -147,12 +146,9 @@ public final class GlobalsInner {
     /**
      * Gets publishing credentials for the subscription owner.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner getSubscriptionPublishingCredentials() throws CloudException, IOException, IllegalArgumentException {
+    public UserInner getSubscriptionPublishingCredentials() {
         return getSubscriptionPublishingCredentialsWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -217,12 +213,9 @@ public final class GlobalsInner {
      * Updates publishing credentials for the subscription owner.
      *
      * @param requestMessage requestMessage with new publishing credentials
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner updateSubscriptionPublishingCredentials(UserInner requestMessage) throws CloudException, IOException, IllegalArgumentException {
+    public UserInner updateSubscriptionPublishingCredentials(UserInner requestMessage) {
         return updateSubscriptionPublishingCredentialsWithServiceResponseAsync(requestMessage).toBlocking().single().getBody();
     }
 
@@ -293,16 +286,13 @@ public final class GlobalsInner {
     /**
      * Gets list of available geo regions.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public PagedList<GeoRegionInner> getSubscriptionGeoRegions() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegions() {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync().toBlocking().single();
         return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
-            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GeoRegionInner> nextPage(String nextPageLink) {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -391,16 +381,13 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
      * @param sku Filter only to regions that support this sku
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public PagedList<GeoRegionInner> getSubscriptionGeoRegions(final String sku) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegions(final String sku) {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsSinglePageAsync(sku).toBlocking().single();
         return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
-            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GeoRegionInner> nextPage(String nextPageLink) {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -498,16 +485,13 @@ public final class GlobalsInner {
     /**
      * Get all certificates for a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateInner&gt; object if successful.
      */
-    public PagedList<CertificateInner> getAllCertificates() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateInner> getAllCertificates() {
         ServiceResponse<Page<CertificateInner>> response = getAllCertificatesSinglePageAsync().toBlocking().single();
         return new PagedList<CertificateInner>(response.getBody()) {
             @Override
-            public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateInner> nextPage(String nextPageLink) {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -601,16 +585,13 @@ public final class GlobalsInner {
     /**
      * Gets all App Service Plans for a subcription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms() {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync().toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -700,16 +681,13 @@ public final class GlobalsInner {
      *
      * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
                  Retrieval of all properties may increase the API latency.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms(final Boolean detailed) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarms(final Boolean detailed) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsSinglePageAsync(detailed).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -811,16 +789,13 @@ public final class GlobalsInner {
     /**
      * Gets all Web Apps for a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getAllSites() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getAllSites() {
         ServiceResponse<Page<SiteInner>> response = getAllSitesSinglePageAsync().toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -914,16 +889,13 @@ public final class GlobalsInner {
     /**
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<HostingEnvironmentInner> getAllHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getAllHostingEnvironments() {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsSinglePageAsync().toBlocking().single();
         return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1017,16 +989,13 @@ public final class GlobalsInner {
     /**
      * Gets all managed hosting environments for a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironments() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironments() {
         ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsSinglePageAsync().toBlocking().single();
         return new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1120,16 +1089,13 @@ public final class GlobalsInner {
     /**
      * Gets all mobile services for a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServices() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServices() {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesSinglePageAsync().toBlocking().single();
         return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
-            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1223,12 +1189,9 @@ public final class GlobalsInner {
     /**
      * List premier add on offers.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object listPremierAddOnOffers() throws CloudException, IOException, IllegalArgumentException {
+    public Object listPremierAddOnOffers() {
         return listPremierAddOnOffersWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -1293,12 +1256,9 @@ public final class GlobalsInner {
      * Whether hosting environment name is available.
      *
      * @param name Hosting environment name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object isHostingEnvironmentNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object isHostingEnvironmentNameAvailable(String name) {
         return isHostingEnvironmentNameAvailableWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
@@ -1369,12 +1329,9 @@ public final class GlobalsInner {
      * Whether hosting environment name is available.
      *
      * @param name Hosting environment name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object isHostingEnvironmentWithLegacyNameAvailable(String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object isHostingEnvironmentWithLegacyNameAvailable(String name) {
         return isHostingEnvironmentWithLegacyNameAvailableWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
@@ -1445,12 +1402,9 @@ public final class GlobalsInner {
      * Check if resource name is available.
      *
      * @param request Name availability request
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequestInner request) throws CloudException, IOException, IllegalArgumentException {
+    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequestInner request) {
         return checkNameAvailabilityWithServiceResponseAsync(request).toBlocking().single().getBody();
     }
 
@@ -1522,16 +1476,13 @@ public final class GlobalsInner {
      * Gets list of available geo regions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GeoRegionInner&gt; object if successful.
      */
-    public PagedList<GeoRegionInner> getSubscriptionGeoRegionsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GeoRegionInner> getSubscriptionGeoRegionsNext(final String nextPageLink) {
         ServiceResponse<Page<GeoRegionInner>> response = getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<GeoRegionInner>(response.getBody()) {
             @Override
-            public Page<GeoRegionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GeoRegionInner> nextPage(String nextPageLink) {
                 return getSubscriptionGeoRegionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1628,16 +1579,13 @@ public final class GlobalsInner {
      * Get all certificates for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;CertificateInner&gt; object if successful.
      */
-    public PagedList<CertificateInner> getAllCertificatesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<CertificateInner> getAllCertificatesNext(final String nextPageLink) {
         ServiceResponse<Page<CertificateInner>> response = getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<CertificateInner>(response.getBody()) {
             @Override
-            public Page<CertificateInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<CertificateInner> nextPage(String nextPageLink) {
                 return getAllCertificatesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1734,16 +1682,13 @@ public final class GlobalsInner {
      * Gets all App Service Plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getAllServerFarmsNext(final String nextPageLink) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getAllServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1840,16 +1785,13 @@ public final class GlobalsInner {
      * Gets all Web Apps for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getAllSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getAllSitesNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getAllSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1946,16 +1888,13 @@ public final class GlobalsInner {
      * Gets all hostingEnvironments (App Service Environment) for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<HostingEnvironmentInner> getAllHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getAllHostingEnvironmentsNext(final String nextPageLink) {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getAllHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2052,16 +1991,13 @@ public final class GlobalsInner {
      * Gets all managed hosting environments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ManagedHostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ManagedHostingEnvironmentInner> getAllManagedHostingEnvironmentsNext(final String nextPageLink) {
         ServiceResponse<Page<ManagedHostingEnvironmentInner>> response = getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ManagedHostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ManagedHostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getAllManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2158,16 +2094,13 @@ public final class GlobalsInner {
      * Gets all mobile services for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServicesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getAllClassicMobileServicesNext(final String nextPageLink) {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
-            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) {
                 return getAllClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -65,12 +65,9 @@ public final class UsagesInner {
      * @param environmentName Environment name
      * @param lastId Last marker that was returned from the batch
      * @param batchSize size of the batch to be returned.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getUsage(String resourceGroupName, String environmentName, String lastId, int batchSize) throws CloudException, IOException, IllegalArgumentException {
+    public Object getUsage(String resourceGroupName, String environmentName, String lastId, int batchSize) {
         return getUsageWithServiceResponseAsync(resourceGroupName, environmentName, lastId, batchSize).toBlocking().single().getBody();
     }
 

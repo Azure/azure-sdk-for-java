@@ -80,7 +80,7 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public NetworkSecurityGroupImpl refresh() throws Exception {
+    public NetworkSecurityGroupImpl refresh() {
         NetworkSecurityGroupInner response = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         initializeChildrenFromInner();
@@ -88,8 +88,8 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public Observable<NetworkSecurityGroup> applyAsync() {
-        return createAsync();
+    public Observable<NetworkSecurityGroup> applyUpdateAsync() {
+        return createResourceAsync();
     }
 
     // Setters (fluent)

@@ -76,7 +76,7 @@ class LoadBalancerImpl
     // Verbs
 
     @Override
-    public LoadBalancerImpl refresh() throws Exception {
+    public LoadBalancerImpl refresh() {
         LoadBalancerInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();
@@ -84,8 +84,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public Observable<LoadBalancer> applyAsync() {
-        return createAsync();
+    public Observable<LoadBalancer> applyUpdateAsync() {
+        return createResourceAsync();
     }
 
     // Helpers

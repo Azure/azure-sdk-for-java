@@ -6,13 +6,11 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,8 +31,6 @@ public interface GenericResources extends
      * @param resourceName the name of the resource
      * @param apiVersion the API version
      * @return true if the resource exists; false otherwise
-     * @throws IOException serialization failures
-     * @throws CloudException failures thrown from Azure
      */
     boolean checkExistence(
             String resourceGroupName,
@@ -42,7 +38,7 @@ public interface GenericResources extends
             String parentResourcePath,
             String resourceType,
             String resourceName,
-            String apiVersion) throws IOException, CloudException;
+            String apiVersion);
 
     /**
      * Returns a resource belonging to a resource group.
@@ -54,8 +50,6 @@ public interface GenericResources extends
      * @param resourceName Resource identity.
      * @param apiVersion the String value
      * @return the generic resource
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
     GenericResource get(
             String resourceGroupName,
@@ -63,7 +57,7 @@ public interface GenericResources extends
             String parentResourcePath,
             String resourceType,
             String resourceName,
-            String apiVersion) throws CloudException, IOException;
+            String apiVersion);
 
     /**
      * Returns a resource belonging to a resource group.
@@ -72,14 +66,12 @@ public interface GenericResources extends
      * @param resourceType the resource type
      * @param resourceName the name of the resource
      * @return the generic resource
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws CloudException exception thrown from REST call
      */
     GenericResource get(
             String resourceGroupName,
             String providerNamespace,
             String resourceType,
-            String resourceName) throws CloudException, IOException;
+            String resourceName);
 
     /**
      * Move resources from one resource group to another.
@@ -87,11 +79,8 @@ public interface GenericResources extends
      * @param sourceResourceGroupName Source resource group name
      * @param targetResourceGroup target resource group, can be in a different subscription
      * @param resources the list of IDs of the resources to move
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException;
+    void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources);
 
     /**
      * Delete resource and all of its child resources.
@@ -102,8 +91,6 @@ public interface GenericResources extends
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
      * @param apiVersion the String value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException;
+    void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 }

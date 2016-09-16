@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -94,16 +93,13 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Lists all domains in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public PagedList<DomainInner> getAllDomains() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getAllDomains() {
         ServiceResponse<Page<DomainInner>> response = getAllDomainsSinglePageAsync().toBlocking().single();
         return new PagedList<DomainInner>(response.getBody()) {
             @Override
-            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DomainInner> nextPage(String nextPageLink) {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -197,12 +193,9 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Generates a single sign on request for domain management portal.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainControlCenterSsoRequestInner object if successful.
      */
-    public DomainControlCenterSsoRequestInner getDomainControlCenterSsoRequest() throws CloudException, IOException, IllegalArgumentException {
+    public DomainControlCenterSsoRequestInner getDomainControlCenterSsoRequest() {
         return getDomainControlCenterSsoRequestWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -267,12 +260,9 @@ public final class GlobalDomainRegistrationsInner {
      * Validates domain registration information.
      *
      * @param domainRegistrationInput Domain registration information
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object validateDomainPurchaseInformation(DomainRegistrationInputInner domainRegistrationInput) throws CloudException, IOException, IllegalArgumentException {
+    public Object validateDomainPurchaseInformation(DomainRegistrationInputInner domainRegistrationInput) {
         return validateDomainPurchaseInformationWithServiceResponseAsync(domainRegistrationInput).toBlocking().single().getBody();
     }
 
@@ -343,12 +333,9 @@ public final class GlobalDomainRegistrationsInner {
     /**
      * Checks if a domain is available for registration.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
-    public DomainAvailablilityCheckResultInner checkDomainAvailability() throws CloudException, IOException, IllegalArgumentException {
+    public DomainAvailablilityCheckResultInner checkDomainAvailability() {
         return checkDomainAvailabilityWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -409,12 +396,9 @@ public final class GlobalDomainRegistrationsInner {
      * Checks if a domain is available for registration.
      *
      * @param name Name of the object
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DomainAvailablilityCheckResultInner object if successful.
      */
-    public DomainAvailablilityCheckResultInner checkDomainAvailability(String name) throws CloudException, IOException, IllegalArgumentException {
+    public DomainAvailablilityCheckResultInner checkDomainAvailability(String name) {
         return checkDomainAvailabilityWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
@@ -484,16 +468,13 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
      * @param parameters Domain recommendation search parameters
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
-    public PagedList<NameIdentifierInner> listDomainRecommendations(final DomainRecommendationSearchParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NameIdentifierInner> listDomainRecommendations(final DomainRecommendationSearchParametersInner parameters) {
         ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsSinglePageAsync(parameters).toBlocking().single();
         return new PagedList<NameIdentifierInner>(response.getBody()) {
             @Override
-            public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NameIdentifierInner> nextPage(String nextPageLink) {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -596,16 +577,13 @@ public final class GlobalDomainRegistrationsInner {
      * Lists all domains in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DomainInner&gt; object if successful.
      */
-    public PagedList<DomainInner> getAllDomainsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DomainInner> getAllDomainsNext(final String nextPageLink) {
         ServiceResponse<Page<DomainInner>> response = getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DomainInner>(response.getBody()) {
             @Override
-            public Page<DomainInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DomainInner> nextPage(String nextPageLink) {
                 return getAllDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -702,16 +680,13 @@ public final class GlobalDomainRegistrationsInner {
      * Lists domain recommendations based on keywords.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NameIdentifierInner&gt; object if successful.
      */
-    public PagedList<NameIdentifierInner> listDomainRecommendationsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NameIdentifierInner> listDomainRecommendationsNext(final String nextPageLink) {
         ServiceResponse<Page<NameIdentifierInner>> response = listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NameIdentifierInner>(response.getBody()) {
             @Override
-            public Page<NameIdentifierInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NameIdentifierInner> nextPage(String nextPageLink) {
                 return listDomainRecommendationsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

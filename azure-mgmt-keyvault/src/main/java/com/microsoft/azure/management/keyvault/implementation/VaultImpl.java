@@ -257,13 +257,13 @@ class VaultImpl
     }
 
     @Override
-    public VaultImpl refresh() throws Exception {
+    public VaultImpl refresh() {
         setInner(client.get(resourceGroupName(), name()));
         return this;
     }
 
     @Override
-    public Observable<Vault> applyAsync() {
+    public Observable<Vault> applyUpdateAsync() {
         return createAsync();
     }
 }

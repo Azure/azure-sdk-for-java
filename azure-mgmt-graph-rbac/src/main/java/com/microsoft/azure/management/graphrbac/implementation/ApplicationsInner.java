@@ -102,12 +102,9 @@ public final class ApplicationsInner {
      * Create a new application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param parameters Parameters to create an application.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner create(ApplicationCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ApplicationInner create(ApplicationCreateParametersInner parameters) {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
     }
 
@@ -178,12 +175,9 @@ public final class ApplicationsInner {
     /**
      * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationInner&gt; object if successful.
      */
-    public List<ApplicationInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<ApplicationInner> list() {
         return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -243,12 +237,9 @@ public final class ApplicationsInner {
      * Lists applications by filter parameters. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param filter The filters to apply on the operation
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;ApplicationInner&gt; object if successful.
      */
-    public List<ApplicationInner> list(String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<ApplicationInner> list(String filter) {
         return listWithServiceResponseAsync(filter).toBlocking().single().getBody();
     }
 
@@ -317,11 +308,8 @@ public final class ApplicationsInner {
      * Delete an application. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void delete(String applicationObjectId) {
         deleteWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -392,12 +380,9 @@ public final class ApplicationsInner {
      * Get an application by object Id. Reference: http://msdn.microsoft.com/en-us/library/azure/hh974476.aspx.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationInner object if successful.
      */
-    public ApplicationInner get(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ApplicationInner get(String applicationObjectId) {
         return getWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -469,11 +454,8 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object id
      * @param parameters Parameters to update an existing application.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void patch(String applicationObjectId, ApplicationUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void patch(String applicationObjectId, ApplicationUpdateParametersInner parameters) {
         patchWithServiceResponseAsync(applicationObjectId, parameters).toBlocking().single().getBody();
     }
 
@@ -551,12 +533,9 @@ public final class ApplicationsInner {
      * Get keyCredentials associated with the application by object Id. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;KeyCredentialInner&gt; object if successful.
      */
-    public List<KeyCredentialInner> listKeyCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<KeyCredentialInner> listKeyCredentials(String applicationObjectId) {
         return listKeyCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -628,11 +607,8 @@ public final class ApplicationsInner {
      * Update keyCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#keycredential-type.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updateKeyCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updateKeyCredentials(String applicationObjectId) {
         updateKeyCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -700,11 +676,8 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object id
      * @param value KeyCredential list.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) {
         updateKeyCredentialsWithServiceResponseAsync(applicationObjectId, value).toBlocking().single().getBody();
     }
 
@@ -781,12 +754,9 @@ public final class ApplicationsInner {
      * Gets passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;PasswordCredentialInner&gt; object if successful.
      */
-    public List<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId) {
         return listPasswordCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -858,11 +828,8 @@ public final class ApplicationsInner {
      * Updates passwordCredentials associated with an existing application. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/entity-and-complex-type-reference#passwordcredential-type.
      *
      * @param applicationObjectId Application object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updatePasswordCredentials(String applicationObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updatePasswordCredentials(String applicationObjectId) {
         updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId).toBlocking().single().getBody();
     }
 
@@ -930,11 +897,8 @@ public final class ApplicationsInner {
      *
      * @param applicationObjectId Application object id
      * @param value PasswordCredential list.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) {
         updatePasswordCredentialsWithServiceResponseAsync(applicationObjectId, value).toBlocking().single().getBody();
     }
 

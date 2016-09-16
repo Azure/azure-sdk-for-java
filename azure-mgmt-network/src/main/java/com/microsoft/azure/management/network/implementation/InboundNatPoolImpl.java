@@ -20,7 +20,7 @@ class InboundNatPoolImpl
     extends ChildResourceImpl<InboundNatPoolInner, LoadBalancerImpl>
     implements
         InboundNatPool,
-        InboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        InboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
         InboundNatPool.UpdateDefinition<LoadBalancer.Update>,
         InboundNatPool.Update {
 

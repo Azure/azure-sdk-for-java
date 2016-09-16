@@ -81,7 +81,7 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl>
     }
 
     @Override
-    public PulletImpl refresh() throws Exception {
+    public PulletImpl refresh() {
         return null;
     }
 
