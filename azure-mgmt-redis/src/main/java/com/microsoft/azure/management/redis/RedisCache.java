@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,6 +23,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure Redis Cache.
  */
+@LangDefinition
 public interface RedisCache extends
         GroupableResource,
         Refreshable<RedisCache>,

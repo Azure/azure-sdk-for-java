@@ -8,67 +8,61 @@
 
 package com.microsoft.azure.management.redis;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for DayOfWeek.
  */
-public final class DayOfWeek {
-    /** Static value Monday for DayOfWeek. */
-    public static final DayOfWeek MONDAY = new DayOfWeek("Monday");
+public enum DayOfWeek {
+    /** Enum value Monday. */
+    MONDAY("Monday"),
 
-    /** Static value Tuesday for DayOfWeek. */
-    public static final DayOfWeek TUESDAY = new DayOfWeek("Tuesday");
+    /** Enum value Tuesday. */
+    TUESDAY("Tuesday"),
 
-    /** Static value Wednesday for DayOfWeek. */
-    public static final DayOfWeek WEDNESDAY = new DayOfWeek("Wednesday");
+    /** Enum value Wednesday. */
+    WEDNESDAY("Wednesday"),
 
-    /** Static value Thursday for DayOfWeek. */
-    public static final DayOfWeek THURSDAY = new DayOfWeek("Thursday");
+    /** Enum value Thursday. */
+    THURSDAY("Thursday"),
 
-    /** Static value Friday for DayOfWeek. */
-    public static final DayOfWeek FRIDAY = new DayOfWeek("Friday");
+    /** Enum value Friday. */
+    FRIDAY("Friday"),
 
-    /** Static value Saturday for DayOfWeek. */
-    public static final DayOfWeek SATURDAY = new DayOfWeek("Saturday");
+    /** Enum value Saturday. */
+    SATURDAY("Saturday"),
 
-    /** Static value Sunday for DayOfWeek. */
-    public static final DayOfWeek SUNDAY = new DayOfWeek("Sunday");
+    /** Enum value Sunday. */
+    SUNDAY("Sunday");
 
+    /** The actual serialized value for a DayOfWeek instance. */
     private String value;
 
-    /**
-     * Creates a custom value for DayOfWeek.
-     * @param value the custom value
-     */
-    public DayOfWeek(String value) {
+    DayOfWeek(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a DayOfWeek instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed DayOfWeek object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static DayOfWeek fromString(String value) {
+        DayOfWeek[] items = DayOfWeek.values();
+        for (DayOfWeek item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof DayOfWeek)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        DayOfWeek rhs = (DayOfWeek) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }
