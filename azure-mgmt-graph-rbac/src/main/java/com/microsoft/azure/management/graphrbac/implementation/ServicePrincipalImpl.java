@@ -69,16 +69,17 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipal refresh() {
-        return null;
+        setInner(client.list(String.format("servicePrincipalNames/any(c:c eq '%s')", name())).get(0));
+        return this;
     }
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        return null;
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
     public Observable<ServicePrincipal> applyAsync() {
-        return null;
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }
