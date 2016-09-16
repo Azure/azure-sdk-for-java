@@ -31,14 +31,13 @@ public class UsersTests extends GraphRbacManagementTestBase {
         //LIST
         List<User> userList = graphRbacManager.users().list();
         Assert.assertNotNull(userList);
-        User user = graphRbacManager.users().define("azuresdk@outlook.com")
+        User user = graphRbacManager.users().define("newuser")
                 .withDisplayName("Test User 309")
                 .withPassword("Pa$$w0rd")
                 .withMailNickname(null)
                 .create();
         Assert.assertNotNull(user);
         Assert.assertEquals("Test User 309", user.displayName());
-        Assert.assertEquals("azuresdk@outlook.com", user.mail());
     }
 
 }

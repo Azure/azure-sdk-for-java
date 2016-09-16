@@ -108,11 +108,11 @@ class UserImpl
 
     @Override
     public Observable<User> createResourceAsync() {
-        throw new UnsupportedOperationException("Will be implemented in a next release");
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
     public Observable<User> applyAsync() {
-        throw new UnsupportedOperationException("Will be implemented in a next release");
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }

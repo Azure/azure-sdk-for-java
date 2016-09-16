@@ -75,11 +75,11 @@ class ServicePrincipalImpl
 
     @Override
     public Observable<ServicePrincipal> createResourceAsync() {
-        throw new UnsupportedOperationException("Will be implemented in a next release");
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
     public Observable<ServicePrincipal> applyAsync() {
-        throw new UnsupportedOperationException("Will be implemented in a next release");
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }
