@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface Backend extends
     Wrapper<BackendAddressPoolInner>,
-    ChildResource,
+    ChildResource<LoadBalancer>,
     HasLoadBalancingRules {
 
     /**

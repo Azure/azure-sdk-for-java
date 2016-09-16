@@ -22,7 +22,7 @@ import java.util.List;
 @LangDefinition()
 class NicIpConfigurationImpl
         extends
-            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl>
+            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl, NetworkInterface>
         implements
             NicIpConfiguration,
             NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,

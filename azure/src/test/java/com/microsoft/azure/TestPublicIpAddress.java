@@ -7,6 +7,8 @@ package com.microsoft.azure;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -66,9 +68,12 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
                 .append("\n\tIP version: ").append(resource.version().toString());
 
         // Show the associated load balancer frontend if any
-        info.append("\n\tAssociated load balancer frontend name: ");
+        info.append("\n\tLoad balancer association: ");
         if (resource.hasAssignedLoadBalancerFrontend()) {
-            info.append(resource.getAssignedLoadBalancerFrontend().name());
+            final PublicFrontend frontend = resource.getAssignedLoadBalancerFrontend();
+            final LoadBalancer lb = frontend.parent();
+            info.append("\n\t\tLoad balancer ID: ").append(lb.id())
+                .append("\n\t\tFrontend name: ").append(frontend.name());
         } else {
             info.append("(None)");
         }

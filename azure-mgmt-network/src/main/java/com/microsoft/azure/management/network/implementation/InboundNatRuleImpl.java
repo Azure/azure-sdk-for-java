@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link InboundNatRule}.
  */
 class InboundNatRuleImpl
-    extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl>
+    extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
     implements
         InboundNatRule,
         InboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatRule>,

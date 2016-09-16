@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @LangDefinition()
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
-        ChildResource,
+        ChildResource<NetworkInterface>,
         HasPrivateIpAddress {
     // Getters
 

@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @LangDefinition()
 public interface Subnet extends
     Wrapper<SubnetInner>,
-    ChildResource {
+    ChildResource<Network> {
 
     /**
      * @return the address space prefix, in CIDR notation, assigned to this subnet

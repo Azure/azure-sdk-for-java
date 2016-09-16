@@ -63,9 +63,9 @@ public interface PublicIpAddress extends
     int idleTimeoutInMinutes();
 
     /**
-     * @return the load balancer frontend that this public IP address is assigned to
+     * @return the load balancer public frontend that this public IP address is assigned to
      */
-    Frontend getAssignedLoadBalancerFrontend();
+    PublicFrontend getAssignedLoadBalancerFrontend();
 
     /**
      * @return true if this public IP address is assigned to a load balancer frontend
