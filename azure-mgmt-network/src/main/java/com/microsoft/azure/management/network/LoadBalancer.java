@@ -70,7 +70,7 @@ public interface LoadBalancer extends
     /**
      * The entirety of the load balancer definition.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
+    @LangDefinition()
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -714,7 +714,7 @@ public interface LoadBalancer extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
+    @LangDefinition()
     interface Update extends
         Appliable<LoadBalancer>,
         Resource.UpdateWithTags<Update>,
