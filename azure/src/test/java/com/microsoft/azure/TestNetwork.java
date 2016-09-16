@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure;
 
+import java.util.List;
+
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.Network;
@@ -37,7 +39,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .create();
 
         // Create a network
-        return networks.define(newName)
+        final Network network = networks.define(newName)
                 .withRegion(region)
                 .withNewResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
@@ -47,6 +49,13 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                     .withExistingNetworkSecurityGroup(nsg)
                     .attach()
                 .create();
+
+        List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
+        Assert.assertTrue(subnets.size() == 1);
+        Subnet subnet = subnets.get(0);
+        Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
+        Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
+        return network;
     }
 
     @Override

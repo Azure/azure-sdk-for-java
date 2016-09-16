@@ -257,7 +257,7 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh()
+        new TestVirtualMachineSsh(azure.publicIpAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 

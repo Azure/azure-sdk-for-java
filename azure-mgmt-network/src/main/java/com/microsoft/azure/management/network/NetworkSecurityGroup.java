@@ -47,6 +47,11 @@ public interface NetworkSecurityGroup extends
      */
     List<String> networkInterfaceIds();
 
+    /**
+     * @return virtual networks associated with this security group,
+     * indexed by the names of the specific subnets referencing this security group
+     */
+    List<Subnet> listAssociatedSubnets();
 
     // Fluent interfaces for creating NSGs
 

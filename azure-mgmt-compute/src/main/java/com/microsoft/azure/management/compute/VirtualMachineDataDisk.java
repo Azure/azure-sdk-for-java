@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @LangDefinition(ContainerName = "~/")
 public interface VirtualMachineDataDisk extends
         Wrapper<DataDisk>,
-        ChildResource {
+        ChildResource<VirtualMachine> {
 
     // getters
 
