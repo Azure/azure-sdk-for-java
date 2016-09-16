@@ -68,13 +68,19 @@ public interface PublicIpAddress extends
     PublicFrontend getAssignedLoadBalancerFrontend();
 
     /**
-     * @return true if this public IP address is assigned to a load balancer frontend
+     * @return true if this public IP address is assigned to a load balancer
      */
-    boolean hasAssignedLoadBalancerFrontend();
+    boolean hasAssignedLoadBalancer();
 
-    /**************************************************************
-     * Fluent interfaces for builder pattern
-     **************************************************************/
+    /**
+     * @return the network interface IP configuration that this public IP address is assigned to
+     */
+    NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration();
+
+    /**
+     * @return true if this public IP address is assigned to a network interface
+     */
+    boolean hasAssignedNetworkInterface();
 
     /**
      * Container interface for all the definitions.

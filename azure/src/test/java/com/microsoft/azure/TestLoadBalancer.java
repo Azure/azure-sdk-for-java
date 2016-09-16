@@ -258,6 +258,9 @@ public class TestLoadBalancer {
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
             Assert.assertTrue(lb.frontends().size() == 1);
+
+            existingPips.get(0).refresh();
+            Assert.assertTrue(existingPips.get(0).getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
             TestPublicIpAddress.printPIP(existingPips.get(0).refresh());
 
             // Verify backends
