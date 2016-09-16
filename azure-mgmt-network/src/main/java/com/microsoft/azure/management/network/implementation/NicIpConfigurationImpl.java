@@ -111,7 +111,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public Network network() {
+    public Network getNetwork() {
         String id = subnetId();
         return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));

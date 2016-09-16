@@ -37,13 +37,9 @@ public interface NicIpConfiguration extends
     String subnetId();
 
     /**
-     * Gets the virtual network associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the virtual network associated with this this IP configuration.
      */
-    Network network();
+    Network getNetwork();
 
     /**
      * @return private IP address version

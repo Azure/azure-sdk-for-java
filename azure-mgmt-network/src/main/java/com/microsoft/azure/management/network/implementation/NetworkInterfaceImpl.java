@@ -300,7 +300,7 @@ class NetworkInterfaceImpl
     @Override
     public Network primaryNetwork() {
         if (this.primaryNetwork == null) {
-            this.primaryNetwork = this.primaryIpConfiguration().network();
+            this.primaryNetwork = this.primaryIpConfiguration().getNetwork();
         }
         return this.primaryNetwork;
     }
