@@ -14,8 +14,20 @@ public class CreateUpdateTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, C
      *
      * @param <T> the type of the resource that this creatorUpdator can create or update
      */
-    interface ResourceCreatorUpdator<T>
-            extends ResourceCreator<T>, ResourceUpdator<T> {
+    interface ResourceCreatorUpdator<T> {
+        /**
+         * Creates the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<T> createResourceAsync();
+
+        /**
+         * Update the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<T> updateResourceAsync();
         /**
          * @return true if this creatorUpdator is in create mode.
          */
@@ -24,34 +36,6 @@ public class CreateUpdateTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, C
          * @return Gets the task group.
          */
         CreateUpdateTaskGroup<T> creatorUpdatorTaskGroup();
-    }
-
-    /**
-     * Represents a type that know how to update resource.
-     *
-     * @param <T> the type of the resource that this updator updates
-     */
-    interface ResourceUpdator<T> {
-        /**
-         * Update the resource asynchronously.
-         *
-         * @return the observable reference
-         */
-        Observable<T> updateResourceAsync();
-    }
-
-    /**
-     * Represents a type that know how to create resource.
-     *
-     * @param <T> the type of the resource that this creator creates
-     */
-    interface ResourceCreator<T> {
-        /**
-         * Creates the resource asynchronously.
-         *
-         * @return the observable reference
-         */
-        Observable<T> createResourceAsync();
     }
 
     /**

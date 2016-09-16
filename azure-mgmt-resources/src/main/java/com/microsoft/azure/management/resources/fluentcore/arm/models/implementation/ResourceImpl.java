@@ -10,7 +10,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -154,18 +153,6 @@ public abstract class ResourceImpl<
     @Override
     public boolean isInCreateMode() {
         return this.inner().id() == null;
-    }
-
-    /**
-     * This is the default implementation of updateResourceAsync, it simply calls createResourceAsync() since
-     * for most of the resource both create and update are handled by the same API call (CreateOrUpdate).
-     * A resource that uses different API call for update should override updateResourceAsync.
-     *
-     * @return the updated resource.
-     */
-    @Override
-    public Observable<FluentModelT> updateResourceAsync() {
-        return this.createResourceAsync();
     }
 
     protected <InnerT> List<InnerT> innersFromWrappers(Collection<? extends Wrapper<InnerT>> wrappers) {
