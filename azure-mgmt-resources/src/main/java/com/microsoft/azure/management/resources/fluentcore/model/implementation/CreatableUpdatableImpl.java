@@ -92,6 +92,18 @@ public abstract class CreatableUpdatableImpl<
     }
 
     /**
+     * Add an updatable resource dependency for this resource.
+     *
+     * @param appliable the applicable dependency.
+     */
+    @SuppressWarnings("unchecked")
+    protected void addAppliableDependency(Appliable<? extends Resource> appliable) {
+        CreateUpdateTaskGroup<FluentModelT> childGroup =
+                ((CreateUpdateTaskGroup.ResourceCreatorUpdator<FluentModelT>) appliable).creatorUpdatorTaskGroup();
+        childGroup.merge(this.createUpdateTaskGroup);
+    }
+
+    /**
      * Begins an update for a new resource.
      * <p>
      * This is the beginning of the builder pattern used to update top level resources
