@@ -6,20 +6,22 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.redis.DayOfWeek;
 import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.RedisKeyType;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.Sku;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import org.joda.time.Period;
 import rx.Observable;
 import rx.functions.Action1;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,18 +41,23 @@ class RedisCacheImpl
         RedisCachePremium,
         RedisCache.Definition,
         RedisCache.Update {
+    private final PatchSchedulesInner patchSchedulesInner;
     private final RedisInner client;
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParametersInner createParameters;
     private RedisUpdateParametersInner updateParameters;
+    private Map<DayOfWeek, ScheduleEntry> scheduleEntries;
 
     RedisCacheImpl(String name,
                    RedisResourceInner innerModel,
+                   final PatchSchedulesInner patchSchedulesInner,
                    final RedisInner client,
                    final RedisManager redisManager) {
         super(name, innerModel, redisManager);
         this.createParameters = new RedisCreateParametersInner();
+        this.scheduleEntries = new TreeMap<>();
         this.client = client;
+        this.patchSchedulesInner = patchSchedulesInner;
     }
 
     @Override
@@ -84,12 +91,12 @@ class RedisCacheImpl
     }
 
     @Override
-    public Boolean enableNonSslPort() {
+    public boolean enableNonSslPort() {
         return this.inner().enableNonSslPort();
     }
 
     @Override
-    public Integer shardCount() {
+    public int shardCount() {
         return this.inner().shardCount();
     }
 
@@ -110,10 +117,18 @@ class RedisCacheImpl
 
     @Override
     public RedisCachePremium asPremium() {
-        if (this.sku().name().equals(SkuName.PREMIUM)) {
+        if (this.isPremium()) {
             return (RedisCachePremium) this;
         }
         return null;
+    }
+
+    @Override
+    public boolean isPremium() {
+        if (this.sku().name().equals(SkuName.PREMIUM)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -278,16 +293,6 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withShardCount(int shardCount) {
-        if (isInCreateMode()) {
-            createParameters.withShardCount(shardCount);
-        } else {
-            updateParameters.withShardCount(shardCount);
-        }
-        return this;
-    }
-
-    @Override
     public RedisCacheImpl withBasicSku() {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku()
@@ -352,11 +357,13 @@ class RedisCacheImpl
         if (isInCreateMode()) {
             createParameters.withSku(new Sku()
                     .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P));
+                    .withFamily(SkuFamily.P)
+                    .withCapacity(1));
         } else {
             updateParameters.withSku(new Sku()
                     .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P));
+                    .withFamily(SkuFamily.P)
+                    .withCapacity(1));
         }
         return this;
     }
@@ -377,21 +384,85 @@ class RedisCacheImpl
         return this;
     }
 
-    private void clearWrapperProperties() {
-        /*accountStatuses = null;
-        publicEndpoints = null;*/
+    @Override
+    public RedisCacheImpl withShardCount(int shardCount) {
+        if (isInCreateMode()) {
+            createParameters.withShardCount(shardCount);
+        } else {
+            updateParameters.withShardCount(shardCount);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc) {
+        return this.withPatchSchedule(new ScheduleEntry()
+                .withDayOfWeek(dayOfWeek)
+                .withStartHourUtc(startHourUtc));
+    }
+
+    @Override
+    public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow) {
+        return this.withPatchSchedule(new ScheduleEntry()
+                .withDayOfWeek(dayOfWeek)
+                .withStartHourUtc(startHourUtc)
+                .withMaintenanceWindow(maintenanceWindow));
+    }
+
+    @Override
+    public RedisCacheImpl withPatchSchedule(List<ScheduleEntry> scheduleEntry) {
+        this.scheduleEntries.clear();
+        for (ScheduleEntry entry : scheduleEntry) {
+            this.withPatchSchedule(entry);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withPatchSchedule(ScheduleEntry scheduleEntry) {
+        this.scheduleEntries.put(scheduleEntry.dayOfWeek(), scheduleEntry);
+        return this;
+    }
+
+    @Override
+    public List<ScheduleEntry> getPatchSchedules() {
+        return patchSchedulesInner.get(resourceGroupName(), name())
+                                   .scheduleEntries();
+    }
+
+    @Override
+    public void deletePatchSchedule() {
+        patchSchedulesInner.delete(resourceGroupName(), name());
+    }
+
+    private void updatePatchSchedules() {
+        if (this.scheduleEntries != null && !this.scheduleEntries.isEmpty()) {
+            RedisPatchScheduleInner parameters = new RedisPatchScheduleInner()
+                    .withScheduleEntries(new ArrayList<ScheduleEntry>());
+            for (ScheduleEntry entry : this.scheduleEntries.values()) {
+                parameters.scheduleEntries().add(entry);
+            }
+            this.patchSchedulesInner.createOrUpdate(resourceGroupName(), name(), parameters);
+        }
     }
 
     @Override
     public RedisCacheImpl update() {
-        updateParameters = new RedisUpdateParametersInner();
+        this.updateParameters = new RedisUpdateParametersInner();
+        this.scheduleEntries = new TreeMap<>();
         return super.update();
     }
 
     @Override
     public Observable<RedisCache> applyUpdateAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .doOnNext(new Action1<RedisCache>() {
+                    @Override
+                    public void call(RedisCache redisCache) {
+                        updatePatchSchedules();
+                    }
+                });
     }
 
     @Override
@@ -403,7 +474,7 @@ class RedisCacheImpl
                 .doOnNext(new Action1<RedisCache>() {
                     @Override
                     public void call(RedisCache redisCache) {
-                        clearWrapperProperties();
+                        updatePatchSchedules();
                     }
                 });
 

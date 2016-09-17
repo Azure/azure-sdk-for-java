@@ -6,17 +6,14 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
-import java.io.IOException;
-
 /**
- * The implementation of StorageAccounts and its parent interfaces.
+ * The implementation of RedisCaches and its parent interfaces.
  */
 class RedisCachesImpl
         extends GroupableResourcesImpl<
@@ -27,10 +24,14 @@ class RedisCachesImpl
         RedisManager>
         implements RedisCaches {
 
+    private final PatchSchedulesInner pathcSchedulesClient;
+
     RedisCachesImpl(
             final RedisInner client,
-            final RedisManager storageManager) {
-        super(client, storageManager);
+            final PatchSchedulesInner patchClient,
+            final RedisManager redisManager) {
+        super(client, redisManager);
+        this.pathcSchedulesClient = patchClient;
     }
 
     @Override
@@ -68,15 +69,17 @@ class RedisCachesImpl
         return new RedisCacheImpl(
                 name,
                 new RedisResourceInner(),
+                this.pathcSchedulesClient,
                 this.innerCollection,
                 super.myManager);
     }
 
     @Override
-    protected RedisCacheImpl wrapModel(RedisResourceInner storageAccountInner) {
+    protected RedisCacheImpl wrapModel(RedisResourceInner redisResourceInner) {
         return new RedisCacheImpl(
-                storageAccountInner.name(),
-                storageAccountInner,
+                redisResourceInner.name(),
+                redisResourceInner,
+                this.pathcSchedulesClient,
                 this.innerCollection,
                 super.myManager);
     }

@@ -5,9 +5,6 @@
  */
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.CloudException;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,71 +12,62 @@ import java.util.List;
  */
 public interface RedisCachePremium extends RedisCache {
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
-     * @param rebootType specifies which redis node(s) to reboot. Depending on this value data loss is
+     * @param rebootType specifies which Redis node(s) to reboot. Depending on this value data loss is
      *                   possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      * @param shardId    In case of cluster cache, this specifies shard id which should be rebooted.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException    exception thrown from serialization/deserialization
      */
-    void forceReboot(RebootType rebootType, int shardId) throws CloudException, IOException;
+    void forceReboot(RebootType rebootType, int shardId);
 
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
-     * @param rebootType specifies which redis node(s) to reboot. Depending on this value data loss is
+     * @param rebootType specifies which Redis node(s) to reboot. Depending on this value data loss is
      *                   possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException    exception thrown from serialization/deserialization
      */
-    void forceReboot(RebootType rebootType) throws CloudException, IOException;
+    void forceReboot(RebootType rebootType);
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis Cache.
      *
      * @param files      files to import.
      * @param fileFormat specifies file format.
-     * @throws CloudException           exception thrown from REST call
-     * @throws IOException              exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException     exception thrown when long running operation is interrupted
      */
-    void importData(List<String> files, String fileFormat) throws CloudException, IOException, InterruptedException;
+    void importData(List<String> files, String fileFormat);
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis Cache.
      *
      * @param files files to import.
-     * @throws CloudException           exception thrown from REST call
-     * @throws IOException              exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException     exception thrown when long running operation is interrupted
      */
-    void importData(List<String> files) throws CloudException, IOException, InterruptedException;
+    void importData(List<String> files);
 
     /**
-     * Export data from redis cache.
+     * Export data from Redis Cache.
      *
      * @param containerSASUrl container name to export to.
      * @param prefix          prefix to use for exported files.
-     * @throws CloudException           exception thrown from REST call
-     * @throws IOException              exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException     exception thrown when long running operation is interrupted
      */
-    void exportData(String containerSASUrl, String prefix) throws CloudException, IOException, InterruptedException;
+    void exportData(String containerSASUrl, String prefix);
 
     /**
-     * Export data from redis cache.
+     * Export data from Redis Cache.
      *
      * @param containerSASUrl container name to export to.
      * @param prefix          prefix to use for exported files.
      * @param fileFormat      specifies file format.
-     * @throws CloudException           exception thrown from REST call
-     * @throws IOException              exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException     exception thrown when long running operation is interrupted
      */
-    void exportData(String containerSASUrl, String prefix, String fileFormat) throws CloudException, IOException, InterruptedException;
+    void exportData(String containerSASUrl, String prefix, String fileFormat);
+
+    /**
+     * Gets the patching schedule for Redis Cache.
+     * @return List of patch schedules for current Redis Cache.
+     */
+    List<ScheduleEntry> getPatchSchedules();
+
+    /**
+     * Deletes the patching schedule for Redis Cache.
+     */
+    void deletePatchSchedule();
 }

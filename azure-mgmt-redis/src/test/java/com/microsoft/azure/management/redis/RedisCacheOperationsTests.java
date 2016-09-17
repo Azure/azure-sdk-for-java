@@ -12,13 +12,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.storage.StorageAccount;
+
+import org.joda.time.Period;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import java.util.List;
-
 import static org.junit.Assert.fail;
 
 public class RedisCacheOperationsTests extends RedisManagementTestBase {
@@ -56,7 +56,9 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .define(RR_NAME_SECOND)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
-                .withStandardSku()
+                .withPremiumSku()
+                .withShardCount(10)
+                .withPatchSchedule(DayOfWeek.SUNDAY, 10, Period.minutes(302))
                 .withNonSslPortDisabled();
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
                 .define(RR_NAME_THIRD)
@@ -166,8 +168,25 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .withoutRedisConfiguration()
                 .apply();
 
+        premiumCache.update()
+                .withPatchSchedule(DayOfWeek.MONDAY, 1)
+                .withPatchSchedule(DayOfWeek.TUESDAY, 5)
+                .apply();
+
         // Reboot
         premiumCache.forceReboot(RebootType.ALL_NODES);
+
+        // Patch Schedule
+        List<ScheduleEntry> patchSchedule = premiumCache.getPatchSchedules();
+        Assert.assertEquals(2, patchSchedule.size());
+
+        premiumCache.deletePatchSchedule();
+
+        patchSchedule = redisManager.redisCaches()
+                                    .getById(premiumCache.id())
+                                    .asPremium()
+                                    .getPatchSchedules();
+        Assert.assertEquals(0, patchSchedule.size());
 
         // currently throws because SAS url of the container should be provided as
         // {"error":{

@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.CloudException;
+import org.joda.time.Period;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -16,8 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +30,14 @@ public interface RedisCache extends
         Wrapper<RedisResourceInner> {
 
     /**
-     * @return exposes features available only to PremiumSku Redis Cache instances
+     * @return exposes features available only to Premium Sku Redis Cache instances.
      */
     RedisCachePremium asPremium();
+
+    /**
+     * @return returns true if current Redis Cache instance has Premium Sku.
+     */
+    boolean isPremium();
 
     /**
      * @return the provisioningState value
@@ -73,12 +77,12 @@ public interface RedisCache extends
     /**
      * @return the enableNonSslPort value
      */
-    Boolean enableNonSslPort();
+    boolean enableNonSslPort();
 
     /**
      * @return the shardCount value
      */
-    Integer shardCount();
+    int shardCount();
 
     /**
      * @return the subnetId value
@@ -92,30 +96,24 @@ public interface RedisCache extends
 
     /**
      * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
-     * @throws CloudException           exception thrown from REST call
-     * @throws IOException              exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    RedisAccessKeys keys() throws CloudException, IOException, IllegalArgumentException;
+    RedisAccessKeys keys();
 
     /**
      * Fetch the up-to-date access keys from Azure for this Redis Cache.
      *
      * @return the access keys for this Redis Cache
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException    exception thrown from serialization/deserialization
      */
-    RedisAccessKeys refreshKeys() throws CloudException, IOException;
+    RedisAccessKeys refreshKeys();
 
     /**
      * Regenerates the access keys for this Redis Cache.
      *
      * @param keyType key type to regenerate
      * @return the generated access keys for this Redis Cache
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException    exception thrown from serialization/deserialization
      */
-    RedisAccessKeys regenerateKey(RedisKeyType keyType) throws CloudException, IOException;
+    RedisAccessKeys regenerateKey(RedisKeyType keyType);
+
     /**************************************************************
      * Fluent interfaces to provision a RedisCache
      **************************************************************/
@@ -126,7 +124,9 @@ public interface RedisCache extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate {
+            DefinitionStages.WithSku,
+            DefinitionStages.WithCreate,
+            DefinitionStages.WithPremiumSkuCreate {
     }
 
     /**
@@ -149,7 +149,6 @@ public interface RedisCache extends
          * A Redis Cache definition allowing the sku to be set.
          */
         interface WithSku {
-
             /**
              * Specifies the Basic sku of the Redis Cache.
              *
@@ -185,7 +184,7 @@ public interface RedisCache extends
              *
              * @return the next stage of Redis Cache definition.
              */
-            WithCreate withPremiumSku();
+            WithPremiumSkuCreate withPremiumSku();
 
             /**
              * Specifies the Premium sku of the Redis Cache.
@@ -193,82 +192,121 @@ public interface RedisCache extends
              * @param capacity specifies what size of Redis Cache to deploy for Standard sku with P family (1, 2, 3, 4).
              * @return the next stage of Redis Cache definition.
              */
-            WithCreate withPremiumSku(int capacity);
+            WithPremiumSkuCreate withPremiumSku(int capacity);
         }
 
-        /**
+         /**
          * A Redis Cache definition with sufficient inputs to create a new
          * Redis Cache in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
-                Creatable<RedisCache>,
-                DefinitionStages.WithSku,
-                DefinitionWithTags<WithCreate> {
+                 Creatable<RedisCache>,
+                 DefinitionWithTags<WithCreate> {
+             /**
+              * Enables non-ssl Redis server port (6379).
+              *
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withNonSslPortEnabled();
 
-            /**
-             * Enables non-ssl Redis server port (6379).
-             *
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withNonSslPortEnabled();
+             /**
+              * Disables non-ssl Redis server port (6379).
+              *
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withNonSslPortDisabled();
 
-            /**
-             * Disables non-ssl Redis server port (6379).
-             *
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withNonSslPortDisabled();
+             /**
+              * All Redis Settings. Few possible keys:
+              * rdb-backup-enabled, rdb-storage-connection-string, rdb-backup-frequency, maxmemory-delta, maxmemory-policy,
+              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
+              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
+              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
+              *
+              * @param redisConfiguration configuration of Redis Cache as a map indexed by configuration name
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withRedisConfiguration(Map<String, String> redisConfiguration);
 
-            /**
-             * All Redis Settings. Few possible keys:
-             * rdb-backup-enabled, rdb-storage-connection-string, rdb-backup-frequency, maxmemory-delta, maxmemory-policy,
-             * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
-             * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
-             * zset-max-ziplist-entries, zset-max-ziplist-value etc.
-             *
-             * @param redisConfiguration configuration of Redis Cache as a map indexed by configuration name
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withRedisConfiguration(Map<String, String> redisConfiguration);
+             /**
+              * Specifies Redis Setting.
+              * rdb-backup-enabled, rdb-storage-connection-string, rdb-backup-frequency, maxmemory-delta, maxmemory-policy,
+              * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
+              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
+              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
+              *
+              * @param key   Redis configuration name.
+              * @param value Redis configuration value.
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withRedisConfiguration(String key, String value);
 
-            /**
-             * Specifies Redis Setting.
-             * rdb-backup-enabled, rdb-storage-connection-string, rdb-backup-frequency, maxmemory-delta, maxmemory-policy,
-             * notify-keyspace-events, maxmemory-samples, slowlog-log-slower-than, slowlog-max-len, list-max-ziplist-entries,
-             * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
-             * zset-max-ziplist-entries, zset-max-ziplist-value etc.
-             *
-             * @param key   Redis configuration name.
-             * @param value Redis configuration value.
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withRedisConfiguration(String key, String value);
+             /**
+              * The full resource ID of a subnet in a virtual network to deploy the Redis Cache in.
+              * Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+              *
+              * @param subnetId the subnetId value to set.
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withSubnetId(String subnetId);
 
-            /**
-             * The full resource ID of a subnet in a virtual network to deploy the Redis Cache in.
-             * Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-             *
-             * @param subnetId the subnetId value to set.
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withSubnetId(String subnetId);
+             /**
+              * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.
+              *
+              * @param staticIP the static IP value to set.
+              * @return the next stage of Redis Cache definition.
+              */
+             WithCreate withStaticIP(String staticIP);
+        }
 
-            /**
-             * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.
-             *
-             * @param staticIP the static IP value to set.
-             * @return the next stage of Redis Cache definition.
-             */
-            WithCreate withStaticIP(String staticIP);
+        /**
+         * A Redis Cache definition with Premium Sku specific functionality.
+         */
+        interface WithPremiumSkuCreate extends DefinitionStages.WithCreate {
 
             /**
              * The number of shards to be created on a Premium Cluster Cache.
              *
              * @param shardCount the shard count value to set.
-             * @return the next stage of Redis Cache definition.
+             * @return the next stage of Redis Cache with Premium SKU definition.
              */
-            WithCreate withShardCount(int shardCount);
+            WithPremiumSkuCreate withShardCount(int shardCount);
+
+            /**
+             * Patch schedule on a Premium Cluster Cache.
+             *
+             * @param dayOfWeek day of week when cache can be patched.
+             * @param startHourUtc start hour after which cache patching can start.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithPremiumSkuCreate withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc);
+
+            /**
+             * Patch schedule on a Premium Cluster Cache.
+             *
+             * @param dayOfWeek day of week when cache can be patched.
+             * @param startHourUtc start hour after which cache patching can start.
+             * @param maintenanceWindow ISO8601 timespan specifying how much time cache patching can take.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithPremiumSkuCreate withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow);
+
+            /**
+             * Patch schedule on a Premium Cluster Cache.
+             *
+             * @param scheduleEntry Patch schedule entry for Premium Redis Cache.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithPremiumSkuCreate withPatchSchedule(ScheduleEntry scheduleEntry);
+
+            /**
+             * Patch schedule on a Premium Cluster Cache.
+             *
+             * @param scheduleEntry List of patch schedule entries for Premium Redis Cache.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithPremiumSkuCreate withPatchSchedule(List<ScheduleEntry> scheduleEntry);
         }
     }
 
@@ -419,6 +457,41 @@ public interface RedisCache extends
          * @return the next stage of Redis Cache update.
          */
         Update withShardCount(int shardCount);
+
+        /**
+         * Patch schedule on a Premium Cluster Cache.
+         *
+         * @param dayOfWeek day of week when cache can be patched.
+         * @param startHourUtc start hour after which cache patching can start.
+         * @return the next stage of Redis Cache with Premium SKU definition.
+         */
+        Update withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc);
+
+        /**
+         * The number of shards to be created on a Premium Cluster Cache.
+         *
+         * @param dayOfWeek day of week when cache can be patched.
+         * @param startHourUtc start hour after which cache patching can start.
+         * @param maintenanceWindow ISO8601 timespan specifying how much time cache patching can take.
+         * @return the next stage of Redis Cache with Premium SKU definition.
+         */
+        Update withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow);
+
+        /**
+         * Patch schedule on a Premium Cluster Cache.
+         *
+         * @param scheduleEntry Patch schedule entry for Premium Redis Cache.
+         * @return the next stage of Redis Cache with Premium SKU definition.
+         */
+        Update withPatchSchedule(ScheduleEntry scheduleEntry);
+
+        /**
+         * Patch schedule on a Premium Cluster Cache.
+         *
+         * @param scheduleEntry List of patch schedule entries for Premium Redis Cache.
+         * @return the next stage of Redis Cache with Premium SKU definition.
+         */
+        Update withPatchSchedule(List<ScheduleEntry> scheduleEntry);
     }
 }
 

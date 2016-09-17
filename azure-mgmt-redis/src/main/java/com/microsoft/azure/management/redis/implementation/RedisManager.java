@@ -68,6 +68,7 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         if (redisCaches == null) {
             redisCaches = new RedisCachesImpl(
                     super.innerManagementClient.redis(),
+                    super.innerManagementClient.patchSchedules(),
                     this);
         }
         return redisCaches;
