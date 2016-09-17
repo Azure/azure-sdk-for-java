@@ -14,7 +14,7 @@ import java.util.Map;
  * Implementation of {@link VirtualMachineScaleSetExtension}.
  */
 public class VirtualMachineScaleSetExtensionImpl
-        extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl>
+        extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
         implements
         VirtualMachineScaleSetExtension,
         VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,

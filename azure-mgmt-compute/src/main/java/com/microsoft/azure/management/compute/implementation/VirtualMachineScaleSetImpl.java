@@ -833,7 +833,12 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl refresh() throws Exception {
+    public Observable<VirtualMachineScaleSet> applyUpdateAsync() {
+        return this.createResourceAsync();
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl refresh() {
         VirtualMachineScaleSetInner inner = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         this.clearCachedProperties();

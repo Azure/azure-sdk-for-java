@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface VirtualMachineScaleSetExtension extends
         Wrapper<VirtualMachineScaleSetExtensionInner>,
-        ChildResource {
+        ChildResource<VirtualMachineScaleSet> {
     /**
      * @return the publisher name of the virtual machine scale set extension image this extension is created from
      */
