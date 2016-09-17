@@ -94,7 +94,7 @@ public abstract class CreatableUpdatableImpl<
     /**
      * Add an updatable resource dependency for this resource.
      *
-     * @param appliable the applicable dependency.
+     * @param appliable the appliable dependency.
      */
     @SuppressWarnings("unchecked")
     protected void addAppliableDependency(Appliable<? extends Resource> appliable) {

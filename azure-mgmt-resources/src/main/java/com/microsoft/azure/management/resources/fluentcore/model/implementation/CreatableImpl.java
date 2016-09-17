@@ -16,7 +16,7 @@ import rx.Observable;
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
  */
-abstract public class CreatableImpl<
+public abstract class CreatableImpl<
         FluentModelT,
         InnerModelT,
         FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
