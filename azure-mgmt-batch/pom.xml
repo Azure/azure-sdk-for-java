@@ -72,6 +72,11 @@
         <artifactId>azure-mgmt-storage</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>api-annotations</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -113,6 +118,24 @@
 <br />* Licensed under the MIT License. See License.txt in the project root for
 <br />* license information.
 <br />*/</code>]]></bottom>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.0</version>
+        <configuration>
+          <annotationProcessors>
+            <annotationProcessor>
+              com.microsoft.azure.management.apigeneration.LangDefinitionProcessor</annotationProcessor>
+          </annotationProcessors>
+          <debug>true</debug>
+          <optimize>true</optimize>
+          <compilerArguments>
+            <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
+            <Adebug>true</Adebug>
+          </compilerArguments>
         </configuration>
       </plugin>
 
