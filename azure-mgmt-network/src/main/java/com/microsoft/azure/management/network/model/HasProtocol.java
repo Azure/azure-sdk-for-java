@@ -5,10 +5,14 @@
  */
 package com.microsoft.azure.management.network.model;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+
 /**
  * An interface representing a model's ability to reference a transport protocol.
  * @param <ProtocolT> the protocol type of the value
  */
+@LangDefinition()
 public interface HasProtocol<ProtocolT>  {
     /**
      * @return the protocol
@@ -18,6 +22,11 @@ public interface HasProtocol<ProtocolT>  {
     /**
      * Grouping of definition stages involving specifying the protocol.
      */
+    @LangDefinition(
+                ContainerName = "Definition",
+                ContainerFileName = "IDefinition",
+                IsContainerOnly = true,
+                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify the protocol.
@@ -37,6 +46,11 @@ public interface HasProtocol<ProtocolT>  {
     /**
      * Grouping of update stages involving modifying the protocol.
      */
+    @LangDefinition(
+                ContainerName = "Update",
+                ContainerFileName = "IUpdate",
+                IsContainerOnly = true,
+                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an update allowing to modify the transport protocol.
@@ -53,10 +67,14 @@ public interface HasProtocol<ProtocolT>  {
         }
     }
 
-
     /**
      * Grouping of definition stages applicable as part of a load balancer update, involving specifying the protocol.
      */
+    @LangDefinition(
+                ContainerName = "UpdateDefinition",
+                ContainerFileName = "IUpdateDefinition",
+                IsContainerOnly = true,
+                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify the protocol.

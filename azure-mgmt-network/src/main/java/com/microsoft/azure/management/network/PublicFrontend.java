@@ -24,7 +24,11 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend definition stages.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+            ContainerName = "Definition",
+            ContainerFileName = "IDefinition",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -68,7 +72,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -78,7 +82,11 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
+    @LangDefinition(
+            ContainerName = "Update",
+            ContainerFileName = "IUpdate",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
@@ -112,7 +120,11 @@ public interface PublicFrontend extends Frontend {
     /**
      * Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update.
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+            ContainerName = "UpdateDefinition",
+            ContainerFileName = "IUpdateDefinition",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -155,7 +167,7 @@ public interface PublicFrontend extends Frontend {
     /** The entirety of a public frontend definition as part of an Internet-facing load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,

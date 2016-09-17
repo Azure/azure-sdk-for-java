@@ -52,7 +52,11 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule definition stages.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+            ContainerName = "Definition",
+            ContainerFileName = "IDefinition",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
@@ -137,7 +141,7 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithProtocol<ParentT>,
@@ -149,7 +153,11 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
+    @LangDefinition(
+                ContainerName = "Update",
+                ContainerFileName = "IUpdate",
+                IsContainerOnly = true,
+                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an inbound NAT rule update allowing to specify the backend port.
@@ -220,7 +228,11 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule definition stages as part of a load balancer update.
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+                ContainerName = "UpdateDefinition",
+                ContainerFileName = "IUpdateDefinition",
+                IsContainerOnly = true,
+                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
@@ -305,7 +317,7 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithProtocol<ParentT>,

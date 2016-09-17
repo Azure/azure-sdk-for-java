@@ -19,7 +19,11 @@ public interface TcpProbe extends Probe {
     /**
      * Grouping of probe definition stages.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+            ContainerName = "Definition",
+            ContainerFileName = "IDefinition",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of the probe definition.
@@ -83,7 +87,7 @@ public interface TcpProbe extends Probe {
     /** The entirety of a probe definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -93,7 +97,11 @@ public interface TcpProbe extends Probe {
     /**
      * Grouping of probe update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
+    @LangDefinition(
+            ContainerName = "Update",
+            ContainerFileName = "IUpdate",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of the TCP probe update allowing to modify the port number to monitor.
@@ -146,7 +154,11 @@ public interface TcpProbe extends Probe {
     /**
      * Grouping of probe definition stages applicable as part of a load balancer update.
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
+    @LangDefinition(
+            ContainerName = "UpdateDefinition",
+            ContainerFileName = "IUpdateDefinition",
+            IsContainerOnly = true,
+            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of the probe definition.
@@ -210,7 +222,7 @@ public interface TcpProbe extends Probe {
     /** The entirety of a probe definition as part of a load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition()
+    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
        UpdateDefinitionStages.WithAttach<ParentT>,
