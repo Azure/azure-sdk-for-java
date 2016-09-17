@@ -6,6 +6,9 @@
 
 package com.microsoft.azure.management.batch;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.batch.implementation.AccountResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -19,6 +22,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 /**
  * An immutable client-side representation of an Azure batch account.
  */
+@LangDefinition(ContainerName = "~/")
 public interface BatchAccount extends
         GroupableResource,
         Refreshable<BatchAccount>,
@@ -60,11 +64,13 @@ public interface BatchAccount extends
     /**
      * @return the access keys for this batch account
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys keys();
 
     /**
      * @return the access keys for this batch account
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys refreshKeys();
 
     /**
@@ -73,6 +79,7 @@ public interface BatchAccount extends
      * @param keyType either primary or secondary key to be regenerated
      * @return the access keys for this batch account
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
@@ -87,6 +94,7 @@ public interface BatchAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
+    @LangDefinition(ContainerName = "~/BatchAccount.Definition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -96,6 +104,7 @@ public interface BatchAccount extends
     /**
      * Grouping of all the storage account definition stages.
      */
+    @LangDefinition(ContainerName = "~/BatchAccount.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the batch account definition.
@@ -147,6 +156,7 @@ public interface BatchAccount extends
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
+    @LangDefinition(ContainerName = "~/BatchAccount.Update")
     interface Update extends
             Appliable<BatchAccount>,
             Resource.UpdateWithTags<Update>,
@@ -156,6 +166,7 @@ public interface BatchAccount extends
     /**
      * Grouping of all the storage account update stages.
      */
+    @LangDefinition(ContainerName = "~/BatchAccount.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the batch account update definition allowing to specify storage account.

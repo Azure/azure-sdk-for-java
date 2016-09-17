@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.AccountProvisioningState;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
@@ -16,6 +17,7 @@ import rx.functions.Func1;
 /**
  * Implementation for BatchAccount and its parent interfaces.
  */
+@LangDefinition
 public class BatchAccountImpl
         extends
             GroupableResourceImpl<
