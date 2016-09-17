@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface LoadBalancingRule extends
     Wrapper<LoadBalancingRuleInner>,
-    ChildResource,
+    ChildResource<LoadBalancer>,
     HasBackendPort,
     HasFrontend,
     HasFloatingIp,

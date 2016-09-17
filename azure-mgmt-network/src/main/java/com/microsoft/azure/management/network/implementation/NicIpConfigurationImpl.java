@@ -1,9 +1,9 @@
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 @LangDefinition()
 class NicIpConfigurationImpl
         extends
-            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl>
+            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl, NetworkInterface>
         implements
             NicIpConfiguration,
             NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
@@ -84,6 +83,11 @@ class NicIpConfigurationImpl
     }
 
     @Override
+    public IPVersion privateIpAddressVersion() {
+        return this.inner().privateIPAddressVersion();
+    }
+
+    @Override
     public String publicIpAddressId() {
         if (this.inner().publicIPAddress() == null) {
             return null;
@@ -92,14 +96,13 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public PublicIpAddress publicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress getPublicIpAddress() {
         String id = publicIpAddressId();
         if (id == null) {
             return null;
         }
 
-        return this.networkManager.publicIpAddresses().getByGroup(
-                ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.networkManager.publicIpAddresses().getById(id);
     }
 
     @Override
@@ -108,7 +111,7 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public Network network() throws CloudException, IOException {
+    public Network getNetwork() {
         String id = subnetId();
         return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
@@ -338,5 +341,11 @@ class NicIpConfigurationImpl
             return this.inner().publicIPAddress();
         }
         return null;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withPrivateIpVersion(IPVersion ipVersion) {
+        this.inner().withPrivateIPAddressVersion(ipVersion);
+        return this;
     }
 }

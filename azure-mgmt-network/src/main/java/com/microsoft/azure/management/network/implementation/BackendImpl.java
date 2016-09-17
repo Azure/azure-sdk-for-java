@@ -6,13 +6,17 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -20,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link Backend}.
  */
 class BackendImpl
-    extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl>
+    extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
     implements
         Backend,
         Backend.Definition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
@@ -69,6 +73,30 @@ class BackendImpl
     public String name() {
         return this.inner().name();
     }
+
+    @Override
+    public Set<String> getVirtualMachineIds() {
+        Set<String> vmIds = new HashSet<>();
+        Map<String, String> nicConfigs = this.backendNicIpConfigurationNames();
+        if (nicConfigs != null) {
+            for (String nicId : nicConfigs.keySet()) {
+                try {
+                    NetworkInterface nic = this.parent().manager().networkInterfaces().getById(nicId);
+                    if (nic == null || nic.virtualMachineId() == null) {
+                        continue;
+                    } else {
+                        vmIds.add(nic.virtualMachineId());
+                    }
+                } catch (CloudException | IllegalArgumentException e) {
+                    continue;
+                }
+            }
+        }
+
+        return vmIds;
+    }
+
+    // Verbs
 
     @Override
     public LoadBalancerImpl attach() {

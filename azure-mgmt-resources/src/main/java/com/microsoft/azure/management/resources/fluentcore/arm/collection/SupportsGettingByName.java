@@ -7,11 +7,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-
-import java.io.IOException;
 
 /**
  * Provides access to getting a specific Azure resource based on its name within the current resource group.
@@ -25,8 +22,6 @@ public interface SupportsGettingByName<T> {
      *
      * @param name the name of the resource. (Note, this is not the resource ID.)
      * @return an immutable representation of the resource
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization
      */
-    T getByName(String name) throws CloudException, IOException;
+    T getByName(String name);
 }

@@ -1,12 +1,9 @@
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.storage.StorageUsage;
 import com.microsoft.azure.management.storage.Usages;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link Usages}.
@@ -20,7 +17,7 @@ class UsagesImpl extends ReadableWrappersImpl<StorageUsage, UsageImpl, UsageInne
     }
 
     @Override
-    public PagedList<StorageUsage> list() throws CloudException, IOException {
+    public PagedList<StorageUsage> list() {
         return wrapList(client.usages().list());
     }
 

@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,12 +97,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String circuitName, String authorizationName) {
         deleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String circuitName, String authorizationName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
     }
 
@@ -261,12 +253,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitAuthorizationInner get(String resourceGroupName, String circuitName, String authorizationName) {
         return getWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName).toBlocking().single().getBody();
     }
 
@@ -352,13 +341,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().last().getBody();
     }
 
@@ -434,12 +419,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
      * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
-    public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters).toBlocking().single().getBody();
     }
 
@@ -531,16 +513,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitAuthorizationInner> list(final String resourceGroupName, final String circuitName) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listSinglePageAsync(resourceGroupName, circuitName).toBlocking().single();
         return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -649,16 +628,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
      * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitAuthorizationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ExpressRouteCircuitAuthorizationInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitAuthorizationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

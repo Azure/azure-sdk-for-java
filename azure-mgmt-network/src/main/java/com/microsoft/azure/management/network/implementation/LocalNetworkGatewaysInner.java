@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,13 +97,9 @@ public final class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the LocalNetworkGatewayInner object if successful.
      */
-    public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().last().getBody();
     }
 
@@ -173,12 +168,9 @@ public final class LocalNetworkGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
      * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocalNetworkGatewayInner object if successful.
      */
-    public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName, parameters).toBlocking().single().getBody();
     }
 
@@ -264,12 +256,9 @@ public final class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the LocalNetworkGatewayInner object if successful.
      */
-    public LocalNetworkGatewayInner get(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public LocalNetworkGatewayInner get(String resourceGroupName, String localNetworkGatewayName) {
         return getWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
     }
 
@@ -347,12 +336,8 @@ public final class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String localNetworkGatewayName) {
         deleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().last().getBody();
     }
 
@@ -413,11 +398,8 @@ public final class LocalNetworkGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String localNetworkGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String localNetworkGatewayName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, localNetworkGatewayName).toBlocking().single().getBody();
     }
 
@@ -495,16 +477,13 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<LocalNetworkGatewayInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LocalNetworkGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
             @Override
-            public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -606,16 +585,13 @@ public final class LocalNetworkGatewaysInner {
      * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
      */
-    public PagedList<LocalNetworkGatewayInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<LocalNetworkGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<LocalNetworkGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<LocalNetworkGatewayInner>(response.getBody()) {
             @Override
-            public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<LocalNetworkGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

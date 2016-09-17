@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 @LangDefinition
 class DataDiskImpl
-    extends ChildResourceImpl<DataDisk, VirtualMachineImpl>
+    extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
     implements
         VirtualMachineDataDisk,
         VirtualMachineDataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,

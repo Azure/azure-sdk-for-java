@@ -5,15 +5,12 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachineOffers;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-
-import java.io.IOException;
 
 /**
  * The implementation for {@link VirtualMachineOffers}.
@@ -37,7 +34,7 @@ class VirtualMachineOffersImpl
     }
 
     @Override
-    public PagedList<VirtualMachineOffer> list() throws CloudException, IllegalArgumentException, IOException {
+    public PagedList<VirtualMachineOffer> list() {
         return wrapList(innerCollection.listOffers(publisher.region().toString(), publisher.name()));
     }
 }

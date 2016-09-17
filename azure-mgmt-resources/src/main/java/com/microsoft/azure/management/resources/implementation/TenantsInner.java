@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -70,16 +69,13 @@ public final class TenantsInner {
     /**
      * Gets a list of the tenantIds.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
-    public PagedList<TenantIdDescriptionInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TenantIdDescriptionInner> list() {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
-            public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -171,16 +167,13 @@ public final class TenantsInner {
      * Gets a list of the tenantIds.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
-    public PagedList<TenantIdDescriptionInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<TenantIdDescriptionInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<TenantIdDescriptionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TenantIdDescriptionInner>(response.getBody()) {
             @Override
-            public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<TenantIdDescriptionInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -74,12 +74,9 @@ public final class RecommendationsInner {
     /**
      * Gets a list of recommendations associated with the specified subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendationBySubscription() throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendationBySubscription() {
         return getRecommendationBySubscriptionWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
@@ -140,12 +137,9 @@ public final class RecommendationsInner {
      *
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendationBySubscription(Boolean featured, String filter) throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendationBySubscription(Boolean featured, String filter) {
         return getRecommendationBySubscriptionWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
     }
 
@@ -218,12 +212,9 @@ public final class RecommendationsInner {
      * @param resourceGroupName Resource group name
      * @param siteName Site name
      * @param name Recommendation rule name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the RecommendationRuleInner object if successful.
      */
-    public RecommendationRuleInner getRuleDetailsBySiteName(String resourceGroupName, String siteName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public RecommendationRuleInner getRuleDetailsBySiteName(String resourceGroupName, String siteName, String name) {
         return getRuleDetailsBySiteNameWithServiceResponseAsync(resourceGroupName, siteName, name).toBlocking().single().getBody();
     }
 
@@ -307,12 +298,9 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Resource group name
      * @param siteName Site name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendedRulesForSite(String resourceGroupName, String siteName) throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendedRulesForSite(String resourceGroupName, String siteName) {
         return getRecommendedRulesForSiteWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
     }
 
@@ -389,12 +377,9 @@ public final class RecommendationsInner {
      * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
      * @param siteSku The name of site SKU.
      * @param numSlots The number of site slots associated to the site
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots) throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendedRulesForSite(String resourceGroupName, String siteName, Boolean featured, String siteSku, Integer numSlots) {
         return getRecommendedRulesForSiteWithServiceResponseAsync(resourceGroupName, siteName, featured, siteSku, numSlots).toBlocking().single().getBody();
     }
 
@@ -481,12 +466,9 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Resource group name
      * @param siteName Site name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendationHistoryForSite(String resourceGroupName, String siteName) throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendationHistoryForSite(String resourceGroupName, String siteName) {
         return getRecommendationHistoryForSiteWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
     }
 
@@ -561,12 +543,9 @@ public final class RecommendationsInner {
      * @param siteName Site name
      * @param startTime The start time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
      * @param endTime The end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> getRecommendationHistoryForSite(String resourceGroupName, String siteName, String startTime, String endTime) throws CloudException, IOException, IllegalArgumentException {
+    public List<RecommendationInner> getRecommendationHistoryForSite(String resourceGroupName, String siteName, String startTime, String endTime) {
         return getRecommendationHistoryForSiteWithServiceResponseAsync(resourceGroupName, siteName, startTime, endTime).toBlocking().single().getBody();
     }
 

@@ -1,10 +1,7 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionImageInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.io.IOException;
 
 /**
  * An immutable client-side representation of an Azure virtual machine extension image version.
@@ -33,9 +30,6 @@ public interface VirtualMachineExtensionImageVersion extends
 
     /**
      * @return virtual machine extension image this version represents
-     *
-     * @throws CloudException thrown for an invalid response from the service
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    VirtualMachineExtensionImage image() throws CloudException, IOException;
+    VirtualMachineExtensionImage image();
 }

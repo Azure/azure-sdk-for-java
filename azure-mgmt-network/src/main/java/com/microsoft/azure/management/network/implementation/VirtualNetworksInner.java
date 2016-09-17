@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -109,12 +108,8 @@ public final class VirtualNetworksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String virtualNetworkName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().last().getBody();
     }
 
@@ -175,11 +170,8 @@ public final class VirtualNetworksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String virtualNetworkName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
     }
 
@@ -258,12 +250,9 @@ public final class VirtualNetworksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
     }
 
@@ -336,12 +325,9 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, expand).toBlocking().single().getBody();
     }
 
@@ -423,13 +409,9 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create/update Virtual Network operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().last().getBody();
     }
 
@@ -498,12 +480,9 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create/update Virtual Network operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkInner object if successful.
      */
-    public VirtualNetworkInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, parameters).toBlocking().single().getBody();
     }
 
@@ -587,16 +566,13 @@ public final class VirtualNetworksInner {
     /**
      * The list VirtualNetwork returns all Virtual Networks in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkInner> listAll() {
         ServiceResponse<Page<VirtualNetworkInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<VirtualNetworkInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -691,16 +667,13 @@ public final class VirtualNetworksInner {
      * The list VirtualNetwork returns all Virtual Networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualNetworkInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -803,12 +776,9 @@ public final class VirtualNetworksInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
-    public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName) {
         return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().getBody();
     }
 
@@ -881,12 +851,9 @@ public final class VirtualNetworksInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the IPAddressAvailabilityResultInner object if successful.
      */
-    public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName, String ipAddress) throws CloudException, IOException, IllegalArgumentException {
+    public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName, String ipAddress) {
         return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName, ipAddress).toBlocking().single().getBody();
     }
 
@@ -966,16 +933,13 @@ public final class VirtualNetworksInner {
      * The list VirtualNetwork returns all Virtual Networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1072,16 +1036,13 @@ public final class VirtualNetworksInner {
      * The list VirtualNetwork returns all Virtual Networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

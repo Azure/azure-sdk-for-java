@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.Sku;
 import java.util.Map;
+import com.microsoft.azure.management.redis.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -20,17 +20,34 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RedisResourceInner extends Resource {
     /**
-     * RedisVersion parameter has been deprecated. As such, it is no longer
-     * necessary to provide this parameter and any value specified is ignored.
+     * Redis Version.
      */
-    @JsonProperty(value = "properties.redisVersion")
+    @JsonProperty(value = "properties.redisVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String redisVersion;
 
     /**
-     * What sku of redis cache to deploy.
+     * Redis instance provisioning status.
      */
-    @JsonProperty(value = "properties.sku", required = true)
-    private Sku sku;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
+
+    /**
+     * Redis host name.
+     */
+    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String hostName;
+
+    /**
+     * Redis non-ssl port.
+     */
+    @JsonProperty(value = "properties.port", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer port;
+
+    /**
+     * Redis ssl port.
+     */
+    @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer sslPort;
 
     /**
      * All Redis Settings. Few possible keys:
@@ -75,28 +92,10 @@ public class RedisResourceInner extends Resource {
     private String staticIP;
 
     /**
-     * Redis instance provisioning status.
+     * What sku of redis cache to deploy.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /**
-     * Redis host name.
-     */
-    @JsonProperty(value = "properties.hostName")
-    private String hostName;
-
-    /**
-     * Redis non-ssl port.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /**
-     * Redis ssl port.
-     */
-    @JsonProperty(value = "properties.sslPort")
-    private Integer sslPort;
+    @JsonProperty(value = "properties.sku", required = true)
+    private Sku sku;
 
     /**
      * Get the redisVersion value.
@@ -108,34 +107,39 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the redisVersion value.
+     * Get the provisioningState value.
      *
-     * @param redisVersion the redisVersion value to set
-     * @return the RedisResourceInner object itself.
+     * @return the provisioningState value
      */
-    public RedisResourceInner withRedisVersion(String redisVersion) {
-        this.redisVersion = redisVersion;
-        return this;
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Get the sku value.
+     * Get the hostName value.
      *
-     * @return the sku value
+     * @return the hostName value
      */
-    public Sku sku() {
-        return this.sku;
+    public String hostName() {
+        return this.hostName;
     }
 
     /**
-     * Set the sku value.
+     * Get the port value.
      *
-     * @param sku the sku value to set
-     * @return the RedisResourceInner object itself.
+     * @return the port value
      */
-    public RedisResourceInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
+    public Integer port() {
+        return this.port;
+    }
+
+    /**
+     * Get the sslPort value.
+     *
+     * @return the sslPort value
+     */
+    public Integer sslPort() {
+        return this.sslPort;
     }
 
     /**
@@ -259,82 +263,22 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the sku value.
      *
-     * @return the provisioningState value
+     * @return the sku value
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    public Sku sku() {
+        return this.sku;
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the sku value.
      *
-     * @param provisioningState the provisioningState value to set
+     * @param sku the sku value to set
      * @return the RedisResourceInner object itself.
      */
-    public RedisResourceInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the hostName value.
-     *
-     * @return the hostName value
-     */
-    public String hostName() {
-        return this.hostName;
-    }
-
-    /**
-     * Set the hostName value.
-     *
-     * @param hostName the hostName value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withHostName(String hostName) {
-        this.hostName = hostName;
-        return this;
-    }
-
-    /**
-     * Get the port value.
-     *
-     * @return the port value
-     */
-    public Integer port() {
-        return this.port;
-    }
-
-    /**
-     * Set the port value.
-     *
-     * @param port the port value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withPort(Integer port) {
-        this.port = port;
-        return this;
-    }
-
-    /**
-     * Get the sslPort value.
-     *
-     * @return the sslPort value
-     */
-    public Integer sslPort() {
-        return this.sslPort;
-    }
-
-    /**
-     * Set the sslPort value.
-     *
-     * @param sslPort the sslPort value to set
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withSslPort(Integer sslPort) {
-        this.sslPort = sslPort;
+    public RedisResourceInner withSku(Sku sku) {
+        this.sku = sku;
         return this;
     }
 

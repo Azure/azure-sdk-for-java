@@ -40,7 +40,7 @@ final class ChildListFlattener<ParentT, ChildT> {
          * @throws CloudException exceptions thrown from the cloud
          * @throws IOException exceptions thrown from serialization/deserialization
          */
-        PagedList<U> loadList(T parent) throws CloudException, IOException;
+        PagedList<U> loadList(T parent);
     }
 
     /**
@@ -61,7 +61,7 @@ final class ChildListFlattener<ParentT, ChildT> {
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    public PagedList<ChildT> flatten() throws CloudException, IOException {
+    public PagedList<ChildT> flatten() {
         this.currentChildList = nextChildList();
         if (this.currentChildList == null) {
             return emptyPagedList();
@@ -93,7 +93,7 @@ final class ChildListFlattener<ParentT, ChildT> {
      * @throws CloudException exceptions thrown from the cloud
      * @throws IOException exceptions thrown from serialization/deserialization
      */
-    private PagedList<ChildT> nextChildList() throws CloudException, IOException {
+    private PagedList<ChildT> nextChildList() {
         while (parentItr.hasNext()) {
             PagedList<ChildT> nextChildList = childListLoader.loadList(parentItr.next());
             if (nextChildList.iterator().hasNext()) {

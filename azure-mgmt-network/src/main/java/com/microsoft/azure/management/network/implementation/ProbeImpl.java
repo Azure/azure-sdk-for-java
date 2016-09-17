@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link TcpProbe} and its create and update interfaces.
  */
 class ProbeImpl
-    extends ChildResourceImpl<ProbeInner, LoadBalancerImpl>
+    extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
     implements
         TcpProbe,
         TcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,

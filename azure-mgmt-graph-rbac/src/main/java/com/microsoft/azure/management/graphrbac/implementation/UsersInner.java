@@ -17,7 +17,6 @@ import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.UserGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,12 +97,9 @@ public final class UsersInner {
      * Create a new user. Reference: https://msdn.microsoft.com/library/azure/ad/graph/api/users-operations#CreateUser.
      *
      * @param parameters Parameters to create a user.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner create(UserCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public UserInner create(UserCreateParametersInner parameters) {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
     }
 
@@ -174,16 +170,13 @@ public final class UsersInner {
     /**
      * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
      *
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public PagedList<UserInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> list() {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
             @Override
-            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<UserInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -272,16 +265,13 @@ public final class UsersInner {
      * Gets list of users for the current tenant. Reference https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetUsers.
      *
      * @param filter The filter to apply on the operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public PagedList<UserInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> list(final String filter) {
         ServiceResponse<Page<UserInner>> response = listSinglePageAsync(filter).toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
             @Override
-            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<UserInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -380,12 +370,9 @@ public final class UsersInner {
      * Gets user information from the directory. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#GetAUser.
      *
      * @param upnOrObjectId User object Id or user principal name to get user information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the UserInner object if successful.
      */
-    public UserInner get(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public UserInner get(String upnOrObjectId) {
         return getWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
     }
 
@@ -457,11 +444,8 @@ public final class UsersInner {
      *
      * @param upnOrObjectId User object Id or user principal name to get user information.
      * @param parameters Parameters to update an exisitng user.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void update(String upnOrObjectId, UserUpdateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void update(String upnOrObjectId, UserUpdateParametersInner parameters) {
         updateWithServiceResponseAsync(upnOrObjectId, parameters).toBlocking().single().getBody();
     }
 
@@ -539,11 +523,8 @@ public final class UsersInner {
      * Delete a user. Reference: https://msdn.microsoft.com/en-us/library/azure/ad/graph/api/users-operations#DeleteUser.
      *
      * @param upnOrObjectId user object id or user principal name (upn)
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String upnOrObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void delete(String upnOrObjectId) {
         deleteWithServiceResponseAsync(upnOrObjectId).toBlocking().single().getBody();
     }
 
@@ -615,12 +596,9 @@ public final class UsersInner {
      *
      * @param objectId User filtering parameters.
      * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;String&gt; object if successful.
      */
-    public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
     }
 
@@ -697,16 +675,13 @@ public final class UsersInner {
      * Gets list of users for the current tenant.
      *
      * @param nextLink Next link for list operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UserInner&gt; object if successful.
      */
-    public PagedList<UserInner> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<UserInner> listNext(final String nextLink) {
         ServiceResponse<Page<UserInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
         return new PagedList<UserInner>(response.getBody()) {
             @Override
-            public Page<UserInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<UserInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };

@@ -19,7 +19,6 @@ public interface SupportsDeleting {
      * Deletes a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
-     * @throws Exception exceptions thrown from Azure
      */
-    void delete(String id) throws Exception;
+    void delete(String id);
 }

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public PagedList<GenericResource> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<GenericResource> listByGroup(String groupName) {
         return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
     }
 
@@ -52,7 +51,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws IOException, CloudException {
+    public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         return this.innerCollection.checkExistence(
                 resourceGroupName,
                 resourceProviderNamespace,
@@ -63,7 +62,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getById(String id) throws CloudException, IOException {
+    public GenericResource getById(String id) {
         return this.get(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.resourceProviderFromResourceId(id),
@@ -76,7 +75,7 @@ final class GenericResourcesImpl
             String resourceGroupName,
             String providerNamespace,
             String resourceType,
-            String name) throws CloudException, IOException {
+            String name) {
 
         PagedList<GenericResource> genericResources = this.listByGroup(resourceGroupName);
         for (GenericResource resource : genericResources) {
@@ -96,7 +95,7 @@ final class GenericResourcesImpl
             String parentResourcePath,
             String resourceType,
             String resourceName,
-            String apiVersion) throws CloudException, IOException {
+            String apiVersion) {
 
         // Correct for auto-gen'd API's treatment parent path as required even though it makes sense only for child resources
         if (parentResourcePath == null) {
@@ -125,7 +124,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) throws CloudException, IOException, InterruptedException {
+    public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
         ResourcesMoveInfoInner moveInfo = new ResourcesMoveInfoInner();
         moveInfo.withTargetResourceGroup(targetResourceGroup.id());
         moveInfo.withResources(resources);
@@ -133,7 +132,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) throws CloudException, IOException {
+    public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         this.innerCollection.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
     }
 
@@ -166,7 +165,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public GenericResource getByGroup(String groupName, String name) throws CloudException, IOException {
+    public GenericResource getByGroup(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         return null;
     }

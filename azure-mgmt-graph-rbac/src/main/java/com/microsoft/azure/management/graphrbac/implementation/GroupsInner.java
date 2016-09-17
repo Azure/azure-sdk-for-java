@@ -18,7 +18,6 @@ import com.microsoft.azure.management.graphrbac.GroupAddMemberParameters;
 import com.microsoft.azure.management.graphrbac.GroupGetMemberGroupsParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -114,12 +113,9 @@ public final class GroupsInner {
      * Checks whether the specified user, group, contact, or service principal is a direct or a transitive member of the specified group.
      *
      * @param parameters Check group membership parameters.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the CheckGroupMembershipResultInner object if successful.
      */
-    public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParametersInner parameters) {
         return isMemberOfWithServiceResponseAsync(parameters).toBlocking().single().getBody();
     }
 
@@ -192,11 +188,8 @@ public final class GroupsInner {
      *
      * @param groupObjectId Group object id
      * @param memberObjectId Member Object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void removeMember(String groupObjectId, String memberObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void removeMember(String groupObjectId, String memberObjectId) {
         removeMemberWithServiceResponseAsync(groupObjectId, memberObjectId).toBlocking().single().getBody();
     }
 
@@ -274,11 +267,8 @@ public final class GroupsInner {
      *
      * @param groupObjectId Group object id
      * @param url Member Object Url as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void addMember(String groupObjectId, String url) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void addMember(String groupObjectId, String url) {
         addMemberWithServiceResponseAsync(groupObjectId, url).toBlocking().single().getBody();
     }
 
@@ -357,11 +347,8 @@ public final class GroupsInner {
      * Delete a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
      *
      * @param groupObjectId Object id
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void delete(String groupObjectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public void delete(String groupObjectId) {
         deleteWithServiceResponseAsync(groupObjectId).toBlocking().single().getBody();
     }
 
@@ -432,12 +419,9 @@ public final class GroupsInner {
      * Create a group in the directory. Reference: http://msdn.microsoft.com/en-us/library/azure/dn151676.aspx.
      *
      * @param parameters Parameters to create a group
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ADGroupInner object if successful.
      */
-    public ADGroupInner create(GroupCreateParametersInner parameters) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ADGroupInner create(GroupCreateParametersInner parameters) {
         return createWithServiceResponseAsync(parameters).toBlocking().single().getBody();
     }
 
@@ -508,16 +492,13 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      *
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
-    public PagedList<ADGroupInner> list() throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ADGroupInner> list() {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ADGroupInner>(response.getBody()) {
             @Override
-            public Page<ADGroupInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ADGroupInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -606,16 +587,13 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param filter The filter to apply on the operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
-    public PagedList<ADGroupInner> list(final String filter) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ADGroupInner> list(final String filter) {
         ServiceResponse<Page<ADGroupInner>> response = listSinglePageAsync(filter).toBlocking().single();
         return new PagedList<ADGroupInner>(response.getBody()) {
             @Override
-            public Page<ADGroupInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ADGroupInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -714,16 +692,13 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param objectId Group object Id who's members should be retrieved.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getGroupMembers(final String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<AADObjectInner> getGroupMembers(final String objectId) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersSinglePageAsync(objectId).toBlocking().single();
         return new PagedList<AADObjectInner>(response.getBody()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<AADObjectInner> nextPage(String nextLink) {
                 return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -825,12 +800,9 @@ public final class GroupsInner {
      * Gets group information from the directory.
      *
      * @param objectId User objectId to get group information.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ADGroupInner object if successful.
      */
-    public ADGroupInner get(String objectId) throws GraphErrorException, IOException, IllegalArgumentException {
+    public ADGroupInner get(String objectId) {
         return getWithServiceResponseAsync(objectId).toBlocking().single().getBody();
     }
 
@@ -902,12 +874,9 @@ public final class GroupsInner {
      *
      * @param objectId Group filtering parameters.
      * @param securityEnabledOnly If true only membership in security enabled groups should be checked. Otherwise membership in all groups should be checked
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;String&gt; object if successful.
      */
-    public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) throws GraphErrorException, IOException, IllegalArgumentException {
+    public List<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
         return getMemberGroupsWithServiceResponseAsync(objectId, securityEnabledOnly).toBlocking().single().getBody();
     }
 
@@ -984,16 +953,13 @@ public final class GroupsInner {
      * Gets list of groups for the current tenant.
      *
      * @param nextLink Next link for list operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ADGroupInner&gt; object if successful.
      */
-    public PagedList<ADGroupInner> listNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<ADGroupInner> listNext(final String nextLink) {
         ServiceResponse<Page<ADGroupInner>> response = listNextSinglePageAsync(nextLink).toBlocking().single();
         return new PagedList<ADGroupInner>(response.getBody()) {
             @Override
-            public Page<ADGroupInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ADGroupInner> nextPage(String nextLink) {
                 return listNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };
@@ -1096,16 +1062,13 @@ public final class GroupsInner {
      * Gets the members of a group.
      *
      * @param nextLink Next link for list operation.
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AADObjectInner&gt; object if successful.
      */
-    public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) throws GraphErrorException, IOException, IllegalArgumentException {
+    public PagedList<AADObjectInner> getGroupMembersNext(final String nextLink) {
         ServiceResponse<Page<AADObjectInner>> response = getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single();
         return new PagedList<AADObjectInner>(response.getBody()) {
             @Override
-            public Page<AADObjectInner> nextPage(String nextLink) throws RestException, IOException {
+            public Page<AADObjectInner> nextPage(String nextLink) {
                 return getGroupMembersNextSinglePageAsync(nextLink).toBlocking().single().getBody();
             }
         };

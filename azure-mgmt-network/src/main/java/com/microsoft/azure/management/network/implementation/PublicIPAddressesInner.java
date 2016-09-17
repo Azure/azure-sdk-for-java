@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -105,12 +104,8 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String publicIpAddressName) {
         deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String publicIpAddressName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
     }
 
@@ -254,12 +246,9 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PublicIPAddressInner object if successful.
      */
-    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException {
+    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName) {
         return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
     }
 
@@ -332,12 +321,9 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PublicIPAddressInner object if successful.
      */
-    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).toBlocking().single().getBody();
     }
 
@@ -419,13 +405,9 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the PublicIPAddressInner object if successful.
      */
-    public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().last().getBody();
     }
 
@@ -494,12 +476,9 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PublicIPAddressInner object if successful.
      */
-    public PublicIPAddressInner beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public PublicIPAddressInner beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().single().getBody();
     }
 
@@ -583,16 +562,13 @@ public final class PublicIPAddressesInner {
     /**
      * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public PagedList<PublicIPAddressInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> listAll() {
         ServiceResponse<Page<PublicIPAddressInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<PublicIPAddressInner>(response.getBody()) {
             @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -687,16 +663,13 @@ public final class PublicIPAddressesInner {
      * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public PagedList<PublicIPAddressInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> list(final String resourceGroupName) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<PublicIPAddressInner>(response.getBody()) {
             @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -798,16 +771,13 @@ public final class PublicIPAddressesInner {
      * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public PagedList<PublicIPAddressInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<PublicIPAddressInner>(response.getBody()) {
             @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -904,16 +874,13 @@ public final class PublicIPAddressesInner {
      * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public PagedList<PublicIPAddressInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<PublicIPAddressInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<PublicIPAddressInner>(response.getBody()) {
             @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

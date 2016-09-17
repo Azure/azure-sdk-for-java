@@ -5,12 +5,10 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import java.io.IOException;
-import java.util.List;
-
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.NetworkInterface;
+
+import java.util.List;
 
 /**
  * Interface exposing a list of network interfaces.
@@ -23,10 +21,8 @@ public interface HasNetworkInterfaces {
      * Note that this method can result in a call to the cloud to fetch the network interface information.
      *
      * @return the primary network interface associated with this resource
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    NetworkInterface primaryNetworkInterface() throws CloudException, IOException;
+    NetworkInterface primaryNetworkInterface();
 
     /**
      * @return the resource id of the primary network interface associated with this resource

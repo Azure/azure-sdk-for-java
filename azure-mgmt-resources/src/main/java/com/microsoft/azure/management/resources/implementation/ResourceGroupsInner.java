@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -115,16 +114,13 @@ public final class ResourceGroupsInner {
      * Get all of the resources under a subscription.
      *
      * @param resourceGroupName Query parameters. If null is passed returns all resource groups.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResources(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GenericResourceInner> listResources(final String resourceGroupName) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<GenericResourceInner>(response.getBody()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GenericResourceInner> nextPage(String nextPageLink) {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -225,16 +221,13 @@ public final class ResourceGroupsInner {
      * @param filter The filter to apply on the operation.
      * @param expand The $expand query parameter
      * @param top Query parameters. If null is passed returns all resource groups.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResources(final String resourceGroupName, final String filter, final String expand, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GenericResourceInner> listResources(final String resourceGroupName, final String filter, final String expand, final Integer top) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesSinglePageAsync(resourceGroupName, filter, expand, top).toBlocking().single();
         return new PagedList<GenericResourceInner>(response.getBody()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GenericResourceInner> nextPage(String nextPageLink) {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -348,12 +341,9 @@ public final class ResourceGroupsInner {
      * Checks whether resource group exists.
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the boolean object if successful.
      */
-    public boolean checkExistence(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public boolean checkExistence(String resourceGroupName) {
         return checkExistenceWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
@@ -426,12 +416,9 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to be created or updated.
      * @param parameters Parameters supplied to the create or update resource group service operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceGroupInner object if successful.
      */
-    public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ResourceGroupInner createOrUpdate(String resourceGroupName, ResourceGroupInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
     }
 
@@ -510,12 +497,8 @@ public final class ResourceGroupsInner {
      * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName) {
         deleteWithServiceResponseAsync(resourceGroupName).toBlocking().last().getBody();
     }
 
@@ -569,11 +552,8 @@ public final class ResourceGroupsInner {
      * Delete resource group.
      *
      * @param resourceGroupName The name of the resource group to be deleted. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
@@ -644,12 +624,9 @@ public final class ResourceGroupsInner {
      * Get a resource group.
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceGroupInner object if successful.
      */
-    public ResourceGroupInner get(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public ResourceGroupInner get(String resourceGroupName) {
         return getWithServiceResponseAsync(resourceGroupName).toBlocking().single().getBody();
     }
 
@@ -721,12 +698,9 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to be created or updated. The name is case insensitive.
      * @param parameters Parameters supplied to the update state resource group service operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceGroupInner object if successful.
      */
-    public ResourceGroupInner patch(String resourceGroupName, ResourceGroupInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ResourceGroupInner patch(String resourceGroupName, ResourceGroupInner parameters) {
         return patchWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
     }
 
@@ -805,12 +779,9 @@ public final class ResourceGroupsInner {
      *
      * @param resourceGroupName The name of the resource group to be created or updated.
      * @param parameters Parameters supplied to the export template resource group operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ResourceGroupExportResultInner object if successful.
      */
-    public ResourceGroupExportResultInner exportTemplate(String resourceGroupName, ExportTemplateRequestInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ResourceGroupExportResultInner exportTemplate(String resourceGroupName, ExportTemplateRequestInner parameters) {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, parameters).toBlocking().single().getBody();
     }
 
@@ -887,16 +858,13 @@ public final class ResourceGroupsInner {
     /**
      * Gets a collection of resource groups.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
-    public PagedList<ResourceGroupInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceGroupInner> list() {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ResourceGroupInner>(response.getBody()) {
             @Override
-            public Page<ResourceGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceGroupInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -987,16 +955,13 @@ public final class ResourceGroupsInner {
      *
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all resource groups.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
-    public PagedList<ResourceGroupInner> list(final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceGroupInner> list(final String filter, final Integer top) {
         ServiceResponse<Page<ResourceGroupInner>> response = listSinglePageAsync(filter, top).toBlocking().single();
         return new PagedList<ResourceGroupInner>(response.getBody()) {
             @Override
-            public Page<ResourceGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceGroupInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1099,16 +1064,13 @@ public final class ResourceGroupsInner {
      * Get all of the resources under a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listResourcesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<GenericResourceInner> listResourcesNext(final String nextPageLink) {
         ServiceResponse<Page<GenericResourceInner>> response = listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<GenericResourceInner>(response.getBody()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<GenericResourceInner> nextPage(String nextPageLink) {
                 return listResourcesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1205,16 +1167,13 @@ public final class ResourceGroupsInner {
      * Gets a collection of resource groups.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ResourceGroupInner&gt; object if successful.
      */
-    public PagedList<ResourceGroupInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceGroupInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ResourceGroupInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ResourceGroupInner>(response.getBody()) {
             @Override
-            public Page<ResourceGroupInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ResourceGroupInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -39,12 +39,12 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
     @Override
     @SafeVarargs
-    public final CreatedResources<T> create(Creatable<T> ... creatables) throws Exception {
+    public final CreatedResources<T> create(Creatable<T> ... creatables) {
         return BlockingObservable.from(createAsync(creatables)).single();
     }
 
     @Override
-    public final CreatedResources<T> create(List<Creatable<T>> creatables) throws Exception {
+    public final CreatedResources<T> create(List<Creatable<T>> creatables) {
         return BlockingObservable.from(createAsync(creatables)).single();
     }
 
@@ -236,7 +236,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
      /**
      * The local root resource that is used as dummy parent resource for the batch creatable resources
-     * added via {@link CreatableResourcesImpl#create} or {@link CreatableResourcesImpl#createAsync}.
+     * added via {@link SupportsBatchCreation#create} or {@link CreatableResourcesImpl#createAsync}.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
@@ -297,7 +297,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public CreatableResourcesRoot<ResourceT> createResource() throws Exception {
+        public CreatableResourcesRoot<ResourceT> createResource() {
             return this;
         }
 
@@ -306,7 +306,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // resources.
 
         @Override
-        public CreatableResourcesRoot<ResourceT> refresh() throws Exception {
+        public CreatableResourcesRoot<ResourceT> refresh() {
             return null;
         }
 

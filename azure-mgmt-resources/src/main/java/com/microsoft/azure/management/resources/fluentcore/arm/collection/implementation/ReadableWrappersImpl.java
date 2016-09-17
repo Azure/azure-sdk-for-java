@@ -5,14 +5,12 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import java.io.IOException;
-import java.util.List;
-
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
-import com.microsoft.rest.RestException;
+
+import java.util.List;
 
 /**
  * Base class for readable wrapper collections, i.e. those whose models can only be read, not created.
@@ -49,7 +47,7 @@ public abstract class ReadableWrappersImpl<
         page.setNextPageLink(null);
         PagedList<InnerT> pagedList = new PagedList<InnerT>(page) {
             @Override
-            public Page<InnerT> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<InnerT> nextPage(String nextPageLink) {
                 return null;
             }
         };

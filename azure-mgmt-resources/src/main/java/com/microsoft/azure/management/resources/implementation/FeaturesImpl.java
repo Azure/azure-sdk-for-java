@@ -6,13 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Feature;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link Features}.
@@ -27,7 +24,7 @@ final class FeaturesImpl
     }
 
     @Override
-    public PagedList<Feature> list() throws CloudException, IOException {
+    public PagedList<Feature> list() {
         return wrapList(client.listAll());
     }
 

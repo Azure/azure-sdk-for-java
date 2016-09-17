@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -71,16 +70,13 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
      * @param location The location upon which resource usage is queried.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public PagedList<UsageInner> list(final String location) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> list(final String location) {
         ServiceResponse<Page<UsageInner>> response = listSinglePageAsync(location).toBlocking().single();
         return new PagedList<UsageInner>(response.getBody()) {
             @Override
-            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<UsageInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -182,16 +178,13 @@ public final class UsagesInner {
      * Lists compute usages for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
-    public PagedList<UsageInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<UsageInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<UsageInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<UsageInner>(response.getBody()) {
             @Override
-            public Page<UsageInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<UsageInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

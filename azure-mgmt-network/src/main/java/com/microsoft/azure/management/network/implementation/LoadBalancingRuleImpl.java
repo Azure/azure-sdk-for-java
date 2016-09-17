@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link LoadBalancingRule}.
  */
 class LoadBalancingRuleImpl
-    extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl>
+    extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancingRule,
         LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLoadBalancingRuleOrCreate>,

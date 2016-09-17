@@ -22,5 +22,5 @@ public abstract class IndexableRefreshableImpl<T>
     }
 
     @Override
-    public abstract T refresh() throws Exception;
+    public abstract T refresh();
 }

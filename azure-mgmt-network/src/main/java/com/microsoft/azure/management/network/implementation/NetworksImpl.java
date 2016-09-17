@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.AddressSpace;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -38,27 +36,27 @@ class NetworksImpl
     }
 
     @Override
-    public PagedList<Network> list() throws CloudException, IOException {
+    public PagedList<Network> list() {
         return wrapList(this.innerCollection.listAll());
     }
 
     @Override
-    public PagedList<Network> listByGroup(String groupName) throws CloudException, IOException {
+    public PagedList<Network> listByGroup(String groupName) {
         return wrapList(this.innerCollection.list(groupName));
     }
 
     @Override
-    public NetworkImpl getByGroup(String groupName, String name) throws CloudException, IOException {
+    public NetworkImpl getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
-    public void delete(String groupName, String name) throws Exception {
+    public void delete(String groupName, String name) {
         this.innerCollection.delete(groupName, name);
     }
 

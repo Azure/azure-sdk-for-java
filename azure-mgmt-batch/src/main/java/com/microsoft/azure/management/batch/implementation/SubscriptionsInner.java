@@ -62,12 +62,9 @@ public final class SubscriptionsInner {
      * Gets the Batch service quotas for the specified suscription.
      *
      * @param locationName The desired region for the quotas.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SubscriptionQuotasGetResultInner object if successful.
      */
-    public SubscriptionQuotasGetResultInner getSubscriptionQuotas(String locationName) throws CloudException, IOException, IllegalArgumentException {
+    public SubscriptionQuotasGetResultInner getSubscriptionQuotas(String locationName) {
         return getSubscriptionQuotasWithServiceResponseAsync(locationName).toBlocking().single().getBody();
     }
 

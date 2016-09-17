@@ -8,30 +8,16 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.Sku;
 import java.util.Map;
+import com.microsoft.azure.management.redis.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
- * Parameters supplied to the CreateOrUpdate Redis operation.
+ * Parameters supplied to the Update Redis operation.
  */
 @JsonFlatten
-public class RedisCreateOrUpdateParametersInner extends Resource {
-    /**
-     * RedisVersion parameter has been deprecated. As such, it is no longer
-     * necessary to provide this parameter and any value specified is ignored.
-     */
-    @JsonProperty(value = "properties.redisVersion")
-    private String redisVersion;
-
-    /**
-     * What sku of redis cache to deploy.
-     */
-    @JsonProperty(value = "properties.sku", required = true)
-    private Sku sku;
-
+public class RedisUpdateParametersInner {
     /**
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
@@ -75,44 +61,22 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
     private String staticIP;
 
     /**
-     * Get the redisVersion value.
-     *
-     * @return the redisVersion value
+     * What sku of redis cache to deploy.
      */
-    public String redisVersion() {
-        return this.redisVersion;
-    }
+    @JsonProperty(value = "properties.sku")
+    private Sku sku;
 
     /**
-     * Set the redisVersion value.
-     *
-     * @param redisVersion the redisVersion value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * Resource location.
      */
-    public RedisCreateOrUpdateParametersInner withRedisVersion(String redisVersion) {
-        this.redisVersion = redisVersion;
-        return this;
-    }
+    @JsonProperty(value = "properties.location")
+    private String location;
 
     /**
-     * Get the sku value.
-     *
-     * @return the sku value
+     * Resource tags.
      */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku value.
-     *
-     * @param sku the sku value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
-     */
-    public RedisCreateOrUpdateParametersInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
+    @JsonProperty(value = "properties.tags")
+    private Map<String, String> tags;
 
     /**
      * Get the redisConfiguration value.
@@ -127,9 +91,9 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the redisConfiguration value.
      *
      * @param redisConfiguration the redisConfiguration value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisUpdateParametersInner withRedisConfiguration(Map<String, String> redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
         return this;
     }
@@ -147,9 +111,9 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the enableNonSslPort value.
      *
      * @param enableNonSslPort the enableNonSslPort value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withEnableNonSslPort(Boolean enableNonSslPort) {
+    public RedisUpdateParametersInner withEnableNonSslPort(Boolean enableNonSslPort) {
         this.enableNonSslPort = enableNonSslPort;
         return this;
     }
@@ -167,9 +131,9 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the tenantSettings value.
      *
      * @param tenantSettings the tenantSettings value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withTenantSettings(Map<String, String> tenantSettings) {
+    public RedisUpdateParametersInner withTenantSettings(Map<String, String> tenantSettings) {
         this.tenantSettings = tenantSettings;
         return this;
     }
@@ -187,9 +151,9 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the shardCount value.
      *
      * @param shardCount the shardCount value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withShardCount(Integer shardCount) {
+    public RedisUpdateParametersInner withShardCount(Integer shardCount) {
         this.shardCount = shardCount;
         return this;
     }
@@ -207,9 +171,9 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the subnetId value.
      *
      * @param subnetId the subnetId value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withSubnetId(String subnetId) {
+    public RedisUpdateParametersInner withSubnetId(String subnetId) {
         this.subnetId = subnetId;
         return this;
     }
@@ -227,10 +191,70 @@ public class RedisCreateOrUpdateParametersInner extends Resource {
      * Set the staticIP value.
      *
      * @param staticIP the staticIP value to set
-     * @return the RedisCreateOrUpdateParametersInner object itself.
+     * @return the RedisUpdateParametersInner object itself.
      */
-    public RedisCreateOrUpdateParametersInner withStaticIP(String staticIP) {
+    public RedisUpdateParametersInner withStaticIP(String staticIP) {
         this.staticIP = staticIP;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the RedisUpdateParametersInner object itself.
+     */
+    public RedisUpdateParametersInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the location value.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location value.
+     *
+     * @param location the location value to set
+     * @return the RedisUpdateParametersInner object itself.
+     */
+    public RedisUpdateParametersInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     * @return the RedisUpdateParametersInner object itself.
+     */
+    public RedisUpdateParametersInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
