@@ -1,6 +1,5 @@
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
@@ -10,15 +9,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.io.IOException;
-
 /**
  * An IP configuration in a network interface.
  */
 @LangDefinition()
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
-        ChildResource,
+        ChildResource<NetworkInterface>,
         HasPrivateIpAddress {
     // Getters
 
@@ -30,15 +27,9 @@ public interface NicIpConfiguration extends
     String publicIpAddressId();
 
     /**
-     * Gets the public IP address associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the public IP associated with this IP configuration or null if there is no public IP associated
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress publicIpAddress() throws CloudException, IOException;
+    PublicIpAddress getPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this IP configuration.
@@ -46,15 +37,14 @@ public interface NicIpConfiguration extends
     String subnetId();
 
     /**
-     * Gets the virtual network associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the virtual network associated with this this IP configuration.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    Network network() throws CloudException, IOException;
+    Network getNetwork();
+
+    /**
+     * @return private IP address version
+     */
+    IPVersion privateIpAddressVersion();
 
     // Setters (fluent)
 
@@ -141,6 +131,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -301,6 +297,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -414,6 +416,12 @@ public interface NicIpConfiguration extends
          * The stage of the network interface IP configuration update allowing to specify private IP.
          */
         interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the update
+             */
+            Update withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**

@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -129,12 +128,9 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ManagedHostingEnvironmentInner object if successful.
      */
-    public ManagedHostingEnvironmentInner getManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ManagedHostingEnvironmentInner getManagedHostingEnvironment(String resourceGroupName, String name) {
         return getManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -213,13 +209,9 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the HostingEnvironmentInner object if successful.
      */
-    public HostingEnvironmentInner createOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public HostingEnvironmentInner createOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
         return createOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().last().getBody();
     }
 
@@ -288,12 +280,9 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param managedHostingEnvironmentEnvelope Properties of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the HostingEnvironmentInner object if successful.
      */
-    public HostingEnvironmentInner beginCreateOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public HostingEnvironmentInner beginCreateOrUpdateManagedHostingEnvironment(String resourceGroupName, String name, HostingEnvironmentInner managedHostingEnvironmentEnvelope) {
         return beginCreateOrUpdateManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, managedHostingEnvironmentEnvelope).toBlocking().single().getBody();
     }
 
@@ -381,13 +370,9 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Object object  if successful.
      */
-    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name) {
         return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
@@ -449,13 +434,9 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param forceDelete Delete even if the managed hosting environment contains resources
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the Object object if successful.
      */
-    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public Object deleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) {
         return deleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().last().getBody();
     }
 
@@ -519,12 +500,9 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name) {
         return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -597,12 +575,9 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param forceDelete Delete even if the managed hosting environment contains resources
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) throws CloudException, IOException, IllegalArgumentException {
+    public Object beginDeleteManagedHostingEnvironment(String resourceGroupName, String name, Boolean forceDelete) {
         return beginDeleteManagedHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, forceDelete).toBlocking().single().getBody();
     }
 
@@ -685,16 +660,13 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironments(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironments(final String resourceGroupName) {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getManagedHostingEnvironmentsSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -797,12 +769,9 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AddressResponseInner object if successful.
      */
-    public AddressResponseInner getManagedHostingEnvironmentVips(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public AddressResponseInner getManagedHostingEnvironmentVips(String resourceGroupName, String name) {
         return getManagedHostingEnvironmentVipsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -881,12 +850,9 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param operationId operation identifier GUID
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object getManagedHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public Object getManagedHostingEnvironmentOperation(String resourceGroupName, String name, String operationId) {
         return getManagedHostingEnvironmentOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
     }
 
@@ -973,16 +939,13 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name) {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1087,16 +1050,13 @@ public final class ManagedHostingEnvironmentsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
      * @param propertiesToInclude Comma separated list of site properties to include
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSites(final String resourceGroupName, final String name, final String propertiesToInclude) {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesSinglePageAsync(resourceGroupName, name, propertiesToInclude).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1210,16 +1170,13 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlans(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentWebHostingPlansSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1329,16 +1286,13 @@ public final class ManagedHostingEnvironmentsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of managed hosting environment
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarms(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarms(final String resourceGroupName, final String name) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentServerFarmsSinglePageAsync(resourceGroupName, name).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1447,16 +1401,13 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all managed hosting environments in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;HostingEnvironmentInner&gt; object if successful.
      */
-    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironmentsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<HostingEnvironmentInner> getManagedHostingEnvironmentsNext(final String nextPageLink) {
         ServiceResponse<Page<HostingEnvironmentInner>> response = getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<HostingEnvironmentInner>(response.getBody()) {
             @Override
-            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<HostingEnvironmentInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1553,16 +1504,13 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all sites on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public PagedList<SiteInner> getManagedHostingEnvironmentSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getManagedHostingEnvironmentSitesNext(final String nextPageLink) {
         ServiceResponse<Page<SiteInner>> response = getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SiteInner>(response.getBody()) {
             @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SiteInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1659,16 +1607,13 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlansNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentWebHostingPlansNext(final String nextPageLink) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentWebHostingPlansNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1765,16 +1710,13 @@ public final class ManagedHostingEnvironmentsInner {
      * Get all serverfarms (App Service Plans) on the managed hosting environment.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarmsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getManagedHostingEnvironmentServerFarmsNext(final String nextPageLink) {
         ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
             @Override
-            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
                 return getManagedHostingEnvironmentServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -78,12 +77,9 @@ public final class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId Operation Id.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentOperationInner object if successful.
      */
-    public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
         return getWithServiceResponseAsync(resourceGroupName, deploymentName, operationId).toBlocking().single().getBody();
     }
 
@@ -167,16 +163,13 @@ public final class DeploymentOperationsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
-    public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName).toBlocking().single();
         return new PagedList<DeploymentOperationInner>(response.getBody()) {
             @Override
-            public Page<DeploymentOperationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -281,16 +274,13 @@ public final class DeploymentOperationsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top Query parameters.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
-    public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentOperationInner> list(final String resourceGroupName, final String deploymentName, final Integer top) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listSinglePageAsync(resourceGroupName, deploymentName, top).toBlocking().single();
         return new PagedList<DeploymentOperationInner>(response.getBody()) {
             @Override
-            public Page<DeploymentOperationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -403,16 +393,13 @@ public final class DeploymentOperationsInner {
      * Gets a list of deployments operations.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentOperationInner&gt; object if successful.
      */
-    public PagedList<DeploymentOperationInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentOperationInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentOperationInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentOperationInner>(response.getBody()) {
             @Override
-            public Page<DeploymentOperationInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentOperationInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

@@ -53,6 +53,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tInternal DNS name label: ").append(resource.internalDnsNameLabel())
                 .append("\n\tInternal FQDN: ").append(resource.internalFqdn())
                 .append("\n\tInternal domain name suffix: ").append(resource.internalDomainNameSuffix())
+                .append("\n\tVirtual machine ID: ").append(resource.virtualMachineId())
                 .append("\n\tApplied DNS servers: ").append(resource.appliedDnsServers().toString())
                 .append("\n\tDNS server IPs: ");
 
@@ -61,7 +62,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info.append("\n\t IP forwarding enabled: ").append(resource.isIpForwardingEnabled())
+        info.append("\n\tIP forwarding enabled: ").append(resource.isIpForwardingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
@@ -72,7 +73,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                 .append("\n\t\tPrivate IP: ").append(ipConfig.privateIpAddress())
-                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod())
+                .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod().toString())
+                .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIpAddressVersion().toString())
                 .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
                 .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());
         }

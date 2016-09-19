@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -81,16 +80,13 @@ public final class ClassicMobileServicesInner {
      * Get all mobile services in a resource group.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public PagedList<ClassicMobileServiceInner> getClassicMobileServices(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getClassicMobileServices(final String resourceGroupName) {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getClassicMobileServicesSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
-            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) {
                 return getClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -193,12 +189,9 @@ public final class ClassicMobileServicesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of mobile service
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ClassicMobileServiceInner object if successful.
      */
-    public ClassicMobileServiceInner getClassicMobileService(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ClassicMobileServiceInner getClassicMobileService(String resourceGroupName, String name) {
         return getClassicMobileServiceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -276,12 +269,9 @@ public final class ClassicMobileServicesInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of mobile service
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the Object object if successful.
      */
-    public Object deleteClassicMobileService(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteClassicMobileService(String resourceGroupName, String name) {
         return deleteClassicMobileServiceWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
@@ -358,16 +348,13 @@ public final class ClassicMobileServicesInner {
      * Get all mobile services in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ClassicMobileServiceInner&gt; object if successful.
      */
-    public PagedList<ClassicMobileServiceInner> getClassicMobileServicesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ClassicMobileServiceInner> getClassicMobileServicesNext(final String nextPageLink) {
         ServiceResponse<Page<ClassicMobileServiceInner>> response = getClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ClassicMobileServiceInner>(response.getBody()) {
             @Override
-            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ClassicMobileServiceInner> nextPage(String nextPageLink) {
                 return getClassicMobileServicesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

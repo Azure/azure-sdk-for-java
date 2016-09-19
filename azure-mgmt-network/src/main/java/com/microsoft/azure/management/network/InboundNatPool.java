@@ -22,7 +22,7 @@ public interface InboundNatPool extends
     HasBackendPort,
     HasProtocol<TransportProtocol>,
     Wrapper<InboundNatPoolInner>,
-    ChildResource {
+    ChildResource<LoadBalancer> {
 
     /**
      * @return the starting frontend port number

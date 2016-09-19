@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,12 +97,8 @@ public final class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
     }
 
@@ -261,12 +253,9 @@ public final class SecurityRulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SecurityRuleInner object if successful.
      */
-    public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) throws CloudException, IOException, IllegalArgumentException {
+    public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         return getWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName).toBlocking().single().getBody();
     }
 
@@ -352,13 +341,9 @@ public final class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the SecurityRuleInner object if successful.
      */
-    public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().last().getBody();
     }
 
@@ -434,12 +419,9 @@ public final class SecurityRulesInner {
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
      * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the SecurityRuleInner object if successful.
      */
-    public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) throws CloudException, IOException, IllegalArgumentException {
+    public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters).toBlocking().single().getBody();
     }
 
@@ -531,16 +513,13 @@ public final class SecurityRulesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
-    public PagedList<SecurityRuleInner> list(final String resourceGroupName, final String networkSecurityGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SecurityRuleInner> list(final String resourceGroupName, final String networkSecurityGroupName) {
         ServiceResponse<Page<SecurityRuleInner>> response = listSinglePageAsync(resourceGroupName, networkSecurityGroupName).toBlocking().single();
         return new PagedList<SecurityRuleInner>(response.getBody()) {
             @Override
-            public Page<SecurityRuleInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SecurityRuleInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -649,16 +628,13 @@ public final class SecurityRulesInner {
      * The List network security rule operation retrieves all the security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
      */
-    public PagedList<SecurityRuleInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SecurityRuleInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<SecurityRuleInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<SecurityRuleInner>(response.getBody()) {
             @Override
-            public Page<SecurityRuleInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<SecurityRuleInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

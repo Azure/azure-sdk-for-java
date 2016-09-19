@@ -1,19 +1,7 @@
 /**
- *
- * Copyright (c) Microsoft and contributors.  All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.keyvault.test;
@@ -25,6 +13,7 @@ import java.util.concurrent.Future;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -37,6 +26,7 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
+import com.microsoft.azure.keyvault.models.Attributes;
 
 public class KeyVaultClientIntegrationTestBase {
 
@@ -95,7 +85,7 @@ public class KeyVaultClientIntegrationTestBase {
     private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
         String clientId = System.getenv("arm.clientid");
-    	
+    
         if (clientId == null) {
             throw new Exception("Please inform arm.clientid in the environment settings.");
         }
@@ -136,6 +126,14 @@ public class KeyVaultClientIntegrationTestBase {
         return result;
     }
 
+    protected static void compareAttributes(Attributes expectedAttributes, Attributes actualAttribute) {
+        if(expectedAttributes != null) {
+            Assert.assertEquals(expectedAttributes.enabled(), actualAttribute.enabled());
+            Assert.assertEquals(expectedAttributes.expires(), actualAttribute.expires());
+            Assert.assertEquals(expectedAttributes.notBefore(), actualAttribute.notBefore());
+        }
+    }
+    
     protected static ObjectWriter jsonWriter;
     protected static ObjectReader jsonReader;
 

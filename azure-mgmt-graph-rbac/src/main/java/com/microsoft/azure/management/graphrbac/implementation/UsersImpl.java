@@ -7,18 +7,14 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
-
-import java.io.IOException;
 
 /**
  * The implementation of Users and its parent interfaces.
@@ -40,12 +36,12 @@ class UsersImpl
     }
 
     @Override
-    public PagedList<User> list() throws RestException, IOException {
+    public PagedList<User> list() {
         return wrapList(this.innerCollection.list());
     }
 
     @Override
-    public void delete(String id) throws Exception {
+    public void delete(String id) {
         innerCollection.delete(id);
     }
 
@@ -65,12 +61,12 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl getByObjectId(String objectId) throws GraphErrorException, IOException {
+    public UserImpl getByObjectId(String objectId) {
         return new UserImpl(innerCollection.get(objectId), innerCollection);
     }
 
     @Override
-    public UserImpl getByUserPrincipalName(String upn) throws GraphErrorException, IOException {
+    public UserImpl getByUserPrincipalName(String upn) {
         return new UserImpl(innerCollection.get(upn), innerCollection);
     }
 

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -17,8 +16,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-
-import java.io.IOException;
 
 /**
  * An immutable client-side representation of an Azure resource group.
@@ -44,11 +41,9 @@ public interface ResourceGroup extends
      * Captures the specified resource group as a template.
      *
      * @param options the export options
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      * @return the exported template result
      */
-    ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
+    ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options);
 
     /**************************************************************
      * Fluent interfaces to provision a ResourceGroup

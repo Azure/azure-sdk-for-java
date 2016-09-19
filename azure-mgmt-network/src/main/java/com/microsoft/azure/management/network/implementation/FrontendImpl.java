@@ -27,7 +27,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link PublicFrontend}.
  */
 class FrontendImpl
-    extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl>
+    extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
     implements
         Frontend,
         PrivateFrontend,

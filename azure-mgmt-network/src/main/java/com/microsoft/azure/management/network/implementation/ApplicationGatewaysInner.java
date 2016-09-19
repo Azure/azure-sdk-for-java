@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -122,12 +121,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String applicationGatewayName) {
         deleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
@@ -188,11 +183,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String applicationGatewayName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
@@ -271,12 +263,9 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationGatewayInner object if successful.
      */
-    public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationGatewayInner get(String resourceGroupName, String applicationGatewayName) {
         return getWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
@@ -355,13 +344,9 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the ApplicationGateway.
      * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ApplicationGatewayInner object if successful.
      */
-    public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().last().getBody();
     }
 
@@ -430,12 +415,9 @@ public final class ApplicationGatewaysInner {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the ApplicationGateway.
      * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ApplicationGatewayInner object if successful.
      */
-    public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, applicationGatewayName, parameters).toBlocking().single().getBody();
     }
 
@@ -520,16 +502,13 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -630,16 +609,13 @@ public final class ApplicationGatewaysInner {
     /**
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public PagedList<ApplicationGatewayInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listAll() {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -735,12 +711,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void start(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void start(String resourceGroupName, String applicationGatewayName) {
         startWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
@@ -801,11 +773,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginStart(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginStart(String resourceGroupName, String applicationGatewayName) {
         beginStartWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
@@ -883,12 +852,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void stop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void stop(String resourceGroupName, String applicationGatewayName) {
         stopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
     }
 
@@ -949,11 +914,8 @@ public final class ApplicationGatewaysInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginStop(String resourceGroupName, String applicationGatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginStop(String resourceGroupName, String applicationGatewayName) {
         beginStopWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
     }
 
@@ -1030,16 +992,13 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1136,16 +1095,13 @@ public final class ApplicationGatewaysInner {
      * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
-    public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ApplicationGatewayInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ApplicationGatewayInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ApplicationGatewayInner>(response.getBody()) {
             @Override
-            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ApplicationGatewayInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

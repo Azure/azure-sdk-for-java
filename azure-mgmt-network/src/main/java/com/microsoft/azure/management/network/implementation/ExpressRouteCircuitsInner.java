@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -138,12 +137,8 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route Circuit.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String circuitName) {
         deleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().last().getBody();
     }
 
@@ -204,11 +199,8 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route Circuit.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String circuitName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
     }
 
@@ -287,12 +279,9 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitInner object if successful.
      */
-    public ExpressRouteCircuitInner get(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitInner get(String resourceGroupName, String circuitName) {
         return getWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
     }
 
@@ -371,13 +360,9 @@ public final class ExpressRouteCircuitsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitInner object if successful.
      */
-    public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().last().getBody();
     }
 
@@ -446,12 +431,9 @@ public final class ExpressRouteCircuitsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create/delete ExpressRouteCircuit operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitInner object if successful.
      */
-    public ExpressRouteCircuitInner beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitInner beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, circuitName, parameters).toBlocking().single().getBody();
     }
 
@@ -539,13 +521,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
-    public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return listArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
     }
 
@@ -620,12 +598,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitsArpTableListResultInner object if successful.
      */
-    public ExpressRouteCircuitsArpTableListResultInner beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitsArpTableListResultInner beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return beginListArpTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
     }
 
@@ -718,13 +693,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
-    public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return listRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
     }
 
@@ -799,12 +770,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitsRoutesTableListResultInner object if successful.
      */
-    public ExpressRouteCircuitsRoutesTableListResultInner beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitsRoutesTableListResultInner beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return beginListRoutesTableWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
     }
 
@@ -897,13 +865,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
-    public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return listRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().last().getBody();
     }
 
@@ -978,12 +942,9 @@ public final class ExpressRouteCircuitsInner {
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
      * @param devicePath The path of the device.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitsRoutesTableSummaryListResultInner object if successful.
      */
-    public ExpressRouteCircuitsRoutesTableSummaryListResultInner beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitsRoutesTableSummaryListResultInner beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath) {
         return beginListRoutesTableSummaryWithServiceResponseAsync(resourceGroupName, circuitName, peeringName, devicePath).toBlocking().single().getBody();
     }
 
@@ -1074,12 +1035,9 @@ public final class ExpressRouteCircuitsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
-    public ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitStatsInner getStats(String resourceGroupName, String circuitName) {
         return getStatsWithServiceResponseAsync(resourceGroupName, circuitName).toBlocking().single().getBody();
     }
 
@@ -1158,12 +1116,9 @@ public final class ExpressRouteCircuitsInner {
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the ExpressRouteCircuitStatsInner object if successful.
      */
-    public ExpressRouteCircuitStatsInner getPeeringStats(String resourceGroupName, String circuitName, String peeringName) throws CloudException, IOException, IllegalArgumentException {
+    public ExpressRouteCircuitStatsInner getPeeringStats(String resourceGroupName, String circuitName, String peeringName) {
         return getPeeringStatsWithServiceResponseAsync(resourceGroupName, circuitName, peeringName).toBlocking().single().getBody();
     }
 
@@ -1246,16 +1201,13 @@ public final class ExpressRouteCircuitsInner {
      * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitInner> list(final String resourceGroupName) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1356,16 +1308,13 @@ public final class ExpressRouteCircuitsInner {
     /**
      * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitInner> listAll() {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1460,16 +1409,13 @@ public final class ExpressRouteCircuitsInner {
      * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1566,16 +1512,13 @@ public final class ExpressRouteCircuitsInner {
      * The List ExpressRouteCircuit operation retrieves all the ExpressRouteCircuits in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;ExpressRouteCircuitInner&gt; object if successful.
      */
-    public PagedList<ExpressRouteCircuitInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ExpressRouteCircuitInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<ExpressRouteCircuitInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<ExpressRouteCircuitInner>(response.getBody()) {
             @Override
-            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<ExpressRouteCircuitInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

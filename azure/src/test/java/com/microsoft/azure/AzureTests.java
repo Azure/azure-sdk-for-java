@@ -257,7 +257,7 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh()
+        new TestVirtualMachineSsh(azure.publicIpAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -293,5 +293,15 @@ public class AzureTests {
                 .create();
 
         Assert.assertEquals(storageAccount.name(), storageAccountName);
+    }
+
+    @Test
+    public void testBatchAccount() throws Exception {
+        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testBatchAccountUpdateWithNewStorageAccount() throws Exception {
+        new TestBatchUpdateWithNewStorageAccount().runTest(azure.batchAccounts(), azure.resourceGroups());
     }
 }

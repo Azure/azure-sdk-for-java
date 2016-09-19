@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -148,10 +149,37 @@ public abstract class ResourceImpl<
         return this.withRegion(region.toString());
     }
 
+
+    @Override
+    public Observable<FluentModelT> applyAsync() {
+        if (super.creatorTaskGroup.isPreparer()) {
+            super.creatorTaskGroup.prepare();
+            return super.creatorTaskGroup.executeAsync().last();
+        }
+        throw new IllegalStateException("Internal Error: createAsync can be called only on preparer");
+    }
+
+    /**
+     * Execute the update request asynchronously.
+     *
+     * @return the handle to the REST call
+     */
+    public abstract Observable<FluentModelT> applyUpdateAsync();
+
+    @Override
+    public Observable<FluentModelT> executeCreateOrUpdateAsync() {
+        if (this.isInCreateMode()) {
+            return createResourceAsync();
+        }
+        else {
+            return applyUpdateAsync();
+        }
+    }
+
     /**
      * @return <tt>true</tt> if currently in define..create mode
      */
-    protected boolean isInCreateMode() {
+    public boolean isInCreateMode() {
         return this.inner().id() == null;
     }
 

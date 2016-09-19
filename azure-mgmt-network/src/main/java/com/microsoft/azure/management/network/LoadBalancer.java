@@ -84,7 +84,10 @@ public interface LoadBalancer extends
         DefinitionStages.WithProbe,
         DefinitionStages.WithProbeOrLoadBalancingRule,
         DefinitionStages.WithLoadBalancingRule,
-        DefinitionStages.WithLoadBalancingRuleOrCreate {
+        DefinitionStages.WithLoadBalancingRuleOrCreate,
+        DefinitionStages.WithCreateAndInboundNatPool,
+        DefinitionStages.WithCreateAndInboundNatRule,
+        DefinitionStages.WithCreateAndNatChoice {
     }
 
     /**
@@ -240,8 +243,7 @@ public interface LoadBalancer extends
         }
 
         /**
-         * The stage of a load balancer definition allowing to add a public ip address as one of the load
-         * balancer's public frontends.
+         * The stage of a load balancer definition allowing to add a public IP address as the default public frontend.
          * @param <ReturnT> the next stage of the definition
          */
         interface WithPublicIpAddress<ReturnT> {
@@ -342,7 +344,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer definition allowing to create a load balancing rule or create the load balancer.
          */
-        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreate {
+        interface WithLoadBalancingRuleOrCreate extends WithLoadBalancingRule, WithCreateAndNatChoice {
         }
 
         /**
@@ -352,9 +354,32 @@ public interface LoadBalancer extends
          */
         interface WithCreate extends
             Creatable<LoadBalancer>,
-            Resource.DefinitionWithTags<WithCreate>,
-            DefinitionStages.WithInboundNatRule,
-            DefinitionStages.WithInboundNatPool {
+            Resource.DefinitionWithTags<WithCreate> {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or start configuring optional inbound NAT rules or pools.
+         */
+        interface WithCreateAndNatChoice extends
+            WithCreate,
+            WithInboundNatRule,
+            WithInboundNatPool {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or add an inbound NAT pool.
+         */
+        interface WithCreateAndInboundNatPool extends
+            WithCreate,
+            WithInboundNatPool {
+        }
+
+        /**
+         * The stage of a load balancer definition allowing to create the load balancer or add an inbound NAT rule.
+         */
+        interface WithCreateAndInboundNatRule extends
+            WithCreate,
+            WithInboundNatRule {
         }
 
         /**
@@ -368,7 +393,7 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.DefinitionStages.Blank<WithCreate> defineInboundNatRule(String name);
+            InboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
         }
 
         /**
@@ -382,7 +407,7 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.DefinitionStages.Blank<WithCreate> defineInboundNatPool(String name);
+            InboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
         }
     }
 
@@ -531,7 +556,7 @@ public interface LoadBalancer extends
         /**
          * The stage of a load balancer update allowing to define, remove or edit Internet-facing frontends.
          */
-        interface WithInternetFrontend {
+        interface WithInternetFrontend extends WithPublicIpAddress {
             /**
              * Begins the update of a load balancer frontend.
              * <p>
@@ -554,6 +579,46 @@ public interface LoadBalancer extends
              * @return the first stage of the frontend update
              */
             PublicFrontend.Update updateInternetFrontend(String name);
+        }
+
+        /**
+         * The stage of a load balancer update allowing to add a public IP address as the default public frontend.
+         */
+        interface WithPublicIpAddress {
+            /**
+             * Assigns the provided public IP address to the default public frontend to the load balancer.
+             * <p>
+             * This will create a new default frontend for the load balancer under the name "default", if one does not already exist.
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the update
+             */
+            Update withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+
+            /**
+             * Creates a new public IP address as the default public frontend of the load balancer,
+             * using an automatically generated name and leaf DNS label
+             * derived from the load balancer's name, in the same resource group and region.
+             * <p>
+             * This will create a new default frontend for the load balancer under the name "default", if one does not already exist.
+             * @return the next stage of the update
+             */
+            Update withNewPublicIpAddress();
+
+            /**
+             * Adds a new public IP address as the default public frontend of the load balancer,
+             * using the specified DNS leaf label, an automatically generated frontend name derived from the DNS label,
+             * in the same resource group and region as the load balancer.
+             * @param dnsLeafLabel a DNS leaf label
+             * @return the next stage of the update
+             */
+            Update withNewPublicIpAddress(String dnsLeafLabel);
+
+            /**
+             * Adds a new public IP address to the default front end of the load balancer.
+             * @param creatablePublicIpAddress the creatable stage of a public IP address definition
+             * @return the next stage of the update
+             */
+            Update withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
         }
 
         /**

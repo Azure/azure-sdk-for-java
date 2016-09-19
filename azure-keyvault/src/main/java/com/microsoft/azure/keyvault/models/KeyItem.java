@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The key item containing key metadata.
@@ -32,6 +33,13 @@ public class KeyItem {
      * Application-specific metadata in the form of key-value pairs.
      */
     private Map<String, String> tags;
+
+    /**
+     * True if the key's lifetime is managed by key vault i.e. if this is a
+     * key backing a certificate, then managed will be true.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean managed;
 
     /**
      * Get the kid value.
@@ -91,6 +99,15 @@ public class KeyItem {
     public KeyItem withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
     }
 
     /**

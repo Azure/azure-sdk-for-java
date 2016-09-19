@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -98,12 +97,8 @@ public final class VirtualNetworkPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().last().getBody();
     }
 
@@ -171,11 +166,8 @@ public final class VirtualNetworkPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
     }
 
@@ -261,12 +253,9 @@ public final class VirtualNetworkPeeringsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         return getWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).toBlocking().single().getBody();
     }
 
@@ -352,13 +341,9 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().last().getBody();
     }
 
@@ -434,12 +419,9 @@ public final class VirtualNetworkPeeringsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create/update virtual network peering operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualNetworkPeeringInner object if successful.
      */
-    public VirtualNetworkPeeringInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualNetworkPeeringInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters).toBlocking().single().getBody();
     }
 
@@ -531,16 +513,13 @@ public final class VirtualNetworkPeeringsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkPeeringInner> list(final String resourceGroupName, final String virtualNetworkName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkPeeringInner> list(final String resourceGroupName, final String virtualNetworkName) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listSinglePageAsync(resourceGroupName, virtualNetworkName).toBlocking().single();
         return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -649,16 +628,13 @@ public final class VirtualNetworkPeeringsInner {
      * The List virtual network peerings operation retrieves all the peerings in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualNetworkPeeringInner&gt; object if successful.
      */
-    public PagedList<VirtualNetworkPeeringInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualNetworkPeeringInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualNetworkPeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualNetworkPeeringInner>(response.getBody()) {
             @Override
-            public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualNetworkPeeringInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
