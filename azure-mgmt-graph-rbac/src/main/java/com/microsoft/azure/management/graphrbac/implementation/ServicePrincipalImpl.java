@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
  */
+@LangDefinition
 class ServicePrincipalImpl
         extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
         implements

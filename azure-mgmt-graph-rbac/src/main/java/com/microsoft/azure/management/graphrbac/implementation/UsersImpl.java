@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
@@ -19,6 +20,7 @@ import rx.functions.Func1;
 /**
  * The implementation of Users and its parent interfaces.
  */
+@LangDefinition
 class UsersImpl
         extends CreatableWrappersImpl<
             User,

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.PasswordProfile;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -14,6 +15,7 @@ import rx.Observable;
 /**
  * Implementation for User and its parent interfaces.
  */
+@LangDefinition
 class UserImpl
         extends CreatableUpdatableImpl<User, UserInner, UserImpl>
         implements

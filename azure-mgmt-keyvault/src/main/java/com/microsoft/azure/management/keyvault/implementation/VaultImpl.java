@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
@@ -31,6 +32,7 @@ import java.util.UUID;
 /**
  * Implementation for Vault and its parent interfaces.
  */
+@LangDefinition
 class VaultImpl
         extends GroupableResourceImpl<
             Vault,
