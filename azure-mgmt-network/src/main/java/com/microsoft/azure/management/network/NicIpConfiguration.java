@@ -5,6 +5,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -17,7 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
-        HasPrivateIpAddress {
+        HasPrivateIpAddress,
+        HasSubnet {
     // Getters
 
     /**
@@ -31,11 +33,6 @@ public interface NicIpConfiguration extends
      * @return the public IP associated with this IP configuration or null if there is no public IP associated
      */
     PublicIpAddress getPublicIpAddress();
-
-    /**
-     * @return the resource id of the virtual network subnet associated with this IP configuration.
-     */
-    String subnetId();
 
     /**
      * @return the virtual network associated with this this IP configuration.

@@ -66,7 +66,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.primarySubnetId())
+                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIpConfiguration().networkId())
+                .append("\n\tPrimary subnet name: ").append(resource.primaryIpConfiguration().subnetName())
                 .append("\n\tIP configurations: ");
 
         // Output IP configs
@@ -76,7 +77,8 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\t\tPrivate IP allocation method: ").append(ipConfig.privateIpAllocationMethod().toString())
                 .append("\n\t\tPrivate IP version: ").append(ipConfig.privateIpAddressVersion().toString())
                 .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
-                .append("\n\t\tSubnet ID: ").append(ipConfig.subnetId());
+                .append("\n\t\tAssociated network ID: ").append(ipConfig.networkId())
+                .append("\n\t\tAssociated subnet name: ").append(ipConfig.subnetName());
         }
 
         System.out.println(info.toString());

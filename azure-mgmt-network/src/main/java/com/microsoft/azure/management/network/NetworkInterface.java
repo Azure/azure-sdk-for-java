@@ -80,18 +80,13 @@ public interface NetworkInterface extends
     PublicIpAddress primaryPublicIpAddress();
 
     /**
-     * @return the resource id of the virtual network subnet associated with this network interface.
-     */
-    String primarySubnetId();
-
-    /**
      * Gets the virtual network associated this network interface's primary IP configuration.
      * <p>
      * This method makes a rest API call to fetch the virtual network.
      *
      * @return the virtual network associated with this network interface.
      */
-    Network primaryNetwork();
+    Network getPrimaryNetwork();
 
     /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.

@@ -106,15 +106,29 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public String subnetId() {
-        return this.inner().subnet().id();
+    public String subnetName() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String networkId() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Network getNetwork() {
-        String id = subnetId();
-        return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
+        String id = this.networkId();
+        return this.networkManager.networks().getById(id);
     }
 
     @Override
