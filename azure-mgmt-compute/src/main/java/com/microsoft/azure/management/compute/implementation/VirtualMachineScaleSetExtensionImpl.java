@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetExtension;
@@ -13,12 +14,13 @@ import java.util.Map;
 /**
  * Implementation of {@link VirtualMachineScaleSetExtension}.
  */
+@LangDefinition()
 public class VirtualMachineScaleSetExtensionImpl
         extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
         implements
         VirtualMachineScaleSetExtension,
         VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
-        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApplicable>,
+        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
         VirtualMachineScaleSetExtension.Update {
 
     private HashMap<String, Object> publicSettings;

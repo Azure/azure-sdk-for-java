@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -15,6 +16,7 @@ import java.io.IOException;
 /**
  *  Entry point to virtual machine scale set management API.
  */
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineScaleSets extends
         SupportsListing<VirtualMachineScaleSet>,
         SupportsListingByGroup<VirtualMachineScaleSet>,

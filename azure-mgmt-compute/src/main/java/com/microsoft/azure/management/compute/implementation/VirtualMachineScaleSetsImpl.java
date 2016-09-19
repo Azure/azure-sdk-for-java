@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSDisk;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 /**
  * The implementation for {@link VirtualMachineScaleSets}.
  */
+@LangDefinition
 public class VirtualMachineScaleSetsImpl
         extends GroupableResourcesImpl<
                         VirtualMachineScaleSet,

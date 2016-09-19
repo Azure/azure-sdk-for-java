@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ApiEntityReference;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
@@ -54,6 +55,7 @@ import java.util.Map;
 /**
  * Implementation of {@link VirtualMachineScaleSet}.
  */
+@LangDefinition
 public class VirtualMachineScaleSetImpl
         extends GroupableParentResourceImpl<
                 VirtualMachineScaleSet,
@@ -71,8 +73,6 @@ public class VirtualMachineScaleSetImpl
     // used to generate unique name for any dependency resources
     private final ResourceNamer namer;
     private boolean isMarketplaceLinuxImage = false;
-    // reference to an existing network that needs to be used in virtual machine's primary network interface
-    private Network existingPrimaryNetworkToAssociate;
     // name of an existing subnet in the primary network to use
     private String existingPrimaryNetworkSubnetNameToAssociate;
     // unique key of a creatable storage accounts to be used for virtual machines child resources that
@@ -137,10 +137,10 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    @Override
-    public PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException {
+   @Override
+   public PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException {
         return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
-    }
+   }
 
     @Override
     public void deallocate() throws CloudException, IOException, InterruptedException {
@@ -321,14 +321,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withExistingPrimaryNetwork(Network network) {
-        this.existingPrimaryNetworkToAssociate = network;
-        return this;
-    }
-
-    @Override
-    public VirtualMachineScaleSetImpl withSubnet(String name) {
-        this.existingPrimaryNetworkSubnetNameToAssociate = name;
+    public VirtualMachineScaleSetImpl withExistingPrimaryNetworkSubnet(Network network, String subnetName) {
+        this.existingPrimaryNetworkSubnetNameToAssociate = mergePath(network.id(), "subnets", subnetName);
         return this;
     }
 
@@ -390,7 +384,7 @@ public class VirtualMachineScaleSetImpl
         }
 
         if (isInCreateMode()) {
-            String vmNICNetworkId = this.existingPrimaryNetworkToAssociate.id();
+            String vmNICNetworkId = ResourceUtils.parentResourcePathFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
             // Azure has a really wired BUG that - it throws exception when vnet of VMSS and LB are not same
             // (code: NetworkInterfaceAndInternalLoadBalancerMustUseSameVnet) but at the same time Azure update
             // the VMSS's network section to refer this invalid internal LB. This makes VMSS un-usable and portal
@@ -645,7 +639,15 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl disableVmAgent() {
+    public VirtualMachineScaleSetImpl withVmAgent() {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutVmAgent() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withProvisionVMAgent(false);
@@ -653,7 +655,15 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl disableAutoUpdate() {
+    public VirtualMachineScaleSetImpl withAutoUpdate() {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutAutoUpdate() {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
@@ -983,12 +993,8 @@ public class VirtualMachineScaleSetImpl
         }
 
         VirtualMachineScaleSetIPConfigurationInner ipConfig = this.primaryNicDefaultIPConfiguration();
-        ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkToAssociate.id()
-                + "/"
-                + "subnets"
-                + "/"
-                + existingPrimaryNetworkSubnetNameToAssociate));
-        this.existingPrimaryNetworkToAssociate = null;
+        ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkSubnetNameToAssociate));
+        this.existingPrimaryNetworkSubnetNameToAssociate = null;
     }
 
     private void setPrimaryIpConfigurationBackendsAndInboundNatPools() {
