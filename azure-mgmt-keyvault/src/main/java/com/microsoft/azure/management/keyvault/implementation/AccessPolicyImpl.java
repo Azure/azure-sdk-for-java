@@ -28,7 +28,8 @@ import java.util.UUID;
 class AccessPolicyImpl
         extends ChildResourceImpl<
                 AccessPolicyEntry,
-                VaultImpl>
+                VaultImpl,
+                Vault>
         implements
             AccessPolicy,
             AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,

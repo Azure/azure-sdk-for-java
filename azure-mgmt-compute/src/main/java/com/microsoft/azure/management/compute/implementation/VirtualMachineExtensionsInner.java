@@ -85,13 +85,9 @@ public final class VirtualMachineExtensionsInner {
      * @param vmName The name of the virtual machine where the extension should be create or updated.
      * @param vmExtensionName The name of the virtual machine extension.
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineExtensionInner object if successful.
      */
-    public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualMachineExtensionInner createOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().last().getBody();
     }
 
@@ -167,12 +163,9 @@ public final class VirtualMachineExtensionsInner {
      * @param vmName The name of the virtual machine where the extension should be create or updated.
      * @param vmExtensionName The name of the virtual machine extension.
      * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtensionInner object if successful.
      */
-    public VirtualMachineExtensionInner beginCreateOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineExtensionInner beginCreateOrUpdate(String resourceGroupName, String vmName, String vmExtensionName, VirtualMachineExtensionInner extensionParameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, extensionParameters).toBlocking().single().getBody();
     }
 
@@ -265,12 +258,8 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String vmName, String vmExtensionName) {
         deleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().last().getBody();
     }
 
@@ -338,11 +327,8 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be deleted.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String vmName, String vmExtensionName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
     }
 
@@ -427,12 +413,9 @@ public final class VirtualMachineExtensionsInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtensionInner object if successful.
      */
-    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName) {
         return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName).toBlocking().single().getBody();
     }
 
@@ -512,12 +495,9 @@ public final class VirtualMachineExtensionsInner {
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
      * @param expand The expand expression to apply on the operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineExtensionInner object if successful.
      */
-    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineExtensionInner get(String resourceGroupName, String vmName, String vmExtensionName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, vmName, vmExtensionName, expand).toBlocking().single().getBody();
     }
 

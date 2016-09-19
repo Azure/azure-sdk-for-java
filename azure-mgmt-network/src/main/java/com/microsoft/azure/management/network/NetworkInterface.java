@@ -6,18 +6,16 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -77,10 +75,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the public IP.
      *
      * @return the public IP associated with this network interface
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException;
+    PublicIpAddress primaryPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this network interface.
@@ -93,10 +89,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the virtual network.
      *
      * @return the virtual network associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    Network primaryNetwork() throws CloudException, IOException;
+    Network primaryNetwork();
 
     /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.
@@ -135,10 +129,13 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the Network Security Group resource.
      *
      * @return the network security group associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
+    NetworkSecurityGroup getNetworkSecurityGroup();
+
+    /**
+     * @return the resource ID of the associated virtual machine, or null if none.
+     */
+    String virtualMachineId();
 
     // Setters (fluent)
 

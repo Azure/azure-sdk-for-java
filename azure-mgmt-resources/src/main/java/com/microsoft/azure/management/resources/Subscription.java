@@ -6,14 +6,11 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.SubscriptionInner;
-
-import java.io.IOException;
 
 /**
  * An immutable client-side representation of an Azure subscription.
@@ -46,10 +43,8 @@ public interface Subscription extends
     /**
      * List the locations the subscription has access to.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      * @return the lazy list of locations
      */
 
-    PagedList<Location> listLocations() throws IOException, CloudException;
+    PagedList<Location> listLocations();
 }

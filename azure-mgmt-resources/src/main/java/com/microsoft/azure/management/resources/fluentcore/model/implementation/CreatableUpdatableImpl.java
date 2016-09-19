@@ -17,8 +17,14 @@ import com.microsoft.rest.ServiceCallback;
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
-public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
-        extends CreatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+public abstract class CreatableUpdatableImpl<
+            FluentModelT,
+            InnerModelT,
+            FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+        extends CreatableImpl<
+            FluentModelT,
+            InnerModelT,
+            FluentModelImplT>
         implements Appliable<FluentModelT> {
 
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {
@@ -40,7 +46,7 @@ public abstract class CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentMo
     }
 
     @Override
-    public FluentModelT apply() throws Exception {
+    public FluentModelT apply() {
         return applyAsync().toBlocking().last();
     }
 

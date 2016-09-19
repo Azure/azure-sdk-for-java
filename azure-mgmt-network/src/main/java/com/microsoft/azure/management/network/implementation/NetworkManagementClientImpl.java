@@ -488,12 +488,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * Checks whether a domain name in the cloudapp.net zone is available for use.
      *
      * @param location The location of the domain name
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
-    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) throws CloudException, IOException, IllegalArgumentException {
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location) {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location).toBlocking().single().getBody();
     }
 
@@ -559,12 +556,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      *
      * @param location The location of the domain name
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DnsNameAvailabilityResultInner object if successful.
      */
-    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) throws CloudException, IOException, IllegalArgumentException {
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(String location, String domainNameLabel) {
         return checkDnsNameAvailabilityWithServiceResponseAsync(location, domainNameLabel).toBlocking().single().getBody();
     }
 

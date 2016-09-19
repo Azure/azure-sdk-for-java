@@ -17,7 +17,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -164,13 +163,9 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineCaptureResultInner object if successful.
      */
-    public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
         return captureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
     }
 
@@ -239,12 +234,9 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineCaptureResultInner object if successful.
      */
-    public VirtualMachineCaptureResultInner beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineCaptureResultInner beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParametersInner parameters) {
         return beginCaptureWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
     }
 
@@ -331,13 +323,9 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the VirtualMachineInner object if successful.
      */
-    public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().last().getBody();
     }
 
@@ -406,12 +394,9 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineInner object if successful.
      */
-    public VirtualMachineInner beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineInner beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, vmName, parameters).toBlocking().single().getBody();
     }
 
@@ -497,12 +482,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String vmName) {
         deleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -563,11 +544,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String vmName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -645,12 +623,9 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineInner object if successful.
      */
-    public VirtualMachineInner get(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineInner get(String resourceGroupName, String vmName) {
         return getWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -723,12 +698,9 @@ public final class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation. Possible values include: 'instanceView'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the VirtualMachineInner object if successful.
      */
-    public VirtualMachineInner get(String resourceGroupName, String vmName, InstanceViewTypes expand) throws CloudException, IOException, IllegalArgumentException {
+    public VirtualMachineInner get(String resourceGroupName, String vmName, InstanceViewTypes expand) {
         return getWithServiceResponseAsync(resourceGroupName, vmName, expand).toBlocking().single().getBody();
     }
 
@@ -809,12 +781,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void deallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void deallocate(String resourceGroupName, String vmName) {
         deallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -875,11 +843,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDeallocate(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDeallocate(String resourceGroupName, String vmName) {
         beginDeallocateWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -956,11 +921,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void generalize(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void generalize(String resourceGroupName, String vmName) {
         generalizeWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1036,16 +998,13 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> list(final String resourceGroupName) {
         ServiceResponse<Page<VirtualMachineInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1146,16 +1105,13 @@ public final class VirtualMachinesInner {
     /**
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listAll() {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1251,12 +1207,9 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;VirtualMachineSizeInner&gt; object if successful.
      */
-    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName) {
         return listAvailableSizesWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1335,12 +1288,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void powerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void powerOff(String resourceGroupName, String vmName) {
         powerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -1401,11 +1350,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginPowerOff(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginPowerOff(String resourceGroupName, String vmName) {
         beginPowerOffWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1482,12 +1428,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void restart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void restart(String resourceGroupName, String vmName) {
         restartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -1548,11 +1490,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginRestart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginRestart(String resourceGroupName, String vmName) {
         beginRestartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1629,12 +1568,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void start(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void start(String resourceGroupName, String vmName) {
         startWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -1695,11 +1630,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginStart(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginStart(String resourceGroupName, String vmName) {
         beginStartWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1776,12 +1708,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void redeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void redeploy(String resourceGroupName, String vmName) {
         redeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().last().getBody();
     }
 
@@ -1842,11 +1770,8 @@ public final class VirtualMachinesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginRedeploy(String resourceGroupName, String vmName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginRedeploy(String resourceGroupName, String vmName) {
         beginRedeployWithServiceResponseAsync(resourceGroupName, vmName).toBlocking().single().getBody();
     }
 
@@ -1922,16 +1847,13 @@ public final class VirtualMachinesInner {
      * The operation to list virtual machines under a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -2028,16 +1950,13 @@ public final class VirtualMachinesInner {
      * Gets the list of Virtual Machines in the subscription. Use nextLink property in the response to get the next page of Virtual Machines. Do this till nextLink is not null to fetch all the Virtual Machines.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;VirtualMachineInner&gt; object if successful.
      */
-    public PagedList<VirtualMachineInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<VirtualMachineInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<VirtualMachineInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<VirtualMachineInner>(response.getBody()) {
             @Override
-            public Page<VirtualMachineInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

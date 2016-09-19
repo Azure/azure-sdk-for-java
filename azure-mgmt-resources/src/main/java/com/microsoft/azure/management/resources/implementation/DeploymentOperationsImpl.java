@@ -6,14 +6,11 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.DeploymentOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link DeploymentOperations}.
@@ -31,12 +28,12 @@ final class DeploymentOperationsImpl
     }
 
     @Override
-    public PagedList<DeploymentOperation> list() throws CloudException, IOException {
+    public PagedList<DeploymentOperation> list() {
         return wrapList(client.list(deployment.resourceGroupName(), deployment.name()));
     }
 
     @Override
-    public DeploymentOperation getById(String operationId) throws CloudException, IllegalArgumentException, IOException {
+    public DeploymentOperation getById(String operationId) {
         return wrapModel(client.get(deployment.resourceGroupName(), deployment.name(), operationId));
     }
 

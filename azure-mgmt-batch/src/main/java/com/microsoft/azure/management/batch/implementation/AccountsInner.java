@@ -18,7 +18,6 @@ import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.BatchAccountRegenerateKeyParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -126,13 +125,9 @@ public final class AccountsInner {
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the AccountResourceInner object if successful.
      */
-    public AccountResourceInner create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public AccountResourceInner create(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().getBody();
     }
 
@@ -201,12 +196,9 @@ public final class AccountsInner {
      * @param resourceGroupName The name of the resource group that contains the new Batch account.
      * @param accountName A name for the Batch account which must be unique within the region. Batch account names must be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name that is used to access the Batch service in the region in which the account is created. For example: http://accountname.region.batch.azure.com/.
      * @param parameters Additional parameters for account creation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AccountResourceInner object if successful.
      */
-    public AccountResourceInner beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public AccountResourceInner beginCreate(String resourceGroupName, String accountName, BatchAccountCreateParametersInner parameters) {
         return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
@@ -293,12 +285,9 @@ public final class AccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param parameters Additional parameters for account update.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AccountResourceInner object if successful.
      */
-    public AccountResourceInner update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public AccountResourceInner update(String resourceGroupName, String accountName, BatchAccountUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().getBody();
     }
 
@@ -383,12 +372,8 @@ public final class AccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String accountName) {
         deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().getBody();
     }
 
@@ -449,11 +434,8 @@ public final class AccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account to be deleted.
      * @param accountName The name of the account to be deleted.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String accountName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -532,12 +514,9 @@ public final class AccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AccountResourceInner object if successful.
      */
-    public AccountResourceInner get(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public AccountResourceInner get(String resourceGroupName, String accountName) {
         return getWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -613,16 +592,13 @@ public final class AccountsInner {
     /**
      * Gets information about the Batch accounts associated with the subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public PagedList<AccountResourceInner> list() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> list() {
         ServiceResponse<Page<AccountResourceInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
-            public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<AccountResourceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -717,16 +693,13 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param resourceGroupName The name of the resource group whose Batch accounts to list.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public PagedList<AccountResourceInner> listByResourceGroup(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listByResourceGroup(final String resourceGroupName) {
         ServiceResponse<Page<AccountResourceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
-            public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<AccountResourceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -829,11 +802,8 @@ public final class AccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public void synchronizeAutoStorageKeys(String resourceGroupName, String accountName) {
         synchronizeAutoStorageKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -911,12 +881,9 @@ public final class AccountsInner {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
      * @param keyName The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BatchAccountRegenerateKeyResultInner object if successful.
      */
-    public BatchAccountRegenerateKeyResultInner regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) throws CloudException, IOException, IllegalArgumentException {
+    public BatchAccountRegenerateKeyResultInner regenerateKey(String resourceGroupName, String accountName, AccountKeyType keyName) {
         return regenerateKeyWithServiceResponseAsync(resourceGroupName, accountName, keyName).toBlocking().single().getBody();
     }
 
@@ -1002,12 +969,9 @@ public final class AccountsInner {
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the account.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the BatchAccountListKeyResultInner object if successful.
      */
-    public BatchAccountListKeyResultInner listKeys(String resourceGroupName, String accountName) throws CloudException, IOException, IllegalArgumentException {
+    public BatchAccountListKeyResultInner listKeys(String resourceGroupName, String accountName) {
         return listKeysWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().getBody();
     }
 
@@ -1084,16 +1048,13 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated with the subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public PagedList<AccountResourceInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<AccountResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
-            public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<AccountResourceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1190,16 +1151,13 @@ public final class AccountsInner {
      * Gets information about the Batch accounts associated within the specified resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;AccountResourceInner&gt; object if successful.
      */
-    public PagedList<AccountResourceInner> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<AccountResourceInner> listByResourceGroupNext(final String nextPageLink) {
         ServiceResponse<Page<AccountResourceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<AccountResourceInner>(response.getBody()) {
             @Override
-            public Page<AccountResourceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<AccountResourceInner> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

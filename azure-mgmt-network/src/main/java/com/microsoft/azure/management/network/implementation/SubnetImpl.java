@@ -5,9 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.io.IOException;
-
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
@@ -20,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  */
 @LangDefinition
 class SubnetImpl
-    extends ChildResourceImpl<SubnetInner, NetworkImpl>
+    extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     implements
         Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
@@ -43,7 +40,7 @@ class SubnetImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() throws CloudException, IllegalArgumentException, IOException {
+    public NetworkSecurityGroup networkSecurityGroup() {
         SubResource nsgResource = this.inner().networkSecurityGroup();
         if (nsgResource == null) {
             return null;

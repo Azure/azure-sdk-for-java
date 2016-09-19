@@ -17,6 +17,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.keyvault.KeyIdentifier;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A KeyBundle consisting of a WebKey plus its Attributes.
@@ -36,6 +39,13 @@ public class KeyBundle {
      * Application-specific metadata in the form of key-value pairs.
      */
     private Map<String, String> tags;
+
+    /**
+     * True if the key's lifetime is managed by key vault i.e. if this is a
+     * key backing a certificate, then managed will be true.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean managed;
 
     /**
      * Get the key value.
@@ -98,6 +108,15 @@ public class KeyBundle {
     }
 
     /**
+     * Get the managed value.
+     *
+     * @return the managed value
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
      * The key identifier.
      * @return identifier for the key
      */
@@ -110,7 +129,8 @@ public class KeyBundle {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {

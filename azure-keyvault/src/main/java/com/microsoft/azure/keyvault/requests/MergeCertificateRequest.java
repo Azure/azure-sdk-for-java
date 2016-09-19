@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
 
 /**
@@ -54,8 +55,8 @@ public final class MergeCertificateRequest {
          *            The attributes of the certificate.
          * @return the Builder object itself.
          */
-        public Builder withAttributes(CertificateAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (CertificateAttributes) attributes;
             return this;
         }
 

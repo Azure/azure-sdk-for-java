@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -16,27 +15,28 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HEAD;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
 import rx.Observable;
+import rx.functions.Func1;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -115,12 +115,8 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String deploymentName) {
         deleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().last().getBody();
     }
 
@@ -181,11 +177,8 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment to be deleted.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String deploymentName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
@@ -263,12 +256,9 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group to check. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the boolean object if successful.
      */
-    public boolean checkExistence(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public boolean checkExistence(String resourceGroupName, String deploymentName) {
         return checkExistenceWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
@@ -348,13 +338,9 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the DeploymentExtendedInner object if successful.
      */
-    public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().last().getBody();
     }
 
@@ -423,12 +409,9 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentExtendedInner object if successful.
      */
-    public DeploymentExtendedInner beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentExtendedInner beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
     }
 
@@ -514,12 +497,9 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentExtendedInner object if successful.
      */
-    public DeploymentExtendedInner get(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentExtendedInner get(String resourceGroupName, String deploymentName) {
         return getWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
@@ -597,11 +577,8 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void cancel(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public void cancel(String resourceGroupName, String deploymentName) {
         cancelWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
@@ -679,12 +656,9 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment to validate.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentValidateResultInner object if successful.
      */
-    public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return validateWithServiceResponseAsync(resourceGroupName, deploymentName, parameters).toBlocking().single().getBody();
     }
 
@@ -770,12 +744,9 @@ public final class DeploymentsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the DeploymentExportResultInner object if successful.
      */
-    public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) throws CloudException, IOException, IllegalArgumentException {
+    public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) {
         return exportTemplateWithServiceResponseAsync(resourceGroupName, deploymentName).toBlocking().single().getBody();
     }
 
@@ -852,16 +823,13 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
-            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -960,16 +928,13 @@ public final class DeploymentsInner {
      * @param resourceGroupName The name of the resource group to filter by. The name is case insensitive.
      * @param filter The filter to apply on the operation.
      * @param top Query parameters. If null is passed returns all deployments.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName, final String filter, final Integer top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> list(final String resourceGroupName, final String filter, final Integer top) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listSinglePageAsync(resourceGroupName, filter, top).toBlocking().single();
         return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
-            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1079,16 +1044,13 @@ public final class DeploymentsInner {
      * Get a list of deployments.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;DeploymentExtendedInner&gt; object if successful.
      */
-    public PagedList<DeploymentExtendedInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<DeploymentExtendedInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<DeploymentExtendedInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<DeploymentExtendedInner>(response.getBody()) {
             @Override
-            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<DeploymentExtendedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

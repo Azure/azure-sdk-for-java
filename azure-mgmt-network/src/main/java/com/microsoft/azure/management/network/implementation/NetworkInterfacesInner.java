@@ -16,7 +16,6 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -142,12 +141,8 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      */
-    public void delete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public void delete(String resourceGroupName, String networkInterfaceName) {
         deleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
@@ -208,11 +203,8 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      */
-    public void beginDelete(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+    public void beginDelete(String resourceGroupName, String networkInterfaceName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
@@ -291,12 +283,9 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName) {
         return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
@@ -369,12 +358,9 @@ public final class NetworkInterfacesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkInterfaceInner get(String resourceGroupName, String networkInterfaceName, String expand) {
         return getWithServiceResponseAsync(resourceGroupName, networkInterfaceName, expand).toBlocking().single().getBody();
     }
 
@@ -456,13 +442,9 @@ public final class NetworkInterfacesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create/update NetworkInterface operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().last().getBody();
     }
 
@@ -531,12 +513,9 @@ public final class NetworkInterfacesInner {
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param parameters Parameters supplied to the create/update NetworkInterface operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkInterfaceInner beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, networkInterfaceName, parameters).toBlocking().single().getBody();
     }
 
@@ -623,16 +602,13 @@ public final class NetworkInterfacesInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -749,16 +725,13 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(final String resourceGroupName, final String virtualMachineScaleSetName) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -870,12 +843,9 @@ public final class NetworkInterfacesInner {
      * @param virtualMachineScaleSetName The name of the virtual machine scale set.
      * @param virtualmachineIndex The virtual machine index.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
         return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName).toBlocking().single().getBody();
     }
 
@@ -962,12 +932,9 @@ public final class NetworkInterfacesInner {
      * @param virtualmachineIndex The virtual machine index.
      * @param networkInterfaceName The name of the network interface.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the NetworkInterfaceInner object if successful.
      */
-    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand) {
         return getVirtualMachineScaleSetNetworkInterfaceWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand).toBlocking().single().getBody();
     }
 
@@ -1058,16 +1025,13 @@ public final class NetworkInterfacesInner {
     /**
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listAll() {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllSinglePageAsync().toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1162,16 +1126,13 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> list(final String resourceGroupName) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1274,13 +1235,9 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the EffectiveRouteListResultInner object if successful.
      */
-    public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return getEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
@@ -1341,12 +1298,9 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the EffectiveRouteListResultInner object if successful.
      */
-    public EffectiveRouteListResultInner beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+    public EffectiveRouteListResultInner beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return beginGetEffectiveRouteTableWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
@@ -1425,13 +1379,9 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
      * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
-    public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
         return listEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().last().getBody();
     }
 
@@ -1492,12 +1442,9 @@ public final class NetworkInterfacesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the EffectiveNetworkSecurityGroupListResultInner object if successful.
      */
-    public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) throws CloudException, IOException, IllegalArgumentException {
+    public EffectiveNetworkSecurityGroupListResultInner beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
         return beginListEffectiveNetworkSecurityGroupsWithServiceResponseAsync(resourceGroupName, networkInterfaceName).toBlocking().single().getBody();
     }
 
@@ -1575,16 +1522,13 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine from a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1681,16 +1625,13 @@ public final class NetworkInterfacesInner {
      * The list network interface operation retrieves information about all network interfaces in a virtual machine scale set.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1787,16 +1728,13 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listAllNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
@@ -1893,16 +1831,13 @@ public final class NetworkInterfacesInner {
      * The List networkInterfaces operation retrieves all the networkInterfaces in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the PagedList&lt;NetworkInterfaceInner&gt; object if successful.
      */
-    public PagedList<NetworkInterfaceInner> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<NetworkInterfaceInner> listNext(final String nextPageLink) {
         ServiceResponse<Page<NetworkInterfaceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<NetworkInterfaceInner>(response.getBody()) {
             @Override
-            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<NetworkInterfaceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };

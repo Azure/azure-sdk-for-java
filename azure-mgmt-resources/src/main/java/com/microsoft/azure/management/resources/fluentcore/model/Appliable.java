@@ -22,9 +22,8 @@ public interface Appliable<T> extends Indexable {
      * Execute the update request.
      *
      * @return the updated resource
-     * @throws Exception exceptions from Azure
      */
-    T apply() throws Exception;
+    T apply();
 
     /**
      * Execute the update request asynchronously.

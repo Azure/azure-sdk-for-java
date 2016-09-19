@@ -73,7 +73,7 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySet refresh() throws Exception {
+    public AvailabilitySet refresh() {
         AvailabilitySetInner response = client.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         this.idOfVMsInSet = null;
@@ -93,8 +93,8 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public Observable<AvailabilitySet> applyAsync() {
-        return this.createAsync();
+    public Observable<AvailabilitySet> applyUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     // CreatorTaskGroup.ResourceCreator implementation

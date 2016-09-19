@@ -13,6 +13,7 @@ package com.microsoft.azure.keyvault.models;
 import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 /**
  * The key update parameters.
@@ -23,7 +24,7 @@ public class KeyUpdateParameters {
      * operations, see JsonWebKeyOperation.
      */
     @JsonProperty(value = "key_ops")
-    private List<String> keyOps;
+    private List<JsonWebKeyOperation> keyOps;
 
     /**
      * The keyAttributes property.
@@ -41,7 +42,7 @@ public class KeyUpdateParameters {
      *
      * @return the keyOps value
      */
-    public List<String> keyOps() {
+    public List<JsonWebKeyOperation> keyOps() {
         return this.keyOps;
     }
 
@@ -51,7 +52,7 @@ public class KeyUpdateParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyUpdateParameters object itself.
      */
-    public KeyUpdateParameters withKeyOps(List<String> keyOps) {
+    public KeyUpdateParameters withKeyOps(List<JsonWebKeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }

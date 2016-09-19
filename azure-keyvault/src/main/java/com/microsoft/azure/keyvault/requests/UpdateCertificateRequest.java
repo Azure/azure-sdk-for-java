@@ -1,9 +1,17 @@
 package com.microsoft.azure.keyvault.requests;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
+import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
+import com.microsoft.azure.keyvault.models.CertificatePolicy;
+import com.microsoft.azure.keyvault.models.IssuerReference;
+import com.microsoft.azure.keyvault.models.KeyProperties;
+import com.microsoft.azure.keyvault.models.LifetimeAction;
+import com.microsoft.azure.keyvault.models.SecretProperties;
+import com.microsoft.azure.keyvault.models.X509CertificateProperties;
 
 /**
  * The update certificate request class.
@@ -12,6 +20,7 @@ public final class UpdateCertificateRequest {
     private final String vaultBaseUrl;
     private final String certificateName;
     private final String certificateVersion;
+    private final CertificatePolicy certificatePolicy;
     private final CertificateAttributes certificateAttributes;
     private final Map<String, String> tags;
 
@@ -28,6 +37,7 @@ public final class UpdateCertificateRequest {
         private String certificateVersion;
         private CertificateAttributes attributes;
         private Map<String, String> tags;
+        private CertificatePolicy policy;
 
         /**
          * The builder for constructing {@link UpdateCertificateRequest} object.
@@ -53,6 +63,19 @@ public final class UpdateCertificateRequest {
             this.certificateVersion = version;
             return this;
         }
+        
+        /**
+         * Set the certificatePolicy value. Mandatory if sending the create
+         * request for the first time.
+         * 
+         * @param certificatePolicy
+         *            The management policy for the certificate.
+         * @return the Builder object itself.
+         */
+        public Builder withPolicy(CertificatePolicy certificatePolicy) {
+            this.policy = certificatePolicy;
+            return this;
+        }
 
         /**
          * Set the attributes value.
@@ -61,8 +84,8 @@ public final class UpdateCertificateRequest {
          *            The attributes of the certificate.
          * @return the Builder object itself.
          */
-        public Builder withAttributes(CertificateAttributes attributes) {
-            this.attributes = attributes;
+        public Builder withAttributes(Attributes attributes) {
+            this.attributes = (CertificateAttributes) attributes;
             return this;
         }
 
@@ -107,6 +130,45 @@ public final class UpdateCertificateRequest {
         } else {
             tags = null;
         }
+        
+        if (builder.policy != null) {
+            certificatePolicy = new CertificatePolicy();
+            if (builder.policy.attributes() != null) {
+                certificatePolicy.withAttributes((CertificateAttributes) new CertificateAttributes()
+                        .withEnabled(builder.policy.attributes().enabled())
+                        .withExpires(builder.policy.attributes().expires())
+                        .withNotBefore(builder.policy.attributes().notBefore()));
+            }
+            if (builder.policy.issuerReference() != null) {
+                certificatePolicy
+                        .withIssuerReference(new IssuerReference().withName(builder.policy.issuerReference().name()));
+            }
+            if (builder.policy.x509CertificateProperties() != null) {
+                certificatePolicy.withX509CertificateProperties(new X509CertificateProperties()
+                        .withValidityInMonths(builder.policy.x509CertificateProperties().validityInMonths())
+                        .withSubjectAlternativeNames(
+                                builder.policy.x509CertificateProperties().subjectAlternativeNames())
+                        .withSubject(builder.policy.x509CertificateProperties().subject())
+                        .withEkus(builder.policy.x509CertificateProperties().ekus())
+                        .withKeyUsage(builder.policy.x509CertificateProperties().keyUsage()));
+            }
+            if (builder.policy.lifetimeActions() != null) {
+                certificatePolicy.withLifetimeActions(new ArrayList<LifetimeAction>(builder.policy.lifetimeActions()));
+            }
+            if (builder.policy.keyProperties() != null) {
+                certificatePolicy.withKeyProperties(
+                        new KeyProperties().withExportable(builder.policy.keyProperties().exportable())
+                                .withKeySize(builder.policy.keyProperties().keySize())
+                                .withKeyType(builder.policy.keyProperties().keyType())
+                                .withReuseKey(builder.policy.keyProperties().reuseKey()));
+            }
+            if (builder.policy.secretProperties() != null) {
+                certificatePolicy.withSecretProperties(
+                        new SecretProperties().withContentType(builder.policy.secretProperties().contentType()));
+            }
+        } else {
+            certificatePolicy = new CertificatePolicy();
+        }
     }
 
     /**
@@ -130,6 +192,13 @@ public final class UpdateCertificateRequest {
         return certificateVersion;
     }
 
+    /**
+     * @return the certificate policy
+     */
+    public CertificatePolicy certificatePolicy() {
+        return certificatePolicy;
+    }
+    
     /**
      * @return the certificate attributes
      */

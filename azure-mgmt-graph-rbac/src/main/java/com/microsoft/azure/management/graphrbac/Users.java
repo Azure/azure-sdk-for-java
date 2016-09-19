@@ -13,8 +13,6 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
-import java.io.IOException;
-
 /**
  * Entry point to AD user management API.
  */
@@ -27,20 +25,16 @@ public interface Users extends
      *
      * @param objectId the unique object id
      * @return an immutable representation of the resource
-     * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException exceptions thrown from serialization/deserialization
      */
-    User getByObjectId(String objectId) throws GraphErrorException, IOException;
+    User getByObjectId(String objectId);
 
     /**
      * Gets the information about a user.
      *
      * @param upn the user principal name
      * @return an immutable representation of the resource
-     * @throws GraphErrorException exceptions thrown from the graph API
-     * @throws IOException exceptions thrown from serialization/deserialization
      */
-    User getByUserPrincipalName(String upn) throws GraphErrorException, IOException;
+    User getByUserPrincipalName(String upn);
 
     /**
      * Gets the information about a user.

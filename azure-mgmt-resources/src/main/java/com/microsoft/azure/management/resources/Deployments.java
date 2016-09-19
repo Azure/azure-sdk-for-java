@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -16,8 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-
-import java.io.IOException;
 
 /**
  * Entry point to template deployment in Azure.
@@ -38,8 +35,6 @@ public interface Deployments extends
      * @param resourceGroupName the resource group's name
      * @param deploymentName the deployment's name
      * @return true if the deployment exists; false otherwise
-     * @throws IOException serialization failures
-     * @throws CloudException failures thrown from Azure
      */
-    boolean checkExistence(String resourceGroupName, String deploymentName) throws IOException, CloudException;
+    boolean checkExistence(String resourceGroupName, String deploymentName);
 }

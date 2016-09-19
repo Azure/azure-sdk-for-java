@@ -61,12 +61,9 @@ public final class ObjectsInner {
     /**
      * Gets the details for current logged in user.
      *
-     * @throws GraphErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the AADObjectInner object if successful.
      */
-    public AADObjectInner getCurrentUser() throws GraphErrorException, IOException, IllegalArgumentException {
+    public AADObjectInner getCurrentUser() {
         return getCurrentUserWithServiceResponseAsync().toBlocking().single().getBody();
     }
 

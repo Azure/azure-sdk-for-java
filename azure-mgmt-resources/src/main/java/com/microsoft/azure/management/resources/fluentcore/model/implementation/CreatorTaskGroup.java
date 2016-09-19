@@ -26,14 +26,20 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
          * Creates the resource synchronously.
          *
          * @return the created resource
-         * @throws Exception
          */
-        T createResource() throws Exception;
+        T createResource();
 
         /**
          * @return Gets the task group.
          */
         CreatorTaskGroup<T> creatorTaskGroup();
+
+        /**
+         * Creates or updates the resource asynchronously.
+         *
+         * @return the observable reference
+         */
+        Observable<T> executeCreateOrUpdateAsync();
     }
 
     /**
