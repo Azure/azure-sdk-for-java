@@ -58,15 +58,14 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
                 .withShardCount(10)
-                .withPatchSchedule(DayOfWeek.SUNDAY, 10, Period.minutes(302))
-                .withNonSslPortDisabled();
+                .withPatchSchedule(DayOfWeek.SUNDAY, 10, Period.minutes(302));
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
                 .define(RR_NAME_THIRD)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku(2)
                 .withRedisConfiguration("maxclients", "2")
-                .withNonSslPortEnabled();
+                .withNonSslPort();
 
         CreatedResources<RedisCache> batchRedisCaches = redisManager.redisCaches()
                 .create(redisCacheDefinition1, redisCacheDefinition2, redisCacheDefinition3);
@@ -186,7 +185,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
                                     .getById(premiumCache.id())
                                     .asPremium()
                                     .getPatchSchedules();
-        Assert.assertEquals(0, patchSchedule.size());
+        Assert.assertNull(patchSchedule);
 
         // currently throws because SAS url of the container should be provided as
         // {"error":{

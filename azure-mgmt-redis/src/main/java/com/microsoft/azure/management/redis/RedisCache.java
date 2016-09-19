@@ -75,9 +75,9 @@ public interface RedisCache extends
     Map<String, String> redisConfiguration();
 
     /**
-     * @return the enableNonSslPort value
+     * @return true id non SSL port is enabled, false otherwise
      */
-    boolean enableNonSslPort();
+    boolean nonSslPort();
 
     /**
      * @return the shardCount value
@@ -208,14 +208,7 @@ public interface RedisCache extends
               *
               * @return the next stage of Redis Cache definition.
               */
-             WithCreate withNonSslPortEnabled();
-
-             /**
-              * Disables non-ssl Redis server port (6379).
-              *
-              * @return the next stage of Redis Cache definition.
-              */
-             WithCreate withNonSslPortDisabled();
+             WithCreate withNonSslPort();
 
              /**
               * All Redis Settings. Few possible keys:
@@ -243,13 +236,13 @@ public interface RedisCache extends
              WithCreate withRedisConfiguration(String key, String value);
 
              /**
-              * The full resource ID of a subnet in a virtual network to deploy the Redis Cache in.
-              * Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+              * Assigns the specified subnet to this instance of Redis Cache.
               *
-              * @param subnetId the subnetId value to set.
+              * @param networkResource instance of Network object.
+              * @param subnetName the name of the subnet.
               * @return the next stage of Redis Cache definition.
               */
-             WithCreate withSubnetId(String subnetId);
+             WithCreate withSubnet(GroupableResource networkResource, String subnetName);
 
              /**
               * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.
@@ -367,14 +360,14 @@ public interface RedisCache extends
              *
              * @return the next stage of Redis Cache update.
              */
-            Update withNonSslPortEnabled();
+            Update withNonSslPort();
 
             /**
              * Disables non-ssl Redis server port (6379).
              *
              * @return the next stage of Redis Cache update.
              */
-            Update withNonSslPortDisabled();
+            Update withoutNonSslPort();
         }
 
         /**
@@ -434,13 +427,13 @@ public interface RedisCache extends
             UpdateStages.WithRedisConfiguration {
 
         /**
-         * The full resource ID of a subnet in a virtual network to deploy the Redis Cache in.
-         * Example format: /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+         * Assigns the specified subnet to this instance of Redis Cache.
          *
-         * @param subnetId the subnetId value to set.
+         * @param networkResource instance of Network object.
+         * @param subnetName the name of the subnet.
          * @return the next stage of Redis Cache update.
          */
-        Update withSubnetId(String subnetId);
+        Update withSubnet(GroupableResource networkResource, String subnetName);
 
         /**
          * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.

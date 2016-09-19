@@ -16,6 +16,7 @@ import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.redis.Sku;
 import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import org.joda.time.Period;
 import rx.Observable;
@@ -91,7 +92,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public boolean enableNonSslPort() {
+    public boolean nonSslPort() {
         return this.inner().enableNonSslPort();
     }
 
@@ -211,7 +212,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withNonSslPortEnabled() {
+    public RedisCacheImpl withNonSslPort() {
         if (isInCreateMode()) {
             createParameters.withEnableNonSslPort(true);
         } else {
@@ -221,10 +222,8 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withNonSslPortDisabled() {
-        if (isInCreateMode()) {
-            createParameters.withEnableNonSslPort(false);
-        } else {
+    public RedisCacheImpl withoutNonSslPort() {
+        if (!isInCreateMode()) {
             updateParameters.withEnableNonSslPort(false);
         }
         return this;
@@ -273,11 +272,14 @@ class RedisCacheImpl
     }
 
     @Override
-    public RedisCacheImpl withSubnetId(String subnetId) {
-        if (isInCreateMode()) {
-            createParameters.withSubnetId(subnetId);
-        } else {
-            updateParameters.withSubnetId(subnetId);
+    public RedisCacheImpl withSubnet(GroupableResource networkResource, String subnetName) {
+        if(networkResource != null) {
+            String subnetId = networkResource.id() + "/subnets/" + subnetName;
+            if (isInCreateMode()) {
+                createParameters.withSubnetId(subnetId);
+            } else {
+                updateParameters.withSubnetId(subnetId);
+            }
         }
         return this;
     }
