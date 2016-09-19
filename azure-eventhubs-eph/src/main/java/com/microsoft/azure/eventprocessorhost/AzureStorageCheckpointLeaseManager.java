@@ -513,7 +513,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private AzureBlobLease downloadLease(CloudBlockBlob blob) throws StorageException, IOException
     {
     	String jsonLease = blob.downloadText();
-    	//this.host.logWithHost(Level.FINE, "Raw JSON downloaded: " + jsonLease);
+    	this.host.logWithHost(Level.FINEST, "Raw JSON downloaded: " + jsonLease);
     	AzureBlobLease rehydrated = this.gson.fromJson(jsonLease, AzureBlobLease.class);
     	AzureBlobLease blobLease = new AzureBlobLease(rehydrated, blob);
     	return blobLease;
@@ -525,7 +525,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
  		blob.uploadText(jsonLease, null, condition, null, null);
 		// During create, we blindly try upload and it may throw. Doing the logging after the upload
 		// avoids a spurious trace in that case.
-		//this.host.logWithHostAndPartition(Level.FINE, lease.getPartitionId(), "Raw JSON uploading for " + activity + ": " + jsonLease);
+		this.host.logWithHostAndPartition(Level.FINEST, lease.getPartitionId(), "Raw JSON uploading for " + activity + ": " + jsonLease);
     }
     
     private boolean wasLeaseLost(StorageException se, String partitionId)
