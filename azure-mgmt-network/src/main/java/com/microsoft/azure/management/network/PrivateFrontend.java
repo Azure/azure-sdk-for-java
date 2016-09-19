@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
@@ -17,17 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 @LangDefinition()
 public interface PrivateFrontend extends
     Frontend,
-    HasPrivateIpAddress {
-
-    /**
-     * @return the resource ID of the virtual network whose subnet is associated with this frontend
-     */
-    String networkId();
-
-    /**
-     * @return the name of the subnet associated with this frontend
-     */
-    String subnetName();
+    HasPrivateIpAddress,
+    HasSubnet {
 
     /**
      * @return the private IP allocation method within the associated subnet for this private frontend
@@ -54,7 +46,7 @@ public interface PrivateFrontend extends
          * The stage of a private frontend definition allowing to specify a subnet from the selected network.
          * @param <ParentT> the next stage of the parent definition
          */
-        interface WithSubnet<ParentT> {
+        interface WithSubnet<ParentT> extends HasSubnet.DefinitionStages.WithSubnet<WithAttach<ParentT>> {
             /**
              * Assigns the specified subnet to this private frontend of an internal load balancer.
              * @param network the virtual network the subnet exists in

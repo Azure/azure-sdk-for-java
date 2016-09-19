@@ -142,10 +142,16 @@ class FrontendImpl
 
     @Override
     public FrontendImpl withExistingSubnet(Network network, String subnetName) {
+        return this.withExistingSubnet(network.id(), subnetName);
+    }
+
+    @Override
+    public FrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubResource subnetRef = new SubResource()
-                .withId(network.id() + "/subnets/" + subnetName);
-        this.inner().withSubnet(subnetRef);
-        this.inner().withPublicIPAddress(null); // Ensure no conflicting public and private settings
+                .withId(parentNetworkResourceId + "/subnets/" + subnetName);
+        this.inner()
+            .withSubnet(subnetRef)
+            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
         return this;
     }
 
