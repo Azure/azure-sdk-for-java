@@ -6,34 +6,17 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.redis.implementation.RedisAccessKeysInner;
-
 /**
  * The {@link RedisCache#keys} action result.
  */
-public class RedisAccessKeys {
-    private RedisAccessKeysInner inner;
-
+public interface RedisAccessKeys {
     /**
-     * Creates an instance of the Redis Access keys result object.
-     *
-     * @param inner the inner object
+     * @return a primary key value.
      */
-    public RedisAccessKeys(RedisAccessKeysInner inner) {
-        this.inner = inner;
-    }
-
-    /**
-     * @return a pri,ary key value.
-     */
-    public String primaryKey() {
-        return inner.primaryKey();
-    }
+    String primaryKey();
 
     /**
      * @return a secondary key value.
      */
-    public String secondaryKey() {
-        return inner.secondaryKey();
-    }
+    String secondaryKey();
 }

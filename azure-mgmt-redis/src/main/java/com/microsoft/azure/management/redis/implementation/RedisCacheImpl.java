@@ -143,7 +143,7 @@ class RedisCacheImpl
     public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
-        cachedAccessKeys = new RedisAccessKeys(response);
+        cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
 
@@ -151,7 +151,7 @@ class RedisCacheImpl
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyType);
-        cachedAccessKeys = new RedisAccessKeys(response);
+        cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
 
