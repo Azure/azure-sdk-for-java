@@ -10,9 +10,9 @@ package com.microsoft.azure.management.batch.implementation;
 
 
 /**
- * Values returned by the Get Subscription Quotas operation.
+ * Quotas associated with a Batch region for a particular subscription.
  */
-public class SubscriptionQuotasGetResultInner {
+public class BatchLocationQuotaInner {
     /**
      * The number of Batch accounts that may be created under the subscription
      * in the specified region.
@@ -32,9 +32,9 @@ public class SubscriptionQuotasGetResultInner {
      * Set the accountQuota value.
      *
      * @param accountQuota the accountQuota value to set
-     * @return the SubscriptionQuotasGetResultInner object itself.
+     * @return the BatchLocationQuotaInner object itself.
      */
-    public SubscriptionQuotasGetResultInner withAccountQuota(Integer accountQuota) {
+    public BatchLocationQuotaInner withAccountQuota(Integer accountQuota) {
         this.accountQuota = accountQuota;
         return this;
     }
