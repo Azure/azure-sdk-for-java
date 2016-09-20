@@ -34,7 +34,7 @@ public interface LoadBalancer extends
 
     // Getters
     /**
-     * @return resource IDs of the public IP addresses assigned to the front end of this load balancer
+     * @return resource IDs of the public IP addresses assigned to the frontends of this load balancer
      */
     List<String> publicIpAddressIds();
 
