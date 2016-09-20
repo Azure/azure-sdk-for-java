@@ -241,6 +241,15 @@ class NetworkInterfaceImpl
     // Getters
 
     @Override
+    public String virtualMachineId() {
+        if (this.inner().virtualMachine() != null) {
+            return this.inner().virtualMachine().id();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public boolean isIpForwardingEnabled() {
         return Utils.toPrimitiveBoolean(this.inner().enableIPForwarding());
     }
@@ -278,7 +287,7 @@ class NetworkInterfaceImpl
     @Override
     public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIp == null) {
-            this.primaryPublicIp = this.primaryIpConfiguration().publicIpAddress();
+            this.primaryPublicIp = this.primaryIpConfiguration().getPublicIpAddress();
         }
         return primaryPublicIp;
     }
@@ -291,7 +300,7 @@ class NetworkInterfaceImpl
     @Override
     public Network primaryNetwork() {
         if (this.primaryNetwork == null) {
-            this.primaryNetwork = this.primaryIpConfiguration().network();
+            this.primaryNetwork = this.primaryIpConfiguration().getNetwork();
         }
         return this.primaryNetwork;
     }
@@ -320,7 +329,7 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() {
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
             this.networkSecurityGroup = super.myManager

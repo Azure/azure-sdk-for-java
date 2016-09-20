@@ -24,7 +24,7 @@ public interface InboundNatRule extends
     HasProtocol<TransportProtocol>,
     HasFloatingIp,
     Wrapper<InboundNatRuleInner>,
-    ChildResource {
+    ChildResource<LoadBalancer> {
 
     /**
      * @return the name of the IP configuration within the network interface associated with this NAT rule

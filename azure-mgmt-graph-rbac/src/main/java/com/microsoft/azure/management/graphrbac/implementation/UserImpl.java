@@ -102,16 +102,17 @@ class UserImpl
 
     @Override
     public User refresh() {
-        return null;
+        setInner(client.get(name()));
+        return this;
     }
 
     @Override
     public Observable<User> createResourceAsync() {
-        return null;
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
     public Observable<User> applyAsync() {
-        return null;
+        throw new UnsupportedOperationException("not implemented yet");
     }
 }

@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @LangDefinition()
 public interface NetworkSecurityRule extends
     Wrapper<SecurityRuleInner>,
-    ChildResource {
+    ChildResource<NetworkSecurityGroup> {
 
     /**
      * @return the direction of the network traffic that the network security rule applies to.

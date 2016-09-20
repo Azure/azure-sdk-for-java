@@ -16,6 +16,7 @@ import rx.functions.Func1;
 /**
  * Implementation for BatchAccount and its parent interfaces.
  */
+@LangDefinition
 public class BatchAccountImpl
         extends
             GroupableResourceImpl<

@@ -10,7 +10,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
- * Entry point to Azure batch account resource management.
+ * Entry point to Azure Batch Account resource management.
  */
 public class BatchManager extends Manager<BatchManager, BatchManagementClientImpl> {
 

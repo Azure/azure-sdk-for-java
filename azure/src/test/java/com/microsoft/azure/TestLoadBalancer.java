@@ -8,6 +8,7 @@ package com.microsoft.azure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.junit.Assert;
 
@@ -48,7 +49,7 @@ public class TestLoadBalancer {
     static final String[] PIP_NAMES = {"pipa" + TEST_ID, "pipb" + TEST_ID};
     static final String[] VM_IDS = {
             "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest1",
-            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest2"
+            "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinslbtest/providers/Microsoft.Compute/virtualMachines/marcinslbtest3"
     };
 
     /**
@@ -168,7 +169,6 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             resource =  resource.update()
-                    //TODO .withExistingPublicIpAddress(pip)
                     .withoutFrontend("default")
                     .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
@@ -215,13 +215,11 @@ public class TestLoadBalancer {
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
 
                     // Frontends
-                    .withExistingPublicIpAddress(existingPips.get(0))
                     .definePublicFrontend("frontend1")
-                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .withExistingPublicIpAddress(existingPips.get(0))
                         .attach()
 
                     // Backends
-                    .withExistingVirtualMachines(existingVMs)
                     .defineBackend("backend1")
                         .attach()
 
@@ -259,13 +257,15 @@ public class TestLoadBalancer {
 
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
-            Assert.assertTrue(lb.frontends().containsKey("default"));
-            Assert.assertTrue(lb.frontends().size() == 2);
+            Assert.assertTrue(lb.frontends().size() == 1);
+
+            existingPips.get(0).refresh();
+            Assert.assertTrue(existingPips.get(0).getAssignedLoadBalancerFrontend().name().equalsIgnoreCase("frontend1"));
+            TestPublicIpAddress.printPIP(existingPips.get(0).refresh());
 
             // Verify backends
-            Assert.assertTrue(lb.backends().containsKey("default"));
             Assert.assertTrue(lb.backends().containsKey("backend1"));
-            Assert.assertTrue(lb.backends().size() == 2);
+            Assert.assertTrue(lb.backends().size() == 1);
 
             // Verify probes
             Assert.assertTrue(lb.httpProbes().containsKey("httpProbe1"));
@@ -295,8 +295,11 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            List<PublicIpAddress> existingPips = ensurePIPs(pips);
             resource =  resource.update()
-                    //TODO .withExistingPublicIpAddress(pip)
+                    .updateInternetFrontend("frontend1")
+                        .withExistingPublicIpAddress(existingPips.get(1))
+                        .parent()
                     .withoutFrontend("default")
                     .withoutBackend("default")
                     .withoutLoadBalancingRule("rule1")
@@ -369,9 +372,7 @@ public class TestLoadBalancer {
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
             PublicIpAddress pip = existingPips.get(1);
             resource =  resource.update()
-                    .updateInternetFrontend("default")
-                        .withExistingPublicIpAddress(pip)
-                        .parent()
+                    .withExistingPublicIpAddress(pip)
                     .updateTcpProbe("default")
                         .withPort(22)
                         .parent()
@@ -460,7 +461,7 @@ public class TestLoadBalancer {
                     // Frontend (default)
                     .withExistingSubnet(network, "subnet1")
                     // Backend (default)
-                    //TODO .withExistingVirtualMachines(existingVMs)
+                    .withExistingVirtualMachines(existingVMs)
                     .defineBackend("foo")
                     .attach()
                     // Probe (default)
@@ -780,9 +781,17 @@ public class TestLoadBalancer {
                     .append(" - IP Config: ").append(entry.getValue());
             }
 
+            // Show assigned virtual machines
+            Set<String> vmIds = backend.getVirtualMachineIds();
+            info.append("\n\t\t\tReferenced virtual machine ids: ")
+                .append(vmIds.size());
+            for (String vmId : vmIds) {
+                info.append("\n\t\t\t\tVM ID: ").append(vmId);
+            }
+
             // Show assigned load balancing rules
             info.append("\n\t\t\tReferenced load balancing rules: ")
-                .append(backend.loadBalancingRules().keySet().toArray(new String[0]));
+                .append(new ArrayList<String>(backend.loadBalancingRules().keySet()));
         }
 
         System.out.println(info.toString());

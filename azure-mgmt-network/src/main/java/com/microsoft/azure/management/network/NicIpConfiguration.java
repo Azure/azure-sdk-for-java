@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @LangDefinition()
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
-        ChildResource,
+        ChildResource<NetworkInterface>,
         HasPrivateIpAddress {
     // Getters
 
@@ -27,13 +27,9 @@ public interface NicIpConfiguration extends
     String publicIpAddressId();
 
     /**
-     * Gets the public IP address associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the public IP associated with this IP configuration or null if there is no public IP associated
      */
-    PublicIpAddress publicIpAddress();
+    PublicIpAddress getPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this IP configuration.
@@ -41,13 +37,14 @@ public interface NicIpConfiguration extends
     String subnetId();
 
     /**
-     * Gets the virtual network associated with this IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
      * @return the virtual network associated with this this IP configuration.
      */
-    Network network();
+    Network getNetwork();
+
+    /**
+     * @return private IP address version
+     */
+    IPVersion privateIpAddressVersion();
 
     // Setters (fluent)
 
@@ -134,6 +131,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -294,6 +297,12 @@ public interface NicIpConfiguration extends
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**
@@ -407,6 +416,12 @@ public interface NicIpConfiguration extends
          * The stage of the network interface IP configuration update allowing to specify private IP.
          */
         interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+            /**
+             * Specifies the IP version for the private IP address.
+             * @param ipVersion an IP version
+             * @return the next stage of the update
+             */
+            Update withPrivateIpVersion(IPVersion ipVersion);
         }
 
         /**

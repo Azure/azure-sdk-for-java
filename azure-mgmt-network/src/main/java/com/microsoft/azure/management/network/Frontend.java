@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 public interface Frontend extends
     Wrapper<FrontendIPConfigurationInner>,
-    ChildResource,
+    ChildResource<LoadBalancer>,
     HasLoadBalancingRules {
 
     /**
