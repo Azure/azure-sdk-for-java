@@ -35,18 +35,16 @@ public interface HasPublicIpAddress  {
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
-         * The stage of the network interface IP configuration definition allowing to associate it with
-         * a public IP address.
+         * The stage of the definition allowing to associate the resource with a public IP address.
          *
          * @param <ReturnT> the next stage of the definition
          */
         interface WithPublicIpAddress<ReturnT> {
             /**
-             * Create a new public IP address to associate with the network interface IP configuration,
-             * based on the provided definition.
+             * Creates a new public IP address to associate with the resource.
              *
              * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface IP configuration definition
+             * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
@@ -89,6 +87,55 @@ public interface HasPublicIpAddress  {
                 IsContainerOnly = true,
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
+        /**
+         * The stage definition allowing to associate the resource with a public IP address.
+         *
+         * @param <ReturnT> the next stage of the update
+         */
+        interface WithPublicIpAddress<ReturnT> {
+            /**
+             * Creates a new public IP address to associate with the resource, based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new public IP address
+             * @return the next stage of the update
+             */
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource and associates it with the resource.
+             * <p>
+             * The internal name and DNS label for the public IP address will be derived from the resource's name.
+             *
+             * @return the next stage of the update
+             */
+            ReturnT withNewPublicIpAddress();
+
+            /**
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
+             * and associates it with the resource.
+             * <p>
+             * The internal name for the public IP address will be derived from the DNS label.
+             *
+             * @param leafDnsLabel the leaf domain label
+             * @return the next stage of the update
+             */
+            ReturnT withNewPublicIpAddress(String leafDnsLabel);
+
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the update
+             */
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+
+            /**
+             * Removes the existing reference to a public IP address.
+             * 
+             * @return the next stage of the update.
+             */
+            ReturnT withoutPublicIpAddress();
+        }
     }
 
     /**
@@ -101,18 +148,16 @@ public interface HasPublicIpAddress  {
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
-         * The stage of the network interface IP configuration definition allowing to associate it with
-         * a public IP address.
+         * The stage of the definition allowing to associate the resource with a public IP address.
          *
          * @param <ReturnT> the next stage of the definition
          */
         interface WithPublicIpAddress<ReturnT> {
             /**
-             * Create a new public IP address to associate with the network interface IP configuration,
-             * based on the provided definition.
+             * Creates a new public IP address to associate with the resource, based on the provided definition.
              *
-             * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface IP configuration definition
+             * @param creatable a creatable definition for a new public IP address
+             * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
