@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Redis cache access keys.
@@ -17,12 +18,14 @@ public class RedisAccessKeysInner {
      * The current primary key that clients can use to authenticate with redis
      * cache.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /**
      * The current secondary key that clients can use to authenticate with
      * redis cache.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /**
@@ -35,34 +38,12 @@ public class RedisAccessKeysInner {
     }
 
     /**
-     * Set the primaryKey value.
-     *
-     * @param primaryKey the primaryKey value to set
-     * @return the RedisAccessKeysInner object itself.
-     */
-    public RedisAccessKeysInner withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
-        return this;
-    }
-
-    /**
      * Get the secondaryKey value.
      *
      * @return the secondaryKey value
      */
     public String secondaryKey() {
         return this.secondaryKey;
-    }
-
-    /**
-     * Set the secondaryKey value.
-     *
-     * @param secondaryKey the secondaryKey value to set
-     * @return the RedisAccessKeysInner object itself.
-     */
-    public RedisAccessKeysInner withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
-        return this;
     }
 
 }

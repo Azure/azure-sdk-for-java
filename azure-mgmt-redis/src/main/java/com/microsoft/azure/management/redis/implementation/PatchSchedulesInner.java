@@ -312,6 +312,7 @@ public final class PatchSchedulesInner {
     private ServiceResponse<RedisPatchScheduleInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RedisPatchScheduleInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
