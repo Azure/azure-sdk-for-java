@@ -13,13 +13,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.servicebus.DebugThread;
+//import com.microsoft.azure.servicebus.DebugThread;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class SmokeTest
@@ -136,7 +137,7 @@ public class SmokeTest
 			System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
 					((ThreadPoolExecutor)EventProcessorHost.getExecutorService()).getPoolSize() + ":" +
 					Thread.activeCount());
-			DebugThread.printThreadStatuses();
+			//DebugThread.printThreadStatuses();
 			Thread.sleep(100);
 		}
 	}
@@ -150,7 +151,7 @@ public class SmokeTest
 		int clientSerialNumber = 0;
 		while (true)
 		{
-			DebugThread.printThreadStatuses();
+			//DebugThread.printThreadStatuses();
 			
 			System.out.println("Client " + clientSerialNumber + " starting");
 			EventHubClient client = EventHubClient.createFromConnectionStringSync(utils.getConnectionString().toString());
@@ -300,10 +301,22 @@ public class SmokeTest
 			System.out.println(err);
 		}
 		
-		//EventProcessorHost.forceExecutorShutdown(10);
 		settings.utils.shutdown();
 		
 		System.out.println(settings.testName + " ended");
+	}
+	
+	@AfterClass
+	public static void allTestFinish()
+	{
+		try
+		{
+			EventProcessorHost.forceExecutorShutdown(20);
+		}
+		catch (InterruptedException e)
+		{
+			System.out.println("forceExecutorShutdown threw " + e.toString());
+		}
 	}
 
 	
