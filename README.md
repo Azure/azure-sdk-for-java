@@ -120,6 +120,11 @@ or Gradle:
 
     compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta2'
 
+or SBT:
+
+    // https://mvnrepository.com/artifact/com.microsoft.azure/azure
+    libraryDependencies += "com.microsoft.azure" % "azure" % "1.0.0-beta2"
+
 **Snapshots builds for this repo**
 
 If you are using snapshots builds for this repo, add the following repository and dependency to your POM file:
@@ -155,8 +160,12 @@ repositories {
 }
 ```
 
-
     compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-SNAPSHOTS'
+    
+or SBT:
+    
+    resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+    libraryDependencies += "com.microsoft.azure" % "azure" % "1.0.0-SNAPSHOTS"
 
 #Pre-requisites
 
