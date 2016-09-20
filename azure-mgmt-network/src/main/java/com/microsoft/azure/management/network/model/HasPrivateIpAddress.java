@@ -15,7 +15,7 @@ import com.microsoft.azure.management.network.IPAllocationMethod;
 @LangDefinition()
 public interface HasPrivateIpAddress  {
     /**
-     * @return the protocol
+     * @return the private IP address associated with this resource
      */
     String privateIpAddress();
 
