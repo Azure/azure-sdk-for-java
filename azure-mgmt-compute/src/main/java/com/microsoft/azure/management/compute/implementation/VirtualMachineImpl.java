@@ -100,7 +100,6 @@ class VirtualMachineImpl
     private List<NetworkInterface> existingSecondaryNetworkInterfacesToAssociate;
     // Cached related resources
     private NetworkInterface primaryNetworkInterface;
-    private PublicIpAddress primaryPublicIpAddress;
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
@@ -766,11 +765,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() {
-        if (this.primaryPublicIpAddress == null) {
-            this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
-        }
-        return this.primaryPublicIpAddress;
+    public PublicIpAddress getPrimaryPublicIpAddress() {
+        return this.primaryNetworkInterface().primaryIpConfiguration().getPublicIpAddress();
+    }
+
+    @Override
+    public String primaryPublicIpAddressId() {
+        return this.primaryNetworkInterface().primaryIpConfiguration().publicIpAddressId();
     }
 
     @Override
@@ -1195,7 +1196,6 @@ class VirtualMachineImpl
 
     private void clearCachedRelatedResources() {
         this.primaryNetworkInterface = null;
-        this.primaryPublicIpAddress = null;
         this.virtualMachineInstanceView = null;
     }
 }

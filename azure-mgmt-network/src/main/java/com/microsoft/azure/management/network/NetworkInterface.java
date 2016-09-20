@@ -71,24 +71,6 @@ public interface NetworkInterface extends
     List<String> appliedDnsServers();
 
     /**
-     * Gets the public IP address associated with this network interface.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
-     * @return the public IP associated with this network interface
-     */
-    PublicIpAddress primaryPublicIpAddress();
-
-    /**
-     * Gets the virtual network associated this network interface's primary IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the virtual network.
-     *
-     * @return the virtual network associated with this network interface.
-     */
-    Network getPrimaryNetwork();
-
-    /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.
      * <p>
      * The private IP will be within the virtual network subnet of this network interface.

@@ -137,7 +137,12 @@ public interface VirtualMachine extends
      *
      * @return the public IP of the primary network interface
      */
-    PublicIpAddress primaryPublicIpAddress();
+    PublicIpAddress getPrimaryPublicIpAddress();
+
+    /**
+     * @return the resource ID of the public IP address associated with this virtual machine's primary network interface
+     */
+    String primaryPublicIpAddressId();
 
     /**
      * Returns id to the availability set this virtual machine associated with.
