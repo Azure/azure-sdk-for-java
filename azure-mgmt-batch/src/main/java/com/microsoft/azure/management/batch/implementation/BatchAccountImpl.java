@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.microsoft.azure.management.batch.BatchAccount;

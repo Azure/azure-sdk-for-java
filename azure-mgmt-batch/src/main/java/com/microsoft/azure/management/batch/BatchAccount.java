@@ -6,7 +6,10 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.management.batch.implementation.AccountResourceInner;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
+import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
