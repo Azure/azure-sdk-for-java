@@ -12,7 +12,7 @@ import com.microsoft.azure.management.redis.RedisCache;
 /**
  * The {@link RedisCache#keys} action result.
  */
-public class RedisAccessKeysImpl implements RedisAccessKeys {
+class RedisAccessKeysImpl implements RedisAccessKeys {
     private RedisAccessKeysInner inner;
 
     /**

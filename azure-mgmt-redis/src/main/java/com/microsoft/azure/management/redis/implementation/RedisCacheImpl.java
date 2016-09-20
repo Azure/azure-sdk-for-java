@@ -275,7 +275,7 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl withSubnet(GroupableResource networkResource, String subnetName) {
-        if(networkResource != null) {
+        if (networkResource != null) {
             String subnetId = networkResource.id() + "/subnets/" + subnetName;
             if (isInCreateMode()) {
                 createParameters.withSubnetId(subnetId);
