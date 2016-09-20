@@ -174,6 +174,12 @@ class FrontendImpl
     }
 
     @Override
+    public FrontendImpl withoutPublicIpAddress() {
+        this.inner().withPublicIPAddress(null);
+        return this;
+    }
+
+    @Override
     public FrontendImpl withPrivateIpAddressDynamic() {
         this.inner()
             .withPrivateIPAddress(null)
@@ -200,5 +206,15 @@ class FrontendImpl
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withFrontend(this);
+    }
+
+    @Override
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        if (pipId == null) {
+            return null;
+        } else {
+            return this.parent().manager().publicIpAddresses().getById(pipId);
+        }
     }
 }

@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
@@ -14,12 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
  */
 @LangDefinition()
-public interface PublicFrontend extends Frontend {
-
-    /**
-     * @return the resource ID of the public IP address associated with this frontend
-     */
-    String publicIpAddressId();
+public interface PublicFrontend extends
+    Frontend,
+    HasPublicIpAddress {
 
     /**
      * Grouping of public frontend definition stages.
@@ -41,20 +39,7 @@ public interface PublicFrontend extends Frontend {
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPublicIpAddress<ParentT> {
-            /**
-             * Associates the specified existing public IP address with this public frontend of the Internet-facing load balancer.
-             * @param pip a public IP address
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress pip);
-
-            /**
-             * Associates the specified existing public IP address with this public frontend of the intrenet-facing load balancer.
-             * @param resourceId the resource ID of an existing public IP address
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(String resourceId);
+        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.DefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -91,20 +76,7 @@ public interface PublicFrontend extends Frontend {
         /**
          * The stage of a public frontend update allowing to specify an existing public IP address.
          */
-        interface WithPublicIpAddress {
-            /**
-             * Associates the specified existing public IP address with this public frontend of the Internet-facing load balancer.
-             * @param pip a public IP address
-             * @return the next stage of the update
-             */
-            Update withExistingPublicIpAddress(PublicIpAddress pip);
-
-            /**
-             * Associates the specified existing public IP address with this public frontend of the Internet-facing load balancer.
-             * @param resourceId the resource ID of an existing public IP address
-             * @return the next stage of the update
-             */
-            Update withExistingPublicIpAddress(String resourceId);
+        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithExistingPublicIpAddress<Update> {
         }
     }
 
@@ -137,20 +109,7 @@ public interface PublicFrontend extends Frontend {
          * The stage of a public frontend definition allowing to specify an existing public IP address.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPublicIpAddress<ParentT> {
-            /**
-             * Associates the specified existing public IP address with this frontend of the load balancer.
-             * @param pip a public IP address
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress pip);
-
-            /**
-             * Associates the specified existing public IP address with this public frontend of the Internet-facing load balancer.
-             * @param resourceId the resource ID of an existing public IP address
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(String resourceId);
+        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.UpdateDefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /** The final stage of the public frontend definition.

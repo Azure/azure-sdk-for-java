@@ -45,7 +45,7 @@ class NicIpConfigurationImpl
     private Network existingVirtualNetworkToAssociate;
 
     // Reference to an existing public IP to be associated with the ip configuration
-    private PublicIpAddress existingPublicIpAddressToAssociate;
+    private String existingPublicIpAddressIdToAssociate;
 
     // Name of an existing subnet to be associated with a new or existing ip configuration
     private String subnetToAssociate;
@@ -215,7 +215,12 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
-        this.existingPublicIpAddressToAssociate = publicIpAddress;
+        return this.withExistingPublicIpAddress(publicIpAddress.id());
+    }
+
+    @Override
+    public NicIpConfigurationImpl withExistingPublicIpAddress(String resourceId) {
+        this.existingPublicIpAddressIdToAssociate = resourceId;
         return this;
     }
 
@@ -330,31 +335,23 @@ class NicIpConfigurationImpl
      * @return public ip SubResource
      */
     private SubResource publicIpToAssociate() {
+        String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
+        } else if (this.creatablePublicIpKey != null) {
+            pipId = ((PublicIpAddress) this.parent()
+                    .createdDependencyResource(this.creatablePublicIpKey)).id();
+        } else if (this.existingPublicIpAddressIdToAssociate != null) {
+            pipId = this.existingPublicIpAddressIdToAssociate;
         }
 
-        PublicIPAddressInner publicIPAddressInner = null;
-        if (this.creatablePublicIpKey != null) {
-            PublicIpAddress publicIpAddress = (PublicIpAddress) this.parent()
-                    .createdDependencyResource(this.creatablePublicIpKey);
-            publicIPAddressInner = publicIpAddress.inner();
-        }
-
-        if (this.existingPublicIpAddressToAssociate != null) {
-            publicIPAddressInner = this.existingPublicIpAddressToAssociate.inner();
-        }
-
-        if (publicIPAddressInner != null) {
-            SubResource subResource = new SubResource();
-            subResource.withId(publicIPAddressInner.id());
-            return subResource;
-        }
-
-        if (!this.isInCreateMode) {
+        if (pipId != null) {
+            return new SubResource().withId(pipId);
+        } else if (!this.isInCreateMode) {
             return this.inner().publicIPAddress();
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override

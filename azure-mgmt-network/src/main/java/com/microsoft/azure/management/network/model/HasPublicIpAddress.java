@@ -35,11 +35,34 @@ public interface HasPublicIpAddress  {
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
-         * The stage of the definition allowing to associate the resource with a public IP address.
+         * The stage of the definition allowing to associate the resource with an existing public IP address.
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddress<ReturnT> {
+        interface WithExistingPublicIpAddress<ReturnT> {
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the definition
+             */
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            ReturnT withExistingPublicIpAddress(String resourceId);
+        }
+
+        /**
+         * The stage of the definition allowing to associate the resource with a new public IP address.
+         *
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithNewPublicIpAddress<ReturnT> {
             /**
              * Creates a new public IP address to associate with the resource.
              *
@@ -67,14 +90,16 @@ public interface HasPublicIpAddress  {
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(String leafDnsLabel);
+        }
 
-            /**
-             * Associates an existing public IP address with the resource.
-             *
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the definition
-             */
-            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        /**
+         * The stage of the definition allowing to associate the resource with a public IP address.
+         *
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithPublicIpAddress<ReturnT> extends
+            WithExistingPublicIpAddress<ReturnT>,
+            WithNewPublicIpAddress<ReturnT> {
         }
     }
 
@@ -88,11 +113,41 @@ public interface HasPublicIpAddress  {
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
-         * The stage definition allowing to associate the resource with a public IP address.
+         * The stage definition allowing to associate the resource with an existing public IP address.
          *
          * @param <ReturnT> the next stage of the update
          */
-        interface WithPublicIpAddress<ReturnT> {
+        interface WithExistingPublicIpAddress<ReturnT> {
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the update
+             */
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            ReturnT withExistingPublicIpAddress(String resourceId);
+
+            /**
+             * Removes the existing reference to a public IP address.
+             *
+             * @return the next stage of the update.
+             */
+            ReturnT withoutPublicIpAddress();
+        }
+
+        /**
+         * The stage definition allowing to associate the resource with a new public IP address.
+         *
+         * @param <ReturnT> the next stage of the update
+         */
+        interface WithNewPublicIpAddress<ReturnT> {
             /**
              * Creates a new public IP address to associate with the resource, based on the provided definition.
              *
@@ -120,21 +175,16 @@ public interface HasPublicIpAddress  {
              * @return the next stage of the update
              */
             ReturnT withNewPublicIpAddress(String leafDnsLabel);
+        }
 
-            /**
-             * Associates an existing public IP address with the resource.
-             *
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the update
-             */
-            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
-
-            /**
-             * Removes the existing reference to a public IP address.
-             * 
-             * @return the next stage of the update.
-             */
-            ReturnT withoutPublicIpAddress();
+        /**
+         * The stage definition allowing to associate the resource with a public IP address.
+         *
+         * @param <ReturnT> the next stage of the update
+         */
+        interface WithPublicIpAddress<ReturnT> extends
+            WithExistingPublicIpAddress<ReturnT>,
+            WithNewPublicIpAddress<ReturnT> {
         }
     }
 
@@ -148,11 +198,34 @@ public interface HasPublicIpAddress  {
                 MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
-         * The stage of the definition allowing to associate the resource with a public IP address.
+         * The stage of the definition allowing to associate the resource with an existing public IP address.
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddress<ReturnT> {
+        interface WithExistingPublicIpAddress<ReturnT> {
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param publicIpAddress an existing public IP address
+             * @return the next stage of the definition
+             */
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+
+            /**
+             * Associates an existing public IP address with the resource.
+             *
+             * @param resourceId the resource ID of an existing public IP address
+             * @return the next stage of the definition
+             */
+            ReturnT withExistingPublicIpAddress(String resourceId);
+        }
+
+        /**
+         * The stage of the definition allowing to associate the resource with a new public IP address.
+         *
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithNewPublicIpAddress<ReturnT> {
             /**
              * Creates a new public IP address to associate with the resource, based on the provided definition.
              *
@@ -180,14 +253,16 @@ public interface HasPublicIpAddress  {
              * @return the next stage of the definition
              */
             ReturnT withNewPublicIpAddress(String leafDnsLabel);
+        }
 
-            /**
-             * Associates an existing public IP address with the resource.
-             *
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the definition
-             */
-            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        /**
+         * The stage of the definition allowing to associate the resource with a public IP address.
+         *
+         * @param <ReturnT> the next stage of the definition
+         */
+        interface WithPublicIpAddress<ReturnT> extends
+            WithExistingPublicIpAddress<ReturnT>,
+            WithNewPublicIpAddress<ReturnT> {
         }
     }
 }
