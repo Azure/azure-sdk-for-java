@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
@@ -15,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An IP configuration in a network interface.
  */
-@LangDefinition()
+@Fluent()
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
@@ -40,7 +39,6 @@ public interface NicIpConfiguration extends
      * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -53,11 +51,6 @@ public interface NicIpConfiguration extends
      * Grouping of network interface IP configuration definition stages applicable as part of a
      * network interface update.
      */
-    @LangDefinition(
-            ContainerName = "Definition",
-            ContainerFileName = "IDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -173,7 +166,6 @@ public interface NicIpConfiguration extends
     /** The entirety of a network interface IP configuration definition as part of a network interface update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
@@ -186,11 +178,6 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration definition stages.
      */
-    @LangDefinition(
-            ContainerName = "UpdateDefinition",
-            ContainerFileName = "IUpdateDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -306,7 +293,6 @@ public interface NicIpConfiguration extends
     /**
      * The entirety of a network interface IP configuration update as part of a network interface update.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
@@ -319,11 +305,6 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration update stages.
      */
-    @LangDefinition(
-            ContainerName = "Update",
-            ContainerFileName = "IUpdate",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of the network interface IP configuration update allowing to specify subnet.

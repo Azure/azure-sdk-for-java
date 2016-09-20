@@ -8,8 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
@@ -24,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * Entry point for load balancer management API in Azure.
  */
-@LangDefinition()
+@Fluent()
 public interface LoadBalancer extends
         GroupableResource,
         Refreshable<LoadBalancer>,
@@ -71,7 +70,6 @@ public interface LoadBalancer extends
     /**
      * The entirety of the load balancer definition.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -94,11 +92,6 @@ public interface LoadBalancer extends
     /**
      * Grouping of load balancer definition stages.
      */
-    @LangDefinition(
-            ContainerName = "Definition",
-            ContainerFileName = "IDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a load balancer definition.
@@ -419,11 +412,6 @@ public interface LoadBalancer extends
     /**
      * Grouping of load balancer update stages.
      */
-    @LangDefinition(
-            ContainerName = "Update",
-            ContainerFileName = "IUpdate",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of the load balancer update allowing to add or remove backends.
@@ -723,7 +711,6 @@ public interface LoadBalancer extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Appliable<LoadBalancer>,
         Resource.UpdateWithTags<Update>,

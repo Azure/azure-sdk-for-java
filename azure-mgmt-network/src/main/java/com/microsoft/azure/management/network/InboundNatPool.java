@@ -5,8 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.InboundNatPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFrontend;
@@ -19,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an inbound NAT rule.
  */
-@LangDefinition()
+@Fluent()
 public interface InboundNatPool extends
     HasFrontend,
     HasBackendPort,
@@ -40,11 +39,6 @@ public interface InboundNatPool extends
     /**
      * Grouping of inbound NAT pool definition stages.
      */
-    @LangDefinition(
-            ContainerName = "Definition",
-            ContainerFileName = "IDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of the inbound NAT pool definition.
@@ -106,7 +100,6 @@ public interface InboundNatPool extends
     /** The entirety of an inbound NAT pool definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -119,11 +112,6 @@ public interface InboundNatPool extends
     /**
      * Grouping of inbound NAT pool update stages.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an inbound NAT pool update allowing to specify the transport protocol for the pool to apply to.
@@ -163,7 +151,6 @@ public interface InboundNatPool extends
     /**
      * The entirety of an inbound NAT pool update as part of a load balancer update.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithProtocol,
@@ -175,11 +162,6 @@ public interface InboundNatPool extends
     /**
      * Grouping of inbound NAT pool definition stages applicable as part of a load balancer update.
      */
-    @LangDefinition(
-            ContainerName = "UpdateDefinition",
-            ContainerFileName = "IUpdateDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT pool definition.
@@ -241,7 +223,6 @@ public interface InboundNatPool extends
     /** The entirety of an inbound NAT pool definition as part of a load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithAttach<ParentT>,

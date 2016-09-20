@@ -5,8 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.InboundNatRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIp;
@@ -20,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an inbound NAT rule.
  */
-@LangDefinition()
+@Fluent()
 public interface InboundNatRule extends
     HasFrontend,
     HasBackendPort,
@@ -52,11 +51,6 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule definition stages.
      */
-    @LangDefinition(
-            ContainerName = "Definition",
-            ContainerFileName = "IDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
@@ -141,7 +135,6 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithProtocol<ParentT>,
@@ -153,11 +146,6 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule update stages.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an inbound NAT rule update allowing to specify the backend port.
@@ -214,7 +202,6 @@ public interface InboundNatRule extends
     /**
      * The entirety of an inbound NAT rule update as part of a load balancer update.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         Settable<LoadBalancer.Update>,
         UpdateStages.WithBackendPort,
@@ -228,11 +215,6 @@ public interface InboundNatRule extends
     /**
      * Grouping of inbound NAT rule definition stages as part of a load balancer update.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of the inbound NAT rule definition.
@@ -317,7 +299,6 @@ public interface InboundNatRule extends
      * The entirety of an inbound NAT rule definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithProtocol<ParentT>,

@@ -5,8 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -16,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * A network security rule in a network security group.
  */
-@LangDefinition()
+@Fluent()
 public interface NetworkSecurityRule extends
     Wrapper<SecurityRuleInner>,
     ChildResource<NetworkSecurityGroup> {
@@ -73,7 +72,6 @@ public interface NetworkSecurityRule extends
      * The entirety of a network security rule definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -88,11 +86,6 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule definition stages applicable as part of a network security group creation.
      */
-    @LangDefinition(
-            ContainerName = "Definition",
-            ContainerFileName = "IDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
@@ -286,7 +279,6 @@ public interface NetworkSecurityRule extends
     /** The entirety of a network security rule definition as part of a network security group update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithDirectionAccess<ParentT>,
@@ -301,11 +293,6 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule definition stages applicable as part of a network security group update.
      */
-    @LangDefinition(
-            ContainerName = "UpdateDefinition",
-            ContainerFileName = "IUpdateDefinition",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a security rule description as part of an update of a networking security group.
@@ -484,7 +471,6 @@ public interface NetworkSecurityRule extends
     /**
      * The entirety of a security rule update as part of a network security group update.
      */
-    @LangDefinition(MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         UpdateStages.WithDirectionAccess,
         UpdateStages.WithSourceAddress,
@@ -513,11 +499,6 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule update stages.
      */
-    @LangDefinition(
-            ContainerName = "Update",
-            ContainerFileName = "IUpdate",
-            IsContainerOnly = true,
-            MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of the network rule description allowing the direction and the access type to be specified.
