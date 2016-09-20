@@ -88,7 +88,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
      */
     public BatchAccounts batchAccounts() {
         if (batchAccounts == null) {
-            batchAccounts = new BatchAccountsImpl(super.innerManagementClient.accounts(), this, this.storageManager);
+            batchAccounts = new BatchAccountsImpl(super.innerManagementClient.batchAccounts(), this, this.storageManager);
         }
 
         return batchAccounts;

@@ -11,11 +11,11 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
  * Implementation for BatchAccounts and its parent interfaces.
  */
 public class BatchAccountsImpl
-        extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, AccountResourceInner, AccountsInner, BatchManager>
+        extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
 
-    protected BatchAccountsImpl(AccountsInner innerCollection, BatchManager manager, StorageManager storageManager) {
+    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, StorageManager storageManager) {
         super(innerCollection, manager);
         this.storageManager = storageManager;
     }
@@ -32,7 +32,7 @@ public class BatchAccountsImpl
 
     @Override
     protected BatchAccountImpl wrapModel(String name) {
-        AccountResourceInner inner = new AccountResourceInner();
+        BatchAccountInner inner = new BatchAccountInner();
 
         return new BatchAccountImpl(
                 name,
@@ -52,7 +52,7 @@ public class BatchAccountsImpl
     }
 
     @Override
-    protected BatchAccountImpl wrapModel(AccountResourceInner inner) {
+    protected BatchAccountImpl wrapModel(BatchAccountInner inner) {
         return new BatchAccountImpl(
                 inner.name(),
                 inner,
