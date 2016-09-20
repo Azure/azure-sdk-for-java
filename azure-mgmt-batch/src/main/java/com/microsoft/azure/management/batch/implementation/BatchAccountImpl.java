@@ -70,10 +70,10 @@ public class BatchAccountImpl
         return this.innerCollection.createAsync(this.resourceGroupName(), this.name(), batchAccountCreateParametersInner)
                 .map(new Func1<BatchAccountInner, BatchAccount>() {
                     @Override
-                    public BatchAccount call(BatchAccountInner BatchAccountInner) {
+                    public BatchAccount call(BatchAccountInner batchAccountInner) {
                         self.creatableStorageAccountKey = null;
                         self.existingStorageAccountToAssociate = null;
-                        setInner(BatchAccountInner);
+                        setInner(batchAccountInner);
 
                         return self;
                     }
@@ -99,9 +99,9 @@ public class BatchAccountImpl
         batchAccountUpdateParametersInner.withTags(self.inner().getTags());
 
         return self.innerCollection.updateAsync(self.resourceGroupName(), self.name(), batchAccountUpdateParametersInner)
-                .map(new Func1<ServiceResponse<BatchAccountInner>, BatchAccount>() {
+                .map(new Func1<ServiceResponse<BatchAccountInner>, batchAccount>() {
                     @Override
-                    public BatchAccount call(ServiceResponse<BatchAccountInner> BatchAccountInner) {
+                    public BatchAccount call(ServiceResponse<BatchAccountInner> batchAccount) {
                         setInner(BatchAccountInner.getBody());
                         return self;
                     }
