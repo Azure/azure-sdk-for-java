@@ -10,9 +10,9 @@ package com.microsoft.azure.management.batch.implementation;
 
 
 /**
- * Values returned by the GetKeys operation.
+ * A set of Azure Batch account keys.
  */
-public class BatchAccountListKeyResultInner {
+public class BatchAccountKeysInner {
     /**
      * The primary key associated with the account.
      */
@@ -36,9 +36,9 @@ public class BatchAccountListKeyResultInner {
      * Set the primary value.
      *
      * @param primary the primary value to set
-     * @return the BatchAccountListKeyResultInner object itself.
+     * @return the BatchAccountKeysInner object itself.
      */
-    public BatchAccountListKeyResultInner withPrimary(String primary) {
+    public BatchAccountKeysInner withPrimary(String primary) {
         this.primary = primary;
         return this;
     }
@@ -56,9 +56,9 @@ public class BatchAccountListKeyResultInner {
      * Set the secondary value.
      *
      * @param secondary the secondary value to set
-     * @return the BatchAccountListKeyResultInner object itself.
+     * @return the BatchAccountKeysInner object itself.
      */
-    public BatchAccountListKeyResultInner withSecondary(String secondary) {
+    public BatchAccountKeysInner withSecondary(String secondary) {
         this.secondary = secondary;
         return this;
     }

@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for AccountProvisioningState.
+ * Defines values for ProvisioningState.
  */
-public enum AccountProvisioningState {
+public enum ProvisioningState {
     /** Enum value Invalid. */
     INVALID("Invalid"),
 
@@ -33,23 +33,23 @@ public enum AccountProvisioningState {
     /** Enum value Cancelled. */
     CANCELLED("Cancelled");
 
-    /** The actual serialized value for a AccountProvisioningState instance. */
+    /** The actual serialized value for a ProvisioningState instance. */
     private String value;
 
-    AccountProvisioningState(String value) {
+    ProvisioningState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AccountProvisioningState instance.
+     * Parses a serialized value to a ProvisioningState instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AccountProvisioningState object, or null if unable to parse.
+     * @return the parsed ProvisioningState object, or null if unable to parse.
      */
     @JsonCreator
-    public static AccountProvisioningState fromString(String value) {
-        AccountProvisioningState[] items = AccountProvisioningState.values();
-        for (AccountProvisioningState item : items) {
+    public static ProvisioningState fromString(String value) {
+        ProvisioningState[] items = ProvisioningState.values();
+        for (ProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

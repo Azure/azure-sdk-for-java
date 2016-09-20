@@ -19,8 +19,9 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class BatchAccountCreateParametersInner {
     /**
-     * The region in which the account is created.
+     * The region in which to create the account.
      */
+    @JsonProperty(required = true)
     private String location;
 
     /**

@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.batch.ApplicationPackage;
 
 /**
  * Contains information about an application in a Batch account.
@@ -28,7 +27,7 @@ public class ApplicationInner {
     /**
      * The list of packages under this application.
      */
-    private List<ApplicationPackage> packages;
+    private List<ApplicationPackageInner> packages;
 
     /**
      * A value indicating whether packages within the application may be
@@ -87,7 +86,7 @@ public class ApplicationInner {
      *
      * @return the packages value
      */
-    public List<ApplicationPackage> packages() {
+    public List<ApplicationPackageInner> packages() {
         return this.packages;
     }
 
@@ -97,7 +96,7 @@ public class ApplicationInner {
      * @param packages the packages value to set
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner withPackages(List<ApplicationPackage> packages) {
+    public ApplicationInner withPackages(List<ApplicationPackageInner> packages) {
         this.packages = packages;
         return this;
     }
