@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.DayOfWeek;
 import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
@@ -31,6 +32,7 @@ import java.util.TreeMap;
 /**
  * Implementation for Redis Cache and its parent interfaces.
  */
+@LangDefinition
 class RedisCacheImpl
         extends GroupableResourceImpl<
         RedisCache,

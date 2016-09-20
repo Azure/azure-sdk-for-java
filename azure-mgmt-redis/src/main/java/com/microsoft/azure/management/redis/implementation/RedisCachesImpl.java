@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
+@LangDefinition
 class RedisCachesImpl
         extends GroupableResourcesImpl<
         RedisCache,
