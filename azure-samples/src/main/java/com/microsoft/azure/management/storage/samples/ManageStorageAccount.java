@@ -73,7 +73,7 @@ public final class ManageStorageAccount {
 
                 System.out.println("Getting storage account access keys");
 
-                List<StorageAccountKey> storageAccountKeys = storageAccount.keys();
+                List<StorageAccountKey> storageAccountKeys = storageAccount.getKeys();
 
                 Utils.print(storageAccountKeys);
 

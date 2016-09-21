@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure storage account.
  */
-@LangDefinition
+@Fluent
 public interface StorageAccount extends
         GroupableResource,
         Refreshable<StorageAccount>,
@@ -99,18 +99,12 @@ public interface StorageAccount extends
     AccessTier accessTier();
 
     /**
-     * @return the access keys for this storage account
-     */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
-    List<StorageAccountKey> keys();
-
-    /**
      * Fetch the up-to-date access keys from Azure for this storage account.
      *
      * @return the access keys for this storage account
      */
     @LangMethodDefinition(AsType = LangMethodType.Method)
-    List<StorageAccountKey> refreshKeys();
+    List<StorageAccountKey> getKeys();
 
     /**
      * Regenerates the access keys for this storage account.
@@ -121,14 +115,9 @@ public interface StorageAccount extends
     @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> regenerateKey(String keyName);
 
-    /**************************************************************
-     * Fluent interfaces to provision a StorageAccount
-     **************************************************************/
-
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -139,7 +128,6 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account definition stages.
      */
-    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the storage account definition.
@@ -273,7 +261,6 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account update stages.
      */
-    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A storage account update stage allowing to change the parameters.
@@ -361,7 +348,6 @@ public interface StorageAccount extends
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<StorageAccount>,
             UpdateStages.WithSku,

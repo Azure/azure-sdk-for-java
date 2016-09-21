@@ -61,7 +61,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
         Assert.assertNotNull(storageAccount);
 
         // Get Keys
-        List<StorageAccountKey> keys = storageAccount.keys();
+        List<StorageAccountKey> keys = storageAccount.getKeys();
         Assert.assertTrue(keys.size() > 0);
 
         // Regen key
