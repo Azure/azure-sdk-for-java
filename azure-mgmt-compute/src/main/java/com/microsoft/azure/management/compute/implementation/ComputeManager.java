@@ -4,6 +4,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -25,6 +26,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private VirtualMachines virtualMachines;
     private VirtualMachineImages virtualMachineImages;
     private VirtualMachineExtensionImages virtualMachineExtensionImages;
+    private VirtualMachineScaleSets virtualMachineScaleSets;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -139,5 +141,18 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
                     super.innerManagementClient.virtualMachineExtensionImages()));
         }
         return virtualMachineExtensionImages;
+    }
+
+    /**
+     * @return the virtual machine scale set resource management API entry point
+     */
+    public VirtualMachineScaleSets virtualMachineScaleSets() {
+        if (virtualMachineScaleSets == null) {
+            virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(super.innerManagementClient.virtualMachineScaleSets(),
+                    this,
+                    storageManager,
+                    networkManager);
+        }
+        return virtualMachineScaleSets;
     }
 }
