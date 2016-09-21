@@ -5,13 +5,12 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An interface representing a model's ability to reference a subnet by its name and network's ID.
  */
-@LangDefinition()
+@Fluent
 public interface HasSubnet {
     /**
      * @return the resource ID of the virtual network whose subnet is associated with this resource
@@ -26,11 +25,6 @@ public interface HasSubnet {
     /**
      * Grouping of definition stages involving associating an existing subnet with a resource.
      */
-    @LangDefinition(
-                ContainerName = "Definition",
-                ContainerFileName = "IDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to associate a subnet with a resource.
@@ -50,11 +44,6 @@ public interface HasSubnet {
     /**
      * Grouping of update stages involving associating an existing subnet with a resource.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an update allowing to associate a subnet with a resource.
@@ -74,11 +63,6 @@ public interface HasSubnet {
     /**
      * Grouping of definition stages applicable as part of a parent resource update, involving associating a subnet with a resource.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to associate a subnet with a resource.

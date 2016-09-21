@@ -6,14 +6,14 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
  * Entry point to subscription management API.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface Subscriptions extends
         SupportsListing<Subscription>,
         SupportsGettingByName<Subscription> {
