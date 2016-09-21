@@ -1,12 +1,12 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.batch.AccountKeyType;
-import com.microsoft.azure.management.batch.AccountProvisioningState;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
+import com.microsoft.azure.management.batch.ProvisioningState;
+import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -22,21 +22,21 @@ public class BatchAccountImpl
         extends
             GroupableResourceImpl<
                     BatchAccount,
-                    AccountResourceInner,
+                    BatchAccountInner,
                     BatchAccountImpl,
                     BatchManager>
         implements
             BatchAccount,
             BatchAccount.Definition,
             BatchAccount.Update {
-    private final AccountsInner innerCollection;
+    private final BatchAccountsInner innerCollection;
     private final StorageManager storageManager;
     private String creatableStorageAccountKey;
     private StorageAccount existingStorageAccountToAssociate;
 
     private BatchAccountKeys cachedKeys;
 
-    protected BatchAccountImpl(String name, AccountResourceInner innerObject, AccountsInner innerCollection, BatchManager manager, final StorageManager storageManager) {
+    protected BatchAccountImpl(String name, BatchAccountInner innerObject, BatchAccountsInner innerCollection, BatchManager manager, final StorageManager storageManager) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.storageManager = storageManager;
@@ -44,7 +44,7 @@ public class BatchAccountImpl
 
     @Override
     public BatchAccount refresh() {
-        AccountResourceInner response =
+        BatchAccountInner response =
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         return this;
@@ -68,12 +68,12 @@ public class BatchAccountImpl
         batchAccountCreateParametersInner.withTags(this.inner().getTags());
 
         return this.innerCollection.createAsync(this.resourceGroupName(), this.name(), batchAccountCreateParametersInner)
-                .map(new Func1<AccountResourceInner, BatchAccount>() {
+                .map(new Func1<BatchAccountInner, BatchAccount>() {
                     @Override
-                    public BatchAccount call(AccountResourceInner accountResourceInner) {
+                    public BatchAccount call(BatchAccountInner batchAccountInner) {
                         self.creatableStorageAccountKey = null;
                         self.existingStorageAccountToAssociate = null;
-                        setInner(accountResourceInner);
+                        setInner(batchAccountInner);
 
                         return self;
                     }
@@ -99,10 +99,10 @@ public class BatchAccountImpl
         batchAccountUpdateParametersInner.withTags(self.inner().getTags());
 
         return self.innerCollection.updateAsync(self.resourceGroupName(), self.name(), batchAccountUpdateParametersInner)
-                .map(new Func1<ServiceResponse<AccountResourceInner>, BatchAccount>() {
+                .map(new Func1<ServiceResponse<BatchAccountInner>, batchAccount>() {
                     @Override
-                    public BatchAccount call(ServiceResponse<AccountResourceInner> accountResourceInner) {
-                        setInner(accountResourceInner.getBody());
+                    public BatchAccount call(ServiceResponse<BatchAccountInner> batchAccount) {
+                        setInner(BatchAccountInner.getBody());
                         return self;
                     }
                 });
@@ -110,7 +110,7 @@ public class BatchAccountImpl
     }
 
     @Override
-    public AccountProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
@@ -150,7 +150,7 @@ public class BatchAccountImpl
 
     @Override
     public BatchAccountKeys refreshKeys() {
-        BatchAccountListKeyResultInner keys = this.innerCollection.listKeys(this.resourceGroupName(), this.name());
+        BatchAccountKeysInner keys = this.innerCollection.getKeys(this.resourceGroupName(), this.name());
         cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
 
         return cachedKeys;
@@ -158,7 +158,7 @@ public class BatchAccountImpl
 
     @Override
     public BatchAccountKeys regenerateKeys(AccountKeyType keyType) {
-        BatchAccountRegenerateKeyResultInner keys = this.innerCollection.regenerateKey(this.resourceGroupName(), this.name(), keyType);
+        BatchAccountKeysInner keys = this.innerCollection.regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
 
         return cachedKeys;

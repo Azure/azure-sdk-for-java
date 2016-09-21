@@ -12,7 +12,7 @@ import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ScheduleEntry model.
+ * Patch schedule entry for Premium Redis Cache.
  */
 public class ScheduleEntry {
     /**
