@@ -16,6 +16,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,11 @@ public final class Validator {
             }
             for (Field field : c.getDeclaredFields()) {
                 field.setAccessible(true);
+                int mod = field.getModifiers();
+                // Skip static fields since we don't have any, skip final fields since users can't modify them
+                if (Modifier.isFinal(mod) || Modifier.isStatic(mod)) {
+                    return;
+                }
                 JsonProperty annotation = field.getAnnotation(JsonProperty.class);
                 Object property;
                 try {
