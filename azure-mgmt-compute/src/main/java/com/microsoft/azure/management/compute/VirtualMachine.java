@@ -1,7 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure virtual machine.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface VirtualMachine extends
         GroupableResource,
         Refreshable<VirtualMachine>,
@@ -227,7 +227,6 @@ public interface VirtualMachine extends
     /**
      * The entirety of the virtual machine definition.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachine.Definition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -247,7 +246,6 @@ public interface VirtualMachine extends
     /**
      * Grouping of virtual machine definition stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachine.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual machine definition.
@@ -820,7 +818,6 @@ public interface VirtualMachine extends
     /**
      * Grouping of virtual machine update stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachine.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the virtual machine definition allowing to specify data disk configuration.
@@ -963,7 +960,6 @@ public interface VirtualMachine extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachine.Update")
     interface Update extends
             Appliable<VirtualMachine>,
             Resource.UpdateWithTags<Update>,

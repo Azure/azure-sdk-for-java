@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
 import com.microsoft.azure.management.network.Backend;
@@ -24,7 +25,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure virtual machine scale set.
  */
-@LangDefinition()
+@Fluent
 public interface VirtualMachineScaleSet extends
         GroupableResource,
         Refreshable<VirtualMachineScaleSet>,

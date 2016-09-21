@@ -5,13 +5,13 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Represents a virtual machine image SKU.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface VirtualMachineSku {
     /**
      * @return the region where this virtual machine image offer SKU is available
