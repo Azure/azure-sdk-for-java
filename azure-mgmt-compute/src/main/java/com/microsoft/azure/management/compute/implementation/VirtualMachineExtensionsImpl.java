@@ -1,4 +1,5 @@
 package com.microsoft.azure.management.compute.implementation;
+import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
@@ -16,7 +17,8 @@ class VirtualMachineExtensionsImpl extends
         ExternalChildResourcesImpl<VirtualMachineExtensionImpl,
                         VirtualMachineExtension,
                         VirtualMachineExtensionInner,
-                        VirtualMachineImpl> {
+                        VirtualMachineImpl,
+                        VirtualMachine> {
     private final VirtualMachineExtensionsInner client;
 
     /**

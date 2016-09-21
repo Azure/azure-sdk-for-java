@@ -25,13 +25,15 @@ import java.util.concurrent.ConcurrentMap;
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
- * @param <ParentImplT> the parent Azure resource class type of the child resources
+ * @param <ParentImplT> <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> the parent interface
  */
 public abstract class ExternalChildResourcesImpl<
-        FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT>,
-        FluentModelT extends ExternalChildResource,
+        FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
+        FluentModelT extends ExternalChildResource<FluentModelT, ParentT>,
         InnerModelT,
-        ParentImplT> {
+        ParentImplT extends ParentT,
+        ParentT> {
     /**
      * The parent resource of this collection of child resources.
      */
@@ -74,7 +76,7 @@ public abstract class ExternalChildResourcesImpl<
      * @return the observable stream
      */
     public Observable<FluentModelTImpl> commitAsync() {
-        final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT> self = this;
+        final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
         List<FluentModelTImpl> items = new ArrayList<>();
         for (FluentModelTImpl item : this.collection.values()) {
             items.add(item);

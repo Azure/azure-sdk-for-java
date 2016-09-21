@@ -4,7 +4,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import java.util.ArrayList;
 import java.util.List;
 
-class PulletsImpl extends ExternalChildResourcesImpl<PulletImpl, Pullet, Object, ChickenImpl> {
+class PulletsImpl extends ExternalChildResourcesImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
     PulletsImpl(ChickenImpl parent) {
         super(parent, "Pullet");
         initializeCollection();

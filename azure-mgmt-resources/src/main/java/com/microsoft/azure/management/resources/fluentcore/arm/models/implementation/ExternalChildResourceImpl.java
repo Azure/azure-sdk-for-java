@@ -16,14 +16,17 @@ import rx.Observable;
  *
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
- * @param <ParentImplT> the parent Azure resource class type of the child resource
+ * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> parent interface
  */
-public abstract class ExternalChildResourceImpl<
-        FluentModelT extends ExternalChildResource,
+public abstract class ExternalChildResourceImpl<FluentModelT,
         InnerModelT,
-        ParentImplT>
+        ParentImplT extends ParentT,
+        ParentT>
         extends
-        IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> {
+            ChildResourceImpl<InnerModelT, ParentImplT, ParentT>
+        implements
+            ExternalChildResource<FluentModelT, ParentT>  {
     /**
      * State representing any pending action that needs to be performed on this child resource.
      */
@@ -32,10 +35,6 @@ public abstract class ExternalChildResourceImpl<
      * The child resource name.
      */
     private final String name;
-    /**
-     * Reference to the parent of the child resource.
-     */
-    protected final ParentImplT parent;
 
     /**
      * Creates an instance of external child resource in-memory.
@@ -45,14 +44,14 @@ public abstract class ExternalChildResourceImpl<
      * @param innerObject reference to the inner object representing this external child resource
      */
     protected ExternalChildResourceImpl(String name, ParentImplT parent, InnerModelT innerObject) {
-        super(innerObject);
+        super(innerObject, parent);
         this.name = name;
-        this.parent = parent;
     }
 
-    /**
-     * @return the resource name
-     */
+    @Override
+    public abstract String id();
+
+    @Override
     public String name() {
         return this.name;
     }

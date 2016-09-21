@@ -21,7 +21,8 @@ import java.util.TreeMap;
 class VirtualMachineExtensionImpl
         extends ExternalChildResourceImpl<VirtualMachineExtension,
                 VirtualMachineExtensionInner,
-                VirtualMachineImpl>
+                VirtualMachineImpl,
+                VirtualMachine>
         implements VirtualMachineExtension,
         VirtualMachineExtension.Definition<VirtualMachine.DefinitionStages.WithCreate>,
         VirtualMachineExtension.UpdateDefinition<VirtualMachine.Update>,
@@ -188,15 +189,9 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineImpl parent() {
-        this.nullifySettingsIfEmpty();
-        return this.parent;
-    }
-
-    @Override
     public VirtualMachineImpl attach() {
         this.nullifySettingsIfEmpty();
-        return this.parent.withExtension(this);
+        return this.parent().withExtension(this);
     }
 
     @Override
@@ -208,7 +203,7 @@ class VirtualMachineExtensionImpl
             name = this.inner().name();
         }
         VirtualMachineExtensionInner inner =
-                this.client.get(this.parent.resourceGroupName(), this.parent.name(), name);
+                this.client.get(this.parent().resourceGroupName(), this.parent().name(), name);
         this.setInner(inner);
         return this;
     }
@@ -218,8 +213,8 @@ class VirtualMachineExtensionImpl
     @Override
     public Observable<VirtualMachineExtension> createAsync() {
         final VirtualMachineExtensionImpl self = this;
-        return this.client.createOrUpdateAsync(this.parent.resourceGroupName(),
-                this.parent.name(),
+        return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
+                this.parent().name(),
                 this.name(),
                 this.inner())
                 .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtension>() {
@@ -234,6 +229,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Observable<VirtualMachineExtension> updateAsync() {
+        this.nullifySettingsIfEmpty();
         if (this.isReference()) {
             String extensionName = ResourceUtils.nameFromResourceId(this.inner().id());
             return this.client.getAsync(this.parent().resourceGroupName(),
@@ -274,8 +270,8 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.client.deleteAsync(this.parent.resourceGroupName(),
-                this.parent.name(),
+        return this.client.deleteAsync(this.parent().resourceGroupName(),
+                this.parent().name(),
                 this.name()).map(new Func1<Void, Void>() {
             @Override
             public Void call(Void result) {
