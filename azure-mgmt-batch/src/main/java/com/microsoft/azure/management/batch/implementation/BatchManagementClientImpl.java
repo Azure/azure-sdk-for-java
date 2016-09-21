@@ -133,16 +133,29 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The AccountsInner object to access its operations.
+     * The BatchAccountsInner object to access its operations.
      */
-    private AccountsInner accounts;
+    private BatchAccountsInner batchAccounts;
 
     /**
-     * Gets the AccountsInner object to access its operations.
-     * @return the AccountsInner object.
+     * Gets the BatchAccountsInner object to access its operations.
+     * @return the BatchAccountsInner object.
      */
-    public AccountsInner accounts() {
-        return this.accounts;
+    public BatchAccountsInner batchAccounts() {
+        return this.batchAccounts;
+    }
+
+    /**
+     * The ApplicationPackagesInner object to access its operations.
+     */
+    private ApplicationPackagesInner applicationPackages;
+
+    /**
+     * Gets the ApplicationPackagesInner object to access its operations.
+     * @return the ApplicationPackagesInner object.
+     */
+    public ApplicationPackagesInner applicationPackages() {
+        return this.applicationPackages;
     }
 
     /**
@@ -159,16 +172,16 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The SubscriptionsInner object to access its operations.
+     * The LocationsInner object to access its operations.
      */
-    private SubscriptionsInner subscriptions;
+    private LocationsInner locations;
 
     /**
-     * Gets the SubscriptionsInner object to access its operations.
-     * @return the SubscriptionsInner object.
+     * Gets the LocationsInner object to access its operations.
+     * @return the LocationsInner object.
      */
-    public SubscriptionsInner subscriptions() {
-        return this.subscriptions;
+    public LocationsInner locations() {
+        return this.locations;
     }
 
     /**
@@ -208,9 +221,10 @@ public final class BatchManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.accounts = new AccountsInner(restClient().retrofit(), this);
+        this.batchAccounts = new BatchAccountsInner(restClient().retrofit(), this);
+        this.applicationPackages = new ApplicationPackagesInner(restClient().retrofit(), this);
         this.applications = new ApplicationsInner(restClient().retrofit(), this);
-        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
+        this.locations = new LocationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

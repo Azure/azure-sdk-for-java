@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.management.batch.AccountProvisioningState;
+import com.microsoft.azure.management.batch.ProvisioningState;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -18,11 +18,11 @@ import com.microsoft.azure.Resource;
  * Contains information about an Azure Batch account.
  */
 @JsonFlatten
-public class AccountResourceInner extends Resource {
+public class BatchAccountInner extends Resource {
     /**
      * The endpoint used by this account to interact with the Batch services.
      */
-    @JsonProperty(value = "properties.accountEndpoint")
+    @JsonProperty(value = "properties.accountEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String accountEndpoint;
 
     /**
@@ -30,7 +30,7 @@ public class AccountResourceInner extends Resource {
      * 'Invalid', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Cancelled'.
      */
     @JsonProperty(value = "properties.provisioningState")
-    private AccountProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * The properties and status of any auto storage account associated with
@@ -67,22 +67,11 @@ public class AccountResourceInner extends Resource {
     }
 
     /**
-     * Set the accountEndpoint value.
-     *
-     * @param accountEndpoint the accountEndpoint value to set
-     * @return the AccountResourceInner object itself.
-     */
-    public AccountResourceInner withAccountEndpoint(String accountEndpoint) {
-        this.accountEndpoint = accountEndpoint;
-        return this;
-    }
-
-    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
      */
-    public AccountProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -90,9 +79,9 @@ public class AccountResourceInner extends Resource {
      * Set the provisioningState value.
      *
      * @param provisioningState the provisioningState value to set
-     * @return the AccountResourceInner object itself.
+     * @return the BatchAccountInner object itself.
      */
-    public AccountResourceInner withProvisioningState(AccountProvisioningState provisioningState) {
+    public BatchAccountInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -110,9 +99,9 @@ public class AccountResourceInner extends Resource {
      * Set the autoStorage value.
      *
      * @param autoStorage the autoStorage value to set
-     * @return the AccountResourceInner object itself.
+     * @return the BatchAccountInner object itself.
      */
-    public AccountResourceInner withAutoStorage(AutoStorageProperties autoStorage) {
+    public BatchAccountInner withAutoStorage(AutoStorageProperties autoStorage) {
         this.autoStorage = autoStorage;
         return this;
     }
@@ -130,9 +119,9 @@ public class AccountResourceInner extends Resource {
      * Set the coreQuota value.
      *
      * @param coreQuota the coreQuota value to set
-     * @return the AccountResourceInner object itself.
+     * @return the BatchAccountInner object itself.
      */
-    public AccountResourceInner withCoreQuota(int coreQuota) {
+    public BatchAccountInner withCoreQuota(int coreQuota) {
         this.coreQuota = coreQuota;
         return this;
     }
@@ -150,9 +139,9 @@ public class AccountResourceInner extends Resource {
      * Set the poolQuota value.
      *
      * @param poolQuota the poolQuota value to set
-     * @return the AccountResourceInner object itself.
+     * @return the BatchAccountInner object itself.
      */
-    public AccountResourceInner withPoolQuota(int poolQuota) {
+    public BatchAccountInner withPoolQuota(int poolQuota) {
         this.poolQuota = poolQuota;
         return this;
     }
@@ -170,9 +159,9 @@ public class AccountResourceInner extends Resource {
      * Set the activeJobAndJobScheduleQuota value.
      *
      * @param activeJobAndJobScheduleQuota the activeJobAndJobScheduleQuota value to set
-     * @return the AccountResourceInner object itself.
+     * @return the BatchAccountInner object itself.
      */
-    public AccountResourceInner withActiveJobAndJobScheduleQuota(int activeJobAndJobScheduleQuota) {
+    public BatchAccountInner withActiveJobAndJobScheduleQuota(int activeJobAndJobScheduleQuota) {
         this.activeJobAndJobScheduleQuota = activeJobAndJobScheduleQuota;
         return this;
     }
