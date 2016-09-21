@@ -2,6 +2,8 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineInner;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -137,6 +139,7 @@ public interface VirtualMachine extends
      *
      * @return the public IP of the primary network interface
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     PublicIpAddress getPrimaryPublicIpAddress();
 
     /**

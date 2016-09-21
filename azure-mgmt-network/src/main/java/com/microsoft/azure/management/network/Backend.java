@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -34,6 +36,7 @@ public interface Backend extends
     /**
      * @return a list of the resource IDs of the virtual machines associated with this backend
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     Set<String> getVirtualMachineIds();
 
     /**

@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
@@ -26,6 +28,7 @@ public interface NicIpConfiguration extends
     /**
      * @return the virtual network associated with this IP configuration
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     Network getNetwork();
 
     /**

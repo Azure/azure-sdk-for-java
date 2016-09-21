@@ -109,7 +109,7 @@ public interface VirtualMachineScaleSet extends
     CachingTypes osDiskCachingType();
 
     /**
-     * @return gets the name of the OS disk of virtual machines in the scale set
+     * @return the name of the OS disk of virtual machines in the scale set
      */
     String osDiskName();
 

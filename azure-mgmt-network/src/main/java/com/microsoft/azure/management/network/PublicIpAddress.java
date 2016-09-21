@@ -6,6 +6,8 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -65,6 +67,7 @@ public interface PublicIpAddress extends
     /**
      * @return the load balancer public frontend that this public IP address is assigned to
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     PublicFrontend getAssignedLoadBalancerFrontend();
 
     /**
@@ -75,6 +78,7 @@ public interface PublicIpAddress extends
     /**
      * @return the network interface IP configuration that this public IP address is assigned to
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration();
 
     /**
