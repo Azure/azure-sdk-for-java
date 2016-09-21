@@ -10,7 +10,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import org.junit.Assert;
 import rx.functions.Action1;
 
@@ -20,11 +19,9 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
         final String batchAccountName = "batch" + this.testId;
         final BatchAccount[] batchAccounts = new BatchAccount[1];
         final SettableFuture<BatchAccount> future = SettableFuture.create();
-        String storageAccountName = "batchsa" + this.testId;
         resources.define(batchAccountName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
-                .withNewStorageAccount(storageAccountName)
                 .withTag("mytag", "testtag")
                 .createAsync()
                 .subscribe(new Action1<BatchAccount>() {
@@ -36,15 +33,17 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
 
         batchAccounts[0] = future.get();
 
-        Assert.assertEquals(ResourceUtils.nameFromResourceId(batchAccounts[0].autoStorage().storageAccountId()), storageAccountName);
+        Assert.assertNull(batchAccounts[0].autoStorage());
 
         return batchAccounts[0];
     }
 
     @Override
     public BatchAccount updateResource(BatchAccount resource) throws Exception {
+        String storageAccountName = "batchsa" + this.testId;
+
         resource = resource.update()
-                .withoutStorageAccount()
+                .withNewStorageAccount(storageAccountName)
                 .apply();
 
         Assert.assertNull(resource.autoStorage());

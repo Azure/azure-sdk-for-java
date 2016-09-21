@@ -16,10 +16,12 @@ public class BatchAccountsImpl
         extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
+    private ApplicationsInner applicationsClient;
 
-    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, StorageManager storageManager) {
+    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, ApplicationsInner applicationsClient, StorageManager storageManager) {
         super(innerCollection, manager);
         this.storageManager = storageManager;
+        this.applicationsClient = applicationsClient;
     }
 
     @Override
@@ -40,7 +42,9 @@ public class BatchAccountsImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager, this.storageManager);
+                super.myManager,
+                this.applicationsClient,
+                this.storageManager);
     }
 
     @Override
@@ -60,6 +64,7 @@ public class BatchAccountsImpl
                 inner,
                 this.innerCollection,
                 this.myManager,
+                this.applicationsClient,
                 this.storageManager);
     }
 

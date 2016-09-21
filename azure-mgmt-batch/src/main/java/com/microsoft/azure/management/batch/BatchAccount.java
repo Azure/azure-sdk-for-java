@@ -19,6 +19,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of an Azure batch account.
  */
@@ -85,7 +87,14 @@ public interface BatchAccount extends
     /**
      * Synchronize the storage account keys for batch account.
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     void synchronizeAutoStorageKeys();
+
+    /**
+     * @return the application in this batch account.
+     */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
+    Map<String, Application> applications();
 
     /**************************************************************
      * Fluent interfaces to provision a BatchAccount
@@ -98,7 +107,8 @@ public interface BatchAccount extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate {
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithStorage {
     }
 
     /**
@@ -119,21 +129,29 @@ public interface BatchAccount extends
         }
 
         /**
-         * A batch account definition with sufficient inputs to create a new
-         * batch account in the cloud, but exposing additional optional inputs to
-         * specify.
+         * A batch account definition to allow creation of application.
          */
-        interface WithCreate extends
-            Creatable<BatchAccount>,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithApplication {
+            /**
+             * First stage to create new application in Batch account.
+             *
+             * @param applicationId id of the application to create
+             * @return next stage to create the Batch account.
+             */
+            Application.DefinitionStages.Blank<WithStorage> defineNewApplication(String applicationId);
+        }
 
+        /**
+         * A batch account definition to allow attaching storage accounts.
+         */
+        interface WithStorage {
             /**
              * Specifies that an existing storage account to be attached with the batch account.
              *
              * @param storageAccount existing storage account to be used
              * @return the stage representing creatable batch account definition
              */
-            DefinitionStages.WithCreate withStorageAccount(StorageAccount storageAccount);
+            DefinitionStages.WithCreate withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * Specifies that a storage account to be attached with the batch account.
@@ -150,7 +168,16 @@ public interface BatchAccount extends
              * @return the stage representing creatable batch account definition
              */
             DefinitionStages.WithCreate withNewStorageAccount(String storageAccountName);
-
+        }
+        /**
+         * A batch account definition with sufficient inputs to create a new
+         * batch account in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+            Creatable<BatchAccount>,
+            Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithApplication {
         }
     }
     /**
@@ -160,7 +187,8 @@ public interface BatchAccount extends
     interface Update extends
             Appliable<BatchAccount>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithStorageAccount {
+            UpdateStages.WithStorageAccount,
+            UpdateStages.WithApplication {
     }
 
     /**
@@ -178,7 +206,7 @@ public interface BatchAccount extends
              * @param storageAccount existing storage account to be used
              * @return the stage representing updatable batch account definition
              */
-            Update withStorageAccount(StorageAccount storageAccount);
+            Update withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * Specifies that a storage account to be attached with the batch account.
@@ -202,6 +230,35 @@ public interface BatchAccount extends
              * @return the stage representing updatable batch account definition
              */
             Update withoutStorageAccount();
+        }
+
+        /**
+         * A batch account definition to allow creation of application.
+         */
+        interface WithApplication {
+            /**
+             * Specifies definition of an application to be created in a batch account.
+             *
+             * @param applicationId the reference name for application
+             * @return the stage representing configuration for the extension
+             */
+              Application.UpdateDefinitionStages.Blank<Update> defineNewApplication(String applicationId);
+
+            /**
+             * Begins the description of an update of an existing application of this batch account.
+             *
+             * @param applicationId the reference name for the application to be updated
+             * @return the stage representing updatable application.
+             */
+            Application.Update updateApplication(String applicationId);
+
+            /**
+             * Deletes specified application from the batch account.
+             *
+             * @param applicationId the reference name for the extension to be removed/uninstalled
+             * @return the stage representing updatable batch account definition.
+             */
+            Update withoutApplication(String applicationId);
         }
     }
 }
